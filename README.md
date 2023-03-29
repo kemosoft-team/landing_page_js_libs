@@ -1,5 +1,5 @@
 
-### Installing "Footer generator by URL parameter 'bid'."
+### Installing Footer generator by URL parameter 'bid':
 
 on Code injection > Footer (Kemo Builder)
 
@@ -12,7 +12,7 @@ Create a block at the bottom of the page. In the 'embed' content, create a div:
   <div id="footer"></div>
 ```
 
-Use a custom CSS
+Use a custom CSS:
 ```css
   .footer {
   	 font-family: Montserrat, sans-serif;
