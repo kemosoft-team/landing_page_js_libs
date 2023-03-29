@@ -1,13 +1,13 @@
 
 ### Installing Footer generator by URL parameter 'bid':
 
-On code injection > Header (Kemo Builder)
+In code injection > Header (Kemo Builder)
 
 ```js
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 ```
 
-on Code injection > Footer (Kemo Builder)
+In code injection > Footer (Kemo Builder)
 
 ```js
 <script src="https://kemosoft-team.github.io/landing_page_js_libs/footerBrandInfo.js"></script>
