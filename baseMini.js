@@ -14,7 +14,7 @@ function getCookie(name) {
 
 
   function redirectToWhatsApp(){
-
+    window.open('https://api.whatsapp.com/send?phone=558440420474&text=Olá,%20solicitei%20uma%20simulação%20SIAPE%20e%20preciso%20de%20ajuda!');
   }
 
 
