@@ -10,7 +10,7 @@ In code injection > Header (Kemo Builder)
 In code injection > Footer (Kemo Builder)
 
 ```js
-<script src="https://kemosoft-team.github.io/landing_page_js_libs/footerBrandInfo.js"></script>
+<script src="https://lp-js-libs.s3.sa-east-1.amazonaws.com/footerBrandInfo.js"></script>
 ```
 
 Create a block at the bottom of the page. In the 'embed' content, create a div:
