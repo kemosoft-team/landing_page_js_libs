@@ -1,6 +1,6 @@
 var cpfInput = document.querySelector('[data-label="CPF"]');
 var celularInput = document.querySelector('[data-label="Celular"]');
-
+var dataNascimentoInput = document.querySelector('[data-label="Data de Nascimento"]');
     
     cpfInput.addEventListener("input", function() {
         
@@ -25,3 +25,15 @@ var celularInput = document.querySelector('[data-label="Celular"]');
 
     celularInput.value = celular;
     });
+
+
+    dataNascimentoInput.addEventListener("input", function() {
+    
+    var dataNascimento = dataNascimentoInput.value;
+        dataNascimento = dataNascimento.replace(/\D/g, "");
+        dataNascimento = dataNascimento.substring(0, 8);
+        dataNascimento = dataNascimento.replace(/(\d{2})(\d)/, "$1/$2");
+        dataNascimento = dataNascimento.replace(/(\d{2})(\d)/, "$1/$2");
+
+    dataNascimentoInput.value = dataNascimento;
+});
