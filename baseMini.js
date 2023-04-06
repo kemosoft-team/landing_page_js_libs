@@ -1,5 +1,18 @@
 let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 
+
+function getIpInfo(){
+
+    axios.get('https://ipinfo.io/json')
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+        console.log(error);
+    }); 
+  
+  }
+
 function getCookie(name) {
 
     let cookie = {};
