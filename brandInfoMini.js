@@ -30,8 +30,7 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
         favicon.href = res.brandFavicon;
     }
 
-    var pageTitle = document.getElementById('pageTitle'); 
-    pageTitle.textContent = res.brandName+" | Empréstimo Consignado"; 
+    document.title = res.brandName+" | Empréstimo Consignado";  
 
     document.getElementById("logo").innerHTML = img;
     document.getElementById("logo-main").innerHTML = imgMain;
