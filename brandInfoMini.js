@@ -9,7 +9,7 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
 .then(function (response) {
     
     const res = response.data;
-    const img = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:100%; max-width:200px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
+    const img = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:90%; max-width:190px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
     const imgMain = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:70%; max-width:120px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
     const imgForm = '<div style="display: flex;justify-content: left; align-items: left;"><img style="width:70%; max-width:120px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
     const prefixtext = 'Este produto de autocontratação e simulação online está sendo oferecido pela '+res.brandName+' correspondente bancário oficial para os bancos BMG, Master, Daycoval, Safra, PAN, C6 e Facta.';
@@ -24,7 +24,15 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
                     '<p class="footer address" style="text-align: center;">'+res.address+'</p>'+
                     '<p class="footer federalid" style="text-align: center;">'+res.federalId+'</p>';
 
-    
+
+    if(res.brandFavicon){
+        var favicon = document.getElementById('favicon'); 
+        favicon.href = res.brandFavicon;
+    }
+
+    var pageTitle = document.getElementById('pageTitle'); 
+    pageTitle.textContent = res.brandName+" | Empréstimo Consignado"; 
+
     document.getElementById("logo").innerHTML = img;
     document.getElementById("logo-main").innerHTML = imgMain;
     document.getElementById("logo-form").innerHTML = imgForm;
