@@ -1,5 +1,23 @@
 let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
+let whatsappNumber = '558440420474';
 
+async function getContactBrandInfo(){
+
+  var url_params = window.location.href;
+  var url = new URL(url_params);
+  let data = url.searchParams.get("bid"); 
+
+  axios.get('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
+    brandId : data,
+  })
+  .then(function (response) {
+      whatsappNumber = response.data.whatsapp;
+  })
+  .catch(function (error) {
+      console.log(error);
+  }); 
+
+}
 
 function getIpInfo(){
 
@@ -27,7 +45,7 @@ function getCookie(name) {
 
 
   function redirectToWhatsApp(){
-    window.open('https://api.whatsapp.com/send?phone=558440420474&text=Olá,%20solicitei%20uma%20simulação%20SIAPE%20e%20preciso%20de%20ajuda!');
+    window.open('https://api.whatsapp.com/send?phone='+whatsappNumber+'&text=Olá,%20solicitei%20uma%20simulação%20SIAPE%20e%20preciso%20de%20ajuda!', '_self');
   }
 
 
@@ -128,6 +146,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       }
 
 
+    getContactBrandInfo();
     //get status pelo token
     if (getCookie('tkn') != null) { getTokenStatus() };
     //verifica se tem cookie, caso positivo prepara o affiliateData senao pega da url e prepara o affiliateData

@@ -10,7 +10,7 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
     
 
     const res = response.data;
-    const prefixtext = 'Este produto está sendo oferecido pela';
+    const prefixtext = 'Este produto de autocontratação e simulação online está sendo oferecido pela '+res.brandName+' correspondente bancário oficial para os bancos BMG, Master, Daycoval, Safra, PAN, C6 e Facta.';
     const terms =  'Todos os direitos reservados. Todo conteúdo do site, logotipos,'+
     'marcas, layout, aqui veiculados são de propriedade exclusiva. É vedada qualquer reprodução,'+ 
     'total ou parcial, de qualquer elemento de identidade, sem expressa autorização. A violação de '+ 
@@ -26,12 +26,6 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
 
     
     document.getElementById("footer").innerHTML = content;
-
-    //se existir btn-whatsapp seta o href de acordo com a brand
-    if(document.querySelector('.btn-whatsapp')){
-        const btnWhatsapp = document.querySelector('.btn-whatsapp');
-        btnWhatsapp.href = 'https://api.whatsapp.com/send?phone=55'+res.whatsapp+'&text=Olá, solicitei uma simulação SIAPE e preciso de ajuda!';
-    }
 
 })
 .catch(function (error) {
