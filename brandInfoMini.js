@@ -16,7 +16,7 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
     'total ou parcial, de qualquer elemento de identidade, sem expressa autorização. A violação de '+ 
     'qualquer direito mencionado implicará na responsabilização civil e criminal nos termos da Lei.';
 
-    const content = '<p class="footer" style="text-align: center;">'+prefixtext+'</p><br>'+
+    const content = '<p class="footer" style="text-align: center;">'+prefixtext+'</p>'+
                     '<p class="footer terms" style="text-align: center;">'+terms+'</p>'+
                     '<p class="footer links" style="text-align: center;"><a style="color:#fff" href="https://api.consigmais.com.br/terms/">Termos de Uso</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#fff" href="https://api.consigmais.com.br/privacy/">Politicas de Privacidade</a></p>'+
                     '<p class="footer address" style="text-align: center;">'+res.address+'</p>'+
