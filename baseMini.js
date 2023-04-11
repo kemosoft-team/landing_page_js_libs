@@ -7,8 +7,8 @@ async function getContactBrandInfo(){
   var url = new URL(url_params);
   let data = url.searchParams.get("bid"); 
 
-  axios.get('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
-    brandId : data,
+  axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
+    brandId : data
   })
   .then(function (response) {
       whatsappNumber = response.data.whatsapp;
