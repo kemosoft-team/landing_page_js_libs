@@ -17,8 +17,6 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
     'qualquer direito mencionado implicará na responsabilização civil e criminal nos termos da Lei.';
 
     const content = '<p class="footer" style="text-align: center;">'+prefixtext+'</p><br>'+
-                    '<div style="display: flex;justify-content: center; align-items: center;">'+
-                    // '<img style="width:100%; max-width:200px;" src="'+res.brandLogo+'" alt="Logomarca '+res.brandName+'"></div><br>'+
                     '<p class="footer terms" style="text-align: center;">'+terms+'</p>'+
                     '<p class="footer links" style="text-align: center;"><a style="color:#fff" href="https://api.consigmais.com.br/terms/">Termos de Uso</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#fff" href="https://api.consigmais.com.br/privacy/">Politicas de Privacidade</a></p>'+
                     '<p class="footer address" style="text-align: center;">'+res.address+'</p>'+
