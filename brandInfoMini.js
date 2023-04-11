@@ -9,7 +9,9 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
 .then(function (response) {
     
     const res = response.data;
-    const img = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:100%; max-width:200px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>'
+    const img = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:100%; max-width:200px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
+    const imgMain = '<div style="display: flex;justify-content: center; align-items: center;"><img style="width:70%; max-width:120px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
+    const imgForm = '<div style="display: flex;justify-content: left; align-items: left;"><img style="width:70%; max-width:120px;" src="' + (res.brandLogoDark?res.brandLogoDark:res.brandLogo) + '" alt="Logomarca ' + res.brandName + '"></div>';
     const prefixtext = 'Este produto de autocontratação e simulação online está sendo oferecido pela '+res.brandName+' correspondente bancário oficial para os bancos BMG, Master, Daycoval, Safra, PAN, C6 e Facta.';
     const terms =  'Todos os direitos reservados. Todo conteúdo do site, logotipos,'+
     'marcas, layout, aqui veiculados são de propriedade exclusiva. É vedada qualquer reprodução,'+ 
@@ -24,6 +26,8 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
 
     
     document.getElementById("logo").innerHTML = img;
+    document.getElementById("logo-main").innerHTML = imgMain;
+    document.getElementById("logo-form").innerHTML = imgForm;
     document.getElementById("footer").innerHTML = content;
 
 })
