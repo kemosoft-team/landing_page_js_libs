@@ -64,9 +64,15 @@ function getCookie(name) {
     axios.get('https://ipinfo.io/json')
     .then(function (response) {
       
-      const ipInfoData = {
-        urlOrigin : window.location.href,
-      }; 
+        const ip = response.ip || "";
+        const hostname = response.hostname || "";
+        const city = response.city || "";
+        const region = response.region || "";
+        const country = response.country || "";
+        const loc = response.loc || "";
+        const org = response.org || "";
+
+        const ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
@@ -136,7 +142,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': encodeURIComponent(window.location.href)
+        'X-Client': encodeURIComponent(window.location.href+ipinfo)
       }
     })
     .then((response) => {
