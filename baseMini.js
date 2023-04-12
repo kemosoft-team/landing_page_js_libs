@@ -1,7 +1,6 @@
 let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
-var ipinfo = "";
 
 async function getContactBrandInfo(){
 
@@ -73,8 +72,7 @@ function getCookie(name) {
         const loc = response.loc || "";
         const org = response.org || "";
 
-        ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
-        console.log(ipinfo);
+        var ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
@@ -92,7 +90,7 @@ function getCookie(name) {
           document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
         });
     
-        // document.cookie = "client_origin="+JSON.stringify(ipInfoData)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
+        document.cookie = "client_origin="+JSON.stringify(ipinfo)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
         captureAffiliateData();
     })
     .catch(function (error) {
@@ -144,11 +142,11 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': encodeURIComponent(window.location.href+ipinfo)
+        'X-Client': encodeURIComponent(window.location.href+getCookie('client_origin'))
       }
     })
     .then((response) => {
-      // redirectToWhatsApp();
+      redirectToWhatsApp();
     })
     .catch(function (error) {
         showToast(error.response.data.message);
