@@ -136,7 +136,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': encodeURIComponent(getCookie('client_origin'))
+        'X-Client': encodeURIComponent(window.location.href)
       }
     })
     .then((response) => {
