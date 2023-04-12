@@ -72,12 +72,22 @@ function getCookie(name) {
         const loc = response.data.loc;
         const org = response.data.org;
 
-        var ipinfo = `${window.location.search}&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
+        let ipinfo = {
+          ip: ip || null,
+          hostname: hostname || null,
+          city: city || null,
+          region: region || null,
+          country: country || null,
+          loc: loc || null,
+          org: org || null,
+      };
+        // var ipinfo = `${window.location.search}&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
     
           for (const [key, value] of urlParams.entries()) {
+              ipinfo[key] = value;
               paramsArray.push({ name: key, value: value });
           }
     
@@ -85,7 +95,8 @@ function getCookie(name) {
         var expirationDate = new Date();
         
         expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
-    
+
+        
         paramsArray.forEach(param => {
           document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
         });
