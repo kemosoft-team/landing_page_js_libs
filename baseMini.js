@@ -137,7 +137,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': getCookie('client_origin')
+        'X-Client': getCookie('client_origin').toUTCString()
       }
     })
     .then((response) => {
