@@ -90,7 +90,7 @@ function getCookie(name) {
           document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
         });
     
-        document.cookie = "client_origin="+JSON.stringify(encodeURIComponent(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; path=/;";
+        document.cookie = "client_origin="+encodeURIComponent(ipinfo)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
         captureAffiliateData();
     })
     .catch(function (error) {
