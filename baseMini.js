@@ -72,7 +72,7 @@ function getCookie(name) {
         const loc = response.data.loc;
         const org = response.data.org;
 
-        var ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
+        var ipinfo = `${window.location.search}&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
