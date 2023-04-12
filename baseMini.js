@@ -64,13 +64,13 @@ function getCookie(name) {
     axios.get('https://ipinfo.io/json')
     .then(function (response) {
       
-        const ip = response.ip || "";
-        const hostname = response.hostname || "";
-        const city = response.city || "";
-        const region = response.region || "";
-        const country = response.country || "";
-        const loc = response.loc || "";
-        const org = response.org || "";
+        const ip = response.ip;
+        const hostname = response.hostname;
+        const city = response.city;
+        const region = response.region;
+        const country = response.country;
+        const loc = response.loc;
+        const org = response.org;
 
         var ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
