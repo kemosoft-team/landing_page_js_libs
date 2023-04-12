@@ -1,4 +1,3 @@
-let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
 

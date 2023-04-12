@@ -27,10 +27,10 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
                     '<p class="footer federalid" style="text-align: center;">'+res.federalId+'</p>';
 
 
-    if(res.brandFavicon){
-        var metaTag = document.querySelector('meta[name="msapplication-TileImage"]'); // Seleciona a tag <meta> pelo atributo name
-        metaTag.content = res.brandFavicon; // Define o novo valor para o atributo content da tag <meta>
-    }
+    // if(res.brandFavicon){
+    //     var metaTag = document.querySelector('meta[name="msapplication-TileImage"]'); // Seleciona a tag <meta> pelo atributo name
+    //     metaTag.content = res.brandFavicon; // Define o novo valor para o atributo content da tag <meta>
+    // }
 
     document.title = res.brandName+" | Empréstimo Consignado";  
 
