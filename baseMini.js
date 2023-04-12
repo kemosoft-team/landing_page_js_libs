@@ -82,7 +82,6 @@ function getCookie(name) {
         expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
 
         document.cookie = "client_origin="+encodeURIComponent(JSON.stringify(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; path=/;";
-        captureAffiliateData();
     })
     .catch(function (error) {
         console.log(error);
@@ -133,4 +132,4 @@ async function registerCustomer(name, birth, federalId, phone, email){
 
     getContactBrandInfo();
     //verifica se tem cookie, caso positivo prepara o affiliateData senao pega da url e prepara o affiliateData
-    setCookies()
+    setCookies();
