@@ -74,6 +74,7 @@ function getCookie(name) {
         const org = response.org || "";
 
         ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
+        console.log(ipinfo);
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
@@ -147,7 +148,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       }
     })
     .then((response) => {
-      // redirectToWhatsApp();
+      redirectToWhatsApp();
     })
     .catch(function (error) {
         showToast(error.response.data.message);
