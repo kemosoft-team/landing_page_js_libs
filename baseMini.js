@@ -114,8 +114,12 @@ function getCookie(name) {
 
 async function registerCustomer(name, birth, federalId, phone, email){
 
-    axios.defaults.withCredentials = true;
-    axios.post(registerCustomerUrl, {
+  fetch(registerCustomerUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       "name": name,
       "birth": birth,
       "federalId": federalId,
@@ -125,19 +129,43 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "dataPrivacy":true,
       "dataSearchAllowed":true,
       "affiliateData" : captureAffiliateData()
-    }, {
-      headers: {
-        'Access-Control-Allow-Origin': 'https://api2.kemosoft.com.br/',
-        'Access-Control-Allow-Credentials': 'true',
-        'Content-Type': 'application/json',
-      }
-    })
-    .then((response) => {
-      redirectToWhatsApp();
-    })
-    .catch(function (error) {
-        showToast(error.response.data.message);
-    }); 
+    }),
+    credentials: 'include' // Defina essa opção como 'include' para incluir automaticamente os cookies na requisição
+  })
+  .then((response) => {
+    // Processar a resposta
+    redirectToWhatsApp();
+  })
+  .catch(function (error) {
+    // Tratar o erro
+    showToast(error.message);
+  });
+  
+
+    // axios.defaults.withCredentials = true;
+    // axios.post(registerCustomerUrl, {
+    //   "name": name,
+    //   "birth": birth,
+    //   "federalId": federalId,
+    //   "phone": phone,
+    //   "email": email,
+    //   "useTerms":true,
+    //   "dataPrivacy":true,
+    //   "dataSearchAllowed":true,
+    //   "affiliateData" : captureAffiliateData()
+    // }, {
+    //   headers: {
+    //     'Access-Control-Allow-Origin': 'https://api2.kemosoft.com.br/',
+    //     'Access-Control-Allow-Credentials': 'true',
+    //     'Content-Type': 'application/json',
+    //   }
+    // })
+    // .then((response) => {
+    //   redirectToWhatsApp();
+    // })
+    // .catch(function (error) {
+    //     showToast(error.response.data.message);
+    // }); 
     }
 
     function validateForm(){ 
