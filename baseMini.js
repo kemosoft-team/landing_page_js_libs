@@ -127,7 +127,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "affiliateData" : captureAffiliateData()
     }, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://api2.kemosoft.com.br/',
         'Content-Type': 'application/json',
       }
     })
