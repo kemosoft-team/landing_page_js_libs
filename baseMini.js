@@ -1,6 +1,7 @@
 let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
+let ipinfo = null;
 
 async function getContactBrandInfo(){
 
@@ -72,7 +73,7 @@ function getCookie(name) {
         const loc = response.loc || "";
         const org = response.org || "";
 
-        const ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
+        ipinfo = `&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const paramsArray = [];
