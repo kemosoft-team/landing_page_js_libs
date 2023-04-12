@@ -90,7 +90,7 @@ function getCookie(name) {
           document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
         });
     
-        document.cookie = "client_origin="+JSON.stringify(ipinfo)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
+        document.cookie = "client_origin="+JSON.stringify(encodeURIComponent(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; path=/;";
         captureAffiliateData();
     })
     .catch(function (error) {
@@ -142,7 +142,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': encodeURIComponent((window.location.href+getCookie('client_origin')))
+        'X-Client': encodeURIComponent(window.location.href+getCookie('client_origin'))
       }
     })
     .then((response) => {
