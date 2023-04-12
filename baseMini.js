@@ -66,7 +66,6 @@ function getCookie(name) {
       
       const ipInfoData = {
         urlOrigin : window.location.href,
-        userIpInfo : response,
       }; 
     
         const urlParams = new URLSearchParams(window.location.search);
