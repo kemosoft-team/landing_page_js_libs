@@ -2,9 +2,11 @@
 var url_params = window.location.href;
 var url = new URL(url_params);
 let data = url.searchParams.get("bid"); 
+let af = url.searchParams.get("af"); 
 
 axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
     brandId : data,
+    affiliateCode: af
 })
 .then(function (response) {
     

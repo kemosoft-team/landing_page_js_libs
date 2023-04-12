@@ -22,18 +22,6 @@ async function getContactBrandInfo(){
 
 }
 
-async function getIpInfo(){
-
-    axios.get('https://ipinfo.io/json')
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-        console.log(error);
-    }); 
-  
-  }
-
 function getCookie(name) {
 
     let cookie = {};
@@ -81,14 +69,11 @@ function getCookie(name) {
           loc: loc || null,
           org: org || null,
       };
-        // var ipinfo = `${window.location.search}&ip=${ip}&hostname=${hostname}&city=${city}&region=${region}&country=${country}&loc=${loc}&org=${org}`;
     
         const urlParams = new URLSearchParams(window.location.search);
-        const paramsArray = [];
     
           for (const [key, value] of urlParams.entries()) {
               ipinfo[key] = value;
-              paramsArray.push({ name: key, value: value });
           }
     
         var expirationDays = latDays || 7;
@@ -96,11 +81,6 @@ function getCookie(name) {
         
         expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
 
-        
-        paramsArray.forEach(param => {
-          document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
-        });
-    
         document.cookie = "client_origin="+encodeURIComponent(JSON.stringify(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; path=/;";
         captureAffiliateData();
     })
@@ -108,31 +88,6 @@ function getCookie(name) {
         console.log(error);
     }); 
       }
-
-
-  function captureAffiliateData(){
-
-    if (document.cookie) {
-  
-        let affiliateData = {
-            affiliateCode: getCookie('af') || null,
-            source: getCookie('source') || null,
-            productId: getCookie('pid') || null,
-            vendorId: getCookie('vid') || null,
-            offerId: getCookie('oid') || null,
-            clickId : getCookie('cid') || null,
-            pixelId: getCookie('afx') || null,
-            gtmId: getCookie('afgtm') || null,
-            latDays: getCookie('latd') || null,
-            brandId : getCookie('bid') || null,
-            nextStep : getCookie('nxstp') || null,
-            token: getCookie('tkn') || null,
-            rawUri: window.location.search
-        };
-    
-        return affiliateData;
-    }
-  }
 
 async function registerCustomer(name, birth, federalId, phone, email){
 
@@ -145,7 +100,6 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "useTerms":true,
       "dataPrivacy":true,
       "dataSearchAllowed":true,
-      "affiliateData" : captureAffiliateData()
     }, {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -178,7 +132,5 @@ async function registerCustomer(name, birth, federalId, phone, email){
 
 
     getContactBrandInfo();
-    //get status pelo token
-    if (getCookie('tkn') != null) { getTokenStatus() };
     //verifica se tem cookie, caso positivo prepara o affiliateData senao pega da url e prepara o affiliateData
-    document.cookie ? captureAffiliateData() : setCookies()
+    setCookies()
