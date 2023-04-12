@@ -114,14 +114,16 @@ function getCookie(name) {
 
 async function registerCustomer(name, birth, federalId, phone, email){
 
-  const cors = require("cors");
-  expressApplication.use(cors({
-   origin: ["https://aumento-siape.faz.vc"],
-   credentials: true
-  }));
-    
-    axios.defaults.withCredentials = true; 
+  
     axios.post(registerCustomerUrl, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      credentials: 'same-origin',
+      },
+      {
       "name": name,
       "birth": birth,
       "federalId": federalId,
