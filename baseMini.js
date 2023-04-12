@@ -6,9 +6,11 @@ async function getContactBrandInfo(){
   var url_params = window.location.href;
   var url = new URL(url_params);
   let data = url.searchParams.get("bid"); 
+  let af = url.searchParams.get("af"); 
 
   axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
-    brandId : data
+    brandId : data,
+    affiliateCode: af
   })
   .then(function (response) {
       whatsappNumber = response.data.whatsapp;
@@ -133,7 +135,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
     function validateForm(){ 
 
         const name = document.querySelector('[data-label="Nome"]').value;
-        const phone = document.querySelector('[data-label="Celular"]').value;
+        const phone = document.querySelector('[data-label="Whatsapp"]').value;
         const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
         const federalId = document.querySelector('[data-label="CPF"]').value;
       
