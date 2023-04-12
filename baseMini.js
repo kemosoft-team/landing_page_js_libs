@@ -22,7 +22,7 @@ async function getContactBrandInfo(){
 
 }
 
-function getIpInfo(){
+async function getIpInfo(){
 
     axios.get('https://ipinfo.io/json')
     .then(function (response) {
@@ -61,29 +61,38 @@ function getCookie(name) {
 
   function setCookies(latDays){
 
-    const ipInfoData = {
-      userIpInfo : getIpInfo(),
-      urlOrigin : window.location.href,
-    }; 
-  
-      const urlParams = new URLSearchParams(window.location.search);
-      const paramsArray = [];
-  
-        for (const [key, value] of urlParams.entries()) {
-            paramsArray.push({ name: key, value: value });
-        }
-  
-      var expirationDays = latDays || 7;
-      var expirationDate = new Date();
+    axios.get('https://ipinfo.io/json')
+    .then(function (response) {
       
-      expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
-  
-      paramsArray.forEach(param => {
-        document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
-      });
-  
-      document.cookie = "client_origin="+JSON.stringify(ipInfoData)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
-      captureAffiliateData();
+      const ipInfoData = {
+        userIpInfo : response,
+        urlOrigin : window.location.href,
+      }; 
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramsArray = [];
+    
+          for (const [key, value] of urlParams.entries()) {
+              paramsArray.push({ name: key, value: value });
+          }
+    
+        var expirationDays = latDays || 7;
+        var expirationDate = new Date();
+        
+        expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+    
+        paramsArray.forEach(param => {
+          document.cookie = param.name + "=" + param.value + "; expires=" + expirationDate.toUTCString() + "; path=/;";
+        });
+    
+        document.cookie = "client_origin="+JSON.stringify(ipInfoData)+"; expires=" + expirationDate.toUTCString() + "; path=/;";
+        captureAffiliateData();
+    })
+    .catch(function (error) {
+        console.log(error);
+    }); 
+
+    
   
       }
 
