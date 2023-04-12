@@ -64,6 +64,8 @@ function getCookie(name) {
     axios.get('https://ipinfo.io/json')
     .then(function (response) {
       
+        console.log(response);
+        
         const ip = response.ip;
         const hostname = response.hostname;
         const city = response.city;
