@@ -134,7 +134,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       }
     })
     .then((response) => {
-      redirectToWhatsApp();
+      // redirectToWhatsApp();
     })
     .catch(function (error) {
         showToast(error.response.data.message);
