@@ -1,4 +1,5 @@
 let baseUrl = 'https://api.consigmais.com.br/lp/main/v2';
+let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
 
 async function getContactBrandInfo(){
@@ -112,8 +113,9 @@ function getCookie(name) {
   }
 
 async function registerCustomer(name, birth, federalId, phone, email){
-  
-    axios.post(baseUrl+'/registerCustomer', {
+    
+    axios.defaults.withCredentials = true; 
+    axios.post(registerCustomerUrl, {
       "name": name,
       "birth": birth,
       "federalId": federalId,
