@@ -128,6 +128,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
     }, {
       headers: {
         'Access-Control-Allow-Origin': 'https://api2.kemosoft.com.br/',
+        'Access-Control-Allow-Credentials': 'true',
         'Content-Type': 'application/json',
       }
     })
