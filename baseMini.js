@@ -107,9 +107,6 @@ function getCookie(name) {
     .catch(function (error) {
         console.log(error);
     }); 
-
-    
-  
       }
 
 
@@ -153,7 +150,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'X-Client': encodeURIComponent(window.location.href)+getCookie('client_origin')
+        'X-Client': getCookie('client_origin')
       }
     })
     .then((response) => {
