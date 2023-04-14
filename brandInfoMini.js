@@ -39,7 +39,7 @@ axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
     if(document.getElementById("logo-main")){document.getElementById("logo-main").innerHTML = imgMain;}
     if(document.getElementById("logo-form")){document.getElementById("logo-form").innerHTML = imgForm;}
     if(document.getElementById("footer")){document.getElementById("footer").innerHTML = content;}
-    if(document.getElementById("logo-footer")){document.getElementById("logo-footer").innerHTML = content;}
+    if(document.getElementById("logo-footer")){document.getElementById("logo-footer").innerHTML = imgFooter;}
 
 })
 .catch(function (error) {
