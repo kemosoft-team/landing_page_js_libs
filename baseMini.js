@@ -1,9 +1,6 @@
 let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
 
-let button = document.querySelector('.brz-btn-submit');
-let spinner = button.querySelector('.brz-form-spinner');
-
 async function getContactBrandInfo(){
 
   var url_params = window.location.href;
@@ -92,9 +89,6 @@ function getCookie(name) {
 
 async function registerCustomer(name, birth, federalId, phone, email){
 
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-
     axios.post(registerCustomerUrl, {
       "name": name,
       "birth": birth,
@@ -115,8 +109,6 @@ async function registerCustomer(name, birth, federalId, phone, email){
       redirectToWhatsApp();
     })
     .catch(function (error) {
-      button.removeAttribute('disabled');
-      spinner.classList.add('brz-invisible');
       showToast(error.response.data.message);
     }); 
     }
