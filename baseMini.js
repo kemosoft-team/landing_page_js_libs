@@ -1,8 +1,8 @@
 let registerCustomerUrl = 'https://api2.kemosoft.com.br/api:lp/offer-request-start';
 let whatsappNumber = '558440420474';
 
-const button = document.querySelector('.brz-btn-submit');
-const spinner = button.querySelector('.brz-form-spinner');
+let button = document.querySelector('.brz-btn-submit');
+let spinner = button.querySelector('.brz-form-spinner');
 
 async function getContactBrandInfo(){
 
