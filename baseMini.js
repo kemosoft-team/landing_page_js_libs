@@ -90,10 +90,7 @@ function getCookie(name) {
 async function registerCustomer(name, birth, federalId, phone, email){
 
   const button = document.querySelector('.brz-btn-submit');
-  const spinner = button.querySelector('.brz-form-spinner');
-
   button.setAttribute('disabled', true);
-  spinner.classList.remove('brz-invisible');
 
     axios.post(registerCustomerUrl, {
       "name": name,
@@ -116,7 +113,6 @@ async function registerCustomer(name, birth, federalId, phone, email){
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
-      spinner.classList.add('brz-invisible');
       showToast(error.response.data.message);
     }); 
     }
