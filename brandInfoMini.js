@@ -5,8 +5,7 @@ let data = url.searchParams.get("bid");
 let af = url.searchParams.get("af"); 
 
 axios.post('https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo', {
-    brandId : data,
-    affiliateCode: af
+    brandId : 2
 })
 .then(function (response) {
     
