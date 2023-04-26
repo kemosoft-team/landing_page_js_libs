@@ -4,7 +4,7 @@ async function getContactBrandInfo(){
     var url = new URL(url_params);
     let offer = url.searchParams.get("bid"); 
 
-    axios.post('https://api2.kemosoft.com.br/api:workflow/addCreatives', {
+    axios.get('https://api2.kemosoft.com.br/api:workflow/addCreatives', {
         offerId: "25"
     })
     .then(function (response) {
