@@ -2,9 +2,6 @@ var url_params = window.location.href;
 var url = new URL(url_params);
 let offer = url.searchParams.get("id"); 
 
-
-
-
 axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
     offerId: offer
 })
@@ -39,7 +36,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
             tbody.appendChild(trElement);
 
             if(document.getElementById("description")){ document.getElementById("description").innerHTML = response.data.description_lang.pt;}
-            if(document.getElementById("title")){ document.getElementById("title").innerHTML = 'Criativos '+response.data.title;}
+            if(document.getElementById("title")){ document.getElementById("title").innerHTML = '<p>Criativos '+response.data.title+'</p>';}
 
         
     });
