@@ -26,13 +26,12 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
 })
 .then(function (response) {
     console.log(response);
+
+
 })
 .catch(function (error) {
     console.log(error);
 }); 
 
-document.querySelector('tbody').innerHTML = tr;
-
-
-
+document.querySelector('tbody').appendChild(tr);
 
