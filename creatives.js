@@ -15,14 +15,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
 
     creatives.forEach(element => {
 
-        const tr = '<tr class="brz-table__tr"><th class="brz-table__th brz-table__aside"><div class="brz-table__th--btn"><img width="7%" src="'+element.url+'">'+
-            '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:'+
-            'space="preserve" class="brz-icon-svg align-[initial]" data-type="outline" data-name="zoom-in"><g transform="translate(0, 0)" class="nc-icon-wrapper" fill="none">'+
-            '<line data-color="color-2" fill="none" stroke="currentColor" vector-effect="non-scaling-stroke" stroke-linecap="square" stroke-miterlimit="10" x1="22" y1="22" x2='+
-            '"16.4" y2="16.4" stroke-linejoin="miter"></line> <circle fill="none" stroke="currentColor" vector-effect="non-scaling-stroke" stroke-linecap="square" stroke-miterlimit='+
-            '"10" cx="10" cy="10" r="9" stroke-linejoin="miter"></circle> <line data-color="color-2" fill="none" stroke="currentColor" vector-effect="non-scaling-stroke" stroke-'+
-            'linecap="square" stroke-miterlimit="10" x1="10" y1="7" x2="10" y2="13" stroke-linejoin="miter"></line> <line data-color="color-2" fill="none" stroke="currentColor" '+
-            'vector-effect="non-scaling-stroke" stroke-linecap="square" stroke-miterlimit="10" x1="13" y1="10" x2="7" y2="10" stroke-linejoin="miter"></line></g></svg>'+
+        const tr = '<tr class="brz-table__tr"><th class="brz-table__th brz-table__aside"><div class="brz-table__th--btn"><img width="8%" src="'+element.url+'">'+
             '<span class="brz-span brz-text__editor"></span></div></th><td class="brz-table__td"><div class="brz-d-xs-flex brz-flex-xs-column"><div class="brz-css-ibzov brz-wrapper">'+
             '<div class="brz-rich-text brz-rich-text__custom brz-css-jenuz" data-custom-id="gvvamjkarfcftdlunfltalsbziwqxhkywics"><div><p data-uniq-id="rgtyl" data-generated-css='+
             '"brz-css-wcplh" class="brz-css-oafdp">'+element.file_name+'</p></div></div></div></div></td><td class="brz-table__td"><div class="brz-d-xs-flex '+
