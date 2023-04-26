@@ -12,7 +12,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
 
     creatives.forEach(element => {
 
-        const tr = '<tr class="brz-table__tr"><th class="brz-table__th brz-table__aside"><div class="brz-table__th--btn"><img width="10%" src="'+element.url+'">'+
+        const tr = '<tr class="brz-table__tr"><th class="brz-table__th brz-table__aside"><div class="brz-table__th--btn"><img width="20%" src="'+element.url+'">'+
             '<span class="brz-span brz-text__editor"></span></div></th><td class="brz-table__td"><div class="brz-d-xs-flex brz-flex-xs-column"><div class="brz-css-ibzov brz-wrapper">'+
             '<div class="brz-rich-text brz-rich-text__custom brz-css-jenuz" data-custom-id="gvvamjkarfcftdlunfltalsbziwqxhkywics"><div><p data-uniq-id="rgtyl" data-generated-css='+
             '"brz-css-wcplh" class="brz-css-oafdp">'+element.file_name+'</p></div></div></div></div></td><td class="brz-table__td"><div class="brz-d-xs-flex '+
