@@ -31,7 +31,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
     console.log(error);
 }); 
 
-document.querySelector("brz-table__body").innerHTML = tr;
+document.querySelector('tbody').innerHTML = tr;
 
 
 
