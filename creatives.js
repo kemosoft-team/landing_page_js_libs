@@ -39,6 +39,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
             tbody.appendChild(trElement);
 
             if(document.getElementById("description")){ document.getElementById("description").innerHTML = response.data.description_lang.pt;}
+            if(document.getElementById("title")){ document.getElementById("title").innerHTML = 'Criativos '+response.data.title;}
 
         
     });
