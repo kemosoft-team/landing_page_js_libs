@@ -11,7 +11,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
 .then(function (response) {
     console.log(response);
 
-    response.creatives.forEach(element => {
+    response.data.creatives.forEach(element => {
 
         const tr = '<tr class="brz-table__tr"><th class="brz-table__th brz-table__aside"><div class="brz-table__th--btn">'+
             '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:'+
