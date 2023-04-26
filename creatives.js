@@ -33,5 +33,11 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
     console.log(error);
 }); 
 
-document.querySelector('tbody').appendChild(tr);
 
+const temp = document.createElement('tbody');
+temp.innerHTML = tr;
+
+const trElement = temp.firstChild;
+
+const tbody = document.querySelector('tbody');
+tbody.appendChild(trElement);
