@@ -38,6 +38,8 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
             const tbody = document.querySelector('tbody');
             tbody.appendChild(trElement);
 
+            if(document.getElementById("description")){ document.getElementById("description").innerHTML = response.data.description_lang.pt;}
+
         
     });
 
