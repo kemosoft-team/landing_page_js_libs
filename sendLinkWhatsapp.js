@@ -16,20 +16,19 @@ if(link == null){
     return;
 }
 
-const button = document.querySelector('.brz-btn-submit');
-const spinner = button.querySelector('.brz-form-spinner');
-const span = document.querySelector('.brz-span.brz-text__editor');
-
-button.setAttribute('disabled', true);
-spinner.classList.remove('brz-invisible');
-span.textContent = '';
-
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
 if(number == ''){
     showToast("Preencha o campo com o número do seu Whatsapp.");
-    return;
-}
+}else{
+
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = document.querySelector('.brz-span.brz-text__editor');
+    
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
 
 axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
     whatsapp : '55'+(number.replace(/\D/g, "")),
@@ -49,6 +48,8 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
     span.textContent = 'Enviar Link';
     showToast(error.response.data.message);
 }); 
+
+}
 
 }
 
