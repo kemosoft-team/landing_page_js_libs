@@ -1,8 +1,7 @@
 async function sendLinkWhatsapp(){
 
-var url_params = window.location.href;
-var url = new URL(url_params);
-let link = url.searchParams.get("origin");
+var url = window.location.href;
+let link = url.split("origin=")[1];
 
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
