@@ -1,7 +1,20 @@
+function showToast(text) {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    document.getElementById("snackbar").innerHTML = text;
+    setTimeout(function(){ x.className = x.className.replace("show", `${text}`); }, 3000);
+  }
+
+
 async function sendLinkWhatsapp(){
 
 var url = window.location.href;
 let link = url.split("origin=")[1];
+
+if(link == null){
+    showToast("Esse link é invalido! Tente acessá-lo novamente.");
+    return;
+}
 
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
@@ -13,7 +26,7 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
     console.log(response);
 })
 .catch(function (error) {
-    console.log(error);
+    showToast(error.response.data.message);
 }); 
 
 }
