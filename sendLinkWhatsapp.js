@@ -16,6 +16,14 @@ if(link == null){
     return;
 }
 
+const button = document.querySelector('.brz-btn-submit');
+const spinner = button.querySelector('.brz-form-spinner');
+const span = document.querySelector('.brz-span.brz-text__editor');
+
+button.setAttribute('disabled', true);
+spinner.classList.remove('brz-invisible');
+span.textContent = '';
+
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
 axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
@@ -23,9 +31,16 @@ axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
     link: link
 })
 .then(function (response) {
-    console.log(response);
+    button.removeAttribute('disabled');
+    spinner.classList.add('brz-invisible');
+    span.textContent = 'Enviar link';
+    showToast("Link enviado com sucesso!");
+
 })
 .catch(function (error) {
+    button.removeAttribute('disabled');
+    spinner.classList.add('brz-invisible');
+    span.textContent = 'Enviar Link';
     showToast(error.response.data.message);
 }); 
 
