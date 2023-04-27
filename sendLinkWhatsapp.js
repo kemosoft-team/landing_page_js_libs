@@ -7,7 +7,7 @@ let link = url.searchParams.get("origin");
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
 axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
-    whatsapp : '55'+number,
+    whatsapp : '55'+(number.replace(/\D/g, "")),
     link: link
 })
 .then(function (response) {
