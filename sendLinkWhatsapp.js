@@ -26,11 +26,17 @@ span.textContent = '';
 
 const number = document.querySelector('[data-label="Whatsapp"]').value;
 
+if(number == ''){
+    showToast("Preencha o campo com o número do seu Whatsapp.");
+    return;
+}
+
 axios.post('https://api2.kemosoft.com.br/api:workflow/sendWhatsappMessage', {
     whatsapp : '55'+(number.replace(/\D/g, "")),
     link: link
 })
 .then(function (response) {
+    document.querySelector('[data-label="Whatsapp"]').value = '';
     button.removeAttribute('disabled');
     spinner.classList.add('brz-invisible');
     span.textContent = 'Enviar link';
