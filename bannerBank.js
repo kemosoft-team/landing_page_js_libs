@@ -26,7 +26,7 @@ const content =
 
 
 
-const contentHeader  = '<div class="brz-row brz-row--inner brz-css-lhoqc brz-css-xxtrb"><div class="brz-columns brz-css-scsca brz-css-jytpk" data-custom-id="repwcmlqdknbzljjtwiauvnbwgvddblgwnpq">'+
+const contentHeader  = '<div class="brz-row brz-row--inner brz-css-lhoqc brz-css-xxtrb" style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start; transition-duration: 0.50s; transition-property: filter, box-shadow, background, border-radius, border-color;"><div class="brz-columns brz-css-scsca brz-css-jytpk" data-custom-id="repwcmlqdknbzljjtwiauvnbwgvddblgwnpq">'+
             '<div class="brz-bg overflow-hidden !z-auto absolute top-0 left-0 w-full h-full"></div><div class="brz-column__items brz-css-xsttj"><div class="brz-css-xryyr brz-css-trhck brz-wrapper">'+
             '<div class="brz-image brz-css-gakla"><picture class="brz-picture brz-d-block brz-p-relative brz-css-ohxcu brz-css-iqxpq" data-custom-id="vmizcynwwhgsayfjiwwctxjbvvbjzxcxqvbt">'+
             '<img class="brz-img" style="width:35%" src="https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/bmg_correspondente.png" alt="" draggable="false" loading="lazy">'+
