@@ -31,7 +31,7 @@ const contentHeaderLock = '<div><span class="brz-icon brz-span brz-css-ifcxp brz
 
     if(document.getElementById("banner-left")){ document.getElementById("banner-left").innerHTML = content;}
 if(document.getElementById("header-mobile")){ document.getElementById("header-mobile").innerHTML = contentHeader;}
-if(document.getElementById("header-mobile-lock")){ document.getElementById("header-mobile-lock").innerHTML = contentHeader;}
+if(document.getElementById("header-mobile-lock")){ document.getElementById("header-mobile-lock").innerHTML = contentHeaderLock;}
 
 
 
