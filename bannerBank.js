@@ -11,3 +11,4 @@ const content =
 
 
 if(document.getElementById("banner-left")){ document.getElementById("banner-left").innerHTML = content;}
+if(document.getElementById("header-mobile")){ document.getElementById("header-mobile").innerHTML = content;}
