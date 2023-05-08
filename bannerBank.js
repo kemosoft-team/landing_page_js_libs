@@ -22,7 +22,7 @@ const content =
 //             '<p class="brz-css-vuboy inline-block" style="margin-top: 10px !important; margin-bottom: 0px !important; margin-left: 5px !important; text-align: center; font-family: Overpass, sans-serif !important; font-size: 12px; line-height: 1.9; font-weight: 400; letter-spacing: 0px;" data-uniq-id="vwofe" data-generated-css="brz-css-ubaxg">ESTE SITE É 100% SEGURO</p></div>';
 
 
-const contentHeader = '<div class="header" style="display: flex;  justify-content: space-between;  align-items: center;"><img class="brz-img" style="width:25%" src="https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/bmg_correspondente.png" alt="" draggable="false" loading="lazy" style=" width: 100px;  height: 100px;"><p>Este site é seguro</p></div>';
+const contentHeader = '<div class="header" style="display: flex;  justify-content: space-between;  align-items: left;"><img class="brz-img" style="width:25%" src="https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/bmg_correspondente.png" alt="" draggable="false" loading="lazy" style=" width: 100px;  height: 100px;"><p>Este site é seguro</p></div>';
 
 
 
