@@ -100,7 +100,7 @@ function captureAffiliateData(){
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email){
 
-    const button = document.querySelector('.brz-btn-submit');
+    const button = document.querySelector('.btn-submit-fgts');
     const spinner = button.querySelector('.brz-form-spinner');
     const span = document.querySelector('.brz-span.brz-text__editor');
 
