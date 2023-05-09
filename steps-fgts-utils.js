@@ -57,7 +57,7 @@ function setBanks(bankList){
   
 async function getByZipCodeInfo(zipcode){
 
-    axios.post(APIbaseURL+'/getZipcodeInfo', {
+    axios.post(apiBaseUrl+'/getZipcodeInfo', {
       zipcode: zipcode,
     },
     {
@@ -88,7 +88,7 @@ async function getByZipCodeInfo(zipcode){
   //registerCustomerAccount
   async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
 
-    axios.post(APIbaseURL+'/offer-request-infos', {
+    axios.post(apiBaseUrl+'/offer-request-infos', {
       zipcode: zipcode,
       address: address, 
       addressNumber: addressNumber, 
@@ -113,7 +113,7 @@ async function getByZipCodeInfo(zipcode){
 //registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
 
-  axios.post(APIbaseURL+'/offer-request-infos', {
+  axios.post(apiBaseUrl+'/offer-request-infos', {
     branchNo: agency,
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -138,7 +138,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   // registerCustomerAccount
 async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
 
-  axios.post(APIbaseURL+'/offer-request-infos', {
+  axios.post(apiBaseUrl+'/offer-request-infos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
