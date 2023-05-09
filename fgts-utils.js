@@ -102,7 +102,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
 
     const button = document.querySelector('.btn-submit-fgts');
     const spinner = button.querySelector('.brz-form-spinner');
-    const span = document.querySelector('.brz-span.brz-text__editor');
+    const span = button.querySelector('.brz-span.brz-text__editor');
 
     button.setAttribute('disabled', true);
     spinner.classList.remove('brz-invisible');
