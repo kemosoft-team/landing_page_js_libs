@@ -1,8 +1,9 @@
-let APIAPIbaseURL = 'https://api2.kemosoft.com.br/api:lp';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let stepsUrl = 'https://infos.faz.vc/';
 
-function redirectToNextStep(nextStep){
+function redirectToNextStep(n){
     console.log("redirectToNextStep");
-    window.location.href = generalStepUrl+nextStep
+    window.location.href = stepsUrl+n
   }
 
   //getCurrentStep
@@ -208,6 +209,10 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
     const  accountTypeCut = accountType.charAt(0).toString();
     registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
+  }
+
+  if(!getCookie('tkn')){
+    window.location.href = stepsUrl;
   }
   
 
