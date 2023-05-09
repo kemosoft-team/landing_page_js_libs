@@ -134,7 +134,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
 }
 
 //validar form
-function validarForm(){ 
+function validateForm(){ 
 
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
