@@ -30,7 +30,7 @@ function showToast(text) {
   //get Token Status
   function getTokenStatus(){
   
-    axios.post(APIbaseURL+'/lead-status', {}, {
+    axios.post(apiBaseUrl+'/lead-status', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -108,7 +108,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
   
-    axios.post(APIbaseURL+'/registerCustomer', {
+    axios.post(apiBaseUrl+'/registerCustomer', {
       "name": name,
       "birth": birth,
       "federalId": federalId,
