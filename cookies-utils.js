@@ -53,3 +53,5 @@ function getCookie(name) {
     return cookie[name];
   }
 
+  setCookies();
+
