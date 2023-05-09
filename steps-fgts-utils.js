@@ -211,8 +211,5 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
   }
 
-  if(!getCookie('tkn')){
-    window.location.href = stepsUrl;
-  }
-  
+
 
