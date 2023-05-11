@@ -72,7 +72,7 @@ async function registerCustomer(name, phone, email){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
   
-    axios.post('url', {
+    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
       "name": name,
       "phone": phone,
       "email": email
