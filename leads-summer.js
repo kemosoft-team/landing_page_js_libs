@@ -62,7 +62,7 @@ function showToast(text) {
   }
 
 //registerCustomer
-async function registerCustomer(name, phone, email){
+async function registerCustomer(name, federalId, phone, email){
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -74,6 +74,7 @@ async function registerCustomer(name, phone, email){
   
     axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
       "name": name,
+      "federalId": federalId,
       "phone": phone,
       "email": email
     },
@@ -102,13 +103,14 @@ function validateForm(){
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
+    const federalId = document.querySelector('[data-label="CPF"]').value;
   
-    if (name == "" || phone == "" || email == "") {
+    if (name == "" || federalId == "" || phone == "" || email == "") {
       showToast("Por favor, preencha todos os campos.");
       return false;
     }
   
-    registerCustomer(name, phone, email);
+    registerCustomer(name, federalId, phone, email);
   }
 
 
