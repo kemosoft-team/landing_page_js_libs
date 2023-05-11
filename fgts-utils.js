@@ -2,7 +2,7 @@ let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n){
-    window.location.href = stepsUrl+n;
+    // window.location.href = stepsUrl+n;
     console.log(stepsUrl+n);
 }
 
