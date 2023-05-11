@@ -1,4 +1,4 @@
-//get cookies
+///get cookies
 function getCookie(name) {
 
     let cookie = {};
