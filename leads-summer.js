@@ -88,7 +88,7 @@ async function registerCustomer(name, federalId, phone, email, local) {
       }
     })
     .then((response) => {
-      window.location('https://www.orendapay.com.br/checklink/16838315569028')
+      window.location.href = 'https://www.orendapay.com.br/checklink/16838315569028';
     })
 
     .catch(function (error) {
