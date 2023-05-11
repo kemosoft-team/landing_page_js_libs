@@ -74,31 +74,43 @@ async function getBanks(){
 //obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData(){
 
-  if (document.cookie) {
+  // if (document.cookie) {
 
-      let affiliateData = {
-          affiliateCode: getCookie('af') || null,
-          source: getCookie('source') || null,
-          productId: getCookie('pid') || null,
-          vendorId: getCookie('vid') || null,
-          offerId: getCookie('oid') || null,
-          clickId : getCookie('cid') || null,
-          pixelId: getCookie('afx') || null,
-          gtmId: getCookie('afgtm') || null,
-          latDays: getCookie('latd') || null,
-          brandId : getCookie('bid') || null,
-          nextStep : getCookie('nxstp') || null,
-          token: getCookie('tkn') || null,
-          rawUri: window.location.search
-      };
+  //     let affiliateData = {
+  //         affiliateCode: getCookie('af') || null,
+  //         source: getCookie('source') || null,
+  //         productId: getCookie('pid') || null,
+  //         vendorId: getCookie('vid') || null,
+  //         offerId: getCookie('oid') || null,
+  //         clickId : getCookie('cid') || null,
+  //         pixelId: getCookie('afx') || null,
+  //         gtmId: getCookie('afgtm') || null,
+  //         latDays: getCookie('latd') || null,
+  //         brandId : getCookie('bid') || null,
+  //         nextStep : getCookie('nxstp') || null,
+  //         token: getCookie('tkn') || null,
+  //         rawUri: window.location.search
+  //     };
   
+  //     return affiliateData;
+  // }
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const affiliateData = {};
+      
+      for (const [key, value] of urlParams) {
+        affiliateData[key] = value;
+      }
+
       return affiliateData;
-  }
 }
 
 
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email){
+
+    const affiliate = captureAffiliateData();
 
     const button = document.querySelector('.btn-submit-fgts');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -117,9 +129,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "useTerms":true,
       "dataPrivacy":true,
       "dataSearchAllowed":true,
-      "affiliateData":{
-		"offerId":"6"
-	  }
+      "affiliateData": affiliate
     })
     .then((response) => {
       handleSetToken(response.data.token);
