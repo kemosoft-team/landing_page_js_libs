@@ -86,12 +86,12 @@ async function registerCustomer(name, federalId, phone, email){
     }
       })
     .then((response) => {
-      window.location('https://summersessions.kemobuilder.site')
+      window.location('https://www.orendapay.com.br/checklink/16838300686651')
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
         spinner.classList.add('brz-invisible');
-        span.textContent = 'CADASTRAR';
+        span.textContent = 'CADASTRAR AGORA!';
         showToast(error.response.data.message);
     }); 
 }
