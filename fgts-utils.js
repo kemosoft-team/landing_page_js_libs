@@ -3,7 +3,8 @@ let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n){
     // window.location.href = stepsUrl+n;
-    console.log(stepsUrl+n);
+    window.location.replace(`${stepsUrl+n}`);
+    // console.log(stepsUrl+n);
 }
 
 //setar token
