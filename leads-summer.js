@@ -97,7 +97,7 @@ async function registerCustomer(name, federalId, phone, email, local) {
       }
     })
     .then((response) => {
-      window.location.href = 'https://summerday.kemobuilder.site/checkout';
+      window.location.href = 'https://www.orendapay.com.br/checklink/16838315569028';
     })
 
     .catch(function (error) {
