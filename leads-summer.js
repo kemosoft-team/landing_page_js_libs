@@ -45,8 +45,8 @@ function setCookies(latDays) {
 
         }else{
           ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
-          ipinfo['bid'] = 2;
-          ipinfo['oid'] = 26;
+          ipinfo['bid'] = '2';
+          ipinfo['oid'] = '26';
           ipinfo['cid'] = '645d01bc3981320001f44bd1';
         }
 
