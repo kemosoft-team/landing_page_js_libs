@@ -172,6 +172,8 @@ function validateForm(){
   }
 
 
+  getTokenStatus();
+
 
 
   
