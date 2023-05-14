@@ -34,7 +34,11 @@ function showToast(text) {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
       .then(function (response) {
-         document.getElementById("info-return").innerHTML = `<p>${response.data.message}</p>`;
+        
+        const link = document.querySelector('a.btn-continue');
+        link.setAttribute('href', 'https://infos.faz.vc/'+response.data.nextStep);
+
+         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
          var botao = document.querySelector(".btn-lead-info");
          botao.click();
       })
