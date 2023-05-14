@@ -2,9 +2,7 @@ let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n){
-    // window.location.href = stepsUrl+n;
     window.location.replace(`${stepsUrl+n}`);
-    // console.log(stepsUrl+n);
 }
 
 //setar token
@@ -28,15 +26,17 @@ function showToast(text) {
     setTimeout(function(){ x.className = x.className.replace("show", `${text}`); }, 3000);
   }
   
-  //get Token Status
+  //get Token Status info-return
   function getTokenStatus(){
   
-    axios.post(apiBaseUrl+'/lead-status', {}, {
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
       .then(function (response) {
-         response;
+         document.getElementById("info-return").innerHTML = `<p>${response.data.message}</p>`;
+         var botao = document.querySelector(".btn-lead-info");
+         botao.click();
       })
       .catch(function (error) {
           console.log(error);
@@ -98,12 +98,22 @@ function captureAffiliateData(){
 
       const urlParams = new URLSearchParams(window.location.search);
 
-      const affiliateData = {};
-      
-      for (const [key, value] of urlParams) {
-        affiliateData[key] = value;
-      }
+      let affiliateData = {
 
+        affiliateCode: urlParams.get('af') || null,
+        source: urlParams.get('source') || null,
+        productId: urlParams.get('pid') || null,
+        vendorId: urlParams.get('vid') || null,
+        offerId: urlParams.get('oid') || null,
+        clickId : urlParams.get('cid') || null,
+        pixelId: urlParams.get('afx') || null,
+        gtmId: urlParams.get('afgtm') || null,
+        latDays: urlParams.get('latd') || null,
+        brandId : urlParams.get('bid') || null,
+        nextStep : urlParams.get('nxstp') || null,
+        token: urlParams.get('tkn') || null,
+        rawUri: window.location.search
+    };
       return affiliateData;
 }
 
@@ -160,6 +170,9 @@ function validateForm(){
   
     registerCustomer(name, birth, federalId, phone, email);
   }
+
+
+
 
   
 
