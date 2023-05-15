@@ -28,6 +28,8 @@ function showToast(text) {
   
   //get Token Status info-return
   function getTokenStatus(){
+
+    if(getCookie('tkn')){
   
     axios.post(apiBaseUrl+'/getTokenStatus', {}, {
       headers: {
@@ -42,12 +44,11 @@ function showToast(text) {
          var botao = document.querySelector(".btn-lead-info");
          botao.click();
 
-        //  var currentUrl = window.location.href;
-        //  window.open(currentUrl+'#bpasgtgiorubuyiwqqvgmpuvuoicmewdedup');
       })
       .catch(function (error) {
           console.log(error);
       }); 
+    }
   }
 
 function setBanks(bankList){

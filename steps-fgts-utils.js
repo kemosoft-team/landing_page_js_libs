@@ -88,7 +88,15 @@ async function getByZipCodeInfo(zipcode){
   //registerCustomerAccount
   async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
 
-    axios.post(apiBaseUrl+'/offer-request-infos', {
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
+    
+    axios.post(apiBaseUrl+'/registerCustomerInfos', {
       zipcode: zipcode,
       address: address, 
       addressNumber: addressNumber, 
@@ -105,6 +113,9 @@ async function getByZipCodeInfo(zipcode){
       redirectToNextStep(response.data.nextStep);
     })
     .catch(function (error) {
+        button.removeAttribute('disabled');
+        spinner.classList.add('brz-invisible');
+        span.textContent = 'Sim, quero antecipar meu FGTS!';
         showToast(error.response.data.message);
     }); 
 
@@ -113,7 +124,15 @@ async function getByZipCodeInfo(zipcode){
 //registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
 
-  axios.post(apiBaseUrl+'/offer-request-infos', {
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl+'/registerCustomerInfos', {
     branchNo: agency,
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -129,6 +148,9 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     redirectToNextStep(response.data.nextStep);
   })
   .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Simular';
       showToast(error.response.data.message);
   }); 
 
@@ -138,7 +160,15 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   // registerCustomerAccount
 async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
 
-  axios.post(apiBaseUrl+'/offer-request-infos', {
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl+'/registerCustomerInfos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
@@ -154,6 +184,9 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     redirectToNextStep(response.data.nextStep);
   })
   .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Sim, quero antecipar meu FGTS!';
       showToast(error.response.data.message);
   }); 
 
