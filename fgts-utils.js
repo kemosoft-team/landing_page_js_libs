@@ -39,11 +39,11 @@ function showToast(text) {
         link.setAttribute('href', 'https://infos.faz.vc/'+response.data.nextStep);
 
          document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-        //  var botao = document.querySelector(".btn-lead-info");
-        //  botao.click();
+         var botao = document.querySelector(".btn-lead-info");
+         botao.click();
 
-         var currentUrl = window.location.href;
-         window.open(currentUrl+'#bpasgtgiorubuyiwqqvgmpuvuoicmewdedup');
+        //  var currentUrl = window.location.href;
+        //  window.open(currentUrl+'#bpasgtgiorubuyiwqqvgmpuvuoicmewdedup');
       })
       .catch(function (error) {
           console.log(error);
