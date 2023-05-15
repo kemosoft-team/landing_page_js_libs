@@ -6,6 +6,23 @@ function redirectToNextStep(n){
     window.location.href = stepsUrl+n
   }
 
+function getNextStep() {
+
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }})
+      .then(function (response) {
+        
+        window.location.href = 'https://infos.faz.vc/'+response.data.nextStep;
+
+      })
+      .catch(function (error) {
+          console.log(error);
+      }); 
+    
+}
+
   //getCurrentStep
 function getCurrentStep(){
     const path = window.location.pathname;
