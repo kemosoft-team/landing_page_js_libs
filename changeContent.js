@@ -20,7 +20,7 @@ function changeContent() {
             btn.href = 'http://google.com.br/';
 
             var logo = document.querySelector('.brz-img');
-            var logoMobile = document.querySelector('#header-mobile .brz-img');
+            var logoMobile = document.querySelector('#header-mobile.brz-img');
             logoMobile.src = 'https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/master_correspondente.png';
             logo.src = 'https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/master_correspondente.png';
             break;
