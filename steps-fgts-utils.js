@@ -209,6 +209,36 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   }
 
+  function registerCustomerInstruction(){
+    
+      const button = document.querySelector('.brz-btn-submit');
+      const spinner = button.querySelector('.brz-form-spinner');
+      const span = button.querySelector('.brz-span.brz-text__editor');
+    
+      button.setAttribute('disabled', true);
+      spinner.classList.remove('brz-invisible');
+      span.textContent = '';
+    
+      axios.post(apiBaseUrl+'/registerCustomerInfos', {
+      	enable: true,
+	      authorize: true,
+        currentStep: getCurrentStep()
+      },
+      {
+        headers: {
+          'Authorization': `${getCookie('tkn')}`
+        }})
+      .then((response) => {
+        redirectToNextStep(response.data.nextStep);
+      })
+      .catch(function (error) {
+          button.removeAttribute('disabled');
+          spinner.classList.add('brz-invisible');
+          span.textContent = 'CONTINUAR MINHA CONTRATAÇÃO';
+          showToast(error.response.data.message);
+      }); 
+  }
+
   //validarFormDocs
   function validarFormAddress(){ 
 
