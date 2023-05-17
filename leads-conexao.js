@@ -82,7 +82,7 @@ async function registerCustomer(name, federalId, phone, email) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
