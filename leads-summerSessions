@@ -11,6 +11,7 @@ function getCookie(name) {
     return cookie[name];
 }
 
+
 //seta cookies
 function setCookies(latDays) {
 
@@ -71,7 +72,7 @@ function showToast(text) {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, local) {
+async function registerCustomer(name, federalId, phone, email) {
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -96,7 +97,7 @@ async function registerCustomer(name, federalId, phone, email, local) {
             }
         })
         .then((response) => {
-            window.location.href = 'www.google.com';
+            window.location.href = 'https:www.google.com';
         })
 
         .catch(function (error) {
@@ -106,6 +107,13 @@ async function registerCustomer(name, federalId, phone, email, local) {
             showToast(error.response.data.message);
         });
 }
+
+
+const buttonSubmit = document.querySelector(".brz-btn-submit");
+buttonSubmit.addEventListener("click", function (event) {
+    validateForm();
+});
+
 
 
 //validar form
