@@ -85,8 +85,7 @@ async function registerCustomer(name, federalId, phone, email, local) {
         "name": name,
         "federalId": federalId,
         "phone": phone,
-        "email": email,
-        'opcao': local
+        "email": email
     },
 
         {
@@ -116,14 +115,13 @@ function validateForm() {
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
-    const local = document.querySelector('[data-label="Local"]').value;
 
-    if (name == "" || federalId == "" || phone == "" || email == "" || local == "") {
+    if (name == "" || federalId == "" || phone == "" || email == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email, local);
+    registerCustomer(name, federalId, phone, email);
 }
 
 
