@@ -97,7 +97,7 @@ async function registerCustomer(name, federalId, phone, email) {
             }
         })
         .then((response) => {
-            window.location.href = 'https://www.google.com';
+            window.location.href = 'https://studio.kemobuilder.com.br/projects/16556794/editor/page/3165905';
         })
 
         .catch(function (error) {
