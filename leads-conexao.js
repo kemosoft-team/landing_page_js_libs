@@ -47,7 +47,7 @@ function setCookies(latDays) {
             } else {
                 ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
                 ipinfo['bid'] = '2';
-                ipinfo['oid'] = '26';
+                ipinfo['oid'] = '27';
                 ipinfo['cid'] = '645d01bc3981320001f44bd1';
             }
 
@@ -82,7 +82,7 @@ async function registerCustomer(name, federalId, phone, email) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
+    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
