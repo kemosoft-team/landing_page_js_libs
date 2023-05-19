@@ -104,7 +104,7 @@ async function registerCustomer(name, federalId, phone, birth) {
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl, {
+  axios.post((apiBaseUrl+'/registerCustomer', {
     "name": name,
     "birth": birth,
     "federalId": federalId,
