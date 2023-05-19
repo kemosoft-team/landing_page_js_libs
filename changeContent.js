@@ -8,7 +8,6 @@ function changeContent() {
         case '18':
             var btn = document.querySelector('.brz-btn');
             btn.style.backgroundColor = '#fa6301';
-            btn.href ='http://bmg.faz.vc/';
 
             var logo = document.querySelector('.brz-img');
             logo.src = 'https://lp-js-libs.s3.sa-east-1.amazonaws.com/assets/bmg_correspondente.png';
@@ -17,7 +16,6 @@ function changeContent() {
         case '11':
             var btn = document.querySelector('.brz-btn');
             btn.style.backgroundColor = '#00153a';
-            btn.href = 'http://google.com.br/';
 
             var logo = document.querySelector('.brz-img');
             var logoMobile = document.querySelector('#header-mobile .brz-img');
