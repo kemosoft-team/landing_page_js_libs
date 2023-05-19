@@ -97,7 +97,7 @@ async function registerCustomer(name, federalId, phone, email) {
             }
         })
         .then((response) => {
-            window.location.href = 'https://www.google.com';
+            window.location.href = 'https://conexaosummer.kemobuilder.site/info';
         })
 
         .catch(function (error) {
