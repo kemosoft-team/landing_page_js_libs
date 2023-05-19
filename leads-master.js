@@ -92,7 +92,7 @@ function captureAffiliateData(){
 
 
 // registerCustomer
-async function registerCustomer(name, federalId, phone, birth) {
+async function registerCustomer(name, federalId, phone, birth, email) {
   const affiliate = captureAffiliateData();
 
   const button = document.querySelector('.btn-submit-fgts');
@@ -108,6 +108,7 @@ async function registerCustomer(name, federalId, phone, birth) {
       birth: birth,
       federalId: federalId,
       phone: phone,
+      email: email,
       useTerms: true,
       dataPrivacy: true,
       dataSearchAllowed: true,
@@ -131,13 +132,14 @@ function validateForm() {
   const federalId = document.querySelector('[data-label="CPF"]').value;
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
+  const email = document.querySelectio('[data-label="Email"]').value
 
-  if (name == "" || federalId == "" || phone == "" || birth == "") {
+  if (name == "" || federalId == "" || phone == "" || birth == "" || email == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-  registerCustomer(name, federalId, phone, birth);
+  registerCustomer(name, federalId, phone, birth, email);
 }
 
 const buttonSubmit = document.querySelector(".brz-btn-submit");
