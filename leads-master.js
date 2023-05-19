@@ -132,7 +132,7 @@ function validateForm() {
   const federalId = document.querySelector('[data-label="CPF"]').value;
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-  const email = document.querySelectio('[data-label="Email"]').value;
+  const email = document.querySelector('[data-label="Email"]').value;
 
   if (name == "" || federalId == "" || phone == "" || birth == "" || email == "") {
     showToast("Por favor, preencha todos os campos.");
