@@ -111,7 +111,8 @@ async function registerCustomer(name, federalId, phone, birth) {
     "phone": phone,
     "useTerms": true,
     "dataPrivacy": true,
-    "dataSearchAllowed": true
+    "dataSearchAllowed": true,
+    "affiliateData": affiliate
   })
     .then((response) => {
       handleSetToken(response.data.token);
