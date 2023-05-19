@@ -114,8 +114,8 @@ async function registerCustomer(name, federalId, phone, birth) {
     "dataSearchAllowed": true
   })
     .then((response) => {
-      redirectToNextStep(response.data.nextStep);
-      
+      handleSetToken(response.data.token);
+      redirectToNextStep(response.data.nextStep);     
 
     })
     .catch(function (error) {
