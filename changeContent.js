@@ -30,6 +30,7 @@ function changeContent() {
             break;
     }
 }
+ changeContent()
 
 
 
