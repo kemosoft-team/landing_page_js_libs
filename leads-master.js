@@ -91,11 +91,10 @@ function captureAffiliateData(){
 }
 
 
-//registerCustomer
+// registerCustomer
 async function registerCustomer(name, federalId, phone, birth) {
-  
   const affiliate = captureAffiliateData();
-  
+
   const button = document.querySelector('.btn-submit-fgts');
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
@@ -104,20 +103,20 @@ async function registerCustomer(name, federalId, phone, birth) {
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post((apiBaseUrl+'/registerCustomer', {
-    "name": name,
-    "birth": birth,
-    "federalId": federalId,
-    "phone": phone,
-    "useTerms": true,
-    "dataPrivacy": true,
-    "dataSearchAllowed": true,
-    "affiliateData": affiliate,
-  })
+  axios
+    .post(apiBaseUrl + '/registerCustomer', {
+      name: name,
+      birth: birth,
+      federalId: federalId,
+      phone: phone,
+      useTerms: true,
+      dataPrivacy: true,
+      dataSearchAllowed: true,
+      affiliateData: affiliate,
+    })
     .then((response) => {
       handleSetToken(response.data.token);
-      redirectToNextStep(response.data.nextStep);     
-
+      redirectToNextStep(response.data.nextStep);
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
