@@ -97,7 +97,7 @@ async function registerCustomer(name, federalId, phone, email) {
             }
         })
         .then((response) => {
-            window.location.href = 'https://summersessions.kemobuilder.site/checkout-sessions';
+            window.location.href = 'https://g4od3hyp8y2.typeform.com/to/eEvEQLlf';
         })
 
         .catch(function (error) {
