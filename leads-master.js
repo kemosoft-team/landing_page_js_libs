@@ -155,7 +155,7 @@ function showToast(text) {
 }
 
   getTokenStatus();
-  getCookie();
+
 
 
 
