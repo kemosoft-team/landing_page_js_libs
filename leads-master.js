@@ -116,7 +116,8 @@ async function registerCustomer(name, federalId, phone, birth, email) {
     })
     .then((response) => {
       handleSetToken(response.data.token);
-      redirectToNextStep(response.data.nextStep);
+      //redirectToNextStep(response.data.nextStep);
+    window.location.href('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb');
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
