@@ -168,7 +168,7 @@ function validateForm(){
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-    const email = document.querySelector('[data-label="Email"]').value;
+    const email = document.querySelector('[data-label="Email (Opcional)"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
   
     if (name == "" || phone == "" || birth == "" || federalId =="") {
