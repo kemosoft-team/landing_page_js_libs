@@ -1,4 +1,5 @@
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+//let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
 let stepsUrl = 'https://infos.faz.vc/';
 const oid = '?oid=11';
 
@@ -103,7 +104,8 @@ async function registerCustomer(name, federalId, phone, birth, email) {
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl + '/registerCustomer', {
+  //axios.post(apiBaseUrl + '/registerCustomer', {
+    axios.post(apiBaseUrl, {
       name: name,
       birth: birth,
       federalId: federalId,
@@ -116,8 +118,8 @@ async function registerCustomer(name, federalId, phone, birth, email) {
     })
     .then((response) => {
       handleSetToken(response.data.token);
-      //redirectToNextStep(response.data.nextStep);
-    window.location.href('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb');
+      redirectToNextStep(response.data.nextStep);
+  
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
