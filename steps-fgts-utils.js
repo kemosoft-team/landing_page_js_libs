@@ -230,6 +230,22 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       redirectToNextStep('keepcalm');
   }
 
+  function qualificationSuccess(nextStep){
+
+    var elementsWait = document.getElementsByClassName('wait');
+    var elementsSuccess = document.getElementsByClassName('success');
+
+    for (var i = 0; i < elements.length; i++) {
+      elementsWait[i].style.display = 'none';
+      elementsSuccess[i].style.display = 'block';
+    }
+
+    var linkElement = document.querySelector('.brz-a');
+    linkElement.href = stepsUrl+nextStep;
+    ;
+
+  }
+
   //qualfica o lead
   function processQualification(retry = false) {
     
@@ -246,7 +262,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         })
         .then((response) => {
-          redirectToNextStep(response.data.nextStep);
+          qualificationSuccess(response.data.nextStep);
+          spotLoading('Dê o próximo passo, preencha seus dados')
         })
         .catch(function (error) {
           console.log(error);
