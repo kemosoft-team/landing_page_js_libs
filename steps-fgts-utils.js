@@ -1,5 +1,25 @@
+//API url
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
+
+//Set buttons
+var button = document.querySelector('.brz-btn-submit');
+var spinner = button.querySelector('.brz-form-spinner');
+var span = button.querySelector('.brz-span.brz-text__editor');
+
+//inicia spin loading no button
+function setLoading(){
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
+}
+
+//para spin loading no button
+function spotLoading(textButton){
+  button.removeAttribute('disabled');
+  spinner.classList.add('brz-invisible');
+  span.textContent = textButton;
+}
 
 function redirectToNextStep(n){
     console.log("redirectToNextStep");
@@ -206,33 +226,38 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   //
   function registerCustomerInstruction(){
+      setLoading();
+      redirectToNextStep('keepcalm');
+  }
+
+  //qualfica o lead
+  function processQualification(retry = false) {
     
-      const button = document.querySelector('.brz-btn-submit');
-      const spinner = button.querySelector('.brz-form-spinner');
-      const span = button.querySelector('.brz-span.brz-text__editor');
-    
-      button.setAttribute('disabled', true);
-      spinner.classList.remove('brz-invisible');
-      span.textContent = '';
-    
-      axios.post(apiBaseUrl+'/registerCustomerInfos', {
-      	enable: true,
-	      authorize: true,
-        currentStep: getCurrentStep()
-      },
-      {
-        headers: {
-          'Authorization': `${getCookie('tkn')}`
-        }})
-      .then((response) => {
-        redirectToNextStep(response.data.nextStep);
-      })
-      .catch(function (error) {
-          button.removeAttribute('disabled');
-          spinner.classList.add('brz-invisible');
-          span.textContent = 'CONTINUAR MINHA CONTRATAÇÃO';
-          showToast(error.response.data.message);
-      }); 
+    setLoading();
+  
+    function makeRequest() {
+      axios.post(apiBaseUrl + '/registerCustomerInfos', {
+          enable: true,
+          authorize: true,
+          currentStep: getCurrentStep()
+        }, {
+          headers: {
+            'Authorization': `${getCookie('tkn')}`
+          }
+        })
+        .then((response) => {
+          redirectToNextStep(response.data.nextStep);
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (!retry) {
+            processQualification(true);
+          } else {
+            window.location.href = 'https://infos.faz.vc/offline';
+          }
+        });
+    }
+    makeRequest();
   }
 
   //validarFormDocs
