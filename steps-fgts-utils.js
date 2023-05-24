@@ -13,14 +13,11 @@ function getNextStep() {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
       .then(function (response) {
-        
         window.location.href = 'https://infos.faz.vc/'+response.data.nextStep;
-
       })
       .catch(function (error) {
           console.log(error);
       }); 
-    
 }
 
   //getCurrentStep
@@ -172,8 +169,6 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   }); 
 
   }
-
-
   // registerCustomerAccount
 async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
 
@@ -209,6 +204,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   }
 
+  //
   function registerCustomerInstruction(){
     
       const button = document.querySelector('.brz-btn-submit');
