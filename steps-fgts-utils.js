@@ -242,7 +242,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
     var linkElement = document.querySelector('.brz-a');
     linkElement.href = stepsUrl+nextStep;
-    ;
 
   }
 
