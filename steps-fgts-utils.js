@@ -3,9 +3,11 @@ let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
 //Set buttons
-var button = document.querySelector('.brz-btn-submit');
-var spinner = button.querySelector('.brz-form-spinner');
-var span = button.querySelector('.brz-span.brz-text__editor');
+if(document.querySelector('.brz-btn-submit')){
+  var button = document.querySelector('.brz-btn-submit');
+  var spinner = button.querySelector('.brz-form-spinner');
+  var span = button.querySelector('.brz-span.brz-text__editor');
+}
 
 //inicia spin loading no button
 function setLoading(){
@@ -235,7 +237,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     var elementsWait = document.getElementsByClassName('wait');
     var elementsSuccess = document.getElementsByClassName('success');
 
-    for (var i = 0; i < elements.length; i++) {
+    for (var i = 0; i < elementsWait.length; i++) {
       elementsWait[i].style.display = 'none';
       elementsSuccess[i].style.display = 'block';
     }
@@ -247,9 +249,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   //qualfica o lead
   function processQualification(retry = false) {
-    
-    setLoading();
-  
+      
     function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
           enable: true,
@@ -262,7 +262,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
         })
         .then((response) => {
           qualificationSuccess(response.data.nextStep);
-          spotLoading('Dê o próximo passo, preencha seus dados')
         })
         .catch(function (error) {
           console.log(error);
