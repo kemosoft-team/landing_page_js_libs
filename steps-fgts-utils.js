@@ -226,12 +226,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   }
 
-  //
-  function registerCustomerInstruction(){
-      setLoading();
-      redirectToNextStep('keepcalm');
-  }
-
   function qualificationSuccess(nextStep){
 
     var elementsWait = document.getElementsByClassName('wait');
