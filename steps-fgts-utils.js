@@ -26,7 +26,8 @@ function spotLoading(textButton){
 function redirectToNextStep(n){
     console.log("redirectToNextStep");
     window.location.href = stepsUrl+n
-  }
+}
+
 
 function getNextStep() {
 
@@ -241,6 +242,10 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   }
 
+  function getSimulation(){
+
+  }
+
   //qualfica o lead
   function processQualification(retry = false) {
       
@@ -255,6 +260,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         })
         .then((response) => {
+          console.log("aqui conseguiu obter resposta, deve aparecer o botão.")
           qualificationSuccess(response.data.nextStep);
         })
         .catch(function (error) {
@@ -262,7 +268,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           if (!retry) {
             processQualification(true);
           } else {
-            window.location.href = 'https://infos.faz.vc/offline';
+            console.log("aqui não conseguiu obter resposta, vai redirecionar.")
+            // window.location.href = 'https://infos.faz.vc/offline';
           }
         });
     }
