@@ -237,8 +237,10 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       elementsSuccess[i].style.display = 'block';
     }
 
-    var linkElement = document.querySelector('.brz-a');
-    // linkElement.href = stepsUrl+nextStep;
+    var button = document.querySelector('.brz-btn-submit');
+        button.addEventListener('click', function() {
+          window.location.href = stepsUrl+nextStep;
+    });
 
   }
 
@@ -249,7 +251,13 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
   function processQualification(retry = false) {
 
-    setLoading();
+    var button = document.querySelector('.brz-btn-submit');
+    var spinner = button.querySelector('.brz-form-spinner');
+    var span = button.querySelector('.brz-span.brz-text__editor');
+
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
       
     function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
