@@ -2,13 +2,6 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
-//Set buttons
-if(document.querySelector('.brz-btn-submit')){
-  var button = document.querySelector('.brz-btn-submit');
-  var spinner = button.querySelector('.brz-form-spinner');
-  var span = button.querySelector('.brz-span.brz-text__editor');
-}
-
 //inicia spin loading no button
 function setLoading(){
     button.setAttribute('disabled', true);
@@ -251,13 +244,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
   function processQualification(retry = false) {
 
-    var button = document.querySelector('.brz-btn-submit');
-    var spinner = button.querySelector('.brz-form-spinner');
-    var span = button.querySelector('.brz-span.brz-text__editor');
-
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
+    setLoading();
       
     function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
@@ -338,6 +325,15 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     const  accountTypeCut = accountType.charAt(0).toString();
     registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
   }
+
+
+  window.addEventListener('load', function() {
+    if(document.querySelector('.brz-btn-submit')){
+      var button = document.querySelector('.brz-btn-submit');
+      var spinner = button.querySelector('.brz-form-spinner');
+      var span = button.querySelector('.brz-span.brz-text__editor');
+    }
+  });
 
 
 
