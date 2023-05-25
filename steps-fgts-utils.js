@@ -230,9 +230,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       elementsSuccess[i].style.display = 'block';
     }
 
-    var button = document.querySelector('.brz-btn-submit');
-        button.addEventListener('click', function() {
-          window.location.href = stepsUrl+nextStep;
+    button.addEventListener('click', function() {
+        window.location.href = stepsUrl+nextStep;
     });
 
   }
