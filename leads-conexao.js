@@ -82,12 +82,12 @@ async function registerCustomer(name, federalId, phone, email) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post('https://api.consigmais.com.br/signup/affiliate/register', {
+    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
         "name": name,
         "federalId": federalId,
         "mainEmail": email,
         "phone": phone, 
-        "referrerCode":"59054-735",
+        "referrerCode":"",
         "terms":true        
     },
 
