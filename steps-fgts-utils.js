@@ -17,7 +17,7 @@ function setLoading(){
 }
 
 //para spin loading no button
-function spotLoading(textButton){
+function stopLoading(textButton){
   button.removeAttribute('disabled');
   spinner.classList.add('brz-invisible');
   span.textContent = textButton;
@@ -248,6 +248,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   //qualfica o lead
   function processQualification(retry = false) {
+
+    setLoading();
       
     function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
@@ -260,7 +262,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         })
         .then((response) => {
-          console.log("aqui conseguiu obter resposta, deve aparecer o botão.")
+          console.log("aqui conseguiu obter resposta, deve aparecer o botão.");
+          stopLoading('Dê o próximo passo, preencha seus dados');
           qualificationSuccess(response.data.nextStep);
         })
         .catch(function (error) {
