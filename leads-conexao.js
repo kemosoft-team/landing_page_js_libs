@@ -87,7 +87,7 @@ async function registerCustomer(name, federalId, phone, email) {
         "federalId": federalId,
         "mainEmail": email,
         "phone": phone, 
-        "referrerCode":"",
+        "referrerCode":"59054-735",
         "terms":true        
     },
 
