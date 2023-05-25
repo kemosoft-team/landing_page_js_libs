@@ -2,14 +2,15 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
+var button = null;
+var spinner = null;
+var span = null;
+
 //Seta as variaveis de button quando carrega a página
-window.addEventListener('load', function() {
-  if(document.querySelector('.brz-btn-submit')){
-    var button = document.querySelector('.brz-btn-submit');
-    var spinner = button.querySelector('.brz-form-spinner');
-    var span = button.querySelector('.brz-span.brz-text__editor');
-  }
-});
+  button = document.querySelector('.brz-btn-submit');
+  spinner = button.querySelector('.brz-form-spinner');
+  span = button.querySelector('.brz-span.brz-text__editor');
+
 
 //inicia spin loading no button
 function setLoading(){
