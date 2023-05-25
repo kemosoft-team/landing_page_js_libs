@@ -230,10 +230,11 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       elementsWait[i].style.display = 'none';
       elementsSuccess[i].style.display = 'block';
     }
-
-    button.addEventListener('click', function() {
-        window.location.href = stepsUrl+nextStep;
-    });
+    
+    const button = document.querySelector('.brz-btn-submit');
+          button.addEventListener('click', function() {
+              window.location.href = stepsUrl+nextStep;
+          });
 
   }
 
@@ -244,6 +245,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
   function processQualification(retry = false) {
 
+    const isContinue = true;
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
     const span = button.querySelector('.brz-span.brz-text__editor');
@@ -268,7 +270,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
           qualificationSuccess(response.data.nextStep);
-          return;
+          isContinue = false;
         })
         .catch(function (error) {
           console.log(error);
@@ -280,7 +282,10 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         });
     }
-    makeRequest();
+
+    if(isContinue){
+      makeRequest();
+    }
   }
 
   //validarFormDocs
