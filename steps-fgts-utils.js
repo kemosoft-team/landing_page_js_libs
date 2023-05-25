@@ -265,7 +265,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         })
         .then((response) => {
-          console.log("aqui conseguiu obter resposta, deve aparecer o botão.");
           button.removeAttribute('disabled');
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
@@ -277,8 +276,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           if (!retry) {
             processQualification(true);
           } else {
-            console.log("aqui não conseguiu obter resposta, vai redirecionar.")
-            // window.location.href = 'https://infos.faz.vc/offline';
+            window.location.href = 'https://infos.faz.vc/offline';
           }
         });
     }
