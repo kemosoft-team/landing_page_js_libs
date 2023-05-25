@@ -16,6 +16,7 @@ function stopLoading(textButton){
   span.textContent = textButton;
 }
 
+
 function redirectToNextStep(n){
     console.log("redirectToNextStep");
     window.location.href = stepsUrl+n
@@ -243,7 +244,13 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
   function processQualification(retry = false) {
 
-    setLoading();
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
+          button.setAttribute('disabled', true);
+          spinner.classList.remove('brz-invisible');
+          span.textContent = '';
       
     function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
@@ -257,8 +264,11 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
         })
         .then((response) => {
           console.log("aqui conseguiu obter resposta, deve aparecer o botão.");
-          stopLoading('Dê o próximo passo, preencha seus dados');
+          button.removeAttribute('disabled');
+          spinner.classList.add('brz-invisible');
+          span.textContent = 'Dê o próximo passo, preencha seus dados';
           qualificationSuccess(response.data.nextStep);
+          return;
         })
         .catch(function (error) {
           console.log(error);
