@@ -46,7 +46,7 @@ function setCookies(latDays) {
 
             } else {
                 ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
-                ipinfo['bid'] = '2';
+                ipinfo['bid'] = '23';
                 ipinfo['oid'] = '27';
                 ipinfo['cid'] = '645d01bc3981320001f44bd1';
             }
@@ -82,11 +82,13 @@ async function registerCustomer(name, federalId, phone, email) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    axios.post('https://api.consigmais.com.br/signup/affiliate/register', {
         "name": name,
         "federalId": federalId,
-        "phone": phone,
-        "email": email
+        "mainEmail": email,
+        "phone": phone, 
+        "referrerCode":"",
+        "terms":true        
     },
 
         {
