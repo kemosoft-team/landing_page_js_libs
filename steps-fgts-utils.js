@@ -223,7 +223,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   function getNextStep(){
 
-    axios.post(apiBaseUrl + '/getNextStep', 
+    axios.post(apiBaseUrl+'/getNextStep', 
     {
       headers: {
         'Authorization': `${getCookie('tkn')}`
@@ -246,7 +246,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
       })
       .catch(function (error) {
-        window.location.href = stepsUrl+'offline';
       });
 
   
