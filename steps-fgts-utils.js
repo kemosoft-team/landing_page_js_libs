@@ -46,10 +46,8 @@ function getNextStep() {
 }
 
 function setLinkSignature() {
-  const path = window.location.pathname;
-  const value = path.split('/')[1];
-  const decodedValue = decodeURIComponent(value);
-
+  var encodedData = window.location.search.substring(1);
+  const decodedValue = decodeURIComponent(encodedData);
   const link = document.querySelector('.brz-a');
   link.href = decodedValue;
 }
