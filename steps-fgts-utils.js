@@ -227,7 +227,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     const spinner = button.querySelector('.brz-form-spinner');
     const span = button.querySelector('.brz-span.brz-text__editor');
 
-    axios.post(apiBaseUrl+'getNextStep', 
+    axios.post(apiBaseUrl+'getNextStep', {}, 
     {
       headers: {
         'Authorization': `${getCookie('tkn')}`
