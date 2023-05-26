@@ -17,11 +17,19 @@ function stopLoading(textButton){
 }
 
 
-function redirectToNextStep(n){
-    console.log("redirectToNextStep");
-    window.location.href = stepsUrl+n
+function redirectToNextStep(ns, cnt) {
+  switch (ns) {
+    case 'signature':
+      window.location.href = stepsUrl + ns + '/?' + encodeURIComponent(JSON.stringify(cnt));
+      break;
+    case 'scheduled':
+      window.location.href = stepsUrl + ns + '/?' + encodeURIComponent(JSON.stringify(cnt));
+      break;
+    default:
+      window.location.href = stepsUrl + ns;
+      break;
+  }
 }
-
 
 function getNextStep() {
 
