@@ -1,5 +1,6 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://infos.faz.vc/';
+// let stepsUrl = 'https://infos.faz.vc/';
+let stepsUrl = 'https://fgts.kemobuilder.site/';
 
 function redirectToNextStep(n){
     window.location.replace(`${stepsUrl+n}`);
@@ -82,27 +83,6 @@ async function getBanks(){
 
 //obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData(){
-
-  // if (document.cookie) {
-
-  //     let affiliateData = {
-  //         affiliateCode: getCookie('af') || null,
-  //         source: getCookie('source') || null,
-  //         productId: getCookie('pid') || null,
-  //         vendorId: getCookie('vid') || null,
-  //         offerId: getCookie('oid') || null,
-  //         clickId : getCookie('cid') || null,
-  //         pixelId: getCookie('afx') || null,
-  //         gtmId: getCookie('afgtm') || null,
-  //         latDays: getCookie('latd') || null,
-  //         brandId : getCookie('bid') || null,
-  //         nextStep : getCookie('nxstp') || null,
-  //         token: getCookie('tkn') || null,
-  //         rawUri: window.location.search
-  //     };
-  
-  //     return affiliateData;
-  // }
 
       const urlParams = new URLSearchParams(window.location.search);
 
