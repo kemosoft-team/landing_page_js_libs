@@ -223,6 +223,10 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   function getNextStep(){
 
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
     axios.post(apiBaseUrl+'/getNextStep', 
     {
       headers: {
@@ -238,10 +242,13 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
         elementsWait[i].style.display = 'none';
         elementsSuccess[i].style.display = 'block';
       }
+
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Dê o próximo passo, preencha seus dados';
       
-      const button = document.querySelector('.brz-btn-submit');
-            button.addEventListener('click', function() {
-                window.location.href = stepsUrl+response.data.nextStep;
+      button.addEventListener('click', function() {
+            window.location.href = stepsUrl+response.data.nextStep;
       });
 
       })
@@ -275,9 +282,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           }
         })
         .then((response) => {
-          button.removeAttribute('disabled');
-          spinner.classList.add('brz-invisible');
-          span.textContent = 'Dê o próximo passo, preencha seus dados';
           getNextStep();
           attempts = 2;
         })
