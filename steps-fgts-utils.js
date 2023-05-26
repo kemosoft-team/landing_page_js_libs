@@ -221,29 +221,38 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 
   }
 
-  function qualificationSuccess(nextStep){
+  function getNextStep(){
 
-    var elementsWait = document.getElementsByClassName('wait');
-    var elementsSuccess = document.getElementsByClassName('success');
+    axios.post(apiBaseUrl + '/getNextStep', 
+    {
+      headers: {
+        'Authorization': `${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
 
-    for (var i = 0; i < elementsWait.length; i++) {
-      elementsWait[i].style.display = 'none';
-      elementsSuccess[i].style.display = 'block';
-    }
-    
-    const button = document.querySelector('.brz-btn-submit');
-          button.addEventListener('click', function() {
-              window.location.href = stepsUrl+nextStep;
-          });
+      var elementsWait = document.getElementsByClassName('wait');
+      var elementsSuccess = document.getElementsByClassName('success');
 
-  }
+      for (var i = 0; i < elementsWait.length; i++) {
+        elementsWait[i].style.display = 'none';
+        elementsSuccess[i].style.display = 'block';
+      }
+      
+      const button = document.querySelector('.brz-btn-submit');
+            button.addEventListener('click', function() {
+                window.location.href = stepsUrl+response.data.nextStep;
+      });
 
-  function getSimulation(){
+      })
+      .catch(function (error) {
+        window.location.href = stepsUrl+'offline';
+      });
 
+  
   }
 
   //qualfica o lead
-
   function processQualification() {
     
     let attempts = 0; 
@@ -270,8 +279,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           button.removeAttribute('disabled');
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
-          console.log(response.data.nextStep);
-          qualificationSuccess(response.data.nextStep);
+          getNextStep();
           attempts = 2;
         })
         .catch(function (error) {
