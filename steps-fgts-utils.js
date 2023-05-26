@@ -1,7 +1,6 @@
 //API url
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-// let stepsUrl = 'https://infos.faz.vc/';
-let stepsUrl = 'https://fgts.kemobuilder.site/';
+let stepsUrl = 'https://infos.faz.vc/';
 
 //inicia spin loading no button
 function setLoading(){
@@ -26,12 +25,12 @@ function redirectToNextStep(n){
 
 function getNextStep() {
 
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+    axios.post(apiBaseUrl+'getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
       .then(function (response) {
-        window.location.href = 'https://infos.faz.vc/'+response.data.nextStep;
+        window.location.href = stepsUrl+response.data.nextStep;
       })
       .catch(function (error) {
           console.log(error);
@@ -74,7 +73,7 @@ function setBanks(bankList){
   //obtem os bancos
   async function getBanks(){
       
-    axios.post('https://api.consigmais.com.br/lp/main/v2/getData', {"object":"banks"}, {
+    axios.post(apiBaseUrl+'getData', {"object":"banks"}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -89,7 +88,7 @@ function setBanks(bankList){
   
 async function getByZipCodeInfo(zipcode){
 
-    axios.post(apiBaseUrl+'/getZipcodeInfo', {
+    axios.post(apiBaseUrl+'getZipcodeInfo', {
       zipcode: zipcode,
     },
     {
@@ -128,7 +127,7 @@ async function getByZipCodeInfo(zipcode){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
     
-    axios.post(apiBaseUrl+'/registerCustomerInfos', {
+    axios.post(apiBaseUrl+'registerCustomerInfos', {
       zipcode: zipcode,
       address: address, 
       addressNumber: addressNumber, 
@@ -164,7 +163,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl+'/registerCustomerInfos', {
+  axios.post(apiBaseUrl+'registerCustomerInfos', {
     branchNo: agency,
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -198,7 +197,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl+'/registerCustomerInfos', {
+  axios.post(apiBaseUrl+'registerCustomerInfos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
@@ -246,7 +245,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
   function processQualification() {
 
-      axios.post(apiBaseUrl + '/registerCustomerInfos', {
+      axios.post(apiBaseUrl+'registerCustomerInfos', {
           enable: true,
           authorize: true,
           currentStep: getCurrentStep()
@@ -268,7 +267,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   }
 
   function processQualification() {
-    let attempts = 0; // Variável para controlar o número de tentativas
+    let attempts = 0; 
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -299,15 +298,14 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           attempts++;
   
           if (attempts < 2) {
-            sendRequest(); // Tenta fazer a requisição novamente
+            sendRequest(); 
           } else {
-            // Redireciona para uma página específica após duas tentativas de falha
             window.location.href = stepsUrl+'offline';
           }
         });
     };
   
-    sendRequest(); // Inicia o processo de requisição
+    sendRequest(); 
   }
 
   //validarFormDocs

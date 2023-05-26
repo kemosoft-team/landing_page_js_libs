@@ -1,6 +1,5 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-// let stepsUrl = 'https://infos.faz.vc/';
-let stepsUrl = 'https://fgts.kemobuilder.site/';
+let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n){
     window.location.replace(`${stepsUrl+n}`);
@@ -9,8 +8,7 @@ function redirectToNextStep(n){
 //setar token
 function handleSetToken(value){
     // console.log("handleToken");
-    // document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.faz.vc; path=/;`;
-    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=..kemobuilder.site; path=/;`;
+    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.faz.vc; path=/;`;
   }
 
 //obtem o step atual pela url
