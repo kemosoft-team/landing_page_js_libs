@@ -17,16 +17,19 @@ function stopLoading(textButton){
 }
 
 
-function redirectToNextStep(ns, cnt) {
-  switch (ns) {
+function redirectToNextStep(res) {
+
+  const nextStep = res.nextStep;
+
+  switch (nextStep) {
     case 'signature':
-      window.location.href = stepsUrl + ns + '/?' + encodeURIComponent(JSON.stringify(cnt));
+      window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
       break;
     case 'scheduled':
-      window.location.href = stepsUrl + ns + '/?' + encodeURIComponent(JSON.stringify(cnt));
+      window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.scheduledTo));
       break;
     default:
-      window.location.href = stepsUrl + ns;
+      window.location.href = stepsUrl + nextStep;
       break;
   }
 }
@@ -153,7 +156,7 @@ async function getByZipCodeInfo(zipcode){
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
     .then((response) => {
-      redirectToNextStep(response.data.nextStep);
+      redirectToNextStep(response.data);
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
@@ -187,7 +190,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
       'Authorization': `Bearer ${getCookie('tkn')}`
     }})
   .then((response) => {
-    redirectToNextStep(response.data.nextStep);
+    redirectToNextStep(response.data);
   })
   .catch(function (error) {
       button.removeAttribute('disabled');
@@ -220,7 +223,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       'Authorization': `${getCookie('tkn')}`
     }})
   .then((response) => {
-    redirectToNextStep(response.data.nextStep);
+    redirectToNextStep(response.data);
   })
   .catch(function (error) {
       button.removeAttribute('disabled');
