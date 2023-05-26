@@ -1,6 +1,7 @@
 //API url
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://infos.faz.vc/';
+// let stepsUrl = 'https://infos.faz.vc/';
+let stepsUrl = 'https://fgts.kemobuilder.site/';
 
 //inicia spin loading no button
 function setLoading(){
@@ -243,18 +244,8 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   }
 
   //qualfica o lead
-  function processQualification(retry = false) {
+  function processQualification() {
 
-    const isContinue = true;
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
-
-          button.setAttribute('disabled', true);
-          spinner.classList.remove('brz-invisible');
-          span.textContent = '';
-      
-    function makeRequest() {
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
           enable: true,
           authorize: true,
@@ -269,21 +260,54 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
           qualificationSuccess(response.data.nextStep);
-          isContinue = false;
         })
         .catch(function (error) {
           console.log(error);
-          if (!retry) {
-            processQualification(true);
+        });
+ 
+  }
+
+  function processQualification() {
+    let attempts = 0; // Variável para controlar o número de tentativas
+
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
+          button.setAttribute('disabled', true);
+          spinner.classList.remove('brz-invisible');
+          span.textContent = '';
+  
+    const sendRequest = () => {
+      axios.post(apiBaseUrl + '/registerCustomerInfos', {
+          enable: true,
+          authorize: true,
+          currentStep: getCurrentStep()
+        }, {
+          headers: {
+            'Authorization': `${getCookie('tkn')}`
+          }
+        })
+        .then((response) => {
+          button.removeAttribute('disabled');
+          spinner.classList.add('brz-invisible');
+          span.textContent = 'Dê o próximo passo, preencha seus dados';
+          qualificationSuccess(response.data.nextStep);
+        })
+        .catch(function (error) {
+          console.log(error);
+          attempts++;
+  
+          if (attempts < 2) {
+            sendRequest(); // Tenta fazer a requisição novamente
           } else {
-            window.location.href = 'https://infos.faz.vc/offline';
+            // Redireciona para uma página específica após duas tentativas de falha
+            window.location.href = stepsUrl+'offline';
           }
         });
-    }
-
-    if(isContinue){
-      makeRequest();
-    }
+    };
+  
+    sendRequest(); // Inicia o processo de requisição
   }
 
   //validarFormDocs
@@ -337,9 +361,3 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     const  accountTypeCut = accountType.charAt(0).toString();
     registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
   }
-
-
-
-
-
-
