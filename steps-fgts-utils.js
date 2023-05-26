@@ -245,6 +245,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   //qualfica o lead
 
   function processQualification() {
+    
     let attempts = 0; 
 
     const button = document.querySelector('.brz-btn-submit');
@@ -269,6 +270,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           button.removeAttribute('disabled');
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
+          console.log(response.data.nextStep);
           qualificationSuccess(response.data.nextStep);
           attempts = 2;
         })
