@@ -73,6 +73,8 @@ function showToast(text) {
 
 //registerCustomer
 async function registerCustomer(name, federalId, phone, email) {
+    
+    const cleanedPhone = phone.replace(/[^\d]/g, '');
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -86,7 +88,7 @@ async function registerCustomer(name, federalId, phone, email) {
         "name": name,
         "federalId": federalId,
         "mainEmail": email,
-        "phone": phone, 
+        "phone": cleanedPhone, 
         "referrerCode":"",
         "terms":true        
     },
