@@ -45,6 +45,15 @@ function getNextStep() {
       }); 
 }
 
+function setLinkSignature() {
+  const path = window.location.pathname;
+  const value = path.split('/')[1];
+  const decodedValue = decodeURIComponent(value);
+
+  const link = document.querySelector('.brz-a');
+  link.href = decodedValue;
+}
+
   //getCurrentStep
 function getCurrentStep(){
     const path = window.location.pathname;
@@ -104,7 +113,6 @@ async function getByZipCodeInfo(zipcode){
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
     .then((response) => {
-      console.log(response);
       setAddressInfo(response.data);
     })
     .catch(function (error) {
@@ -114,9 +122,7 @@ async function getByZipCodeInfo(zipcode){
   
   }
   
-  
   function setAddressInfo(obj){
-  
     document.querySelector('[data-label="Rua"]').value = obj.address;
     document.querySelector('[data-label="Bairro"]').value = obj.district;
     document.querySelector('[data-label="Cidade"]').value = obj.city;
@@ -183,7 +189,6 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
       'Authorization': `Bearer ${getCookie('tkn')}`
     }})
   .then((response) => {
-    console.log(response);
     redirectToNextStep(response.data.nextStep);
   })
   .catch(function (error) {
@@ -217,7 +222,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       'Authorization': `${getCookie('tkn')}`
     }})
   .then((response) => {
-    console.log(response);
     redirectToNextStep(response.data.nextStep);
   })
   .catch(function (error) {
@@ -294,13 +298,11 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           attempts = 2;
         })
         .catch(function (error) {
-          console.log(error);
           attempts++;
           if (attempts < 2) {
             sendRequest(); 
           } else {
-            console.log("redireciona")
-            // window.location.href = stepsUrl+'offline';
+            window.location.href = stepsUrl+'offline';
           }
         });
     };
