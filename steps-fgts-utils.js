@@ -243,28 +243,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   }
 
   //qualfica o lead
-  function processQualification() {
-
-      axios.post(apiBaseUrl+'registerCustomerInfos', {
-          enable: true,
-          authorize: true,
-          currentStep: getCurrentStep()
-        }, {
-          headers: {
-            'Authorization': `${getCookie('tkn')}`
-          }
-        })
-        .then((response) => {
-          button.removeAttribute('disabled');
-          spinner.classList.add('brz-invisible');
-          span.textContent = 'Dê o próximo passo, preencha seus dados';
-          qualificationSuccess(response.data.nextStep);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
- 
-  }
 
   function processQualification() {
     let attempts = 0; 
@@ -292,15 +270,16 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
           spinner.classList.add('brz-invisible');
           span.textContent = 'Dê o próximo passo, preencha seus dados';
           qualificationSuccess(response.data.nextStep);
+          attempts = 2;
         })
         .catch(function (error) {
           console.log(error);
           attempts++;
-  
           if (attempts < 2) {
             sendRequest(); 
           } else {
-            window.location.href = stepsUrl+'offline';
+            console.log("redireciona")
+            // window.location.href = stepsUrl+'offline';
           }
         });
     };
