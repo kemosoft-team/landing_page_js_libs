@@ -34,7 +34,7 @@ function redirectToNextStep(res) {
   }
 }
 
-function getNextStep() {
+function setNextStep() {
 
     axios.post(apiBaseUrl+'getTokenStatus', {}, {
       headers: {
@@ -248,21 +248,28 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     })
     .then((response) => {
 
-      var elementsWait = document.getElementsByClassName('wait');
-      var elementsSuccess = document.getElementsByClassName('success');
+      if(response.data.nextStep == 'noBalance'){
 
-      for (var i = 0; i < elementsWait.length; i++) {
-        elementsWait[i].style.display = 'none';
-        elementsSuccess[i].style.display = 'block';
+          window.location.href = stepsUrl+response.data.nextStep;
+
+      }else{
+
+        var elementsWait = document.getElementsByClassName('wait');
+        var elementsSuccess = document.getElementsByClassName('success');
+
+        for (var i = 0; i < elementsWait.length; i++) {
+          elementsWait[i].style.display = 'none';
+          elementsSuccess[i].style.display = 'block';
+        }
+
+        button.removeAttribute('disabled');
+        spinner.classList.add('brz-invisible');
+        span.textContent = 'Dê o próximo passo, preencha seus dados';
+        
+        button.addEventListener('click', function() {
+              window.location.href = stepsUrl+response.data.nextStep;
+        });
       }
-
-      button.removeAttribute('disabled');
-      spinner.classList.add('brz-invisible');
-      span.textContent = 'Dê o próximo passo, preencha seus dados';
-      
-      button.addEventListener('click', function() {
-            window.location.href = stepsUrl+response.data.nextStep;
-      });
 
       })
       .catch(function (error) {
