@@ -55,6 +55,27 @@ function setLinkSignature() {
   link.href = decodedValue;
 }
 
+function setSchedule(){
+  
+  window.addEventListener('DOMContentLoaded', function() {
+  		
+      var encodedData = window.location.search.substring(1);
+      const decodedValue = decodeURIComponent(encodedData);
+
+      var scheduleElement = document.getElementById('schedule');
+      var currentText = scheduleElement.textContent;
+      var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
+
+      scheduleElement.textContent = modifiedText;
+      scheduleElement.style.fontFamily = 'Montserrat';
+      scheduleElement.style.fontSize = '20px';
+      scheduleElement.style.color = '#706666';
+      scheduleElement.style.fontWeight = '700';
+      scheduleElement.style.marginTop = '32px';
+      scheduleElement.style.marginBottom = '22px';
+ });    
+}
+
   //getCurrentStep
 function getCurrentStep(){
     const path = window.location.pathname;
