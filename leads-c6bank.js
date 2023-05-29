@@ -8,6 +8,72 @@ function redirectToNextStep(n) {
   window.location.replace(`${stepsUrl + oid}`);
 }
 
+///get cookies
+function getCookie(name) {
+
+    let cookie = {};
+  
+    document.cookie.split(';').forEach(function (el) {
+      let [k, v] = el.split('=');
+      cookie[k.trim()] = v;
+    })
+  
+    return cookie[name];
+  }
+  
+  //seta cookies
+  function setCookies(latDays) {
+  
+    axios.get('https://ipinfo.io/json')
+      .then(function (response) {
+  
+        const ip = response.data.ip;
+        const hostname = response.data.hostname;
+        const city = response.data.city;
+        const region = response.data.region;
+        const country = response.data.country;
+        const loc = response.data.loc;
+        const org = response.data.org;
+  
+        let ipinfo = {
+          ip: ip || null,
+          hostname: hostname || null,
+          city: city || null,
+          region: region || null,
+          country: country || null,
+          loc: loc || null,
+          org: org || null,
+        };
+  
+        //verfica se tem parametros na URL
+        const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('af') && urlParams.has('oid')) {
+            
+            for (const [key, value] of urlParams.entries()) {
+              ipinfo[key] = value;
+            }
+  
+          }else{
+            ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
+            ipinfo['bid'] = '2';
+            ipinfo['oid'] = '26';
+            ipinfo['cid'] = '645d01bc3981320001f44bd1';
+          }
+  
+        var expirationDays = latDays || 7;
+        var expirationDate = new Date();
+  
+        expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+  
+        document.cookie = "client_origin=" + encodeURIComponent(JSON.stringify(ipinfo)) + "; expires=" + expirationDate.toUTCString() + "; path=/;";
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  
+
+
 //setar token
 function handleSetToken(value){
     // console.log("handleToken");
@@ -94,7 +160,16 @@ async function registerCustomer(name, federalId, phone, birth, email) {
       dataPrivacy: true,
       dataSearchAllowed: true,
       affiliateData: affiliate,
-    })
+    }),
+
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'X-Client': getCookie('client_origin')
+      }
+    }
+    
     .then((response) => {
       handleSetToken(response.data.token);
       redirectToNextStep(response.data.nextStep);
@@ -137,7 +212,6 @@ function showToast(text) {
 }
 
   getTokenStatus();
-
 
 
 
