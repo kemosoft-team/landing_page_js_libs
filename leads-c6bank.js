@@ -211,8 +211,11 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-  getTokenStatus();
+
+  getCookie()
   setCookies();
+  getTokenStatus();
+  
 
 
 
