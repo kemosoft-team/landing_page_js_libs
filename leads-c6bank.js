@@ -220,7 +220,7 @@ function showToast(text) {
   document.getElementById("snackbar").innerHTML = text;
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
-  getCookie();
+
   getTokenStatus();
   setCookies();
 
