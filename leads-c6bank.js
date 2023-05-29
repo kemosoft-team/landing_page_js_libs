@@ -8,8 +8,6 @@ function redirectToNextStep(n) {
   window.location.replace(`${stepsUrl + oid}`);
 }
 
-
-
 //setar token
 function handleSetToken(value){
     // console.log("handleToken");
@@ -48,8 +46,29 @@ function getCurrentStep(){
     }
   }
 
-
+//obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData(){
+
+  // if (document.cookie) {
+
+  //     let affiliateData = {
+  //         affiliateCode: getCookie('af') || null,
+  //         source: getCookie('source') || null,
+  //         productId: getCookie('pid') || null,
+  //         vendorId: getCookie('vid') || null,
+  //         offerId: getCookie('oid') || null,
+  //         clickId : getCookie('cid') || null,
+  //         pixelId: getCookie('afx') || null,
+  //         gtmId: getCookie('afgtm') || null,
+  //         latDays: getCookie('latd') || null,
+  //         brandId : getCookie('bid') || null,
+  //         nextStep : getCookie('nxstp') || null,
+  //         token: getCookie('tkn') || null,
+  //         rawUri: window.location.search
+  //     };
+  
+  //     return affiliateData;
+  // }
 
       const urlParams = new URLSearchParams(window.location.search);
 
@@ -96,16 +115,7 @@ async function registerCustomer(name, federalId, phone, birth, email) {
       dataPrivacy: true,
       dataSearchAllowed: true,
       affiliateData: affiliate,
-    }),
-
-    {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        'X-Client': getCookie('client_origin')
-      }
-    }
-    
+    })
     .then((response) => {
       handleSetToken(response.data.token);
       redirectToNextStep(response.data.nextStep);
@@ -148,7 +158,7 @@ function showToast(text) {
 }
 
   getTokenStatus();
-  
+
 
 
 
