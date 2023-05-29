@@ -3,6 +3,19 @@ let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
 let stepsUrl = 'https://infos.faz.vc/';
 const oid = '?oid=11';
 
+///get cookies
+function getCookie(name) {
+
+    let cookie = {};
+
+    document.cookie.split(';').forEach(function (el) {
+        let [k, v] = el.split('=');
+        cookie[k.trim()] = v;
+    })
+
+    return cookie[name];
+}
+
 
 function redirectToNextStep(n) {
   window.location.replace(`${stepsUrl + oid}`);
