@@ -222,7 +222,6 @@ function showToast(text) {
 }
 
   getTokenStatus();
-  setCookies();
 
 
 
