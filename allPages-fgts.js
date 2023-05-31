@@ -1,5 +1,3 @@
-/* ========== COOKIES ========== */
-
 //setCookies client origin
 function setCookies(latDays) {
 
