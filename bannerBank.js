@@ -3,25 +3,29 @@ var url = new URL(url_params);
 let oid = url.searchParams.get("oid");
 
 var clientOrigin = JSON.parse(decodeURIComponent(getCookie('client_origin')));
-    console.log(oid);
-    console.log(clientOrigin);
+
+//obtem o oid pela url, se não encontrar pega pelo cookie client_origin
     if(oid == null){
         oid = clientOrigin.oid;
     };
 
 var logoName = '';
+var primaryColor = '';
 
 switch (oid) {
     //BMG
     case '18':
       logoName = 'bmg_correspondente.png';
+      primaryColor = '#fc6401';
       break;
     //Banco Master
     case '29':
       logoName = 'master_correspondente.png';
+      primaryColor = '#00448b';
       break;
     default:
       logoName = 'bmg_correspondente.png';
+      primaryColor = '#fc6401';
       break;
   }
 
@@ -41,6 +45,14 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
 
     if(document.getElementById("banner-left")){ document.getElementById("banner-left").innerHTML = content;}
     if(document.getElementById("header-mobile")){ document.getElementById("header-mobile").innerHTML = contentHeader;}
+
+    // Seleciona todos os elementos <span> dentro de <h1>
+    var spanElements = document.querySelectorAll('h1 span');
+
+    // Altera a cor de todos os elementos <span>
+    spanElements.forEach(function(span) {
+        span.style.color = primaryColor; 
+    });
 
 
 
