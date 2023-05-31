@@ -4,7 +4,7 @@ let oid = url.searchParams.get("oid");
 
 var clientOrigin = decodeURIComponent(getCookie('client_origin'));
     console.log(oid);
-    console.log(clientOrigin.oid);
+    console.log(clientOrigin);
     if(oid == null){
         oid = clientOrigin.oid;
     };
