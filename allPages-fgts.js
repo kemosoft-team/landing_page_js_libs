@@ -249,6 +249,11 @@ function validateForm() {
     registerCustomer(name, birth, federalId, phone, email);
 }
 
+const buttonSubmit = document.querySelector(".btn-submit-fgts");
+ buttonSubmit.addEventListener("click", function(event) {
+ validateForm();
+});
+
 
 getTokenStatus();
 
