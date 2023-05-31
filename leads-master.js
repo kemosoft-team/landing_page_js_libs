@@ -5,7 +5,7 @@ const oid = '?oid=11';
 
 
 function redirectToNextStep(n) {
-  window.location.replace(`${stepsUrl + oid}`);
+  window.location.replace(`${stepsUrl}`);
 }
 
 //setar token
@@ -145,9 +145,9 @@ function validateForm() {
   registerCustomer(name, federalId, phone, birth, email);
 }
 
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", validateForm);
-
+const buttonSubmit = document.querySelector(".btn-submit-fgts");
+ buttonSubmit.addEventListener("click", function(event) {
+ validateForm();
 
 //showToast
 function showToast(text) {
