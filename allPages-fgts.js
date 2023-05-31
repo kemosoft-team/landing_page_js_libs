@@ -240,10 +240,14 @@ function validateForm() {
     const email = document.querySelector('[data-label="Email (Opcional)"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
 
-    if (name == "" || phone == "" || birth == "" || federalId == "") {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
+    if (name == "" ) {
+        showToast("Por favor, digite seu nome.");
+    }else if (phone == "" ) {
+        showToast("Por favor, digite o telefone corretamente.");
+    }else if (birth == "" ) {
+        showToast("Por favor, digite sua data de nascimento corretamente.");
     }
+    return false;
 
     registerCustomer(name, birth, federalId, phone, email);
 }
