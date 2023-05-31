@@ -249,7 +249,7 @@ function validateForm() {
     }else if (birth == "" ) {
         showToast("Por favor, digite sua DATA DE NASCIMENTO corretamente.");
     }
-    return false;
+ 
 
     registerCustomer(name, birth, federalId, phone, email);
 }
