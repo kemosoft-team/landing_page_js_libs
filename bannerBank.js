@@ -2,7 +2,7 @@ var url_params = window.location.href;
 var url = new URL(url_params);
 let oid = url.searchParams.get("oid");
 
-var clientOrigin = decodeURIComponent(getCookie('client_origin'));
+var clientOrigin = JSON.parse(decodeURIComponent(getCookie('client_origin')));
     console.log(oid);
     console.log(clientOrigin);
     if(oid == null){
