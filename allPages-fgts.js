@@ -239,14 +239,9 @@ function validateForm() {
     const email = document.querySelector('[data-label="Email (Opcional)"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
 
-    if (name == "" ) {
-        showToast("Por favor, digite seu NOME.");
-    }else if (phone == "" ) {
-        showToast("Por favor, digite o WHATSAPP corretamente.");
-    }else if (federalId == "" ) {
-        showToast("Por favor, digite seu CPF.");
-    }else if (birth == "" ) {
-        showToast("Por favor, digite sua DATA DE NASCIMENTO corretamente.");
+    if (name == "" || phone == "" || birth == "" || federalId =="") {
+      showToast("Por favor, preencha todos os campos.");
+      return false;
     }
  
 
