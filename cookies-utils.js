@@ -33,7 +33,7 @@ function setCookies(latDays){
       
       expirationDate.setTime(expirationDate.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
 
-      document.cookie = "client_origin="+encodeURIComponent(JSON.stringify(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; path=/;";
+      document.cookie = "client_origin="+encodeURIComponent(JSON.stringify(ipinfo))+"; expires=" + expirationDate.toUTCString() + "; domain=.faz.vc; path=/;";
   })
   .catch(function (error) {
       console.log(error);
