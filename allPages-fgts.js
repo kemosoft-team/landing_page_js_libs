@@ -86,8 +86,7 @@ if (birth) {
 
 /* ========== ACTION FORMULARIO ========== */
 
-/* let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/'; */
-let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/'; 
 let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n) {
