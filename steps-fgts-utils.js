@@ -2,6 +2,19 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://infos.faz.vc/';
 
+// obtem o cookie pelo nome 
+function getCookie(name) {
+
+  let cookie = {};
+
+  document.cookie.split(';').forEach(function(el) {
+    let [k,v] = el.split('=');
+    cookie[k.trim()] = v;
+  })
+
+  return cookie[name];
+}
+
 //inicia spin loading no button
 function setLoading(){
     button.setAttribute('disabled', true);
@@ -295,7 +308,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       })
       .catch(function (error) {
       });
-
   
   }
 
