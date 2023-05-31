@@ -54,6 +54,9 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
         span.style.color = primaryColor; 
     });
 
+    var button = document.querySelector('.brz-btn-submit');
+        button.style.backgroundColor = primaryColor;
+
 
 
 
