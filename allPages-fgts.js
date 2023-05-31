@@ -241,13 +241,13 @@ function validateForm() {
     const federalId = document.querySelector('[data-label="CPF"]').value;
 
     if (name == "" ) {
-        showToast("Por favor, digite seu nome.");
+        showToast("Por favor, digite seu NOME.");
     }else if (phone == "" ) {
-        showToast("Por favor, digite o telefone corretamente.");
+        showToast("Por favor, digite o WHATSAPP corretamente.");
     }else if (federalId == "" ) {
         showToast("Por favor, digite seu CPF.");
     }else if (birth == "" ) {
-        showToast("Por favor, digite sua data de nascimento corretamente.");
+        showToast("Por favor, digite sua DATA DE NASCIMENTO corretamente.");
     }
     return false;
 
