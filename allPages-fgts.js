@@ -244,6 +244,8 @@ function validateForm() {
         showToast("Por favor, digite seu nome.");
     }else if (phone == "" ) {
         showToast("Por favor, digite o telefone corretamente.");
+    }else if (federalId == "" ) {
+        showToast("Por favor, digite seu CPF.");
     }else if (birth == "" ) {
         showToast("Por favor, digite sua data de nascimento corretamente.");
     }
