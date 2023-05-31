@@ -148,6 +148,7 @@ function validateForm() {
 const buttonSubmit = document.querySelector(".btn-submit-fgts");
  buttonSubmit.addEventListener("click", function(event) {
  validateForm();
+});
 
 //showToast
 function showToast(text) {
