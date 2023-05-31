@@ -1,3 +1,5 @@
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/'; 
+let stepsUrl = 'https://infos.faz.vc/';
 
 //setCookies client origin
 function setCookies(latDays) {
@@ -57,36 +59,6 @@ function getCookie(name) {
 setCookies();
 getCookie();
 
-
-
-var federalId = document.querySelector('[data-label="CPF"]'),
-    phone = document.querySelector('[data-label="Whatsapp"]'),
-    birth = document.querySelector('[data-label="Data de Nascimento"]');
-
-if (federalId) {
-    federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function () {
-        var e = federalId.value;
-        e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalId.value = e
-    }));
-}
-if (phone) {
-    phone.addEventListener("input", (function () {
-        var e = phone.value;
-        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phone.value = e
-    }));
-}
-if (birth) {
-    birth.addEventListener("input", (function () {
-        var e = birth.value;
-        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 8)).replace(/(\d{2})(\d)/, "$1/$2")).replace(/(\d{2})(\d)/, "$1/$2"), birth.value = e
-    }));
-}
-
-
-
-
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/'; 
-let stepsUrl = 'https://infos.faz.vc/';
 
 function redirectToNextStep(n) {
     window.location.replace(`${stepsUrl + n}`);
@@ -256,14 +228,35 @@ const buttonSubmit = document.querySelector(".btn-submit-fgts");
 
 getTokenStatus();
 
+
+
+
+
+//Mask
+var federalId = document.querySelector('[data-label="CPF"]'),
+    phone = document.querySelector('[data-label="Whatsapp"]'),
+    birth = document.querySelector('[data-label="Data de Nascimento"]');
+
+if (federalId) {
+    federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function () {
+        var e = federalId.value;
+        e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalId.value = e
+    }));
+}
+if (phone) {
+    phone.addEventListener("input", (function () {
+        var e = phone.value;
+        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phone.value = e
+    }));
+}
+if (birth) {
+    birth.addEventListener("input", (function () {
+        var e = birth.value;
+        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 8)).replace(/(\d{2})(\d)/, "$1/$2")).replace(/(\d{2})(\d)/, "$1/$2"), birth.value = e
+    }));
+}
+
+
+//Brand Footer Info
 var url_params = window.location.href, url = new URL(url_params); let data = url.searchParams.get("bid"); axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { brandId: data }).then((function (e) { const a = null != e.data.brandLogoDark && window.isWhiteMode ? e.data.brandLogoDark : e.data.brandLogo, o = e.data, t = '<p class="footer" style="text-align: center;">Este produto está sendo oferecido pela</p><br><div style="display: flex;justify-content: center; align-items: center;"><img style="width:100%; max-width:200px;" src="' + a + '" alt="Logomarca ' + o.brandName + '"></div><br><p class="footer terms" style="text-align: center;">Todos os direitos reservados. Todo conteúdo do site, logotipos,marcas, layout, aqui veiculados são de propriedade exclusiva. É vedada qualquer reprodução,total ou parcial, de qualquer elemento de identidade, sem expressa autorização. A violação de qualquer direito mencionado implicará na responsabilização civil e criminal nos termos da Lei.</p><p class="footer links" style="text-align: center;"><a style="color:#fff" href="https://api.consigmais.com.br/terms/">Termos de Uso</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#fff" href="https://api.consigmais.com.br/privacy/">Politicas de Privacidade</a></p><p class="footer address" style="text-align: center;">' + o.address + '</p><p class="footer federalid" style="text-align: center;">' + o.federalId + "</p>"; document.getElementById("footer").innerHTML = t })).catch((function (e) { console.log(e) }));
-
-
-
-
-
-
-
-
-
 
