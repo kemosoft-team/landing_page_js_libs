@@ -64,5 +64,9 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
       if(a){
         a.style.backgroundColor = primaryColor;
       }
-
     
+    var secondary = document.querySelector('.secondary');
+      if(secondary){
+        secondary.style.color = primaryColor;
+        secondary.style.borderColor = primaryColor;
+      }
