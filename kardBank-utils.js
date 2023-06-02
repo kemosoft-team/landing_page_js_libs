@@ -1,9 +1,9 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://kardbank.kemobuilder.site/';
+let stepsUrls = 'https://kardbank.kemobuilder.site/';
 
 function redirectToNextStep(n){
-    window.location.replace(`${stepsUrl+n}`);
+    window.location.replace(`${stepsUrls+n}`);
 }
 
 //setar token
