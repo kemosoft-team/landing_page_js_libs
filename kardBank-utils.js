@@ -1,5 +1,5 @@
 //API url
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://kardbank.kemobuilder.site/';
 
 function redirectToNextStep(n){
@@ -95,7 +95,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
   
-    axios.post(apiBaseUrl+'/registerCustomer', {
+    axios.post(apiUrl+'/registerCustomer', {
       "name": name,
       "birth": birth,
       "federalId": federalId,
