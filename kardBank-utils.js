@@ -9,7 +9,7 @@ function redirectToNextStep(n){
 //setar token
 function handleSetToken(value){
     // console.log("handleToken");
-    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.faz.vc; path=/;`;
+    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.kemobuilder.site; path=/;`;
   }
 
 //obtem o step atual pela url
@@ -27,30 +27,6 @@ function showToast(text) {
     setTimeout(function(){ x.className = x.className.replace("show", `${text}`); }, 3000);
   }
   
-  //get Token Status info-return
-  // function getTokenStatus(){
-
-  //   if(getCookie('tkn')){
-  
-  //   axios.post(apiBaseUrl+'/getTokenStatus', {}, {
-  //     headers: {
-  //       'Authorization': `Bearer ${getCookie('tkn')}`
-  //     }})
-  //     .then(function (response) {
-        
-  //       const link = document.querySelector('a.btn-continue');
-  //       link.setAttribute('href', 'https://infos.faz.vc/'+response.data.nextStep);
-
-  //        document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-  //        var botao = document.querySelector(".btn-lead-info");
-  //        botao.click();
-
-  //     })
-  //     .catch(function (error) {
-  //         console.log(error);
-  //     }); 
-  //   }
-  // }
 
 function setBanks(bankList){
     bankList.reverse();
@@ -158,9 +134,6 @@ function validateForm(){
   
     registerCustomer(name, birth, federalId, phone, email);
   }
-
-
-  // getTokenStatus();
 
 
 
