@@ -2,6 +2,19 @@
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrls = 'https://kardbank.kemobuilder.site/';
 
+// obtem o cookie pelo nome 
+function getCookie(name) {
+
+  let cookie = {};
+
+  document.cookie.split(';').forEach(function(el) {
+    let [k,v] = el.split('=');
+    cookie[k.trim()] = v;
+  })
+
+  return cookie[name];
+}
+
 function redirectToNextStep(n){
     window.location.replace(`${stepsUrls+n}`);
 }
