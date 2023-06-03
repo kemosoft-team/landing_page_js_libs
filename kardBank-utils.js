@@ -19,6 +19,31 @@ function getCurrentStep(){
     return value;
 }
 
+  //get Token Status info-return
+  function getTokenStatus(){
+
+    if(getCookie('tkn')){
+  
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }})
+      .then(function (response) {
+        
+        const link = document.querySelector('a.btn-continue');
+        link.setAttribute('href', 'https://infos.faz.vc/'+response.data.nextStep);
+
+         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
+         var botao = document.querySelector(".btn-lead-info");
+         botao.click();
+
+      })
+      .catch(function (error) {
+          console.log(error);
+      }); 
+    }
+  }
+
 //showToast
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -134,6 +159,8 @@ function validateForm(){
   
     registerCustomer(name, birth, federalId, phone, email);
   }
+
+  getTokenStatus();
 
 
 
