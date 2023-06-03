@@ -37,7 +37,7 @@ function getCurrentStep(){
 
     if(getCookie('tkn')){
   
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+    axios.post(apiUrl+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
