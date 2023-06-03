@@ -59,7 +59,7 @@ function setBanks(bankList){
       bankList.forEach(bank => {
         const option = document.createElement('option');
         option.text = bank.name;
-        option.value = bank.bankNo;
+        option.value = bank.id;
         select.insertBefore(option, select.firstChild);
       });
     });
@@ -86,7 +86,6 @@ function captureAffiliateData(){
       const urlParams = new URLSearchParams(window.location.search);
 
       let affiliateData = {
-
         affiliateCode: urlParams.get('af') || null,
         source: urlParams.get('source') || null,
         productId: urlParams.get('pid') || null,
@@ -130,8 +129,9 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "affiliateData": affiliate
     })
     .then((response) => {
+      console.log(response);
       handleSetToken(response.data.token);
-      redirectToNextStep(response.data.nextStep);
+      // redirectToNextStep(response.data.nextStep);
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
