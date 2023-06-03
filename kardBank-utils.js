@@ -44,7 +44,7 @@ function getCurrentStep(){
       .then(function (response) {
         
         const link = document.querySelector('a.btn-continue');
-        link.setAttribute('href', 'https://infos.faz.vc/'+response.data.nextStep);
+        link.setAttribute('href', 'https://kardbank.kemobuilder.site/account');
 
          document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
          var botao = document.querySelector(".btn-lead-info");
