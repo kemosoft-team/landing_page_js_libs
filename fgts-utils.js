@@ -31,7 +31,7 @@ function showToast(text) {
 
     if(getCookie('tkn')){
   
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+    axios.post(apiBaseUrl+'getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -50,35 +50,6 @@ function showToast(text) {
       }); 
     }
   }
-
-function setBanks(bankList){
-    bankList.reverse();
-    const selects = document.querySelectorAll('select[data-label="Banco"]');
-    
-    selects.forEach(select => {
-      bankList.forEach(bank => {
-        const option = document.createElement('option');
-        option.text = bank.name;
-        option.value = bank.id;
-        select.insertBefore(option, select.firstChild);
-      });
-    });
-}
-
-//obtem os bancos
-async function getBanks(){
-    axios.post('https://api.consigmais.com.br/lp/main/v2/getData', {"object":"banks"}, {
-      headers: {
-        'Authorization': `Bearer ${getCookie('tkn')}`
-      }})
-      .then(function (response) {
-         setBanks(response.data);
-      })
-      .catch(function (error) {
-          console.log(error);
-      }); 
-  }
-
 
 //obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData(){
