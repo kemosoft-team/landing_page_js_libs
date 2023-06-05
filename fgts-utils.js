@@ -100,9 +100,8 @@ async function registerCustomer(name, birth, federalId, phone, email){
       "affiliateData": affiliate
     })
     .then((response) => {
-      console.log(response);
       handleSetToken(response.data.token);
-      // redirectToNextStep(response.data.nextStep);
+      redirectToNextStep(response.data.nextStep);
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
