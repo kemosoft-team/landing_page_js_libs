@@ -16,7 +16,7 @@ axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { bra
                           t = '<footer>'+
                                 '<div class="logo" style="width: -webkit-fill-available; text-align: center;">'+
                                 '<img src="'+ a +'" alt="Logo" style="width:60%; max-width:150px; margin-top: 20px;"></div>'+
-                                '<div class="terms">'+
+                                '<div class="footer terms">'+
                                 '<p style="text-align: justify; padding: 20px">1. Sujeito à análise de crédito e incidência de encargos. 2. As parcelas antecipadas serão pagas anualmente,'+
                                 'no mês em que seria efetuado o saque aniversário, mediante repasse do valor pela CEF ao banco BMG. 3. Necessário'+
                                 'aderir à modalidade Saque Aniversário do FGTS e autorizar o banco BMG no APP oficial do FGTS ou pelo site da CEF.'+
