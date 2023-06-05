@@ -2,7 +2,18 @@ var url_params = window.location.href;
 var url = new URL(url_params);
 let oid = url.searchParams.get("oid");
 
+function hiddenElements(className){
+    // Obtém todos os elementos com classe
+  var elements = document.getElementsByClassName(className);
+
+  // Percorre todos os elementos e oculta-os
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.display = 'none';
+}
+}
+
 var clientOrigin = JSON.parse(decodeURIComponent(getCookie('client_origin')));
+
 
 //obtem o oid pela url, se não encontrar pega pelo cookie client_origin
     if(oid == null){
@@ -17,15 +28,18 @@ switch (oid) {
     case '18':
       logoName = 'bmg_correspondente.png';
       primaryColor = '#fc6401';
+      hiddenElements('master');
       break;
     //Banco Master
     case '29':
       logoName = 'master_correspondente.png';
       primaryColor = '#00448b';
+      hiddenElements('bmg');
       break;
     default:
       logoName = 'bmg_correspondente.png';
       primaryColor = '#fc6401';
+      hiddenElements('master');
       break;
   }
 
@@ -70,3 +84,6 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
         secondary.style.color = primaryColor;
         secondary.style.borderColor = primaryColor;
       }
+
+
+      document.getElementById("teste").innerHTML = '<span style="padding: 15px; margin-top: 0px !important; margin-bottom: 0px !important; text-align: justify; font-family: Montserrat; font-size: 22px; line-height: 1.6; font-weight: 700; letter-spacing: 0px;">Veja como é Fácil autorizar o Banco Master:</span>';
