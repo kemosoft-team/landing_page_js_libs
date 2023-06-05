@@ -6,9 +6,9 @@ let oid = url.searchParams.get("oid");
 axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { brandId: bid })
         .then(function (e) {
                 
-                const t  = '';
-                const a = null != e.data.brandLogoDark && window.isWhiteMode ? e.data.brandLogoDark : e.data.brandLogo;
-                const o = e.data;
+                var t  = '';
+                var a = null != e.data.brandLogoDark && window.isWhiteMode ? e.data.brandLogoDark : e.data.brandLogo;
+                var o = e.data;
 
                 switch (oid) {
                         //BMG
