@@ -119,6 +119,3 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
         secondary.style.color = primaryColor;
         secondary.style.borderColor = primaryColor;
       }
-
-
-      document.getElementById("teste").innerHTML = '<span style="padding: 15px; margin-top: 0px !important; margin-bottom: 0px !important; text-align: justify; font-family: Montserrat; font-size: 22px; line-height: 1.6; font-weight: 700; letter-spacing: 0px;">Veja como é Fácil autorizar o Banco Master:</span>';
