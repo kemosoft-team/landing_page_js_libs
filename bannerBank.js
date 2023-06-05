@@ -12,6 +12,39 @@ function hiddenElements(className){
 }
 }
 
+function setVideo(oid){
+
+      var desktopContent = '';
+      var mobileContent = ''; 
+
+      switch (oid) {
+        //BMG
+        case '18':
+          desktopContent = '<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;"><figure style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%; margin-block-end: 0; margin-block-start: 0; margin-inline-start: 0; margin-inline-end: 0;" ><iframe src="https://api.vadoo.tv/iframe_test?id=IdTj560tH3Y24AcBhTAW3wLqu7j4KjUB" scrolling="no" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute; overflow:hidden; border-radius: 5px;" allowfullscreen="1" allow="autoplay"></iframe></figure></div>';
+          mobileContent = '<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 177.78%;"><figure style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 177.78%; margin-block-end: 0; margin-block-start: 0; margin-inline-start: 0; margin-inline-end: 0;" ><iframe src="https://api.vadoo.tv/iframe_test?id=zcghD0LSlQ5xMgj22ZTUuSZGh0jTu4h6" scrolling="no" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute; overflow:hidden; border-radius: 5px;" allowfullscreen="1" allow="autoplay"></iframe></figure></div>';
+          break;
+        //Banco Master
+        case '29':
+          desktopContent = '<div><div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;"><figure style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%; margin-block-end: 0; margin-block-start: 0; margin-inline-start: 0; margin-inline-end: 0;" ><iframe src="https://api.vadoo.tv/iframe_test?id=qlbmxwIzmkuf6UWl1aJVHRMmTmvG7kQy" scrolling="no" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute; overflow:hidden; border-radius: 5px;" allowfullscreen="1" allow="autoplay"></iframe></figure></div></div>';
+          mobileContent = '<div><div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 177.78%;"><figure style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 177.78%; margin-block-end: 0; margin-block-start: 0; margin-inline-start: 0; margin-inline-end: 0;" ><iframe src="https://api.vadoo.tv/iframe_test?id=Isk5HRNYtWRHfmrQi7ptXjHNLlNJA1oL" scrolling="no" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute; overflow:hidden; border-radius: 5px;" allowfullscreen="1" allow="autoplay"></iframe></figure></div></div>';
+          break;
+        default:
+          desktopContent = '';
+          mobileContent = '';
+          break;
+      }
+
+    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  
+      if(document.getElementById('video-content') != null){
+          if (screenWidth > 767) { 
+            document.getElementById('video-content').innerHTML = desktopContent;
+          } else {
+            document.getElementById('video-content').innerHTML = mobileContent;
+          }
+      }
+}
+
 var clientOrigin = JSON.parse(decodeURIComponent(getCookie('client_origin')));
 
 
@@ -29,12 +62,14 @@ switch (oid) {
       logoName = 'bmg_correspondente.png';
       primaryColor = '#fc6401';
       hiddenElements('master');
+      setVideo(oid);
       break;
     //Banco Master
     case '29':
       logoName = 'master_correspondente.png';
       primaryColor = '#00448b';
       hiddenElements('bmg');
+      setVideo(oid);
       break;
     default:
       logoName = 'bmg_correspondente.png';
