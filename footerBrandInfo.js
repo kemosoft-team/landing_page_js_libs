@@ -13,7 +13,7 @@ axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { bra
                 switch (oid) {
                         //BMG
                         case '18':
-                          t = '<footer style="display: flex; justify-content: space-between; padding: 10px;">'+
+                          t = '<footer>'+
                                 '<div class="logo" style="width: -webkit-fill-available;">'+
                                 '<img src="'+ a +'" alt="Logo" style="width:70%; max-width:200px; margin-top: 20px;"></div>'+
                                 '<div class="terms">'+
