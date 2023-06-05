@@ -14,7 +14,7 @@ axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { bra
                         //BMG
                         case '18':
                           t = '<footer>'+
-                                '<div class="logo" style="width: -webkit-fill-available;">'+
+                                '<div class="logo" style="width: -webkit-fill-available; text-align: center;">'+
                                 '<img src="'+ a +'" alt="Logo" style="width:60%; max-width:150px; margin-top: 20px;"></div>'+
                                 '<div class="terms">'+
                                 '<p style="text-align: justify;">1. Sujeito à análise de crédito e incidência de encargos. 2. As parcelas antecipadas serão pagas anualmente,'+
