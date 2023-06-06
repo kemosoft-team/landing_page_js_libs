@@ -1,4 +1,4 @@
-var url = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
+var url = ('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb');
 
 var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
 if(phoneForm){phoneForm.addEventListener("input", (function() {
