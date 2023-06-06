@@ -8,6 +8,7 @@ var btnWillOpen = document.getElementById('btnWillOpen');
 btnRequest.forEach(function (button) {
     button.addEventListener('click', function () {
         btnWillOpen.click();
+        statusPopUp = true;
     });
 });
 
