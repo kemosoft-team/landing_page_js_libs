@@ -27,7 +27,7 @@ async function secondyRegisterCustomer(name, phone, email) {
         site: currentUrl
     })
         .then((response) => {
-            window.location.href = "https://blackcurrant16889289.kemobuilder.site/";
+            window.location.href = currentUrl;
         })
         .catch(function (error) {
             buttonSecondy.removeAttribute('disabled');
