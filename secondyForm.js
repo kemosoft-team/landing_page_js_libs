@@ -27,8 +27,7 @@ async function secondyRegisterCustomer(name, phone, email) {
         site: currentUrl
     })
         .then((response) => {
-            alert('Informações enviadas!')
-            location.reload();
+           window.location.href = ('https://www.google.com')
         })
         .catch(function (error) {
             buttonSecondy.removeAttribute('disabled');
