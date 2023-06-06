@@ -46,8 +46,8 @@ axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { bra
                                 '<img src="'+ a +'" alt="Logo" style="width:60%; max-width:150px; margin-top: 20px;"></div>'+
                                 '<div class="footer terms">'+
                                 '<p style="text-align: justify; padding: 10px">Todos os direitos reservados. Todo conteúdo do site, logotipos, marcas, layout, aqui veiculados são de propriedade exclusiva. É vedada qualquer reprodução, total ou parcial, de qualquer elemento de identidade, sem expressa autorização. A violação de qualquer direito mencionado implicará na responsabilização cível e criminal nos termos da Lei.</p>'+
-                                '<p class="footer links" style="text-align: center;"><a style="color:#fff" href="https://api.consigmais.com.br/terms/">Termos de Uso</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#fff" href="https://api.consigmais.com.br/privacy/">Politicas de Privacidade</a></p>'+
-                                '<p style="text-align: justify; padding: 10px">1. Produto exclusivo para servidores públicos do Rio Grande do Norte '+
+                                '<p class="footer links" style="text-align: center; margin-top: -10px;"><a style="color:#fff" href="https://api.consigmais.com.br/terms/">Termos de Uso</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#fff" href="https://api.consigmais.com.br/privacy/">Politicas de Privacidade</a></p>'+
+                                '<p style="text-align: justify; padding: 10px; margin-top: -10px;">1. Produto exclusivo para servidores públicos do Rio Grande do Norte '+
                                 '2. Produto oferecido pela '+ o.brandName +', intermediador financeiro Banco Master, '+ o.address +', CNPJ '+ o.federalId +'. 3 Kardbank pertence e é operado pela KDB Meios de Pagamentos S.A (KDB) que não é uma financeira, banco ou qualquer tipo de instituição financeira, atuando seguindo diretrizes da Resolução 3954 do Banco Central do Brasil como Correspondente Bancário.</p>'+
                                 '</div>'+
                                 '</footer>';
