@@ -33,7 +33,7 @@ async function secondyRegisterCustomer(name, phone, email) {
             buttonSecondy.removeAttribute('disabled');
             spinner.classList.add('brz-invisible');
             span.textContent = 'CONTINUAR';
-            alert('erro ao enviar')
+            showToast(error.response.data.message);
         });
 }
 
