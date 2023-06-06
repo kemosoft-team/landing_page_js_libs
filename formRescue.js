@@ -1,8 +1,6 @@
 //======FORMULARIO DE RESGATE========
 //ABRIR FOMULARIO AO TIRAR O MOUSE DA TELA
 // #btnOut é o botão que vai ser clicado ao tirar o mouse da tela
-var statusPopUp = false;
-
 btnOut = document.querySelector('#btnOut');
 document.addEventListener("mouseout", function (event) {
     if (event.clientY <= 0 && statusPopUp === false) {
