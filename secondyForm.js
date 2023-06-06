@@ -1,4 +1,4 @@
-var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
+var url = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
 var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
 if(phoneForm){phoneForm.addEventListener("input", (function() {
@@ -10,7 +10,7 @@ if(phoneForm){phoneForm.addEventListener("input", (function() {
 // secondyRegisterCustomer
 async function secondyRegisterCustomer(name, phone, email) {
 
-    currentUrl = document.urlApi;
+    currentUrl = document.url;
 
     const buttonSecondy = document.querySelector('.brz-btn-secondy-submit');
     const spinner = buttonSecondy.querySelector('.brz-form-spinner');
