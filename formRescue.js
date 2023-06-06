@@ -2,13 +2,12 @@
 //ABRIR FOMULARIO AO TIRAR O MOUSE DA TELA
 // #btnOut é o botão que vai ser clicado ao tirar o mouse da tela
 var statusPopUp = false;
-console.log(statusPopUp);
+
 btnOut = document.querySelector('#btnOut');
 document.addEventListener("mouseout", function (event) {
     if (event.clientY <= 0 && statusPopUp === false) {
         btnOut.click();
         statusPopUp = true;
-        console.log(statusPopUp);
     }
 });
 
@@ -17,7 +16,6 @@ btnWillOpenForm = document.querySelector('#btnWillOpenForm');
 
 btnRequestForm.addEventListener('click', function () {
     btnWillOpenForm.click();
-    console.log(statusPopUp);
 })
 
 //ABRIR FORMULARIO QUANDO DESCER PELO MENOS 75% DA TELA E SUBIR NOVAMENTE
@@ -29,7 +27,6 @@ var isScrolling = false;
 window.addEventListener('scroll', function () {
     if (!isScrolling && window.scrollY >= scrollThreshold && statusPopUp === false) {
         isScrolling = true;
-        console.log(statusPopUp);
     }
 });
 
@@ -39,7 +36,6 @@ window.addEventListener('scroll', function () {
         isScrolling = false;
         btnWillOpen.click()
         statusPopUp = true;
-        console.log(statusPopUp);
     }
 });
 
@@ -48,6 +44,5 @@ var btnClosers = document.querySelectorAll('#btnCloser');
 btnClosers.forEach(function(btnCloser) {
   btnCloser.addEventListener('click', function () {
     statusPopUp = false;
-    console.log(statusPopUp);
   });
 });
