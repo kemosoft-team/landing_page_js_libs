@@ -27,7 +27,7 @@ async function secondyRegisterCustomer(name, phone, email) {
         site: currentUrl
     })
         .then((response) => {
-            window.location.href = currentUrl;
+            window.location = currentUrl;
         })
         .catch(function (error) {
             buttonSecondy.removeAttribute('disabled');
