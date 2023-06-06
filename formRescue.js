@@ -3,9 +3,8 @@
 // #btnOut é o botão que vai ser clicado ao tirar o mouse da tela
 btnOut = document.querySelector('#btnOut');
 document.addEventListener("mouseout", function (event) {
-    if (event.clientY <= 0 && statusPopUp === false) {
+    if (event.clientY <= 0) {
         btnOut.click();
-        statusPopUp = true;
     }
 });
 
@@ -13,7 +12,6 @@ btnRequestForm = document.querySelector('#btnRequestForm');
 btnWillOpenForm = document.querySelector('#btnWillOpenForm');
 
 btnRequestForm.addEventListener('click', function () {
-    statusPopUp = true;
     btnWillOpenForm.click();
 })
 
@@ -25,27 +23,15 @@ var isScrolling = false;
 window.addEventListener('scroll', function () {
     if (!isScrolling && window.scrollY >= scrollThreshold) {
         isScrolling = true;
-        console.log(statusPopUp)
     }
 });
 
 //SE VOLTAR PARA TOP MENOR QUE 100
 window.addEventListener('scroll', function () {
-    if (isScrolling && window.scrollY <= 100 && statusPopUp === false) {
+    if (isScrolling && window.scrollY <= 100) {
         isScrolling = false;
-        statusPopUp = true;
-        console.log(statusPopUp)
         btnWillOpen.click()
     }
-});
-
-var btnClosers = document.querySelectorAll('#btnCloser');
-
-btnClosers.forEach(function(btnCloser) {
-  btnCloser.addEventListener('click', function() {
-    var statusPopUp = false;
-    console.log(statusPopUp);
-  });
 });
 
 
