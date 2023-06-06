@@ -1,4 +1,5 @@
 var url = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
+let oidUrl = url.searchParams.get("oid"); 
 
 var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
 if(phoneForm){phoneForm.addEventListener("input", (function() {
@@ -24,7 +25,8 @@ async function secondyRegisterCustomer(name, phone, email) {
         name: name,
         phone: phone,
         email: email,
-        site: currentUrl
+        site: currentUrl,
+        oid: oidUrl
     })
         .then((response) => {
             location.reload();
