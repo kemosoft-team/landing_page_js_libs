@@ -3,13 +3,6 @@
 // #btnOut é o botão que vai ser clicado ao tirar o mouse da tela
 var statusPopUp = false;
 
-var btnCloser = document.querySelectorAll('#btnCloser');
-
-btnCloser = document.addEventListener("click", function () {
-    statusPopUp = true;
-})
-
-
 btnOut = document.querySelector('#btnOut');
 document.addEventListener("mouseout", function (event) {
     if (event.clientY <= 0 && statusPopUp === false) {
@@ -45,5 +38,12 @@ window.addEventListener('scroll', function () {
         btnWillOpen.click()
     }
 });
+
+var btnCloser = document.querySelectorAll('#btnCloser');
+
+btnCloser.addEventListener('click', function () {
+    statusPopUp = false;
+    console.log(statusPopUp);
+})
 
 console.log(statusPopUp);
