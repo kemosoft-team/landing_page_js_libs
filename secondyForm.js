@@ -1,4 +1,4 @@
-var url = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
+var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
 var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
 if(phoneForm){phoneForm.addEventListener("input", (function() {
@@ -20,7 +20,7 @@ async function secondyRegisterCustomer(name, phone, email) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(url, {
+    axios.post(urlApi, {
         name: name,
         phone: phone,
         email: email,
