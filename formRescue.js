@@ -35,25 +35,3 @@ window.addEventListener('scroll', function () {
         btnWillOpen.click()
     }
 });
-
-//ABRIR FORMULARIO QUANDO O USUARIO PASSAR MAIS DE 2 SEGUNDOS SEM INTERAGIR COM A PAGINA
-var time = 12000;
-
-var timeoutId;
-
-function resetTimeOut() {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(dispararEvento, time);
-}
-
-function dispararEvento() {
-    btnWillOpen.click()
-}
-
-window.addEventListener('mousemove', resetTimeOut);
-window.addEventListener('keydown', resetTimeOut);
-window.addEventListener('mousedown', resetTimeOut);
-window.addEventListener('scroll', resetTimeOut);
-
-resetTimeOut();
