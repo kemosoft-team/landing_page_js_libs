@@ -39,3 +39,8 @@ window.addEventListener('scroll', function () {
     }
 });
 
+btnCloser = document.querySelector('#btnCloser');
+btnCloser.document.addEventListener('click', function(){
+    statusPopUp = false;
+})
+
