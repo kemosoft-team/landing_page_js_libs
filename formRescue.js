@@ -39,8 +39,12 @@ window.addEventListener('scroll', function () {
     }
 });
 
-btnCloser = document.querySelector('#btnCloser');
-btnCloser.document.addEventListener('click', function(){
+const btnCloser = document.querySelectorAll('#btnCloser');
+
+btnCloser.forEach(function() {
+  btn.addEventListener('click', function() {
     statusPopUp = false;
-})
+    console.log(statusPopUp);
+  });
+});
 
