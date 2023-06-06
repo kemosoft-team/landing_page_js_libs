@@ -5,7 +5,7 @@ var statusPopUp = false;
 
 var btnCloser = document.querySelectorAll('#btnCloser');
 
-btnCloser.addEventListener('click', function () {
+btnCloser = document.addEventListener("click", function () {
     statusPopUp = true;
 })
 
