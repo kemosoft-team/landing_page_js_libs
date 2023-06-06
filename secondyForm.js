@@ -27,6 +27,7 @@ async function secondyRegisterCustomer(name, phone, email) {
         site: currentUrl
     })
         .then((response) => {
+            alert('Informações enviadas!')
             location.reload();
         })
         .catch(function (error) {
