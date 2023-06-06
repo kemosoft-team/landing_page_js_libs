@@ -45,12 +45,10 @@ function validateSecondyForm() {
 
 
 
-    if (name == "" || phone == "") {
-        var alertInfo = document.querySelector('#alertInfo');
-        const texto = "Por favor, preencha todos os campos.";
-        alertInfo.textContent = texto;
-        return false;
-    }
+     if (name == "" || phone == "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
 
     secondyRegisterCustomer(name, phone, email);
 }
