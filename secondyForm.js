@@ -1,9 +1,9 @@
 var url = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
-var phone = document.querySelector('[data-label="Deixe seu Whatsapp"]')
-if(phone){phone.addEventListener("input", (function() {
-    var e = phone.value;
-    e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phone.value = e
+var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
+if(phoneForm){phoneForm.addEventListener("input", (function() {
+    var e = phoneForm.value;
+    e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phoneForm.value = e
 }));
 }
 
