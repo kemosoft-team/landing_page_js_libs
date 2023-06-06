@@ -50,4 +50,4 @@ btnClosers.forEach(function(btnCloser) {
   });
 });
 
-console.log(statusPopUp);
+
