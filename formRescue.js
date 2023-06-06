@@ -39,11 +39,13 @@ window.addEventListener('scroll', function () {
     }
 });
 
-var btnCloser = document.querySelectorAll('#btnCloser');
+var btnClosers = document.querySelectorAll('#btnCloser');
 
-btnCloser.addEventListener('click', function(statusPopUp) {
-    statusPopUp === false;
+btnClosers.forEach(function(btnCloser) {
+  btnCloser.addEventListener('click', function() {
+    var statusPopUp = false;
     console.log(statusPopUp);
-})
+  });
+});
 
 console.log(statusPopUp);
