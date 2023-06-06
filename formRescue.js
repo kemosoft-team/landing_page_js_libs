@@ -41,8 +41,8 @@ window.addEventListener('scroll', function () {
 
 var btnCloser = document.querySelectorAll('#btnCloser');
 
-btnCloser.addEventListener('click', function () {
-    statusPopUp = false;
+btnCloser.addEventListener('click', function(statusPopUp) {
+    statusPopUp === false;
     console.log(statusPopUp);
 })
 
