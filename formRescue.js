@@ -27,6 +27,7 @@ var isScrolling = false;
 window.addEventListener('scroll', function () {
     if (!isScrolling && window.scrollY >= scrollThreshold) {
         isScrolling = true;
+        console.log(statusPopUp)
     }
 });
 
@@ -35,6 +36,7 @@ window.addEventListener('scroll', function () {
     if (isScrolling && window.scrollY <= 100 && statusPopUp === false) {
         isScrolling = false;
         statusPopUp = true;
+        console.log(statusPopUp)
         btnWillOpen.click()
     }
 });
