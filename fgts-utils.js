@@ -163,10 +163,8 @@ function validateForm(){
   }
 
 
-  getTokenStatus();
-
-
     if(window.location.pathname == '/'){
+      getTokenStatus();
       //Adiciona termos e condições abaixo do formulário
       let novaDiv = document.createElement('div');
           novaDiv.classList.add('brz-rich-text');
