@@ -64,7 +64,6 @@ switch (oid) {
     case '18':
       logoName = 'bmg_correspondente.png';
       primaryColor = '#fc6401';
-      hiddenElements('master');
       setVideo(oid);
       break;
     //Banco Master
@@ -98,6 +97,8 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
     if(document.getElementById("banner-left")){ document.getElementById("banner-left").innerHTML = content;}
     if(document.getElementById("header-mobile")){ document.getElementById("header-mobile").innerHTML = contentHeader;}
 
+
+    if(oid != '18'){
     // Seleciona todos os elementos <span> dentro de <h1>
     var spanElements = document.querySelectorAll('h1 span');
 
@@ -122,3 +123,4 @@ const contentHeader = '<div class="header" style="display: flex;  justify-conten
         secondary.style.color = primaryColor;
         secondary.style.borderColor = primaryColor;
       }
+    }
