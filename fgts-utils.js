@@ -101,7 +101,11 @@ async function registerCustomer(name, birth, federalId, phone, email){
     })
     .then((response) => {
       handleSetToken(response.data.token);
-      redirectToNextStep(response.data.nextStep);
+      if (response.data.forceNewOfferLead) {
+        redirectToNextStep('ongoing');
+      } else {
+        redirectToNextStep(response.data.nextStep);
+      }
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
@@ -131,20 +135,24 @@ function validateForm(){
 
   getTokenStatus();
 
-    //Adiciona termos e condições abaixo do formulário
-    let novaDiv = document.createElement('div');
-        novaDiv.classList.add('brz-rich-text');
-    let novoParagrafo = document.createElement('p');
-        novoParagrafo.classList.add('brz-css-bmkpa');
-        novoParagrafo.setAttribute('data-generated-css', 'brz-css-gtmtp');
-        novoParagrafo.style.fontSize = '11px';
-        novoParagrafo.style.textAlign = 'justify';
-        novoParagrafo.style.wordWrap = 'break-word';
-        novoParagrafo.innerHTML = '<span class="terms" style="opacity: 1;">Ao continuar no botão abaixo você estará assegurando o tratamento responsável de suas informações, em conformidade com a LGPD vigente, e também: 1. Concordando com os <a href="https://api.consigmais.com.br/terms/" style="color: #646464" target="_blank">Termos de Uso</a> e de <a style="color: #646464" href="https://api.consigmais.com.br/privacy/" target="_blank">Privacidade</a> 2. Aceitando ser contatado por Whatsapp/SMS acerca desta minha consulta e solicitação, bem como autorizo ter meu CPF consultado junto às instituições bancárias e governamentais para assegurar a correta simulação / contratação deste produto.</span>';
-        novaDiv.appendChild(novoParagrafo);
 
-    let divPai = document.querySelector('.brz-forms2__item-button');
-        divPai.insertAdjacentElement('beforebegin', novaDiv);
+    if(window.location.pathname == '/'){
+      //Adiciona termos e condições abaixo do formulário
+      let novaDiv = document.createElement('div');
+          novaDiv.classList.add('brz-rich-text');
+          
+      let novoParagrafo = document.createElement('p');
+          novoParagrafo.classList.add('brz-css-bmkpa');
+          novoParagrafo.setAttribute('data-generated-css', 'brz-css-gtmtp');
+          novoParagrafo.style.fontSize = '11px';
+          novoParagrafo.style.textAlign = 'justify';
+          novoParagrafo.style.wordWrap = 'break-word';
+          novoParagrafo.innerHTML = '<span class="terms" style="opacity: 1;">Ao continuar no botão abaixo você estará assegurando o tratamento responsável de suas informações, em conformidade com a LGPD vigente, e também: 1. Concordando com os <a href="https://api.consigmais.com.br/terms/" style="color: #646464" target="_blank">Termos de Uso</a> e de <a style="color: #646464" href="https://api.consigmais.com.br/privacy/" target="_blank">Privacidade</a> 2. Aceitando ser contatado por Whatsapp/SMS acerca desta minha consulta e solicitação, bem como autorizo ter meu CPF consultado junto às instituições bancárias e governamentais para assegurar a correta simulação / contratação deste produto.</span>';
+          novaDiv.appendChild(novoParagrafo);
+
+      let divPai = document.querySelector('.brz-forms2__item-button');
+          divPai.insertAdjacentElement('beforebegin', novaDiv);
+    }
 
 
 
