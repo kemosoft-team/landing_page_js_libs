@@ -25,11 +25,16 @@ if(birth){birth.addEventListener("input", (function() {
 }
 if (agency) {
     agency.addEventListener("input", function() {
-      var e = agency.value;
-      e = e.replace(/\D/g, "");
-      e = e.substring(0, 4);
-      agency.value = e;
-    });
+        var e = agency.value;
+        e = e.replace(/\D/g, "");
+        e = e.substring(0, 5);
+    
+        if (e.length > 4) {
+          e = e.replace(/(\d{4})(?!$)/g, "$1-");
+        }
+    
+        agency.value = e;
+      });
 }
 if (dig) {
     dig.addEventListener("input", function() {
