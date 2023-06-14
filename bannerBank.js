@@ -50,7 +50,10 @@ var clientOrigin = JSON.parse(decodeURIComponent(getCookie('client_origin')));
 
 //obtem o oid pela url, se não encontrar pega pelo cookie client_origin
     if(oid == null){
-        oid = clientOrigin.oid;
+
+        if(window.location.host == 'correspondente-bmg.faz.vc'){
+          oid = '18';
+        }
     };
 
 var logoName = '';
