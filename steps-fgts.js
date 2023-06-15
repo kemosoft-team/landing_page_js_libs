@@ -83,7 +83,7 @@ function getCookie(name) {
       bankList.forEach(bank => {
         const option = document.createElement('option');
         option.text = bank.name;
-        option.value = bank.bankNo;
+        option.value = bank.id;
         select.insertBefore(option, select.firstChild);
   
       });
