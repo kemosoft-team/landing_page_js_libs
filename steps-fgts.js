@@ -281,18 +281,17 @@ function getCookie(name) {
   
   //qualfica o lead
   function processQualification() {
-    
-    let attempts = 0; 
-  
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
     const span = button.querySelector('.brz-span.brz-text__editor');
   
-          button.setAttribute('disabled', true);
-          spinner.classList.remove('brz-invisible');
-          span.textContent = '';
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
   
     const sendRequest = () => {
+      const attempts = localStorage.getItem('attempts') || 0;
+  
       axios.post(apiBaseUrl + '/registerCustomerInfos', {
           enable: true,
           authorize: true,
@@ -304,19 +303,19 @@ function getCookie(name) {
         })
         .then((response) => {
           getNextStep();
-          attempts = 2;
+          localStorage.setItem('attempts', 2);
         })
         .catch(function (error) {
-          attempts++;
           if (attempts < 2) {
-            sendRequest(); 
+            localStorage.setItem('attempts', parseInt(attempts) + 1);
+            sendRequest();
           } else {
-            window.location.href = stepsUrl+'offline';
+            window.location.href = stepsUrl + 'offline';
           }
         });
     };
   
-    sendRequest(); 
+    sendRequest();
   }
   
   //validarFormDocs
