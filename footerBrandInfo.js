@@ -1,9 +1,9 @@
 var url_params = window.location.href;
 var url = new URL(url_params);
-let bid = url.searchParams.get("bid");
+let af = url.searchParams.get("af");
 let offerId = url.searchParams.get("oid");
 
-axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { brandId: bid })
+axios.post("https://api.consigmais.com.br/server/lp/main/v2/getBrandInfo", { referralCode: af })
         .then(function (e) {
                 
                 var t  = '';
