@@ -304,12 +304,15 @@ function getCookie(name) {
         .then((response) => {
           getNextStep();
           localStorage.setItem('attempts', 2);
+          console.log("success");
         })
         .catch(function (error) {
           if (attempts < 2) {
+            console.log("Adcionou um attempts");
             localStorage.setItem('attempts', parseInt(attempts) + 1);
             sendRequest();
           } else {
+            console.log("caiu no offline");
             window.location.href = stepsUrl + 'offline';
           }
         });
