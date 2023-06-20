@@ -2,10 +2,6 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 let stepsUrl = 'https://correspondente-bmg.faz.vc/';
 
-//Zerar numeros de requisições keepcalm
-localStorage.setItem('attempts', 0);
-
-
  // obtem o cookie pelo nome 
 function getCookie(name) {
 
@@ -306,11 +302,8 @@ function getCookie(name) {
           }
         })
         .then((response) => {
-          if (attempts < 2) {
-            getNextStep();
-          }else{
-            window.location.href = stepsUrl + 'offline';
-          }
+          getNextStep();
+          localStorage.setItem('attempts', 2);
         })
         .catch(function (error) {
           if (attempts < 2) {
