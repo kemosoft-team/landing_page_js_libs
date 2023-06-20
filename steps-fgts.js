@@ -237,6 +237,8 @@ function getCookie(name) {
   }
   
   function getNextStep(){
+
+    const attempts = localStorage.getItem('attempts') || 0;
   
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -249,6 +251,11 @@ function getCookie(name) {
       }
     })
     .then((response) => {
+
+      if((attempts == 2) && (response.data.nextStep == 'keepcalm')){
+          window.location.href = stepsUrl + 'offline';
+      }else{
+
   
       if(response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable'){
   
@@ -271,6 +278,8 @@ function getCookie(name) {
         button.addEventListener('click', function() {
               window.location.href = stepsUrl+response.data.nextStep;
         });
+      }
+
       }
   
       })
