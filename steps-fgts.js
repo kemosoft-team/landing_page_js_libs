@@ -365,7 +365,7 @@ function getCookie(name) {
   function validarFormAccount(){ 
 
     const agency = document.querySelector('[data-label="Agência"]').value;
-    const bank = '';
+    var bank = '';
     const account = document.querySelector('[data-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
     const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
