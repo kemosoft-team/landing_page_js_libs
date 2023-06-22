@@ -363,12 +363,18 @@ function getCookie(name) {
   }
   
   function validarFormAccount(){ 
-  
+
     const agency = document.querySelector('[data-label="Agência"]').value;
-    const bank = document.querySelector('[data-label="Banco"]').value;
+    const bank = '';
     const account = document.querySelector('[data-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
     const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
+
+      if(document.querySelectorAll('div.brz-forms2__item')[1].style.display == "block"){
+        bank = document.querySelector('[data-label="Nome Banco"]').value;
+      }else{
+        bank = document.querySelector('[data-label="Banco"]').value;
+      }
   
     if (agency == "" || bank == "" || account == "" || verifyDigit =="" || accountType =="") {
       showToast("Por favor, preencha todos os campos.");
@@ -378,4 +384,4 @@ function getCookie(name) {
     const  accountTypeCut = accountType.charAt(0).toString();
     registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
   }
-  
+
