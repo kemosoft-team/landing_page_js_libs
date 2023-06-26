@@ -1,7 +1,7 @@
 
 if (typeof apiBaseUrl == 'undefined') {
     let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-    let stepsUrl = 'https://master.faz.vc/fgts';
+    let stepsUrl = window.location.origin+'/';
   }
   
   //inicia spin loading no button

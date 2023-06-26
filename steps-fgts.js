@@ -1,6 +1,6 @@
  //** STEPS FGTS */
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://correspondente-bmg.faz.vc/';
+let stepsUrl = window.location.origin+'/';
 
  // obtem o cookie pelo nome 
 function getCookie(name) {
