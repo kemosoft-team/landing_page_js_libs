@@ -11,7 +11,7 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 
     var url_params = window.location.href;
     var url = new URL(url_params);
-    let referrer = (url.searchParams.get("af") == null) ? url.searchParams.get("af") : "Vv5P88AWTr7qsU8v8";
+    let referrer = (url.searchParams.get("af") == null) ? "Vv5P88AWTr7qsU8v8" : url.searchParams.get("af");
 
     console.log(referrer);
 
