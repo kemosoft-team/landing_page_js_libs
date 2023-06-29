@@ -69,6 +69,7 @@ function validateForm(){
         novoParagrafo.classList.add('brz-css-bmkpa');
         novoParagrafo.setAttribute('data-generated-css', 'brz-css-gtmtp');
         novoParagrafo.style.fontSize = '11px';
+        novoParagrafo.style.color = '#fff';
         novoParagrafo.style.textAlign = 'justify';
         novoParagrafo.style.padding = '0 15px 0 15px';
         novoParagrafo.style.wordWrap = 'break-word';
