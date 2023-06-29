@@ -52,16 +52,27 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 //validar form
 function validateForm(){ 
 
-    const name = document.querySelector('[data-label="Nome ou Nome fantasia"]').value;
-    const phone = document.querySelector('[data-label="Whatsapp"]').value;
-    const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-    const email = document.querySelector('[data-label="Email"]').value;
-    const zipcode = document.querySelector('[data-label="CEP"]').value;
-    const federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
-  
-    if (name == "" || phone == "" || birth == "" || federalId =="" || zipcode == "") {
-      showToast("Por favor, preencha todos os campos.");
-      return false;
+    var name = document.querySelector('[data-label="Nome ou Nome fantasia"]').value;
+    var phone = document.querySelector('[data-label="Whatsapp"]').value;
+    var birth = document.querySelector('[data-label="Data de Nascimento"]').value;
+    var email = document.querySelector('[data-label="Email"]').value;
+    var zipcode = document.querySelector('[data-label="CEP"]').value;
+    var federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
+
+    if(federalId.value.length > 14){
+
+        if (name == "" || phone == "" || federalId =="" || zipcode == "") {
+            showToast("Por favor, preencha todos os campos.");
+            return false;
+          }
+
+    }else{
+
+        if (name == "" || phone == "" || birth == "" || federalId =="" || zipcode == "") {
+            showToast("Por favor, preencha todos os campos.");
+            return false;
+          }
+
     }
   
     registerAffiliate(name, birth, federalId, zipcode, phone, email);
