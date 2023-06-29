@@ -4,7 +4,8 @@ var federalId = document.querySelector('[data-label="CPF"]'),
     agency = document.querySelector('[data-label="Agência"]'),
     dig = document.querySelector('[data-label="Dígito"]'),
     account = document.querySelector('[data-label="Conta"]'),
-    federalIdB = document.querySelector('[data-label="CPF/CNPJ"]');
+    federalIdB = document.querySelector('[data-label="CPF/CNPJ"]'),
+    CEP = document.querySelector('[data-label="CEP"]');
 
 
 
@@ -79,5 +80,14 @@ if (dig) {
       }
   
       federalIdB.value = formattedValue;
+    });
+  }
+  if (cep) {
+    cep.addEventListener("input", function() {
+      var e = cep.value;
+      e = e.replace(/\D/g, ""); 
+      e = e.substring(0, 8); 
+      e = e.replace(/(\d{5})(\d)/, "$1-$2"); 
+      cep.value = e;
     });
   }
