@@ -54,6 +54,9 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
           sectionS.style.opacity = "1"; 
         }, 300);
 
+        document.documentElement.scrollTop = 0; // Para navegadores modernos
+        document.body.scrollTop = 0; // Para navegadores mais antigos
+
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
