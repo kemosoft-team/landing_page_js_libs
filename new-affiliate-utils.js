@@ -46,7 +46,7 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
         button.removeAttribute('disabled');
         spinner.classList.add('brz-invisible');
         span.textContent = 'Aceita e Cadastrar';
-        showToast(error.response.data.message);
+        showToast(error.response.data.msg);
     }); 
 }
 
