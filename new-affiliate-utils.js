@@ -74,7 +74,7 @@ function validateForm(){
         novoParagrafo.style.textAlign = 'justify';
         novoParagrafo.style.padding = '0 13px 0 13px';
         novoParagrafo.style.wordWrap = 'break-word';
-        novoParagrafo.innerHTML = '<span class="terms" style="opacity: 1;">Ao continuar no botão abaixo você estará assegurando o tratamento responsável de suas informações, em conformidade com a LGPD vigente, e também: 1. Concordando com os <a href="https://api.consigmais.com.br/terms/" style="color: #646464" target="_blank">Termos de Uso</a> e de <a style="color: #646464" href="https://api.consigmais.com.br/privacy/" target="_blank">Privacidade</a> 2. Aceitando ser contatado por Whatsapp/SMS acerca desta minha consulta e solicitação, bem como autorizo ter meu CPF consultado junto às instituições bancárias e governamentais para assegurar a correta simulação / contratação deste produto.</span>';
+        novoParagrafo.innerHTML = '<span class="terms" style="opacity: 1;">Ao continuar no botão abaixo você estará assegurando o tratamento responsável de suas informações, em conformidade com a LGPD vigente, e também: 1. Concordando com os <a href="https://api.consigmais.com.br/terms/" style="color: #646464" target="_blank">Termos de Uso</a> e de <a style="color: #646464" href="https://api.consigmais.com.br/privacy/" target="_blank">Privacidade</a>.</span>';
         novaDiv.appendChild(novoParagrafo);
 
     let divPai = document.querySelector('.brz-forms2__item-button');
