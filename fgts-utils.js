@@ -3,7 +3,6 @@ if (typeof apiBaseUrl == 'undefined') {
   let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
   let stepsUrl = 'https://correspondente-bmg.faz.vc/';
 }
-
 //inicia spin loading no button
 function setLoading(){
   button.setAttribute('disabled', true);
