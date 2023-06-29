@@ -1,9 +1,10 @@
 var federalId = document.querySelector('[data-label="CPF"]'),
     phone = document.querySelector('[data-label="Whatsapp"]'),
-    birth = document.querySelector('[data-label="Data de Nascimento"]');
-    agency = document.querySelector('[data-label="Agência"]');
-    dig = document.querySelector('[data-label="Dígito"]');
-    account = document.querySelector('[data-label="Conta"]');
+    birth = document.querySelector('[data-label="Data de Nascimento"]'),
+    agency = document.querySelector('[data-label="Agência"]'),
+    dig = document.querySelector('[data-label="Dígito"]'),
+    account = document.querySelector('[data-label="Conta"]'),
+    federalIdB = document.querySelector('[data-label="CPF/CNPJ"]');
 
 
 
@@ -55,5 +56,28 @@ if (dig) {
     //   }
       
       account.value = value;
+    });
+  }
+
+  if (federalIdB) {
+    federalIdB.setAttribute("inputmode", "numeric");
+    federalIdB.addEventListener("input", function () {
+      var value = federalIdB.value.replace(/\D/g, "");
+      var formattedValue = "";
+  
+      if (value.length <= 11) {
+        // CPF
+        formattedValue = value.replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d)/, "$1.$2")
+          .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      } else {
+        // CNPJ
+        formattedValue = value.replace(/^(\d{2})(\d)/, "$1.$2")
+          .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+          .replace(/\.(\d{3})(\d)/, ".$1/$2")
+          .replace(/(\d{4})(\d)/, "$1-$2");
+      }
+  
+      federalIdB.value = formattedValue;
     });
   }
