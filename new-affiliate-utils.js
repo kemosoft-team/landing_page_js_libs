@@ -59,7 +59,7 @@ function validateForm(){
     var zipcode = document.querySelector('[data-label="CEP"]').value;
     var federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
 
-    if(federalId.value.length > 14){
+    if(federalId.length > 14){
 
         if (name == "" || phone == "" || federalId =="" || zipcode == "") {
             showToast("Por favor, preencha todos os campos.");
