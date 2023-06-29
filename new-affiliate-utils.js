@@ -34,6 +34,12 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
     })
     .then((response) => {
 
+        var sectionS = document.getElementById("succes");
+        var sectionR = document.getElementById("register");
+
+        sectionR.style.display = "none";
+        sectionS.style.display = "block";
+
     })
     .catch(function (error) {
         button.removeAttribute('disabled');
@@ -51,7 +57,7 @@ function validateForm(){
     const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
     const zipcode = document.querySelector('[data-label="CEP"]').value;
-    const federalId = document.querySelector('[data-label="CPF ou CNPJ"]').value;
+    const federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
   
     if (name == "" || phone == "" || birth == "" || federalId =="" || zipcode == "") {
       showToast("Por favor, preencha todos os campos.");
