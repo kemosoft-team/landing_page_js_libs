@@ -46,18 +46,19 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 //validar form
 function validateForm(){ 
 
-    const name = document.querySelector('[data-label="Nome"]').value;
+    const name = document.querySelector('[data-label="Nome ou Nome fantasia"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-    const email = document.querySelector('[data-label="Email (Opcional)"]').value;
-    const federalId = document.querySelector('[data-label="CPF"]').value;
+    const email = document.querySelector('[data-label="Email"]').value;
+    const zipcode = document.querySelector('[data-label="CEP"]').value;
+    const federalId = document.querySelector('[data-label="CPF ou CNPJ"]').value;
   
-    if (name == "" || phone == "" || birth == "" || federalId =="") {
+    if (name == "" || phone == "" || birth == "" || federalId =="" || zipcode == "") {
       showToast("Por favor, preencha todos os campos.");
       return false;
     }
   
-    registerAffiliate(name, birth, federalId, phone, email);
+    registerAffiliate(name, birth, federalId, zipcode, phone, email);
   }
 
   if(window.location.pathname == '/novo-afiliado'){
