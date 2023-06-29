@@ -11,8 +11,9 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 
     var url_params = window.location.href;
     var url = new URL(url_params);
-    let referrer = url.searchParams.get("af") == null ? url.searchParams.get("af") : "Vv5P88AWTr7qsU8v8";
+    let referrer = (url.searchParams.get("af") == null) ? url.searchParams.get("af") : "Vv5P88AWTr7qsU8v8";
 
+    console.log(referrer);
 
     const button = document.querySelector('.btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -28,7 +29,7 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
       "federalId": federalId,
       "mainEmail": email,
       "zipcode": zipcode,
-      "phone": phone,
+      "phone": phone.replace(/[^\w\s]/gi, ''),
       "referrerCode": referrer,
       "terms":true
     })
