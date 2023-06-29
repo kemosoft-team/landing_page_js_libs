@@ -181,7 +181,7 @@ function getCookie(name) {
   span.textContent = '';
   
   axios.post(apiBaseUrl+'registerCustomerInfos', {
-    branchNo: agency,
+    branchNo: agency.replace(/[^\w\s]/gi, ''),
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
     acctType: accountType,
