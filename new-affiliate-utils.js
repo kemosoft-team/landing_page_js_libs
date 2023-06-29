@@ -38,21 +38,20 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
         var sectionS = document.getElementById("succes");
         var sectionR = document.getElementById("register");
         
-        sectionR.style.opacity = "0"; // Define a opacidade inicial da seção de registro como 0
-        sectionR.style.pointerEvents = "none"; // Desativa eventos de mouse na seção de registro
+        sectionR.style.opacity = "0"; 
+        sectionR.style.pointerEvents = "none"; 
         
-        // Define uma transição suave
         sectionR.style.transition = "opacity 0.3s ease-out";
         sectionS.style.transition = "opacity 0.3s ease-in";
         
-        // Oculta a seção de registro e aguarda um pequeno intervalo de tempo para que a transição ocorra
+
         setTimeout(function() {
           sectionR.style.display = "none";
-          sectionR.style.opacity = "1"; // Define a opacidade de volta para 1 após ocultar a seção
-          sectionR.style.pointerEvents = "auto"; // Reativa eventos de mouse na seção de registro
+          sectionR.style.opacity = "1"; 
+          sectionR.style.pointerEvents = "auto"; 
         
           sectionS.style.display = "block";
-          sectionS.style.opacity = "1"; // Define a opacidade da seção de sucesso como 1 para exibi-la
+          sectionS.style.opacity = "1"; 
         }, 300);
 
     })
