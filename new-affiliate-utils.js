@@ -29,7 +29,7 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
       "federalId": federalId,
       "mainEmail": email,
       "zipcode": zipcode,
-      "phone": phone.replace(/[^\w\s]/gi, ''),
+      "phone": phone.replace(/[^\w\s]/gi, '').replace(/\s/g, ''),
       "referrerCode": referrer,
       "terms":true
     })
