@@ -38,7 +38,7 @@ if (typeof apiBaseUrl == 'undefined') {
   //setar token
   function handleSetToken(value){
       // console.log("handleToken");
-      document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=correspondente-bmg.faz.vc; path=/;`;
+      document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=master.faz.vc; path=/;`;
     }
   
   //obtem o step atual pela url
