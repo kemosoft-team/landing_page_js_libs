@@ -28,6 +28,23 @@ function getCookie(name) {
           console.log(error);
       }); 
   }
+
+  function redirectToNextStep(res) {
+  
+    const nextStep = res.nextStep;
+  
+    switch (nextStep) {
+      case 'signature':
+        window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
+        break;
+      case 'scheduled':
+        window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.scheduledTo));
+        break;
+      default:
+        window.location.href = stepsUrl + nextStep;
+        break;
+    }
+  }
   
   function setLinkSignature() {
   var encodedData = window.location.search.substring(1);
@@ -194,9 +211,7 @@ function getCookie(name) {
   .then((response) => {
     redirectToNextStep(response.data);
   })
-  .catch(function (error, response) {
-      console.log(error);
-      console.log(response);
+  .catch(function (error) {
       button.removeAttribute('disabled');
       spinner.classList.add('brz-invisible');
       span.textContent = 'Simular';
