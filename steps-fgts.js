@@ -194,8 +194,9 @@ function getCookie(name) {
   .then((response) => {
     redirectToNextStep(response.data);
   })
-  .catch(function (error) {
-      
+  .catch(function (error, response) {
+      console.log(error);
+      console.log(response);
       button.removeAttribute('disabled');
       spinner.classList.add('brz-invisible');
       span.textContent = 'Simular';
