@@ -195,7 +195,7 @@ function getCookie(name) {
     redirectToNextStep(response.data);
   })
   .catch(function (error) {
-
+      console.log(error);
       if(error.data.nextStep){
         redirectToNextStep(error.response.data);
       }else{
