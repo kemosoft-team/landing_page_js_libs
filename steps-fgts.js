@@ -196,7 +196,7 @@ function getCookie(name) {
   })
   .catch(function (error) {
 
-      if(response.data.nextStep){
+      if(error.data.nextStep){
         redirectToNextStep(error.response.data);
       }else{
         button.removeAttribute('disabled');
