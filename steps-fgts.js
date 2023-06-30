@@ -195,10 +195,15 @@ function getCookie(name) {
     redirectToNextStep(response.data);
   })
   .catch(function (error) {
-      button.removeAttribute('disabled');
-      spinner.classList.add('brz-invisible');
-      span.textContent = 'Simular';
-      showToast(error.response.data.message);
+
+      if(response.data.nextStep){
+        redirectToNextStep(error.response.data);
+      }else{
+        button.removeAttribute('disabled');
+        spinner.classList.add('brz-invisible');
+        span.textContent = 'Simular';
+        showToast(error.response.data.message);
+      }
   }); 
   
   }
