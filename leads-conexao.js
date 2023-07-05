@@ -126,7 +126,7 @@ function validateForm() {
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
-    const federalId = document.querySelector('[data-label="CPF"]').value;
+    const federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
 
     if (name == "" || federalId == "" || phone == "" || email == "") {
         showToast("Por favor, preencha todos os campos.");
