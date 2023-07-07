@@ -275,7 +275,11 @@ function getCookie(name) {
 
   
       if(response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable'){
-  
+
+          if(response.data.nextStep == 'authorize'){
+            const authorizeLimit = localStorage.getItem('authorizeLimit') || 0;
+            localStorage.setItem('authorizeLimit', parseInt(authorizeLimit) + 1);
+          }
           window.location.href = stepsUrl+response.data.nextStep;
   
       }else{
