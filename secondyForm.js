@@ -8,7 +8,11 @@ if (federalId) {
     var cpf = federalId.value;
     cpf = cpf.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
     cpf = cpf.slice(0, 11); // Limita o valor do CPF a 11 dígitos
-    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Aplica a máscara de CPF
+
+    if (cpf.length === 11) {
+      cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Aplica a máscara de CPF
+    }
+
     federalId.value = cpf;
   });
 }
@@ -22,7 +26,6 @@ if (phone) {
     phone.value = phoneNumber;
   });
 }
-
 
 // secondyRegisterCustomer
 async function secondyRegisterCustomer(name, phone, federalId) {
