@@ -6,6 +6,12 @@ if(phoneForm){phoneForm.addEventListener("input", (function() {
     e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phoneForm.value = e
 }));
 }
+if(federalId){
+federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), birth.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function() {
+    var e = federalId.value;
+    e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalId.value = e
+}));
+}
 
 // secondyRegisterCustomer
 async function secondyRegisterCustomer(name, phone, email) {
