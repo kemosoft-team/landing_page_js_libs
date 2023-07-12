@@ -60,7 +60,7 @@ function validateSecondyForm() {
     return false;
   }
 
-    secondyRegisterCustomer(name, phone, federalId, email);
+    secondyRegisterCustomer(name, phone, federalId);
 }
 
 const buttonSecondy = document.querySelector(".brz-btn-secondy-submit");
