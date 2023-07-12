@@ -1,7 +1,7 @@
 var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
-var federalId = document.querySelector('[data-label="CPF"]'),
-    phone = document.querySelector('[data-label="Whatsapp"]'),
+var federalId = document.querySelector('[data-label="Deixe seu CPF"]'),
+    phone = document.querySelector('[data-label="Deixe seu Whatsapp"]'),
 
 if(federalId){
 federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), birth.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function() {
