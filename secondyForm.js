@@ -1,31 +1,26 @@
 var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
-var federalId = document.querySelector('[data-label="Deixe seu CPF"]');
-var phone = document.querySelector('[data-label="Deixe seu Whatsapp"]');
+var federalId = document.querySelector('[data-label="CPF"]');
+var phone = document.querySelector('[data-label="Whatsapp"]');
 
 if (federalId) {
-  federalId.addEventListener("input", function () {
-    var cpf = federalId.value;
-    cpf = cpf.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-    cpf = cpf.slice(0, 11); // Limita o valor do CPF a 11 dígitos
-
-    if (cpf.length === 11) {
-      cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Aplica a máscara de CPF
-    }
-
-    federalId.value = cpf;
-  });
+    federalId.setAttribute("inputmode", "numeric");
+    phone.setAttribute("inputmode", "numeric");
+    federalId.addEventListener("input", function() {
+        var e = federalId.value;
+        e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        federalId.value = e;
+    });
 }
 
 if (phone) {
-  phone.addEventListener("input", function () {
-    var phoneNumber = phone.value;
-    phoneNumber = phoneNumber.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-    phoneNumber = phoneNumber.slice(0, 11); // Limita o valor do WhatsApp a 11 dígitos
-    phoneNumber = phoneNumber.replace(/(\d{2})(\d{1,5})(\d{4})/, "($1) $2-$3"); // Aplica a máscara de WhatsApp
-    phone.value = phoneNumber;
-  });
+    phone.addEventListener("input", function() {
+        var e = phone.value;
+        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3");
+        phone.value = e;
+    });
 }
+
 
 // secondyRegisterCustomer
 async function secondyRegisterCustomer(name, phone, federalId) {
