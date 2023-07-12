@@ -1,16 +1,17 @@
 var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
-var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
-if(phoneForm){phoneForm.addEventListener("input", (function() {
-    var e = phoneForm.value;
-    e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phoneForm.value = e
-}));
-}
-var federalIdForm = document.querySelector('[data-label="Deixe seu CPF"]')
+var federalId = document.querySelector('[data-label="CPF"]'),
+    phone = document.querySelector('[data-label="Whatsapp"]'),
+
 if(federalId){
 federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), birth.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function() {
     var e = federalId.value;
     e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalId.value = e
+}));
+}
+if(phone){phone.addEventListener("input", (function() {
+    var e = phone.value;
+    e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phone.value = e
 }));
 }
 
