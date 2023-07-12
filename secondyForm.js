@@ -3,14 +3,11 @@ var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 var federalId = document.querySelector('[data-label="Deixe seu CPF"]');
 var phone = document.querySelector('[data-label="Deixe seu Whatsapp"]');
 
-if (federalId) {
-    federalId.setAttribute("inputmode", "numeric");
-    phone.setAttribute("inputmode", "numeric");
-    federalId.addEventListener("input", function() {
-        var e = federalId.value;
-        e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-        federalId.value = e;
-    });
+if(federalId){
+federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"),  federalId.addEventListener("input", (function() {
+    var e = federalId.value;
+    e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalId.value = e
+}));
 }
 
 if (phone) {
