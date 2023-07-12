@@ -6,6 +6,7 @@ if(phoneForm){phoneForm.addEventListener("input", (function() {
     e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phoneForm.value = e
 }));
 }
+var federalIdForm = document.querySelector('[data-label="Deixe seu CPF"]')
 if(federalId){
 federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", "numeric"), birth.setAttribute("inputmode", "numeric"), federalId.addEventListener("input", (function() {
     var e = federalId.value;
@@ -14,7 +15,7 @@ federalId.setAttribute("inputmode", "numeric"), phone.setAttribute("inputmode", 
 }
 
 // secondyRegisterCustomer
-async function secondyRegisterCustomer(name, phone, email) {
+async function secondyRegisterCustomer(name, phone, federalId) {
 
     currentUrl = document.url;
 
