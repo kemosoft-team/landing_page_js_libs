@@ -23,7 +23,7 @@ async function secondyRegisterCustomer(name, phone, email) {
     axios.post(urlApi, {
         name: name,
         phone: phone,
-        email: email,
+        CPF:  federalId,
         site: currentUrl
     })
         .then((response) => {
@@ -41,16 +41,14 @@ async function secondyRegisterCustomer(name, phone, email) {
 function validateSecondyForm() {
     const name = document.querySelector('[data-label="Deixe seu Nome"]').value;
     const phone = document.querySelector('[data-label="Deixe seu Whatsapp"]').value;
-    const email = document.querySelector('[data-label="Deixe seu E-mail (Opcional)"]').value;
+    const federalId = document.querySelector('[data-label="Deixe seu CPF"]').value;
 
-
-
-     if (name == "" || phone == "") {
+     if (name == "" || phone == ""|| federalId == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-    secondyRegisterCustomer(name, phone, email);
+    secondyRegisterCustomer(name, phone, federalId, email);
 }
 
 const buttonSecondy = document.querySelector(".brz-btn-secondy-submit");
