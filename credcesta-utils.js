@@ -152,7 +152,7 @@ function captureAffiliateData() {
 
 
 //registerCustomer
-async function registerCustomer(name, birth, federalId, phone) {
+async function registerCustomer(name, birth, federalId, phone, federalIdRepresent) {
 
   const affiliate = captureAffiliateData();
 
@@ -168,6 +168,7 @@ async function registerCustomer(name, birth, federalId, phone) {
     "name": name,
     "birth": birth,
     "federalId": federalId,
+    'federalIdRepresent': federalIdRepresent,
     "phone": phone,
     "useTerms": true,
     "dataPrivacy": true,
@@ -319,7 +320,7 @@ function setAddressInfo(obj){
   }
 
     // registerCustomerBenefit
-    async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
+    async function registerCustomerDocs(nb) {
   
       const button = document.querySelector('.brz-btn-submit');
       const spinner = button.querySelector('.brz-form-spinner');
@@ -330,11 +331,40 @@ function setAddressInfo(obj){
       span.textContent = '';
       
       axios.post(apiBaseUrl+'registerCustomerInfos', {
-        docNumber: docNumber,
-        docType: docType,
-        docState: issueState,
-        mother: motherName,
+        'nb': nb,
         currentStep: getCurrentStep()
+      },
+      {
+        headers: {
+          'Authorization': `${getCookie('tkn')}`
+        }})
+      .then((response) => {
+        redirectToNextStep(response.data);
+      })
+      .catch(function (error) {
+          button.removeAttribute('disabled');
+          spinner.classList.add('brz-invisible');
+          span.textContent = 'Sim, quero antecipar meu FGTS!';
+          showToast(error.response.data.message);
+      }); 
+      
+      }
+  
+    // registerCustomerRepresentative
+    async function registerCustomerDocs(nameRepresent, birthRepresent) {
+  
+      const button = document.querySelector('.brz-btn-submit');
+      const spinner = button.querySelector('.brz-form-spinner');
+      const span = button.querySelector('.brz-span.brz-text__editor');
+      
+      button.setAttribute('disabled', true);
+      spinner.classList.remove('brz-invisible');
+      span.textContent = '';
+      
+      axios.post(apiBaseUrl+'registerCustomerInfos', {
+        'nameRepresent': nameRepresent,
+        'birthRepresent': birthRepresent,
+         currentStep: getCurrentStep()
       },
       {
         headers: {
@@ -446,17 +476,26 @@ function validarFormDocs(){
 //validarFormDocs
 function validarFormBenefit(){ 
 
-  const docType = document.querySelector('[data-label="Tipo de Documento"]').value;
-  const docNumber = document.querySelector('[data-label="Número do Documento"]').value;
-  const issueState = document.querySelector('[data-label="UF Expeditor"]').value;
-  const motherName = document.querySelector('[data-label="Nome da sua Mãe"]').value;
-
+  const nb = document.querySelector('[data-label="Número de benefício"]').value;
   
-  if (docType == "" || docNumber == "" || issueState == "" || motherName =="") {
+  if (nb == "") {
+    showToast("Por favor, preencha o campo.");
+    return false;
+  }
+  registerCustomerDocs(nb);
+}
+
+//validarFormRepresentanteLegal
+function validarFormRepresentative(){ 
+
+  const nameRepresent= document.querySelector('[data-label="Nome"]').value;
+  const birthRepresent = document.querySelector('[data-label="Data da Nascimento"]').value;
+  
+  if (nameRepresent == "" || birthRepresent == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
-  registerCustomerDocs(docNumber, docType, issueState, motherName);
+  registerCustomerDocs(nameRepresent, birthRepresent);
 }
 
 function validarFormAccount(){ 
@@ -489,13 +528,14 @@ function validateForm() {
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
   const federalId = document.querySelector('[data-label="CPF"]').value;
+  const federalIdRepresent = document.querySelector('[data-label=" CPF do representante legal (opcional)"]').value;
 
   if (name == "" || phone == "" || birth == "" || federalId == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-  registerCustomer(name, birth, federalId, phone);
+  registerCustomer(name, birth, federalId, phone, federalIdRepresent);
 }
 
 getTokenStatus();
@@ -637,6 +677,5 @@ window.onload = function () {
     });
   });
 };
-
 
 
