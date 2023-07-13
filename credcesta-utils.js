@@ -320,7 +320,7 @@ function setAddressInfo(obj){
   }
 
     // registerCustomerBenefit
-    async function registerCustomerDocs(nb) {
+    async function registerCustomerBenefit(nb) {
   
       const button = document.querySelector('.brz-btn-submit');
       const spinner = button.querySelector('.brz-form-spinner');
@@ -351,7 +351,7 @@ function setAddressInfo(obj){
       }
   
     // registerCustomerRepresentative
-    async function registerCustomerDocs(nameRepresent, birthRepresent) {
+    async function registerCustomerRepresent(nameRepresent, birthRepresent) {
   
       const button = document.querySelector('.brz-btn-submit');
       const spinner = button.querySelector('.brz-form-spinner');
@@ -482,7 +482,7 @@ function validarFormBenefit(){
     showToast("Por favor, preencha o campo.");
     return false;
   }
-  registerCustomerDocs(nb);
+  registerCustomerBenefit(nb);
 }
 
 //validarFormRepresentanteLegal
@@ -495,7 +495,7 @@ function validarFormRepresentative(){
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
-  registerCustomerDocs(nameRepresent, birthRepresent);
+  registerCustomerRepresentative(nameRepresent, birthRepresent);
 }
 
 function validarFormAccount(){ 
