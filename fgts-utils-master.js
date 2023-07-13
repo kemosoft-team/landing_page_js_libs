@@ -68,8 +68,10 @@ if (typeof apiBaseUrl == 'undefined') {
         }})
         .then(function (response) {
           
+          const param = window.location.search || '';
+
           const link = document.querySelector('a.btn-continue');
-          link.setAttribute('href', stepsUrl + response.data.nextStep);
+          link.setAttribute('href', stepsUrl + response.data.nextStep + param);
   
            document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
            var botao = document.querySelector(".btn-lead-info");
