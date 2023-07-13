@@ -489,7 +489,7 @@ function validarFormBenefit(){
 function validarFormRepresentative(){ 
 
   const nameRepresent= document.querySelector('[data-label="Nome"]').value;
-  const birthRepresent = document.querySelector('[data-label="Data da Nascimento"]').value;
+  const birthRepresent = document.querySelector('[data-label="Data de Nascimento"]').value;
   
   if (nameRepresent == "" || birthRepresent == "" ) {
     showToast("Por favor, preencha todos os campos.");
