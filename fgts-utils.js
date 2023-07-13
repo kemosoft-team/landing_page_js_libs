@@ -19,17 +19,18 @@ span.textContent = textButton;
 
 function redirectToNextStep(res) {
 
+  const param = window.location.search || '';
   const nextStep = res.nextStep;
 
   switch (nextStep) {
     case 'signature':
-      window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
+      window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
       break;
     case 'scheduled':
-      window.location.href = stepsUrl + nextStep + '?' + encodeURIComponent(JSON.stringify(res.scheduledTo));
+      window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
       break;
     default:
-      window.location.href = stepsUrl + nextStep;
+      window.location.href = stepsUrl + nextStep + param;
       break;
   }
 }
