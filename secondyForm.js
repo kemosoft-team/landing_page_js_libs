@@ -1,14 +1,25 @@
 var urlApi = ('https://api.sheetmonkey.io/form/toQEKxvQa6TUiyLJ6td4hM');
 
-var phoneForm = document.querySelector('[data-label="Deixe seu Whatsapp"]')
-if(phoneForm){phoneForm.addEventListener("input", (function() {
-    var e = phoneForm.value;
-    e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3"), phoneForm.value = e
+var federalIdSecondy = document.querySelector('[data-label="Deixe seu CPF"]');
+var phoneSecondy = document.querySelector('[data-label="Deixe seu Whatsapp"]');
+
+if(federalIdSecondy){
+federalIdSecondy.setAttribute("inputmode", "numeric"), phoneSecondy.setAttribute("inputmode", "numeric"),  federalIdSecondy.addEventListener("input", (function() {
+    var e = federalIdSecondy.value;
+    e = (e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d)/, "$1.$2")).replace(/(\d{3})(\d{1,2})$/, "$1-$2"), federalIdSecondy.value = e
 }));
 }
 
+if (phoneSecondy) {
+    phoneSecondy.addEventListener("input", function() {
+        var e = phoneSecondy.value;
+        e = (e = (e = (e = e.replace(/\D/g, "")).substring(0, 11)).replace(/(\d{2})(\d)/, "($1) $2")).replace(/(\d{1})(\d{4})(\d{4})$/, "$1 $2-$3");
+        phoneSecondy.value = e;
+    });
+}
+
 // secondyRegisterCustomer
-async function secondyRegisterCustomer(name, phone, email) {
+async function secondyRegisterCustomer(name, phone, federalId) {
 
     currentUrl = document.url;
 
@@ -23,7 +34,7 @@ async function secondyRegisterCustomer(name, phone, email) {
     axios.post(urlApi, {
         name: name,
         phone: phone,
-        email: email,
+        CPF:  federalId,
         site: currentUrl
     })
         .then((response) => {
@@ -41,16 +52,14 @@ async function secondyRegisterCustomer(name, phone, email) {
 function validateSecondyForm() {
     const name = document.querySelector('[data-label="Deixe seu Nome"]').value;
     const phone = document.querySelector('[data-label="Deixe seu Whatsapp"]').value;
-    const email = document.querySelector('[data-label="Deixe seu E-mail (Opcional)"]').value;
+    const federalId = document.querySelector('[data-label="Deixe seu CPF"]').value;
 
-
-
-     if (name == "" || phone == "") {
+     if (name == "" || phone == ""|| federalId == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-    secondyRegisterCustomer(name, phone, email);
+    secondyRegisterCustomer(name, phone, federalId);
 }
 
 const buttonSecondy = document.querySelector(".brz-btn-secondy-submit");
