@@ -168,7 +168,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
     "name": name,
     "birth": birth,
     "federalId": federalId,
-    'federalIdRepresent': federalIdRepresent,
+    "federalIdRepresent": federalIdRepresent,
     "phone": phone,
     "useTerms": true,
     "dataPrivacy": true,
