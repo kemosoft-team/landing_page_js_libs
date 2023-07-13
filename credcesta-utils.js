@@ -45,7 +45,7 @@ function getTokenStatus() {
       .then(function (response) {
 
         const link = document.querySelector('a.btn-continue');
-        link.setAttribute('href', 'https://credcesta.kemobuilder.site/account');
+        redirectToNextStep(n)
 
         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
         var botao = document.querySelector(".btn-lead-info");
