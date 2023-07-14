@@ -42,7 +42,7 @@ switch (nextStep) {
     window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
     break;
   default:
-   /*  window.location.href = stepsUrl + nextStep;  */
+   window.location.href = stepsUrl + nextStep; 
    console.log(stepsUrl + nextStep);
     break;
 }
