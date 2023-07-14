@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrls = windows.location.host;
+let stepsUrls = window.location.host;
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
