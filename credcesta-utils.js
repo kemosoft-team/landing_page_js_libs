@@ -182,7 +182,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
     .then((response) => {
       handleSetToken(response.data.token);
       redirectToNextStep(response.data.nextStep);
-      // console.log(response.data.nextStep);
+      // console.log(response.data);
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
