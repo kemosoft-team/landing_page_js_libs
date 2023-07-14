@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrls = window.location.href;
+let stepsUrl = window.location.href;
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
@@ -679,5 +679,4 @@ window.onload = function () {
     });
   });
 };
-
 
