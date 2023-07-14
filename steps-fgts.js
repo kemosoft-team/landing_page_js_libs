@@ -140,9 +140,9 @@ function getCookie(name) {
         showToast(error.response.data.message);
     }); 
   
-  
   }
   
+  //
   function setAddressInfo(obj){
     document.querySelector('[data-label="Rua"]').value = obj.address;
     document.querySelector('[data-label="Bairro"]').value = obj.district;
@@ -349,7 +349,7 @@ function getCookie(name) {
     sendRequest();
   }
   
-  //validarFormDocs
+  //validarFormAddress
   function validarFormAddress(){ 
   
     const zipcode = document.querySelector('[data-label="CEP"]').value;

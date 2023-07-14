@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrls = window.location.host;
+let stepsUrls = window.location.href;
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
@@ -178,8 +178,8 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
   })
     .then((response) => {
       handleSetToken(response.data.token);
-      // redirectToNextStep(response.data.nextStep);
-      console.log(response.data.nextStep);
+      redirectToNextStep(response.data.nextStep);
+      // console.log(response.data.nextStep);
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
