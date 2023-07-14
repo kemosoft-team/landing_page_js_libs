@@ -18,7 +18,7 @@ function getCookie(name) {
 //Obtem e redireciona para nextstep atraves de consulta com token
 function setNextStep() {
 
-  axios.post(apiBaseUrl+'getTokenStatus', {}, {
+  axios.post(apiUrl+'getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }})
@@ -193,7 +193,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
 //Obtem as informamações de endereço com base no CEP
 async function getByZipCodeInfo(zipcode){
   
-  axios.post(apiBaseUrl+'getZipcodeInfo', {
+  axios.post(apiUrl+'getZipcodeInfo', {
     zipcode: zipcode,
   },
   {
@@ -229,7 +229,7 @@ function setAddressInfo(obj){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
     
-    axios.post(apiBaseUrl+'registerCustomerInfos', {
+    axios.post(apiUrl+'registerCustomerInfos', {
       zipcode: zipcode,
       address: address, 
       addressNumber: addressNumber, 
@@ -265,7 +265,7 @@ function setAddressInfo(obj){
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
   
-  axios.post(apiBaseUrl+'registerCustomerInfos', {
+  axios.post(apiUrl+'registerCustomerInfos', {
     branchNo: agency.replace(/[^\w\s]/gi, ''),
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -298,7 +298,7 @@ function setAddressInfo(obj){
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
   
-  axios.post(apiBaseUrl+'registerCustomerInfos', {
+  axios.post(apiUrl+'registerCustomerInfos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
@@ -332,7 +332,7 @@ function setAddressInfo(obj){
       spinner.classList.remove('brz-invisible');
       span.textContent = '';
       
-      axios.post(apiBaseUrl+'registerCustomerInfos', {
+      axios.post(apiUrl+'registerCustomerInfos', {
         'nb': nb,
         currentStep: getCurrentStep()
       },
@@ -363,7 +363,7 @@ function setAddressInfo(obj){
       spinner.classList.remove('brz-invisible');
       span.textContent = '';
       
-      axios.post(apiBaseUrl+'registerCustomerInfos', {
+      axios.post(apiUrl+'registerCustomerInfos', {
         'nameRepresent': nameRepresent,
         'birthRepresent': birthRepresent,
          currentStep: getCurrentStep()
@@ -392,7 +392,7 @@ function setAddressInfo(obj){
     const spinner = button.querySelector('.brz-form-spinner');
     const span = button.querySelector('.brz-span.brz-text__editor');
   
-    axios.post(apiBaseUrl+'getNextStep', {}, 
+    axios.post(apiUrl+'getNextStep', {}, 
     {
       headers: {
         'Authorization': `${getCookie('tkn')}`
