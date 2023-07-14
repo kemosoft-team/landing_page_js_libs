@@ -32,8 +32,6 @@ function setNextStep() {
 
 //Redireciona para subpágina
 function redirectToNextStep(res) {
-
-const param = window.location.search || '';
 const nextStep = res.nextStep;
 
 switch (nextStep) {
@@ -44,10 +42,7 @@ switch (nextStep) {
     window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
     break;
   default:
-    /* window.location.href = stepsUrl + nextStep + param; */
-    console.log(stepsUrl);
-    console.log(nextStep);
-    console.log(param);
+    window.location.href = stepsUrl + nextStep; 
     break;
 }
 }
