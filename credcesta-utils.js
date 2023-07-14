@@ -184,7 +184,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
       button.removeAttribute('disabled');
       spinner.classList.add('brz-invisible');
       span.textContent = 'ACEITAR E CONTINUAR';
-      showToast(error.response?.data.message);
+      showToast(error.response.data.message);
     });
 }
 
