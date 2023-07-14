@@ -46,7 +46,7 @@ switch (nextStep) {
   default:
     /* window.location.href = stepsUrl + nextStep + param; */
     console.log(stepsUrl);
-    console.log(nextStep);
+    console.log(res);
     console.log(param);
     break;
 }
