@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://credcesta.kemobuilder.site/';
+let stepsUrl = window.location.href;
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
@@ -48,11 +48,10 @@ switch (nextStep) {
     console.log(stepsUrl);
     console.log(nextStep);
     console.log(param);
-
-    console.log(stepsUrl + nextStep + param)
     break;
 }
 }
+
 
 //Seta cookie
 function handleSetToken(value) {
@@ -183,8 +182,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
   })
     .then((response) => {
       handleSetToken(response.data.token);
-      redirectToNextStep(response.data.nextStep);
-      // console.log(response.data);
+      redirectToNextStep(response.data);
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
@@ -684,4 +682,5 @@ window.onload = function () {
     });
   });
 };
+
 
