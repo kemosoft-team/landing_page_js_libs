@@ -542,7 +542,7 @@ getTokenStatus();
 
 window.onload = function () {
   var stateItems = document.querySelectorAll('#stateItems');
-  var selectedCity = document.getElementBy('selected-city');
+  var selectedCity = document.getElementById('selected-city');
   var state = document.querySelectorAll('#state');
 
   var convenio = [
