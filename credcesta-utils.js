@@ -542,7 +542,7 @@ getTokenStatus();
 
 window.onload = function () {
   var stateItems = document.querySelectorAll('#stateItems');
-  var selectedCity = document.getElementById('selected-city');
+  var selectedCity = document.querySelectorAll('#selected-city');
   var state = document.querySelectorAll('#state');
 
   var convenio = [
@@ -653,7 +653,10 @@ window.onload = function () {
     .then(function (data) {
       var code = data.region_code;
       var stateName = data.region;
-      selectedCity.textContent = code;
+      selectedCity.forEach(function(item){
+        item.textContent = code;
+      })
+      
       state.forEach(function (item) {
         item.textContent = stateName;
       });
@@ -669,7 +672,11 @@ window.onload = function () {
   stateItems.forEach(function (item) {
     item.addEventListener('click', function () {
       var cityName = item.textContent;
-      selectedCity.textContent = cityName;
+      
+      selectedCity.forEach(function(item){
+        item.textContent = cityName;
+      })
+      
       state.forEach(function (item) {
         item.textContent = cityName;
       });
