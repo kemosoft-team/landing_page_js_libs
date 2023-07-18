@@ -89,11 +89,11 @@ function captureAffiliateData(){
       const urlParams = new URLSearchParams(window.location.search);
 
       let affiliateData = {
-        affiliateCode: urlParams.get('af') || null,
+        affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
         source: urlParams.get('source') || null,
         productId: urlParams.get('pid') || null,
         vendorId: urlParams.get('vid') || null,
-        offerId: urlParams.get('oid') || null,
+        offerId: urlParams.get('oid') || 18,
         clickId : urlParams.get('cid') || null,
         pixelId: urlParams.get('afx') || null,
         gtmId: urlParams.get('afgtm') || null,
