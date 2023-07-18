@@ -152,7 +152,7 @@ function captureAffiliateData() {
 
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone) {
+async function registerCustomer(name, federalId, phone, birth) {
 
     const affiliate = captureAffiliateData();
 
@@ -168,6 +168,7 @@ async function registerCustomer(name, federalId, phone) {
         "name": name,
         "federalId": federalId,
         "phone": phone,
+        "birth": birth,
         "useTerms": true,
         "dataPrivacy": true,
         "dataSearchAllowed": true,
@@ -445,14 +446,15 @@ function validateForm() {
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
+    const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
 
 
-    if (name == "" || phone == "" || federalId == "") {
+    if (name == "" || phone == "" || federalId == "" || birth == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, federalId, phone);
+    registerCustomer(name, federalId, phone, birth);
 }
 
 getTokenStatus();
