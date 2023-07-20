@@ -497,7 +497,7 @@ function validarFormReference(){
 
 
 
-function validarFormReference(){
+function validarFormAccount(){
 
   const agency = document.querySelector('[data-label="Agência"]').value;
   var bank = '';
