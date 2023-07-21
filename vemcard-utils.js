@@ -316,7 +316,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
         .catch(function (error) {
             button.removeAttribute('disabled');
             spinner.classList.add('brz-invisible');
-            span.textContent = 'Sim, quero antecipar meu FGTS!';
+            span.textContent = 'Continuar';
             showToast(error.response.data.message);
         });
 
