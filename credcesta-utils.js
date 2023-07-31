@@ -541,29 +541,90 @@ function validateForm() {
 
 getTokenStatus();
 
-  window.onload = function () {
-    var stateItems = document.querySelectorAll('#stateItems').innerText;
-    var selectedCity = document.querySelectorAll('#selected-city');
-    var state = document.querySelectorAll('#state');
+window.onload = function () {
+  var stateItems = document.querySelectorAll('#stateItems');
+  var selectedCity = document.querySelectorAll('#selected-city');
+  var state = document.querySelectorAll('#state');
 
-    fetch('http://localhost:3000/convenios')
-      .then(response => response.json())
-      .then(data => {
-
-        var convenio = data.convenio;
-
-        if (convenio.includes(stateItems)) {
-
-          document.getElementById('stateItems').style.display = 'block';
-        } else {
-          
-          document.getElementById('stateItems').style.display = 'none';
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao obter os dados do convênio:', error);
-      });
-  };
+  var convenio = [
+    {
+      convenio: "BA",
+      limiteSaqueMaximo: "98x",
+      limiteCompra: "12x",
+      taxaJuros: "4,72%",
+      margemCartaoBeneficio: "30%"
+    },
+    {
+      convenio: "MS",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "5,50%",
+      margemCartaoBeneficio: "5%"
+    },
+    {
+      convenio: "AM",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "3,80%",
+      margemCartaoBeneficio: "20%"
+    },
+    {
+      convenio: "MA",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "5,50%",
+      margemCartaoBeneficio: "20%"
+    },
+    {
+      convenio: "PE",
+      limiteSaqueMaximo: "48x",
+      limiteCompra: "12x",
+      taxaJuros: "4,04%",
+      margemCartaoBeneficio: "8%"
+    },
+    {
+      convenio: "PI",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "4,68%",
+      margemCartaoBeneficio: "10%"
+    },
+    {
+      convenio: "MG",
+      limiteSaqueMaximo: "72x",
+      limiteCompra: "12x",
+      taxaJuros: "4,99%",
+      margemCartaoBeneficio: "10%"
+    },
+    {
+      convenio: "PR",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "4,30%",
+      margemCartaoBeneficio: "10%"
+    },
+    {
+      convenio: "RJ",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "5,50%",
+      margemCartaoBeneficio: "20%"
+    },
+    {
+      convenio: "SC",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "36x",
+      taxaJuros: "4,72%",
+      margemCartaoBeneficio: "10%"
+    },
+    {
+      convenio: "SP",
+      limiteSaqueMaximo: "96x",
+      limiteCompra: "12x",
+      taxaJuros: "4,60%",
+      margemCartaoBeneficio: "10%"
+    }
+  ];
 
 
   function showConvenio(city) {
