@@ -320,7 +320,7 @@ function setAddressInfo(obj){
   }
 
     // registerCustomerBenefit
-    async function registerCustomerBenefit(nb) {
+    async function registerCustomerBenefit(enrollment) {
   
       const button = document.querySelector('.brz-btn-submit');
       const spinner = button.querySelector('.brz-form-spinner');
@@ -331,7 +331,7 @@ function setAddressInfo(obj){
       span.textContent = '';
       
       axios.post(apiUrl+'registerCustomerInfos', {
-        'nb': nb,
+        enrollment: enrollment,
         currentStep: getCurrentStep()
       },
       {
@@ -476,13 +476,13 @@ function validarFormDocs(){
 //validarFormDocs
 function validarFormBenefit(){ 
 
-  const nb = document.querySelector('[data-label="Número de benefício"]').value;
+  const enrollment = document.querySelector('[data-label="Número de benefício"]').value;
   
-  if (nb == "") {
+  if (enrollment == "") {
     showToast("Por favor, preencha o campo.");
     return false;
   }
-  registerCustomerBenefit(nb);
+  registerCustomerBenefit(enrollment);
 }
 
 //validarFormRepresentanteLegal
