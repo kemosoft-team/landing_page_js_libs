@@ -541,28 +541,29 @@ function validateForm() {
 
 getTokenStatus();
 
- window.onload = function () {
-  var stateItems = document.querySelector('#stateItems').innerText.trim();
-  var selectedCity = document.querySelectorAll('#selected-city');
-  var state = document.querySelectorAll('#state');
+  window.onload = function () {
+    var stateItems = document.querySelectorAll('#stateItems').innerText;
+    var selectedCity = document.querySelectorAll('#selected-city');
+    var state = document.querySelectorAll('#state');
 
-  fetch('http://localhost:3000/convenios')
-    .then(response => response.json())
-    .then(data => {
-      var convenios = data; 
-    
-      var stateExists = convenios.some(conv => conv.convenio === stateItems);
+    fetch('http://localhost:3000/convenios')
+      .then(response => response.json())
+      .then(data => {
 
-      if (stateExists) {
-        document.getElementById('stateItems').style.display = 'block';
-      } else {
-        document.getElementById('stateItems').style.display = 'none';
-      }
-    })
-    .catch(error => {
-      console.error('Erro ao obter os dados do convênio:', error);
-    });
-};
+        var convenio = data.convenio;
+
+        if (convenio.includes(stateItems)) {
+
+          document.getElementById('stateItems').style.display = 'block';
+        } else {
+          
+          document.getElementById('stateItems').style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao obter os dados do convênio:', error);
+      });
+  };
 
 
   function showConvenio(city) {
