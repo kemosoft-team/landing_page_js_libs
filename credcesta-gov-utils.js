@@ -1,5 +1,5 @@
  var popUpClose = document.getElementById('popUpClose');
-    var stateItems = document.querySelectorAll('.btnState');
+ var stateItems = document.querySelectorAll('.btnState');
 
     stateItems.forEach(function (e) {
       e.addEventListener('click', function () {
@@ -17,7 +17,7 @@
       fetch('https://ipapi.co/json/')
         .then(function (response) {
           return response.json();
-        })
+        })       
         .then(function (data) {
           var code = data.region_code;
           var stateName = data.region;
