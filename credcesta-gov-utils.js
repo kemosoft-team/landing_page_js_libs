@@ -1,7 +1,17 @@
-window.onload = function () {
+ var popUpClose = document.getElementById('popUpClose');
+    var stateItems = document.querySelectorAll('.btnState');
+
+    stateItems.forEach(function (e) {
+      e.addEventListener('click', function () {
+        popUpClose.click();
+      });
+    });
+
+    window.onload = function () {
       var stateItems = document.querySelectorAll('#stateItems');
       var selectedCity = document.querySelectorAll('#selected-city');
       var state = document.querySelectorAll('#state');
+      var insucessPopUp = document.getElementById('insucess');
       var ArrayConvenios;
 
       fetch('https://ipapi.co/json/')
