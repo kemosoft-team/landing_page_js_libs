@@ -1,4 +1,3 @@
-
 var popUpClose = document.getElementById('popUpClose');
 var stateItems = document.querySelectorAll('.btnState');
 
@@ -21,7 +20,7 @@ window.onload = function () {
       if (Array.isArray(data)) {
         ArrayConvenios = data.map(convenios => {
           return {
-            nome: convenios.nome,
+            nome: convenios.name,
             prazo: convenios.prazo,
             idadeMinima: convenios.idadeMinima,
             idadeMaxima: convenios.idadeMaxima,
