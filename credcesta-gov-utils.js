@@ -41,7 +41,7 @@ window.onload = function () {
       console.error('Erro ao obter as informações do convênio:', error);
     });
 
-  function showConvenio(ArrayConvenios, city) {
+  function showConvenio(city) {
     var informacoesConvenio = ArrayConvenios.find(function (infos) {
       return infos.nome === city;
     });
