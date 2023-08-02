@@ -43,17 +43,17 @@ window.onload = function () {
                 showConvenio(ArrayConvenios, code);
               } else {
                 console.log('Resposta da API inválida. Não foi possível obter as informações do convênio.');
-                insucessPopUp();
+                insucessPopUp.click();
               }
             })
             .catch(error => {
               console.error('Erro ao obter as informações do convênio:', error);
-              insucessPopUp();
+              insucessPopUp.click();
             });
         })
         .catch(function (error) {
           console.log('Ocorreu um erro ao obter a localização do IP:', error);
-          insucessPopUp();
+          insucessPopUp.click();
         });
 
       function showConvenio(ArrayConvenios, city) {
@@ -72,7 +72,7 @@ window.onload = function () {
           maxIdadeElement.textContent = informacoesConvenio.idadeMaxima;
           percentualElement.textContent = informacoesConvenio.percentualMargemSaque;
         } else {
-          insucessPopUp();
+          insucessPopUp.click();
         }
       }
 
