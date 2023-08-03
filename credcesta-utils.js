@@ -528,7 +528,7 @@ function validateForm() {
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
   const federalId = document.querySelector('[data-label="CPF"]').value;
-  const federalIdRepresentElement = document.querySelector('[data-label=" CPF do representante legal (opcional)"]').value;
+  const federalIdRepresentElement = document.querySelector('[data-label=" CPF do representante legal (opcional)"]');
   const federalIdRepresent = federalIdRepresentElement ? federalIdRepresentElement.value : '';
 
   if (name == "" || phone == "" || birth == "" || federalId == "" ) {
