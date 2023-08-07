@@ -109,7 +109,46 @@ function captureAffiliateData() {
 }
 
 
-//registerCustomer
+//registerCustomerTELAPRINCIPAL
+async function registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain) {
+
+  const affiliate = captureAffiliateData();
+
+  const button = document.querySelector('.btn-submit-fgts');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl + '/registerCustomer', {
+    "name": nameMain,
+    "birth": birthMain,
+    "federalId": federalIdMain,
+    "phone": phoneMain,
+    "useTerms": true,
+    "dataPrivacy": true,
+    "dataSearchAllowed": true,
+    "affiliateData": affiliate
+  })
+    .then((response) => {
+      handleSetToken(response.data.token);
+      if (response.data.forceNewOfferLead) {
+        window.location.replace(`${stepsUrl}ongoing`);
+      } else {
+        redirectToNextStep(response.data);
+      }
+    })
+    .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'ACEITAR E CONTINUAR';
+      showToast(error.response.data.message);
+    });
+}
+
+//registerCustomerFORMULARIOSBUTTON
 async function registerCustomer(name, birth, federalId, phone) {
 
   const affiliate = captureAffiliateData();
@@ -149,17 +188,29 @@ async function registerCustomer(name, birth, federalId, phone) {
 }
 
 //validar form
-function validateForm() {
-  const nameInputs = document.querySelectorAll('[data-label="Nome"]');
-  const phoneInputs = document.querySelectorAll('[data-label="Whatsapp"]');
-  const birthInputs = document.querySelectorAll('[data-label="Data de Nascimento"]');
-  const federalIdInputs = document.querySelectorAll('[data-label="CPF"]');
+function validateFormMain() {
+  const nameMain = document.querySelectorAll('[data-label="Nome:"]');
+  const phoneMain = document.querySelectorAll('[data-label="Whatsapp:"]');
+  const birthMain = document.querySelectorAll('[data-label="Data de Nascimento:"]');
+  const federalIdMain = document.querySelectorAll('[data-label="CPF:"]');
 
-  nameInputs.forEach((nameInput, index) => {
-    const name = nameInput.value;
-    const phone = phoneInputs[index].value;
-    const birth = birthInputs[index].value;
-    const federalId = federalIdInputs[index].value;
+
+    if (nameMain === "" || phoneMain === "" || birthMain === "" || federalIdMain === "") {
+      showToast("Por favor, preencha todos os campos.");
+      return false;
+    }
+
+    registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain);
+}
+
+
+//validar form
+function validateForm() {
+  const name = document.querySelectorAll('[data-label="Nome"]');
+  const phone = document.querySelectorAll('[data-label="Whatsapp"]');
+  const birth = document.querySelectorAll('[data-label="Data de Nascimento"]');
+  const federalId = document.querySelectorAll('[data-label="CPF"]');
+
 
     if (name === "" || phone === "" || birth === "" || federalId === "") {
       showToast("Por favor, preencha todos os campos.");
@@ -167,5 +218,7 @@ function validateForm() {
     }
 
     registerCustomer(name, birth, federalId, phone);
-  });
 }
+
+
+
