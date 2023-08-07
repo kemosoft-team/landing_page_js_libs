@@ -150,16 +150,22 @@ async function registerCustomer(name, birth, federalId, phone) {
 
 //validar form
 function validateForm() {
+  const nameInputs = document.querySelectorAll('[data-label="Nome"]');
+  const phoneInputs = document.querySelectorAll('[data-label="Whatsapp"]');
+  const birthInputs = document.querySelectorAll('[data-label="Data de Nascimento"]');
+  const federalIdInputs = document.querySelectorAll('[data-label="CPF"]');
 
-  const name = document.querySelector('[data-label="Nome"]').value;
-  const phone = document.querySelector('[data-label="Whatsapp"]').value;
-  const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-  const federalId = document.querySelector('[data-label="CPF"]').value;
+  nameInputs.forEach((nameInput, index) => {
+    const name = nameInput.value;
+    const phone = phoneInputs[index].value;
+    const birth = birthInputs[index].value;
+    const federalId = federalIdInputs[index].value;
 
-  if (name == "" || phone == "" || birth == "" || federalId == "") {
-    showToast("Por favor, preencha todos os campos.");
-    return false;
-  }
+    if (name === "" || phone === "" || birth === "" || federalId === "") {
+      showToast("Por favor, preencha todos os campos.");
+      return false;
+    }
 
-  registerCustomer(name, birth, federalId, phone);
+    registerCustomer(name, birth, federalId, phone);
+  });
 }
