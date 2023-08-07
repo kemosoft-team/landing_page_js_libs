@@ -189,27 +189,27 @@ async function registerCustomer(name, birth, federalId, phone) {
 
 //validar form
 function validateFormMain() {
-  const nameMain = document.querySelectorAll('[data-label="Nome:"]');
-  const phoneMain = document.querySelectorAll('[data-label="Whatsapp:"]');
-  const birthMain = document.querySelectorAll('[data-label="Data de Nascimento:"]');
-  const federalIdMain = document.querySelectorAll('[data-label="CPF:"]');
+  const nameMain = document.querySelector('[data-label="Nome:"]').value;
+  const phoneMain = document.querySelector('[data-label="Whatsapp:"]').value;
+  const birthMain = document.querySelector('[data-label="Data de Nascimento:"]').value;
+  const federalIdMain = document.querySelector('[data-label="CPF:"]').value;
 
+  if (nameMain === "" || phoneMain === "" || birthMain === "" || federalIdMain === "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
 
-    if (nameMain === "" || phoneMain === "" || birthMain === "" || federalIdMain === "") {
-      showToast("Por favor, preencha todos os campos.");
-      return false;
-    }
-
-    registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain);
+  registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain);
 }
+
 
 
 //validar form
 function validateForm() {
-  const name = document.querySelectorAll('[data-label="Nome"]');
-  const phone = document.querySelectorAll('[data-label="Whatsapp"]');
-  const birth = document.querySelectorAll('[data-label="Data de Nascimento"]');
-  const federalId = document.querySelectorAll('[data-label="CPF"]');
+  const name = document.querySelector('[data-label="Nome"]');
+  const phone = document.querySelector('[data-label="Whatsapp"]');
+  const birth = document.querySelector('[data-label="Data de Nascimento"]');
+  const federalId = document.querySelector('[data-label="CPF"]');
 
 
     if (name === "" || phone === "" || birth === "" || federalId === "") {
