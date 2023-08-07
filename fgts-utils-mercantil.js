@@ -107,47 +107,7 @@ function captureAffiliateData() {
   return affiliateData;
 }
 
-
-//registerCustomerTELAPRINCIPAL
-async function registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain) {
-
-  const affiliate = captureAffiliateData();
-
-  const button = document.querySelector('.btn-submit-fgts');
-  const spinner = button.querySelector('.brz-form-spinner');
-  const span = button.querySelector('.brz-span.brz-text__editor');
-
-  button.setAttribute('disabled', true);
-  spinner.classList.remove('brz-invisible');
-  span.textContent = '';
-
-  axios.post(apiBaseUrl + '/registerCustomer', {
-    "name": nameMain,
-    "birth": birthMain,
-    "federalId": federalIdMain,
-    "phone": phoneMain,
-    "useTerms": true,
-    "dataPrivacy": true,
-    "dataSearchAllowed": true,
-    "affiliateData": affiliate
-  })
-    .then((response) => {
-      handleSetToken(response.data.token);
-      if (response.data.forceNewOfferLead) {
-        window.location.replace(`${stepsUrl}ongoing`);
-      } else {
-        redirectToNextStep(response.data);
-      }
-    })
-    .catch(function (error) {
-      button.removeAttribute('disabled');
-      spinner.classList.add('brz-invisible');
-      span.textContent = 'ACEITAR E CONTINUAR';
-      showToast(error.response.data.message);
-    });
-}
-
-//registerCustomerFORMULARIOSBUTTON
+//registerCustomer
 async function registerCustomer(name, birth, federalId, phone) {
 
   const affiliate = captureAffiliateData();
@@ -185,23 +145,6 @@ async function registerCustomer(name, birth, federalId, phone) {
       showToast(error.response.data.message);
     });
 }
-
-//validar form
-function validateFormMain() {
-  const nameMain = document.querySelector('[data-label="Nome:"]').value;
-  const phoneMain = document.querySelector('[data-label="Whatsapp:"]').value;
-  const birthMain = document.querySelector('[data-label="Data de Nascimento:"]').value;
-  const federalIdMain = document.querySelector('[data-label="CPF:"]').value;
-
-  if (nameMain === "" || phoneMain === "" || birthMain === "" || federalIdMain === "") {
-    showToast("Por favor, preencha todos os campos.");
-    return false;
-  }
-
-  registerCustomerMain(nameMain, birthMain, federalIdMain, phoneMain);
-}
-
-
 
 //validar form
 function validateForm() {
