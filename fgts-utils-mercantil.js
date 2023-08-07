@@ -1,38 +1,38 @@
-// Global Variables
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://mercantil.faz.vc/';
 
-// DOM Elements
-const button = document.querySelector('.brz-btn-submit');
-const spinner = button.querySelector('.brz-form-spinner');
-const span = button.querySelector('.brz-span.brz-text__editor');
+if (typeof apiBaseUrl == 'undefined') {
+  let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+  let stepsUrl = 'https://mercantil.faz.vc/';
+}
 
-// Function to get a cookie by name
+// obtem o cookie pelo nome 
 function getCookie(name) {
+
   let cookie = {};
+
   document.cookie.split(';').forEach(function (el) {
     let [k, v] = el.split('=');
     cookie[k.trim()] = v;
   })
+
   return cookie[name];
 }
 
-// Function to set loading state
+//inicia spin loading no button
 function setLoading() {
   button.setAttribute('disabled', true);
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 }
 
-// Function to stop loading state
+//para spin loading no button
 function stopLoading(textButton) {
   button.removeAttribute('disabled');
   spinner.classList.add('brz-invisible');
   span.textContent = textButton;
 }
 
-// Function to redirect to the next step
 function redirectToNextStep(res) {
+
   const param = window.location.search || '';
   const nextStep = res.nextStep;
 
@@ -49,8 +49,8 @@ function redirectToNextStep(res) {
   }
 }
 
-// Function to set the next step
 function setNextStep() {
+
   axios.post(apiBaseUrl + 'getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
@@ -64,7 +64,6 @@ function setNextStep() {
     });
 }
 
-// Function to set link signature
 function setLinkSignature() {
   var encodedData = window.location.search.substring(1);
   const decodedValue = decodeURIComponent(encodedData);
@@ -72,9 +71,10 @@ function setLinkSignature() {
   link.href = decodedValue;
 }
 
-// Function to set schedule
 function setSchedule() {
+
   window.addEventListener('DOMContentLoaded', function () {
+
     var encodedData = window.location.search.substring(1);
     const decodedValue = decodeURIComponent(encodedData);
 
@@ -92,19 +92,20 @@ function setSchedule() {
   });
 }
 
-// Function to handle setting a token
+//setar token
 function handleSetToken(value) {
+  // console.log("handleToken");
   document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=mercantil.faz.vc; path=/;`;
 }
 
-// Function to get the current step from the URL
+//obtem o step atual pela url
 function getCurrentStep() {
   const path = window.location.pathname;
   const value = path.split('/')[1];
   return value;
 }
 
-// Function to show a toast message
+//showToast
 function showToast(text) {
   var x = document.getElementById("snackbar");
   x.className = "show";
@@ -112,21 +113,27 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-// Function to get token status and handle related actions
+//get Token Status info-return
 function getTokenStatus() {
+
   if (getCookie('tkn')) {
+
     axios.post(apiBaseUrl + 'getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }
     })
       .then(function (response) {
+
         const param = window.location.search || '';
+
         const link = document.querySelector('a.btn-continue');
         link.setAttribute('href', stepsUrl + response.data.nextStep + param);
+
         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
         var botao = document.querySelector(".btn-lead-info");
         botao.click();
+
       })
       .catch(function (error) {
         console.log(error);
@@ -134,8 +141,9 @@ function getTokenStatus() {
   }
 }
 
-// Function to capture affiliate data from URL parameters
+//obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData() {
+
   const urlParams = new URLSearchParams(window.location.search);
 
   let affiliateData = {
@@ -156,23 +164,27 @@ function captureAffiliateData() {
   return affiliateData;
 }
 
-// Function to set bank options
+//setBanks
 function setBanks(bankList) {
+
   bankList.reverse();
   const selects = document.querySelectorAll('select[data-label="Banco"]');
 
   selects.forEach(select => {
+
     bankList.forEach(bank => {
       const option = document.createElement('option');
       option.text = bank.name;
       option.value = bank.id;
       select.insertBefore(option, select.firstChild);
+
     });
   });
 }
 
-// Function to fetch bank data
+//obtem os bancos
 async function getBanks() {
+
   axios.post(apiBaseUrl + 'getData', { "object": "banks" }, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
@@ -186,8 +198,9 @@ async function getBanks() {
     });
 }
 
-// Function to fetch address info by zipcode
+
 async function getByZipCodeInfo(zipcode) {
+
   axios.post(apiBaseUrl + 'getZipcodeInfo', {
     zipcode: zipcode,
   },
@@ -202,9 +215,10 @@ async function getByZipCodeInfo(zipcode) {
     .catch(function (error) {
       showToast(error.response.data.message);
     });
+
+
 }
 
-// Function to set address information
 function setAddressInfo(obj) {
   document.querySelector('[data-label="Rua"]').value = obj.address;
   document.querySelector('[data-label="Bairro"]').value = obj.district;
@@ -212,9 +226,17 @@ function setAddressInfo(obj) {
   document.querySelector('[data-label="UF"]').value = obj.state;
 }
 
-// Function to register customer address
+
+//registerCustomerAccount
 async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
-  setLoading();
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
 
   axios.post(apiBaseUrl + 'registerCustomerInfos', {
     zipcode: zipcode,
@@ -234,14 +256,24 @@ async function registerCustomerAddress(zipcode, address, addressNumber, state, d
       redirectToNextStep(response.data);
     })
     .catch(function (error) {
-      stopLoading('Sim, quero antecipar meu FGTS!');
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Sim, quero antecipar meu FGTS!';
       showToast(error.response.data.message);
     });
+
 }
 
-// Function to register customer account
+//registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
-  setLoading();
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
 
   axios.post(apiBaseUrl + 'registerCustomerInfos', {
     branchNo: agency,
@@ -259,14 +291,23 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
       redirectToNextStep(response.data);
     })
     .catch(function (error) {
-      stopLoading('Simular');
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Simular';
       showToast(error.response.data.message);
     });
-}
 
-// Function to register customer documents
+}
+// registerCustomerAccount
 async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
-  setLoading();
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
 
   axios.post(apiBaseUrl + 'registerCustomerInfos', {
     docNumber: docNumber,
@@ -284,16 +325,26 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
       redirectToNextStep(response.data);
     })
     .catch(function (error) {
-      stopLoading('Sim, quero antecipar meu FGTS!');
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Sim, quero antecipar meu FGTS!';
       showToast(error.response.data.message);
     });
+
 }
 
-// Function to register customer information
+//registerCustomer
 async function registerCustomer(name, birth, federalId, phone) {
+
   const affiliate = captureAffiliateData();
 
-  setLoading();
+  const button = document.querySelector('.btn-submit-fgts');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
 
   axios.post(apiBaseUrl + '/registerCustomer', {
     "name": name,
@@ -314,13 +365,16 @@ async function registerCustomer(name, birth, federalId, phone) {
       }
     })
     .catch(function (error) {
-      stopLoading('ACEITAR E CONTINUAR');
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'ACEITAR E CONTINUAR';
       showToast(error.response.data.message);
     });
 }
 
-// Function to get the next step
+
 function getNextStep() {
+
   const button = document.querySelector('.brz-btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
@@ -359,11 +413,17 @@ function getNextStep() {
     })
     .catch(function (error) {
     });
+
 }
 
-// Function to process qualification
+//qualfica o lead
 function processQualification() {
+
   let attempts = 0;
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
 
   button.setAttribute('disabled', true);
   spinner.classList.remove('brz-invisible');
@@ -396,8 +456,9 @@ function processQualification() {
   sendRequest();
 }
 
-// Function to validate address form
+//validarFormDocs
 function validarFormAddress() {
+
   const zipcode = document.querySelector('[data-label="CEP"]').value;
   const address = document.querySelector('[data-label="Rua"]').value;
   const addressNumber = document.querySelector('[data-label="Número"]').value;
@@ -405,19 +466,23 @@ function validarFormAddress() {
   const district = document.querySelector('[data-label="Bairro"]').value;
   const city = document.querySelector('[data-label="Cidade"]').value;
 
+
   if (zipcode == "" || address == "" || addressNumber == "" || state == "" || district == "" || city == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
   registerCustomerAddress(zipcode, address, addressNumber, state, district, city);
+
 }
 
-// Function to validate documents form
+//validarFormDocs
 function validarFormDocs() {
+
   const docType = document.querySelector('[data-label="Tipo de Documento"]').value;
   const docNumber = document.querySelector('[data-label="Número do Documento"]').value;
   const issueState = document.querySelector('[data-label="UF Expeditor"]').value;
   const motherName = document.querySelector('[data-label="Nome da sua Mãe"]').value;
+
 
   if (docType == "" || docNumber == "" || issueState == "" || motherName == "") {
     showToast("Por favor, preencha todos os campos.");
@@ -426,8 +491,8 @@ function validarFormDocs() {
   registerCustomerDocs(docNumber, docType, issueState, motherName);
 }
 
-// Function to validate account form
 function validarFormAccount() {
+
   const agency = document.querySelector('[data-label="Agência"]').value;
   const bank = document.querySelector('[data-label="Banco"]').value;
   const account = document.querySelector('[data-label="Conta"]').value;
@@ -443,8 +508,9 @@ function validarFormAccount() {
   registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
 }
 
-// Function to validate the main form
+//validar form
 function validateForm() {
+
   const name = document.querySelector('[data-label="Nome"]').value;
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
@@ -458,8 +524,10 @@ function validateForm() {
   registerCustomer(name, birth, federalId, phone);
 }
 
-// Check the current page and execute relevant functions
-if (window.location.pathname == '/') {
-  getTokenStatus();
-  // Additional code for this specific page...
-}
+
+
+
+
+
+
+
