@@ -1,8 +1,8 @@
 
-if (typeof apiBaseUrl == 'undefined') {
-  let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-  let stepsUrl = 'https://mercantil.faz.vc/';
-}
+
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let stepsUrl = 'https://mercantil.faz.vc/';
+
 
 // obtem o cookie pelo nome 
 function getCookie(name) {
