@@ -206,18 +206,17 @@ function validateFormMain() {
 
 //validar form
 function validateForm() {
-  const name = document.querySelector('[data-label="Nome"]');
-  const phone = document.querySelector('[data-label="Whatsapp"]');
-  const birth = document.querySelector('[data-label="Data de Nascimento"]');
-  const federalId = document.querySelector('[data-label="CPF"]');
+  const name = document.querySelector('[data-label="Nome"]').value;
+  const phone = document.querySelector('[data-label="Whatsapp"]').value;
+  const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
+  const federalId = document.querySelector('[data-label="CPF"]').value;
 
+  if (name === "" || phone === "" || birth === "" || federalId === "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
 
-    if (name === "" || phone === "" || birth === "" || federalId === "") {
-      showToast("Por favor, preencha todos os campos.");
-      return false;
-    }
-
-    registerCustomer(name, birth, federalId, phone);
+  registerCustomer(name, birth, federalId, phone);
 }
 
 
