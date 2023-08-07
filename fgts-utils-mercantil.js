@@ -1,6 +1,7 @@
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = window.location.origin + '/';
-
+if (typeof apiBaseUrl == 'undefined') {
+  let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+  let stepsUrl = 'https://mercantil.faz.vc/';
+}
 
 //inicia spin loading no button
 function setLoading() {
