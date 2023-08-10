@@ -138,6 +138,7 @@ let referenceTicket = ''; // Inicialmente, deixe o valor vazio
 
 btnBilheteria.forEach(button => {
     button.addEventListener('click', function(event) {
+        referenceTicket = '';
         referenceTicket = event.target.id.toString(); // Converte para string
         console.log(referenceTicket);
     });
