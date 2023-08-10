@@ -138,13 +138,10 @@ let referenceTicket = ''; // Inicialmente, deixe o valor vazio
 
 btnBilheteria.forEach(button => {
     button.addEventListener('click', function(event) {
-        if (!referenceTicket) { // Verifica se referenceTicket está vazio
-            referenceTicket = event.target.id.toString(); // Converte para string
-            console.log(referenceTicket);
-        }
+        referenceTicket = event.target.id.toString(); // Converte para string
+        console.log(referenceTicket);
     });
 });
-
 
 
 setCookies();
