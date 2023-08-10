@@ -149,7 +149,7 @@ function captureAffiliateData() {
     source: urlParams.get('source') || null,
     productId: urlParams.get('pid') || null,
     vendorId: urlParams.get('vid') || null,
-    offerId: urlParams.get('oid') || null,
+    offerId: urlParams.get('oid') || '121',
     clickId: urlParams.get('cid') || null,
     pixelId: urlParams.get('afx') || null,
     gtmId: urlParams.get('afgtm') || null,
@@ -332,7 +332,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
 }
 
 //registerCustomer
-async function registerCustomer(name, birth, federalId, phone) {
+async function registerCustomer(name, birth, federalId, phone, email) {
 
   const affiliate = captureAffiliateData();
 
@@ -349,6 +349,7 @@ async function registerCustomer(name, birth, federalId, phone) {
     "birth": birth,
     "federalId": federalId,
     "phone": phone,
+    "email": email,
     "useTerms": true,
     "dataPrivacy": true,
     "dataSearchAllowed": true,
@@ -511,15 +512,16 @@ function validateForm() {
 
   const name = document.querySelector('[data-label="Nome"]').value;
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
+  const email = document.querySelector('[data-label="Email"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
   const federalId = document.querySelector('[data-label="CPF"]').value;
 
-  if (name == "" || phone == "" || birth == "" || federalId == "") {
+  if (name == "" || phone == "" || birth == "" || federalId == "" || email == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-  registerCustomer(name, birth, federalId, phone);
+  registerCustomer(name, birth, federalId, phone, email);
 }
 
 
