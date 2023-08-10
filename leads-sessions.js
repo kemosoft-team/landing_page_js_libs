@@ -72,7 +72,7 @@ function showToast(text) {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email) {
+async function registerCustomer(name, federalId, phone, email, referenceTicket) {
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -81,6 +81,7 @@ async function registerCustomer(name, federalId, phone, email) {
     button.setAttribute('disabled', true);
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
+    console.log(referenceTicket)
 
     axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
         "name": name,
@@ -131,6 +132,16 @@ function validateForm() {
 
     registerCustomer(name, federalId, phone, email);
 }
+
+const btnBilheteria = document.querySelectorAll('.btnBilheteria');
+
+        btnBilheteria.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const referenceTicket = event.target.id;
+                console.log(referenceTicket);
+                registerCustomer(referenceTicket);
+            });
+        });
 
 
 
