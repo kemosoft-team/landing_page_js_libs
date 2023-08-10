@@ -134,7 +134,7 @@ function validateForm() {
 }
 
 const btnBilheteria = document.querySelectorAll('.btnBilheteria');
-let referenceTicket = ''; // Inicialmente, deixe o valor vazio
+var referenceTicket = ''; // Inicialmente, deixe o valor vazio
 
 btnBilheteria.forEach(button => {
     button.addEventListener('click', function(event) {
