@@ -1,5 +1,5 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = ' https://eccor.faz.vc';
+let stepsUrl = ' https://eccor.faz.vc/';
 
 
 // obtem o cookie pelo nome 
