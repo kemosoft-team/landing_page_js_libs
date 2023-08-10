@@ -1,5 +1,5 @@
 let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = window.location.origin;
+let stepsUrl = window.location.origin + '/';
 
 
 // obtem o cookie pelo nome 
