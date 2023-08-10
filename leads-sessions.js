@@ -135,12 +135,11 @@ function validateForm() {
 }
 
 const btnBilheteria = document.querySelectorAll('.btnBilheteria');
-var referenceTicket = ''; // Inicialmente, deixe o valor vazio
+var referenceTicket = '';
 
 btnBilheteria.forEach(button => {
     button.addEventListener('click', function(event) {
-        referenceTicket = '';
-        referenceTicket = event.target.id.toString(); // Converte para string
+        referenceTicket = event.target.id.toString(); 
         console.log(referenceTicket);
     });
 });
