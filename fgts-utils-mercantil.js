@@ -151,7 +151,7 @@ function captureAffiliateData() {
     source: urlParams.get('source') || null,
     productId: urlParams.get('pid') || null,
     vendorId: urlParams.get('vid') || null,
-    offerId: urlParams.get('oid') || 18,
+    offerId: urlParams.get('oid') || null,
     clickId: urlParams.get('cid') || null,
     pixelId: urlParams.get('afx') || null,
     gtmId: urlParams.get('afgtm') || null,
