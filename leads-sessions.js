@@ -87,7 +87,7 @@ async function registerCustomer(name, federalId, phone, email, referenceTicket) 
         "name": name,
         "federalId": federalId,
         "phone": phone,
-        "email": emai,
+        "email": email,
         "referenceTicket": referenceTicket
     },
 
