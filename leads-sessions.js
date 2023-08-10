@@ -83,11 +83,12 @@ async function registerCustomer(name, federalId, phone, email, referenceTicket) 
     span.textContent = '';
     console.log(referenceTicket)
 
-    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
+    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
-        "email": email
+        "email": emai,
+        "referenceTicket": referenceTicket
     },
 
         {
