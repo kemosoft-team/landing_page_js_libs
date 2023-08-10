@@ -134,15 +134,6 @@ function validateForm() {
    registerCustomer(name, federalId, phone, email, referenceTicket);
 }
 
-const btnBilheteria = document.querySelectorAll('.btnBilheteria');
-var referenceTicket = '';
-
-btnBilheteria.forEach(button => {
-    button.addEventListener('click', function(event) {
-        referenceTicket = event.target.id.toString(); 
-        console.log(referenceTicket);
-    });
-});
 
 
 setCookies();
