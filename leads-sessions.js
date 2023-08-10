@@ -131,7 +131,7 @@ function validateForm() {
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email);
+   registerCustomer(name, federalId, phone, email, referenceTicket);
 }
 
 const btnBilheteria = document.querySelectorAll('.btnBilheteria');
