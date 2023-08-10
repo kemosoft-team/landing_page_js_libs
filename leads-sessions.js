@@ -134,15 +134,14 @@ function validateForm() {
 }
 
 const btnBilheteria = document.querySelectorAll('.btnBilheteria');
+let referenceTicket;
 
-        btnBilheteria.forEach(button => {
-            button.addEventListener('click', function(event) {
-                const referenceTicket = event.target.id;
-                console.log(referenceTicket);
-                registerCustomer(referenceTicket);
-            });
-        });
-
+btnBilheteria.forEach(button => {
+    button.addEventListener('click', function(event) {
+        referenceTicket = event.target.id;
+        console.log(referenceTicket);
+    });
+});
 
 
 setCookies();
