@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
-let stepsUrl = 'https://vemcard.kemobuilder.site/';
+let stepsUrl = 'https://vemcard.faz.vc/';
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
@@ -51,7 +51,7 @@ function redirectToNextStep(res) {
 
 //Seta cookie
 function handleSetToken(value) {
-    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.kemobuilder.site; path=/;`;
+    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=vemcard.faz.vc; path=/;`;
 }
 
 //Obtem o step atual pela url
