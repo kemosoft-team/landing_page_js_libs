@@ -247,7 +247,7 @@ async function registerCustomerAddress(zipcode, address, addressNumber, compleme
         .catch(function (error) {
             button.removeAttribute('disabled');
             spinner.classList.add('brz-invisible');
-            span.textContent = 'Sim, quero antecipar meu FGTS!';
+            span.textContent = 'Continuar';
             showToast(error.response.data.message);
         });
 
