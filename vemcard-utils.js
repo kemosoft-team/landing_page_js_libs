@@ -1,5 +1,5 @@
 //API url
-let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiUrl = 'https://api.retool.com/v1/workflows/f9000ea1-f16c-4c34-95f6-51ecfcc39285/startTrigger?workflowApiKey=retool_wk_7d2f4f13dd9841fbbd5b5737a82fcfc5';
 let stepsUrl = 'https://vemcard.faz.vc/';
 
 //Obtem o cookie pelo nome 
@@ -151,7 +151,7 @@ function captureAffiliateData() {
 
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, birth) {
+async function registerCustomer(name, federalId, phone, birth, registration) {
 
     const affiliate = captureAffiliateData();
 
@@ -168,6 +168,7 @@ async function registerCustomer(name, federalId, phone, birth) {
         "federalId": federalId,
         "phone": phone,
         "birth": birth,
+        "registration": registration,
         "useTerms": true,
         "dataPrivacy": true,
         "dataSearchAllowed": true,
@@ -448,16 +449,16 @@ function validateForm() {
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const federalId = document.querySelector('[data-label="CPF"]').value;
     const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
+    const registration = document.querySelector('[data-label="Matricula"]').value;
 
 
-    if (name == "" || phone == "" || federalId == "" || birth == "") {
+    if (name == "" || phone == "" || federalId == "" || birth == "" || registration == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, federalId, phone, birth);
+    registerCustomer(name, federalId, phone, birth, registration);
 }
 
 getTokenStatus();
-
 
