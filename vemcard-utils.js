@@ -393,7 +393,7 @@ function validarFormAddress() {
     const city = document.querySelector('[data-label="Cidade"]').value;
 
 
-    if (zipcode == "" || address == "" || addressNumber == "" || complement == ""  || state == "" || district == "" || city == "") {
+    if (zipcode == "" || address == "" || addressNumber == "" || state == "" || district == "" || city == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
