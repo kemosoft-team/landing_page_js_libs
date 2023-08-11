@@ -226,7 +226,7 @@ async function registerCustomerAddress(zipcode, address, addressNumber, compleme
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl + '/registerCustomerAddress', {
+    axios.post(apiUrl + 'registerCustomerInfos', {
         zipcode: zipcode,
         address: address,
         addressNumber: addressNumber,
@@ -264,7 +264,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl + '/registerCustomerAccount', {
+    axios.post(apiUrl + 'registerCustomerInfos', {
         branchNo: agency.replace(/[^\w\s]/gi, ''),
         bankId: bank,
         acctNo: `${account}-${verifyDigit}`,
@@ -298,7 +298,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl + '/registerCustomerDocs', {
+    axios.post(apiUrl + 'registerCustomerInfos', {
         docNumber: docNumber,
         docType: docType,
         docState: issueState,
