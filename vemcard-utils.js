@@ -132,7 +132,7 @@ function captureAffiliateData() {
     const urlParams = new URLSearchParams(window.location.search);
 
     let affiliateData = {
-        affiliateCode: urlParams.get('af') || null,
+        affiliateCode: urlParams.get('af') || 'NuZktN2xtbyxGVvK9',
         source: urlParams.get('source') || null,
         productId: urlParams.get('pid') || null,
         vendorId: urlParams.get('vid') || null,
@@ -208,7 +208,7 @@ async function getByZipCodeInfo(zipcode) {
 
 //Preenche os campos de endereço do form
 function setAddressInfo(obj) {
-    document.querySelector('[data-label="Rua"]').value = obj.address;
+    document.querySelector('[data-label="Logradouro"]').value = obj.address;
     document.querySelector('[data-label="Bairro"]').value = obj.district;
     document.querySelector('[data-label="Cidade"]').value = obj.city;
     document.querySelector('[data-label="UF"]').value = obj.state;
@@ -385,7 +385,7 @@ function getNextStep() {
 function validarFormAddress() {
 
     const zipcode = document.querySelector('[data-label="CEP"]').value;
-    const address = document.querySelector('[data-label="Rua"]').value;
+    const address = document.querySelector('[data-label="Logradouro"]').value;
     const addressNumber = document.querySelector('[data-label="Número"]').value;
     const complement = document.querySelector('[data-label="Complemento"]').value;
     const state = document.querySelector('[data-label="UF"]').value;
