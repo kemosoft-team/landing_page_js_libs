@@ -217,7 +217,7 @@ function setAddressInfo(obj) {
 
 
 //registerCustomerAccount
-async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
+async function registerCustomerAddress(zipcode, address, addressNumber, complement, state, district, city) {
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -231,6 +231,7 @@ async function registerCustomerAddress(zipcode, address, addressNumber, state, d
         zipcode: zipcode,
         address: address,
         addressNumber: addressNumber,
+        complement: complement,
         state: state,
         district: district,
         city: city,
@@ -387,16 +388,17 @@ function validarFormAddress() {
     const zipcode = document.querySelector('[data-label="CEP"]').value;
     const address = document.querySelector('[data-label="Rua"]').value;
     const addressNumber = document.querySelector('[data-label="Número"]').value;
+    const complement = document.querySelector('[data-label="Complemento"]').value;
     const state = document.querySelector('[data-label="UF"]').value;
     const district = document.querySelector('[data-label="Bairro"]').value;
     const city = document.querySelector('[data-label="Cidade"]').value;
 
 
-    if (zipcode == "" || address == "" || addressNumber == "" || state == "" || district == "" || city == "") {
+    if (zipcode == "" || address == "" || addressNumber == "" || complement == ""  || state == "" || district == "" || city == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    registerCustomerAddress(zipcode, address, addressNumber, state, district, city);
+    registerCustomerAddress(zipcode, address, addressNumber, complement, state, district, city);
 
 }
 
