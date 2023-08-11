@@ -1,91 +1,7 @@
 //API url
 let apiUrl = 'https://api.retool.com/v1/workflows/f9000ea1-f16c-4c34-95f6-51ecfcc39285/startTrigger?workflowApiKey=retool_wk_7d2f4f13dd9841fbbd5b5737a82fcfc5';
 let stepsUrl = 'https://vemcard.faz.vc/';
-
-//Obtem o cookie pelo nome 
-function getCookie(name) {
-
-    let cookie = {};
-
-    document.cookie.split(';').forEach(function (el) {
-        let [k, v] = el.split('=');
-        cookie[k.trim()] = v;
-    })
-
-    return cookie[name];
-}
-
-//Obtem e redireciona para nextstep atraves de consulta com token
-function setNextStep() {
-
-    axios.post(apiUrl + 'getTokenStatus', {}, {
-        headers: {
-            'Authorization': `Bearer ${getCookie('tkn')}`
-        }
-    })
-        .then(function (response) {
-            window.location.href = stepsUrl + response.data.nextStep;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-}
-
-//Redireciona para subpágina
-function redirectToNextStep(res) {
-    const nextStep = res.nextStep;
-
-    switch (nextStep) {
-        case 'signature':
-            window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
-            break;
-        case 'scheduled':
-            window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
-            break;
-        default:
-            window.location.href = stepsUrl + nextStep;
-            console.log(stepsUrl + nextStep);
-            break;
-    }
-}
-
-//Seta cookie
-function handleSetToken(value) {
-    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=vemcard.faz.vc; path=/;`;
-}
-
-//Obtem o step atual pela url
-function getCurrentStep() {
-    const path = window.location.pathname;
-    const value = path.split('/')[1];
-    return value;
-}
-
-//get Token Status info-return
-function getTokenStatus() {
-
-    if (getCookie('tkn')) {
-
-        axios.post(apiUrl + '/getTokenStatus', {}, {
-            headers: {
-                'Authorization': `Bearer ${getCookie('tkn')}`
-            }
-        })
-            .then(function (response) {
-
-                const link = document.querySelector('a.btn-continue');
-                link.setAttribute('href', stepsUrl + response.data.nextStep + param);
-
-                document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-                var botao = document.querySelector(".btn-lead-info");
-                botao.click();
-
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-}
+let apiConsig = 'https://api.consigmais.com.br/lp/main/v2/';
 
 //Exibe mensagem no toast
 function showToast(text) {
@@ -95,65 +11,8 @@ function showToast(text) {
     setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-//Popula o select de bancos
-function setBanks(bankList) {
-    bankList.reverse();
-    const selects = document.querySelectorAll('select[data-label="Banco"]');
-
-    selects.forEach(select => {
-        bankList.forEach(bank => {
-            const option = document.createElement('option');
-            option.text = bank.name;
-            option.value = bank.id;
-            select.insertBefore(option, select.firstChild);
-        });
-    });
-}
-
-//Obtem os bancos
-async function getBanks() {
-    axios.post('https://api.consigmais.com.br/lp/main/v2/getData', { "object": "banks" }, {
-        headers: {
-            'Authorization': `Bearer ${getCookie('tkn')}`
-        }
-    })
-        .then(function (response) {
-            setBanks(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-}
-
-
-//Obtem os parametros do afiliado oriondos dos cookies
-function captureAffiliateData() {
-
-    const urlParams = new URLSearchParams(window.location.search);
-
-    let affiliateData = {
-        affiliateCode: urlParams.get('af') || 'NuZktN2xtbyxGVvK9',
-        source: urlParams.get('source') || null,
-        productId: urlParams.get('pid') || null,
-        vendorId: urlParams.get('vid') || null,
-        offerId: urlParams.get('oid') || '64',
-        clickId: urlParams.get('cid') || null,
-        pixelId: urlParams.get('afx') || null,
-        gtmId: urlParams.get('afgtm') || null,
-        latDays: urlParams.get('latd') || null,
-        brandId: urlParams.get('bid') || null,
-        nextStep: urlParams.get('nxstp') || null,
-        token: urlParams.get('tkn') || null,
-        rawUri: window.location.search
-    };
-    return affiliateData;
-}
-
-
 //registerCustomer
 async function registerCustomer(name, federalId, phone, birth, registration) {
-
-    const affiliate = captureAffiliateData();
 
     const button = document.querySelector('.btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -164,19 +23,16 @@ async function registerCustomer(name, federalId, phone, birth, registration) {
     span.textContent = '';
 
     axios.post(apiUrl /* + '/registerCustomer' */, {
-        "name": name,
-        "federalId": federalId,
-        "phone": phone,
-        "birth": birth,
-        "registration": registration,
-        "useTerms": true,
-        "dataPrivacy": true,
-        "dataSearchAllowed": true,
-        "affiliateData": affiliate
+        "nome": name,
+        "cpf": federalId,
+        "telefone": phone,
+        "data_nascimento": birth,
+        "matricula": registration
     })
         .then((response) => {
-            handleSetToken(response.data.token);
-            redirectToNextStep(response.data);
+            const cpfQueryParam = encodeURIComponent(federalId); // Encode the CPF for URL
+            const redirectUrl = `https://vemcard.faz.vc/account?cpf=${cpfQueryParam}`;
+            window.location.href = redirectUrl;
         })
         .catch(function (error) {
             button.removeAttribute('disabled');
@@ -187,37 +43,30 @@ async function registerCustomer(name, federalId, phone, birth, registration) {
 }
 
 
-//Obtem as informamações de endereço com base no CEP
-async function getByZipCodeInfo(zipcode) {
-
-    axios.post(apiUrl  /* + 'getZipcodeInfo' */,  {
-        zipcode: zipcode,
-    },
-        {
-            headers: {
-                'Authorization': `Bearer ${getCookie('tkn')}`
-            }
-        })
+// Obtem as informações de endereço com base no CEP
+function getByZipCodeInfo(zipcode) {
+    axios.get(`https://viacep.com.br/ws/${zipcode}/json/`)
         .then((response) => {
             setAddressInfo(response.data);
         })
-        .catch(function (error) {
+        .catch((error) => {
             showToast(error.response.data.message);
         });
-
 }
 
-//Preenche os campos de endereço do form
+// Preenche os campos de endereço do formulário
 function setAddressInfo(obj) {
-    document.querySelector('[data-label="Logradouro"]').value = obj.address;
-    document.querySelector('[data-label="Bairro"]').value = obj.district;
-    document.querySelector('[data-label="Cidade"]').value = obj.city;
-    document.querySelector('[data-label="UF"]').value = obj.state;
+    document.querySelector('[data-label="Logradouro"]').value = obj.logradouro;
+    document.querySelector('[data-label="Bairro"]').value = obj.bairro;
+    document.querySelector('[data-label="Cidade"]').value = obj.localidade;
+    document.querySelector('[data-label="UF"]').value = obj.uf;
 }
 
 
-//registerCustomerAccount
-async function registerCustomerAddress(zipcode, address, addressNumber, complement, state, district, city) {
+// registerCustomerAddress
+function registerCustomerAddress(zipcode, address, addressNumber, complement, state, district, city) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cpf = urlParams.get('cpf'); // Get CPF from URL query parameter
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -228,22 +77,19 @@ async function registerCustomerAddress(zipcode, address, addressNumber, compleme
     span.textContent = '';
 
     axios.post(apiUrl /* + 'registerCustomerInfos' */, {
-        zipcode: zipcode,
-        address: address,
-        addressNumber: addressNumber,
-        complement: complement,
-        state: state,
-        district: district,
-        city: city,
-        currentStep: getCurrentStep()
-    },
-        {
-            headers: {
-                'Authorization': `Bearer ${getCookie('tkn')}`
-            }
-        })
-        .then((response) => {
-            redirectToNextStep(response.data);
+        "cpf": cpf,
+        "cep": zipcode,
+        "logradouro": address,
+        "numero": addressNumber,
+        "complemento": complement,
+        "estado": state,
+        "bairro": district,
+        "cidade": city
+    })
+        .then(() => {
+            const cpfQueryParam = encodeURIComponent(cpf); // Encode the CPF for URL
+            const redirectUrl = `https://vemcard.faz.vc/document?cpf=${cpfQueryParam}`;
+            window.location.href = redirectUrl;
         })
         .catch(function (error) {
             button.removeAttribute('disabled');
@@ -251,11 +97,14 @@ async function registerCustomerAddress(zipcode, address, addressNumber, compleme
             span.textContent = 'Continuar';
             showToast(error.response.data.message);
         });
-
 }
 
-//registerCustomerAccount
-async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
+
+
+// registerCustomerAccount
+function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cpf = urlParams.get('cpf');
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -266,19 +115,17 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     span.textContent = '';
 
     axios.post(apiUrl /* + 'registerCustomerInfos' */, {
-        branchNo: agency.replace(/[^\w\s]/gi, ''),
-        bankId: bank,
-        acctNo: `${account}-${verifyDigit}`,
-        acctType: accountType,
-        currentStep: getCurrentStep()
-    },
-        {
-            headers: {
-                'Authorization': `Bearer ${getCookie('tkn')}`
-            }
-        })
+        "cpf": cpf,
+        "no_agencia": agency,
+        "banco": bank,
+        "no_conta": account,
+        "digito": verifyDigit,
+        "tipo_conta": accountType
+    })
         .then((response) => {
-            redirectToNextStep(response.data);
+            const cpfQueryParam = encodeURIComponent(cpf);
+            const redirectUrl = `https://vemcard.faz.vc/address?cpf=${cpfQueryParam}`;
+            window.location.href = redirectUrl;
         })
         .catch(function (error) {
             button.removeAttribute('disabled');
@@ -286,10 +133,13 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
             span.textContent = 'Simular';
             showToast(error.response.data.message);
         });
-
 }
-// registerCustomerAccount
-async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
+
+
+// registerCustomerDocs
+async function registerCustomerDocs(docNumber, docType, issueState) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cpf = urlParams.get('cpf'); // Get CPF from URL query parameter
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -300,19 +150,15 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     span.textContent = '';
 
     axios.post(apiUrl /* + 'registerCustomerInfos' */, {
-        docNumber: docNumber,
-        docType: docType,
-        docState: issueState,
-        mother: motherName,
-        currentStep: getCurrentStep()
-    },
-        {
-            headers: {
-                'Authorization': `${getCookie('tkn')}`
-            }
-        })
+        "cpf": cpf, // Include CPF in the request
+        "documento": docNumber,
+        "tipo_documento": docType,
+        "uf_expedidor": issueState
+    })
         .then((response) => {
-            redirectToNextStep(response.data);
+            const cpfQueryParam = encodeURIComponent(cpf); // Encode the CPF for URL
+            const redirectUrl = `https://vemcard.faz.vc/success?cpf=${cpfQueryParam}`;
+            window.location.href = redirectUrl;
         })
         .catch(function (error) {
             button.removeAttribute('disabled');
@@ -320,67 +166,9 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
             span.textContent = 'Continuar';
             showToast(error.response.data.message);
         });
-
 }
 
 
-
-
-function getNextStep() {
-
-    const attempts = localStorage.getItem('attempts') || 0;
-
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
-
-    axios.post(apiUrl + 'getNextStep', {},
-        {
-            headers: {
-                'Authorization': `${getCookie('tkn')}`
-            }
-        })
-        .then((response) => {
-
-            if ((attempts == 2) && (response.data.nextStep == 'keepcalm')) {
-                window.location.href = stepsUrl + 'offline';
-            } else {
-
-
-                if (response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable') {
-
-                    if (response.data.nextStep == 'authorize') {
-                        const authorizeLimit = localStorage.getItem('authorizeLimit') || 0;
-                        localStorage.setItem('authorizeLimit', parseInt(authorizeLimit) + 1);
-                    }
-                    window.location.href = stepsUrl + response.data.nextStep;
-
-                } else {
-
-                    var elementsWait = document.getElementsByClassName('wait');
-                    var elementsSuccess = document.getElementsByClassName('success');
-
-                    for (var i = 0; i < elementsWait.length; i++) {
-                        elementsWait[i].style.display = 'none';
-                        elementsSuccess[i].style.display = 'block';
-                    }
-
-                    button.removeAttribute('disabled');
-                    spinner.classList.add('brz-invisible');
-                    span.textContent = 'Dê o próximo passo, preencha seus dados';
-
-                    button.addEventListener('click', function () {
-                        window.location.href = stepsUrl + response.data.nextStep;
-                    });
-                }
-
-            }
-
-        })
-        .catch(function (error) {
-        });
-
-}
 
 //validarFormAddress
 function validarFormAddress() {
@@ -408,14 +196,13 @@ function validarFormDocs() {
     const docType = document.querySelector('[data-label="Tipo de Documento"]').value;
     const docNumber = document.querySelector('[data-label="Número do Documento"]').value;
     const issueState = document.querySelector('[data-label="UF Expeditor"]').value;
-    const motherName = document.querySelector('[data-label="Nome da sua Mãe"]').value;
 
 
-    if (docType == "" || docNumber == "" || issueState == "" || motherName == "") {
+    if (docType == "" || docNumber == "" || issueState == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    registerCustomerDocs(docNumber, docType, issueState, motherName);
+    registerCustomerDocs(docNumber, docType, issueState);
 }
 
 
@@ -459,6 +246,3 @@ function validateForm() {
 
     registerCustomer(name, federalId, phone, birth, registration);
 }
-
-getTokenStatus();
-
