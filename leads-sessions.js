@@ -83,7 +83,7 @@ async function registerCustomer(name, federalId, phone, email, referenceTicket) 
     span.textContent = '';
     console.log(referenceTicket)
 
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    axios.post('https://api.consigmais.com.br/lp/main/v2/', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
@@ -99,7 +99,7 @@ async function registerCustomer(name, federalId, phone, email, referenceTicket) 
             }
         })
         .then((response) => {
-            window.location.href = 'https://g4od3hyp8y2.typeform.com/to/eEvEQLlf';
+            window.location.href = 'https://xm16mrwaafp.typeform.com/to/sEzGeuZe';
         })
 
         .catch(function (error) {
