@@ -83,7 +83,7 @@ async function registerCustomer(name, federalId, phone, email, referenceTicket) 
     span.textContent = '';
     console.log(referenceTicket)
 
-    axios.post('https://api.consigmais.com.br/lp/main/v2/', {
+    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
