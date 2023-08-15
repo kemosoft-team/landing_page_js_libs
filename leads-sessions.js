@@ -109,8 +109,8 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
     span.textContent = '';
     console.log(ticket)
 
-    /* axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', { */
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', { 
         "name": name,
         "federalId": federalId,
         "phone": phone,
