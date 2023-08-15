@@ -98,6 +98,23 @@ function captureAffiliateData() {
 //registerCustomer
 async function registerCustomer(name, federalId, phone, email, ticket) {
 
+    // Função para criar o elemento do botão PopUp
+    function createPopUpButton() {
+        const buttonPopUp = document.createElement('button');
+        buttonPopUp.id = 'buttonPopUp';
+        buttonPopUp.setAttribute('data-tf-popup', 'KTh7aIJY');
+        buttonPopUp.setAttribute('data-tf-opacity', '100');
+        buttonPopUp.setAttribute('data-tf-size', '100');
+        buttonPopUp.setAttribute('data-tf-iframe-props', 'title=My typeform');
+        buttonPopUp.setAttribute('data-tf-transitive-search-params', '');
+        buttonPopUp.setAttribute('data-tf-medium', 'snippet');
+        buttonPopUp.setAttribute('data-tf-hidden', `email=${email},name=${name},phone=${phone},ticket=`);
+        buttonPopUp.style = 'all:unset;font-family:Helvetica,Arial,sans-serif;display:inline-block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background-color:#0445AF;color:#fff;font-size:20px;border-radius:25px;padding:0 33px;font-weight:bold;height:50px;cursor:pointer;line-height:50px;text-align:center;margin:0;text-decoration:none;';
+        buttonPopUp.textContent = ' ';
+
+        return buttonPopUp;
+    }
+
     const affiliate = captureAffiliateData();
 
     const button = document.querySelector('.brz-btn-submit');
@@ -128,6 +145,7 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
         })
         .then((response) => {
             console.log(name, phone, email);
+            document.body.appendChild(createPopUpButton());
             var popUpTypeForm = document.getElementById('buttonPopUp');
             popUpTypeForm.click();
             /* window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}`; */
