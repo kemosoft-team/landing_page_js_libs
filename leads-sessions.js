@@ -145,11 +145,13 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
                 'X-Client': getCookie('client_origin')
             }
         })
-        .then((response) => {
+         .then((response) => {
             console.log(name, phone, email);
             document.body.appendChild(createPopUpButton());
+            console.log('Informações adicionadas');
             var popUpTypeForm = document.getElementById('buttonPopUp');
             popUpTypeForm.click();
+            console.log('Click!');
             /* window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}`; */
         })
 
