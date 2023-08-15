@@ -96,7 +96,7 @@ function captureAffiliateData() {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket) {
+async function registerCustomer(name, federalId, phone, email, ticket, ticket_value) {
 
     const affiliate = captureAffiliateData();
 
@@ -107,9 +107,9 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
     button.setAttribute('disabled', true);
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
-    console.log(ticket)
+    console.log(ticket_value);
 
-    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    /*    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
     axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', { 
         "name": name,
         "federalId": federalId,
@@ -127,7 +127,7 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
             }
         })
         .then((response) => {
-            window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}`; 
+            window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}&ticket=${ticket_value}`; 
         })
 
         .catch(function (error) {
@@ -159,7 +159,7 @@ function validateForm() {
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email, ticket);
+    registerCustomer(name, federalId, phone, email, ticket, ticket_value);
 }
 
 
