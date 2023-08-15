@@ -127,7 +127,10 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
             }
         })
         .then((response) => {
-            window.location.href = 'https://xm16mrwaafp.typeform.com/to/sEzGeuZe';
+            console.log(name, phone, email);
+            var popUpTypeForm = document.getElementById('buttonPopUp');
+            popUpTypeForm.click();
+            /* window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}`; */
         })
 
         .catch(function (error) {
