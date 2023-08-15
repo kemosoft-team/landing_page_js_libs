@@ -127,7 +127,7 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             }
         })
         .then((response) => {
-            window.location.href = `https://xmaknjf0tm6.typeform.com/to/KTh7aIJY#name=${name}&phone=${phone}&email=${email}&ticket=${ticket_value}`; 
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket=${ticket_value}`;    
         })
 
         .catch(function (error) {
