@@ -49,16 +49,13 @@ function redirectToNextStep(res) {
 
 function setNextStep() {
   
-  const param = window.location.search || '';
-  
   axios.post(apiBaseUrl + 'getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
   })
     .then(function (response) {
-          /* window.location.href = stepsUrl + response.data.nextStep; */
-            window.location.href = stepsUrl + response.data.nextStep + param;
+        window.location.href = stepsUrl + response.data.nextStep; 
     })
     .catch(function (error) {
       console.log(error);
