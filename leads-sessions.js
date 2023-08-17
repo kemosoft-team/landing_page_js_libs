@@ -22,13 +22,6 @@ diamond.addEventListener('click', function () {
     setTicket('diamond');
 });
 
-
-// Event Listener for Form Submission
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", function (event) {
-    validateForm();
-});
-
 // Set Ticket
 function setTicket(ticketType) {
     switch (ticketType) {
@@ -69,7 +62,6 @@ function setTicket(ticketType) {
             break;
     }
 }
-
 
 // Show Toast
 function showToast(text) {
