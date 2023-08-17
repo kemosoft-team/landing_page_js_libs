@@ -4,6 +4,64 @@ var ticket = '';
 var ticket_value = '';
 var ticket_type = '';
 
+// Event Listeners for Ticket Types
+var btnWillOpen = document.getElementById('btnWillOpen');
+var fullpass = document.getElementById('fullpass');
+var vip = document.getElementById('vip');
+var diamond = document.getElementById('diamond');
+
+fullpass.addEventListener('click', function () {
+    setTicket('fullpass');
+});
+
+vip.addEventListener('click', function () {
+    setTicket('vip');
+});
+
+diamond.addEventListener('click', function () {
+    setTicket('diamond');
+});
+
+
+// Event Listener for Form Submission
+const buttonSubmit = document.querySelector(".brz-btn-submit");
+buttonSubmit.addEventListener("click", function (event) {
+    validateForm();
+});
+
+// Set Ticket
+function setTicket(ticketType) {
+    switch (ticketType) {
+        case 'fullpass':
+            var valueFullPass = '3.997';
+            ticket = { type: 'fullpass', amount: valueFullPass };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
+
+        case 'vip':
+            var valueVip = '4.497'
+            ticket = { type: 'vip', amount: valueVip };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
+
+        case 'diamond':
+            var valueDiamond = '5.497';
+            ticket = { type: 'diamond', amount: valueDiamond };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
+
+        default:
+            break;
+    }
+}
+
+
 // Show Toast
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -163,61 +221,4 @@ function validateForm() {
 
 // Initial Execution
 setCookies();
-
-// Event Listeners for Ticket Types
-var btnWillOpen = document.getElementById('btnWillOpen');
-var fullpass = document.getElementById('fullpass');
-var vip = document.getElementById('vip');
-var diamond = document.getElementById('diamond');
-
-fullpass.addEventListener('click', function () {
-    setTicket('fullpass');
-});
-
-vip.addEventListener('click', function () {
-    setTicket('vip');
-});
-
-diamond.addEventListener('click', function () {
-    setTicket('diamond');
-});
-
-// Event Listener for Form Submission
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", function (event) {
-    setTicket(ticket_type); 
-    validateForm();
-});
-
-// Set Ticket
-function setTicket(ticketType) {
-    switch (ticketType) {
-        case 'fullpass':
-            var valueFullPass = '3.997';
-            ticket = { type: 'fullpass', amount: valueFullPass };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
-            break;
-
-        case 'vip':
-            var valueVip = '4.497'
-            ticket = { type: 'vip', amount: valueVip };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
-            break;
-
-        case 'diamond':
-            var valueDiamond = '5.497';
-            ticket = { type: 'diamond', amount: valueDiamond };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
-            break;
-
-        default:
-            break;
-    }
-}
 
