@@ -524,7 +524,7 @@ function validateForm() {
   registerCustomer(name, birth, federalId, phone, email);
 }
 
-
+getTokenStatus();
 
 
 
