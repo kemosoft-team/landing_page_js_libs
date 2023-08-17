@@ -168,7 +168,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket, ticket_type, ticket_value) {
+function registerCustomer(name, federalId, phone, email, ticket, ticket_type, ticket_value) {
 
     const affiliate = captureAffiliateData();
 
