@@ -189,7 +189,7 @@ function validateForm() {
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type);
+    registerCustomer(name, federalId, phone, email);
 }
 
 // Event Listeners for Ticket Types
