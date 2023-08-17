@@ -171,7 +171,7 @@ function registerCustomer(name, federalId, phone, email) {
 
     console.log(ticket);
     console.log(ticket.type);
-    console.log(ticket.value);
+    console.log(ticket.amount);
 
     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
     axios.post(apiBaseUrl, {
@@ -193,7 +193,7 @@ function registerCustomer(name, federalId, phone, email) {
 
         .then((response) => {
             var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.value}&link_checkout=${link_checkout}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&link_checkout=${link_checkout}`;
         })
 
         .catch(function (error) {
