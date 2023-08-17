@@ -164,13 +164,6 @@ function validateForm() {
 // Initial Execution
 setCookies();
 
-
-// Event Listener for Form Submission
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", function (event) {
-    validateForm();
-});
-
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
 var fullpass = document.getElementById('fullpass');
@@ -189,6 +182,12 @@ diamond.addEventListener('click', function () {
     setTicket('diamond');
 });
 
+// Event Listener for Form Submission
+const buttonSubmit = document.querySelector(".brz-btn-submit");
+buttonSubmit.addEventListener("click", function (event) {
+    setTicket(ticket_type); 
+    validateForm();
+});
 
 // Set Ticket
 function setTicket(ticketType) {
