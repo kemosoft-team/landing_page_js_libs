@@ -184,10 +184,11 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
                 'X-Client': getCookie('client_origin')
             }
         })
+
         .then((response) => {
             var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.value}&link_checkout=${link_checkout}`;
-        })
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&link_checkout=${link_checkout}`;
+        })        
 
         .catch(function (error) {
             button.removeAttribute('disabled');
