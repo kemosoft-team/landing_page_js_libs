@@ -165,7 +165,7 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
     button.setAttribute('disabled', true);
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
-    console.log(ticket_value);
+    console.log(ticket);
 
     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
     axios.post(apiBaseUrl, {
