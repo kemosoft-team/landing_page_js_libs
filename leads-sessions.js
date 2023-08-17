@@ -1,8 +1,6 @@
 // Initial Setup
 let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
 var ticket = '';
-var ticket_value = '';
-var ticket_type = '';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
@@ -22,46 +20,42 @@ diamond.addEventListener('click', function () {
     setTicket('diamond');
 });
 
+
+// Event Listener for Form Submission
+const buttonSubmit = document.querySelector(".brz-btn-submit");
+buttonSubmit.addEventListener("click", function (event) {
+    validateForm();
+});
+
 // Set Ticket
 function setTicket(ticketType) {
     switch (ticketType) {
         case 'fullpass':
             var valueFullPass = '3.997';
             ticket = { type: 'fullpass', amount: valueFullPass };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
             console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            btnWillOpen.click();
             break;
 
         case 'vip':
             var valueVip = '4.497'
             ticket = { type: 'vip', amount: valueVip };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
             console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            btnWillOpen.click();
             break;
 
         case 'diamond':
             var valueDiamond = '5.497';
             ticket = { type: 'diamond', amount: valueDiamond };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            btnWillOpen.click();
             console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            btnWillOpen.click();
             break;
 
         default:
             break;
     }
 }
+
 
 // Show Toast
 function showToast(text) {
@@ -160,7 +154,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type) {
+async function registerCustomer(name, federalId, phone, email, ticket) {
 
     const affiliate = captureAffiliateData();
 
@@ -191,8 +185,8 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             }
         })
         .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;
+            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.value}&link_checkout=${link_checkout}`;
         })
 
         .catch(function (error) {
