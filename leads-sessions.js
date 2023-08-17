@@ -164,10 +164,10 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             }
         })
         .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}&FbClid=${fbClid}&sessionId=${sessionId}`;
+            window.location.href='https://www.google.com';
+           /*  var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}&FbClid=${fbClid}&sessionId=${sessionId}`; */
         })
-
         .catch(function (error) {
             button.removeAttribute('disabled');
             spinner.classList.add('brz-invisible');
