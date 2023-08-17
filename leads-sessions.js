@@ -191,6 +191,23 @@ function validateForm() {
     registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type);
 }
 
+// Event Listeners for Ticket Types
+var btnWillOpen = document.getElementById('btnWillOpen');
+var fullpass = document.getElementById('fullpass');
+var vip = document.getElementById('vip');
+var diamond = document.getElementById('diamond');
+
+fullpass.addEventListener('click', function () {
+    setTicket('fullpass');
+});
+
+vip.addEventListener('click', function () {
+    setTicket('vip');
+});
+
+diamond.addEventListener('click', function () {
+    setTicket('diamond');
+});
 
 
 
