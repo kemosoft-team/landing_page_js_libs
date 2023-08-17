@@ -1,17 +1,49 @@
-/* let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/'; */
+// Initial Setup
 let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
+var ticket = '';
+var ticket_value = '';
+var ticket_type = '';
 
-///get cookies
+// Show Toast
+function showToast(text) {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    document.getElementById("snackbar").innerHTML = text;
+    setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
+}
+
+// Get Cookies
 function getCookie(name) {
-
     let cookie = {};
-
     document.cookie.split(';').forEach(function (el) {
         let [k, v] = el.split('=');
         cookie[k.trim()] = v;
-    })
-
+    });
     return cookie[name];
+}
+
+//obtem os parametros do afiliado oriondos dos cookies
+function captureAffiliateData() {
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let affiliateData = {
+        affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
+        source: urlParams.get('source') || null,
+        productId: urlParams.get('pid') || null,
+        vendorId: urlParams.get('vid') || null,
+        offerId: urlParams.get('oid') || '28',
+        clickId: urlParams.get('cid') || '645d01bc3981320001f44bd1',
+        pixelId: urlParams.get('afx') || null,
+        gtmId: urlParams.get('afgtm') || null,
+        latDays: urlParams.get('latd') || null,
+        brandId: urlParams.get('bid') || '23',
+        nextStep: urlParams.get('nxstp') || null,
+        token: urlParams.get('tkn') || null,
+        fbClid: urlParams.get('fbClid') || null,
+        rawUri: window.location.search
+    };
+    return affiliateData;
 }
 
 
@@ -66,36 +98,37 @@ function setCookies(latDays) {
         });
 }
 
-//showToast
-function showToast(text) {
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    document.getElementById("snackbar").innerHTML = text;
-    setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
-}
 
-//obtem os parametros do afiliado oriondos dos cookies
-function captureAffiliateData() {
+// Set Ticket
+function setTicket(ticketType) {
+    switch (ticketType) {
+        case 'fullpass':
+            var valueFullPass = '3.997';
+            ticket = { type: 'fullpass', amount: valueFullPass };
+            ticket_Type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
 
-    const urlParams = new URLSearchParams(window.location.search);
+        case 'vip':
+            var valueVip = '4.497'
+            ticket = { type: 'vip', amount: valueVip };
+            ticket_Type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
 
-    let affiliateData = {
-        affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
-        source: urlParams.get('source') || null,
-        productId: urlParams.get('pid') || null,
-        vendorId: urlParams.get('vid') || null,
-        offerId: urlParams.get('oid') || '28',
-        clickId: urlParams.get('cid') || '645d01bc3981320001f44bd1',
-        pixelId: urlParams.get('afx') || null,
-        gtmId: urlParams.get('afgtm') || null,
-        latDays: urlParams.get('latd') || null,
-        brandId: urlParams.get('bid') || '23',
-        nextStep: urlParams.get('nxstp') || null,
-        token: urlParams.get('tkn') || null,
-        fbClid: urlParams.get('fbClid') || null,
-        rawUri: window.location.search
-    };
-    return affiliateData;
+        case 'diamond':
+            var valueDiamond = '5.497';
+            ticket = { type: 'diamond', amount: valueDiamond };
+            ticket_Type = ticket.type;
+            ticket_value = ticket.amount;
+            btnWillOpen.click();
+            break;
+
+        default:
+            break;
+    }
 }
 
 //registerCustomer
@@ -112,7 +145,7 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
     span.textContent = '';
     console.log(ticket_value);
 
-     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
+    /*  axios.post(apiBaseUrl + 'registerCustomer', { */
     axios.post(apiBaseUrl, {
         "name": name,
         "federalId": federalId,
@@ -131,7 +164,7 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
         })
         .then((response) => {
             var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;    
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;
         })
 
         .catch(function (error) {
@@ -141,13 +174,6 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             showToast(error.response.data.message);
         });
 }
-
-
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", function (event) {
-    validateForm();
-});
-
 
 //validar form
 function validateForm() {
@@ -167,57 +193,12 @@ function validateForm() {
 
 
 
-setCookies();
 
-	
-    var btnWillOpen = document.getElementById('btnWillOpen');
-    var ticket = '';
-    var ticket_value = '';
-    var ticket_type = '';
-    
-    var fullpass = document.getElementById('fullpass');
-    var vip = document.getElementById('vip');
-    var diamond = document.getElementById('diamond');
-    
-    fullpass.addEventListener('click', function(){
-        setTicket('fullpass');
-    });
-    
-    vip.addEventListener('click', function(){
-        setTicket('vip');
-    });
-    
-    diamond.addEventListener('click', function(){
-        setTicket('diamond');
-    });
-    
-    function setTicket(ticketType) {
-        switch (ticketType) {
-            case 'fullpass':
-                var valueFullPass = '3.997';
-                ticket = {type: 'fullpass', amount: valueFullPass};
-                ticket_Type = ticket.type;
-                ticket_value = ticket.amount;
-                btnWillOpen.click();
-                break;
-    
-            case 'vip':
-                var valueVip = '4.497'
-                ticket = {type: 'vip', amount: valueVip};
-                ticket_Type = ticket.type;
-                ticket_value = ticket.amount;
-                btnWillOpen.click();
-                break;
-    
-            case 'diamond':
-                var valueDiamond = '5.497';
-                ticket = {type: 'diamond', amount: valueDiamond};
-                ticket_Type = ticket.type;
-                ticket_value = ticket.amount;
-                btnWillOpen.click();
-                break;
-    
-            default:
-                break;
-        }
-    }
+// Event Listener for Form Submission
+const buttonSubmit = document.querySelector(".brz-btn-submit");
+buttonSubmit.addEventListener("click", function (event) {
+    validateForm();
+});
+
+// Initial Execution
+setCookies();
