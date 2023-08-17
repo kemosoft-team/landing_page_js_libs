@@ -1,3 +1,5 @@
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+
 ///get cookies
 function getCookie(name) {
 
@@ -96,7 +98,7 @@ function captureAffiliateData() {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket, ticket_value) {
+async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type) {
 
     const affiliate = captureAffiliateData();
 
@@ -109,8 +111,7 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
     span.textContent = '';
     console.log(ticket_value);
 
-    /*    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
-    axios.post('https://api2.kemosoft.com.br/api:lp/offer-request-start', { 
+    axios.post(apiBaseUrl + 'registerCustomer', {
         "name": name,
         "federalId": federalId,
         "phone": phone,
@@ -127,7 +128,8 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             }
         })
         .then((response) => {
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}`;    
+            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;    
         })
 
         .catch(function (error) {
@@ -145,7 +147,6 @@ buttonSubmit.addEventListener("click", function (event) {
 });
 
 
-
 //validar form
 function validateForm() {
 
@@ -159,9 +160,61 @@ function validateForm() {
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email, ticket, ticket_value);
+    registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type);
 }
 
 
 
 setCookies();
+
+	
+    var btnWillOpen = document.getElementById('btnWillOpen');
+    var ticket = '';
+    var ticket_value = '';
+    
+    var fullpass = document.getElementById('fullpass');
+    var vip = document.getElementById('vip');
+    var diamond = document.getElementById('diamond');
+    
+    fullpass.addEventListener('click', function(){
+        setTicket('fullpass');
+    });
+    
+    vip.addEventListener('click', function(){
+        setTicket('vip');
+    });
+    
+    diamond.addEventListener('click', function(){
+        setTicket('diamond');
+    });
+    
+    function setTicket(ticketType) {
+        switch (ticketType) {
+            case 'fullpass':
+                var valueFullPass = '3.997';
+                ticket = {type: 'fullpass', amount: valueFullPass};
+                ticket_Type = ticket.type;
+                ticket_value = ticket.amount;
+                btnWillOpen.click();
+                break;
+    
+            case 'vip':
+                var valueVip = '4.497'
+                ticket = {type: 'vip', amount: valueVip};
+                ticket_Type = ticket.type;
+                ticket_value = ticket.amount;
+                btnWillOpen.click();
+                break;
+    
+            case 'diamond':
+                var valueDiamond = '5.497';
+                ticket = {type: 'diamond', amount: valueDiamond};
+                ticket_Type = ticket.type;
+                ticket_value = ticket.amount;
+                btnWillOpen.click();
+                break;
+    
+            default:
+                break;
+        }
+    }
