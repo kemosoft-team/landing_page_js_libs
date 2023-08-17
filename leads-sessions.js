@@ -133,7 +133,7 @@ function setTicket(ticketType) {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type, affiliateData) {
+async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type) {
 
     const affiliate = captureAffiliateData();
 
