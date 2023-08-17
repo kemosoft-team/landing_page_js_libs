@@ -1,8 +1,5 @@
 // Initial Setup
 let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
-var ticket = '';
-var ticket_type = '';
-var ticket_value = '';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
@@ -33,35 +30,23 @@ buttonSubmit.addEventListener("click", function (event) {
 function setTicket(ticketType) {
     switch (ticketType) {
         case 'fullpass':
-            var valueFullPass = '3.997';
-            ticket = { type: 'fullpass', amount: valueFullPass };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '3.997' }));
+            localStorage.setItem('ticket_type', 'fullpass');
+            localStorage.setItem('ticket_value', '3.997');
             btnWillOpen.click();
             break;
 
         case 'vip':
-            var valueVip = '4.497'
-            ticket = { type: 'vip', amount: valueVip };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '4.497' }));
+            localStorage.setItem('ticket_type', 'vip');
+            localStorage.setItem('ticket_value', '4.497');
             btnWillOpen.click();
             break;
 
         case 'diamond':
-            var valueDiamond = '5.497';
-            ticket = { type: 'diamond', amount: valueDiamond };
-            ticket_type = ticket.type;
-            ticket_value = ticket.amount;
-            console.log(ticket);
-            console.log(ticket_type);
-            console.log(ticket_value);
+            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '5.497' }));
+            localStorage.setItem('ticket_type', 'diamond');
+            localStorage.setItem('ticket_value', '5.497');
             btnWillOpen.click();
             break;
 
@@ -168,7 +153,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-function registerCustomer(name, federalId, phone, email, ticket, ticket_type, ticket_value) {
+function registerCustomer(name, federalId, phone, email) {
 
     const affiliate = captureAffiliateData();
 
@@ -179,6 +164,11 @@ function registerCustomer(name, federalId, phone, email, ticket, ticket_type, ti
     button.setAttribute('disabled', true);
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
+
+    var ticket = JSON.parse(localStorage.getItem('ticket'));
+    var ticket_type = localStorage.getItem('ticket_type');
+    var ticket_value = localStorage.getItem('ticket_value');
+
     console.log(ticket);
     console.log(ticket_type);
     console.log(ticket_value);
