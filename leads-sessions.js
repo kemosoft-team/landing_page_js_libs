@@ -41,6 +41,7 @@ function captureAffiliateData() {
         nextStep: urlParams.get('nxstp') || null,
         token: urlParams.get('tkn') || null,
         fbClid: urlParams.get('fbClid') || null,
+        sessionId: urlParams.get('sessionId') || null,
         rawUri: window.location.search
     };
     return affiliateData;
@@ -132,7 +133,7 @@ function setTicket(ticketType) {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type) {
+async function registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type, affiliateData) {
 
     const affiliate = captureAffiliateData();
 
@@ -163,8 +164,8 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
             }
         })
         .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;
+            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliateData.fbClid}&sessionId=${affiliateData.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}&FbClid=${fbClid}&sessionId=${sessionId}`;
         })
 
         .catch(function (error) {
@@ -188,7 +189,7 @@ function validateForm() {
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email, ticket, ticket_value, ticket_type);
+    registerCustomer(name, federalId, phone, email);
 }
 
 // Event Listeners for Ticket Types
@@ -210,7 +211,6 @@ diamond.addEventListener('click', function () {
 });
 
 
-
 // Event Listener for Form Submission
 const buttonSubmit = document.querySelector(".brz-btn-submit");
 buttonSubmit.addEventListener("click", function (event) {
@@ -219,3 +219,5 @@ buttonSubmit.addEventListener("click", function (event) {
 
 // Initial Execution
 setCookies();
+
+
