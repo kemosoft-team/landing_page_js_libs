@@ -38,6 +38,9 @@ function setTicket(ticketType) {
             ticket_type = ticket.type;
             ticket_value = ticket.amount;
             btnWillOpen.click();
+            console.log(ticket);
+            console.log(ticket_type);
+            console.log(ticket_value);
             break;
 
         case 'vip':
@@ -46,6 +49,9 @@ function setTicket(ticketType) {
             ticket_type = ticket.type;
             ticket_value = ticket.amount;
             btnWillOpen.click();
+            console.log(ticket);
+            console.log(ticket_type);
+            console.log(ticket_value);
             break;
 
         case 'diamond':
@@ -54,6 +60,9 @@ function setTicket(ticketType) {
             ticket_type = ticket.type;
             ticket_value = ticket.amount;
             btnWillOpen.click();
+            console.log(ticket);
+            console.log(ticket_type);
+            console.log(ticket_value);
             break;
 
         default:
