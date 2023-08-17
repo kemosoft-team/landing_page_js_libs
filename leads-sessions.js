@@ -30,21 +30,21 @@ buttonSubmit.addEventListener("click", function (event) {
 function setTicket(ticketType) {
     switch (ticketType) {
         case 'fullpass':
-            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '3.997' }));
+            localStorage.setItem('ticket', JSON.stringify({ type: 'fullpass', amount: '3.997' }));
             localStorage.setItem('ticket_type', 'fullpass');
             localStorage.setItem('ticket_value', '3.997');
             btnWillOpen.click();
             break;
 
         case 'vip':
-            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '4.497' }));
+            localStorage.setItem('ticket', JSON.stringify({ type: 'vip', amount: '4.497' }));
             localStorage.setItem('ticket_type', 'vip');
             localStorage.setItem('ticket_value', '4.497');
             btnWillOpen.click();
             break;
 
         case 'diamond':
-            localStorage.setItem('ticket', JSON.stringify({ type: ticket_type, amount: '5.497' }));
+            localStorage.setItem('ticket', JSON.stringify({ type: 'diamond', amount: '5.497' }));
             localStorage.setItem('ticket_type', 'diamond');
             localStorage.setItem('ticket_value', '5.497');
             btnWillOpen.click();
