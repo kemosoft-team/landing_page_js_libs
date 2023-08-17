@@ -31,22 +31,22 @@ function setTicket(ticketType) {
     switch (ticketType) {
         case 'fullpass':
             localStorage.setItem('ticket', JSON.stringify({ type: 'fullpass', amount: '3.997' }));
-            localStorage.setItem('ticket_type', 'fullpass');
-            localStorage.setItem('ticket_value', '3.997');
+            /* localStorage.setItem('ticket_type', 'fullpass');
+            localStorage.setItem('ticket_value', '3.997'); */
             btnWillOpen.click();
             break;
 
         case 'vip':
             localStorage.setItem('ticket', JSON.stringify({ type: 'vip', amount: '4.497' }));
-            localStorage.setItem('ticket_type', 'vip');
-            localStorage.setItem('ticket_value', '4.497');
+            /* localStorage.setItem('ticket_type', 'vip');
+            localStorage.setItem('ticket_value', '4.497'); */
             btnWillOpen.click();
             break;
 
         case 'diamond':
             localStorage.setItem('ticket', JSON.stringify({ type: 'diamond', amount: '5.497' }));
-            localStorage.setItem('ticket_type', 'diamond');
-            localStorage.setItem('ticket_value', '5.497');
+            /* localStorage.setItem('ticket_type', 'diamond');
+            localStorage.setItem('ticket_value', '5.497'); */
             btnWillOpen.click();
             break;
 
@@ -166,12 +166,12 @@ function registerCustomer(name, federalId, phone, email) {
     span.textContent = '';
 
     var ticket = JSON.parse(localStorage.getItem('ticket'));
-    var ticket_type = localStorage.getItem('ticket_type');
-    var ticket_value = localStorage.getItem('ticket_value');
+    /* var ticket_type = localStorage.getItem('ticket_type');
+    var ticket_value = localStorage.getItem('ticket_value'); */
 
     console.log(ticket);
-    console.log(ticket_type);
-    console.log(ticket_value);
+    console.log(ticket.type);
+    console.log(ticket.value);
 
     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
     axios.post(apiBaseUrl, {
@@ -192,8 +192,8 @@ function registerCustomer(name, federalId, phone, email) {
         })
 
         .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;
+            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.value}&link_checkout=${link_checkout}`;
         })
 
         .catch(function (error) {
