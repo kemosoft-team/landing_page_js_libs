@@ -50,7 +50,7 @@ function setTicket(ticketType) {
             ticket_value = ticket.amount;
             console.log(ticket);
             console.log(ticket_type);
-            console.log(tticket_value);
+            console.log(ticket_value);
             btnWillOpen.click();
             break;
 
@@ -61,7 +61,7 @@ function setTicket(ticketType) {
             ticket_value = ticket.amount;
             console.log(ticket);
             console.log(ticket_type);
-            console.log(tticket_value);
+            console.log(ticket_value);
             btnWillOpen.click();
             break;
 
