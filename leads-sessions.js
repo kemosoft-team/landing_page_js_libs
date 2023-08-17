@@ -171,6 +171,7 @@ setCookies();
     var btnWillOpen = document.getElementById('btnWillOpen');
     var ticket = '';
     var ticket_value = '';
+    var ticket_type = '';
     
     var fullpass = document.getElementById('fullpass');
     var vip = document.getElementById('vip');
