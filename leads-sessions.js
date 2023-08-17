@@ -112,7 +112,8 @@ async function registerCustomer(name, federalId, phone, email, ticket, ticket_va
     span.textContent = '';
     console.log(ticket_value);
 
-    axios.post(apiBaseUrl + 'registerCustomer', {
+     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
+    axios.post(apiBaseUrl, {
         "name": name,
         "federalId": federalId,
         "phone": phone,
