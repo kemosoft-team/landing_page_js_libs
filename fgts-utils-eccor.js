@@ -112,32 +112,32 @@ function showToast(text) {
 }
 
 //get Token Status info-return
-function getTokenStatus() {
+  function getTokenStatus(){
 
-  if (getCookie('tkn')) {
-
-    axios.post(apiBaseUrl + 'getTokenStatus', {}, {
+    if(getCookie('tkn')){
+  
+    axios.post(apiBaseUrl+'getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
-      }
-    })
+      }})
       .then(function (response) {
 
         const param = window.location.search || '';
-
+        
         const link = document.querySelector('a.btn-continue');
         link.setAttribute('href', stepsUrl + response.data.nextStep + param);
 
-        document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-        var botao = document.querySelector(".btn-lead-info");
-        botao.click();
+         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
+         var botao = document.querySelector(".btn-lead-info");
+         botao.click();
 
       })
       .catch(function (error) {
-        console.log(error);
-      });
+          console.log(error);
+      }); 
+    }
   }
-}
+
 
 //obtem os parametros do afiliado oriondos dos cookies
 function captureAffiliateData() {
