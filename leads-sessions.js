@@ -1,6 +1,8 @@
 // Initial Setup
 let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
 var ticket = '';
+var ticket_type = '';
+var ticket_value = '';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
@@ -33,21 +35,33 @@ function setTicket(ticketType) {
         case 'fullpass':
             var valueFullPass = '3.997';
             ticket = { type: 'fullpass', amount: valueFullPass };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
             console.log(ticket);
+            console.log(ticket_type);
+            console.log(tticket_value);
             btnWillOpen.click();
             break;
 
         case 'vip':
             var valueVip = '4.497'
             ticket = { type: 'vip', amount: valueVip };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
             console.log(ticket);
+            console.log(ticket_type);
+            console.log(tticket_value);
             btnWillOpen.click();
             break;
 
         case 'diamond':
             var valueDiamond = '5.497';
             ticket = { type: 'diamond', amount: valueDiamond };
+            ticket_type = ticket.type;
+            ticket_value = ticket.amount;
             console.log(ticket);
+            console.log(ticket_type);
+            console.log(tticket_value);
             btnWillOpen.click();
             break;
 
@@ -154,7 +168,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email, ticket) {
+async function registerCustomer(name, federalId, phone, email, ticket, ticket_type, ticket_value) {
 
     const affiliate = captureAffiliateData();
 
@@ -166,6 +180,8 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
     console.log(ticket);
+    console.log(ticket_type);
+    console.log(ticket_value);
 
     /*  axios.post(apiBaseUrl + 'registerCustomer', { */
     axios.post(apiBaseUrl, {
@@ -186,9 +202,9 @@ async function registerCustomer(name, federalId, phone, email, ticket) {
         })
 
         .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&link_checkout=${link_checkout}`;
-        })        
+            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket_type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket_value}&link_checkout=${link_checkout}`;
+        })
 
         .catch(function (error) {
             button.removeAttribute('disabled');
