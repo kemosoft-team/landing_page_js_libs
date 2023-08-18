@@ -180,6 +180,7 @@ function registerCustomer(name, federalId, phone, email) {
         "offerData": { "ticket": ticket },
         "useTerms": true,
         "dataPrivacy": true,
+        "dataSearchAllowed": true,
         "affiliateData": affiliate
     },
 
