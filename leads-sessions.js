@@ -179,6 +179,7 @@ function registerCustomer(name, federalId, phone, email) {
         "email": email,
         "offerData": { "ticket": ticket },
         "useTerms": true,
+        "dataPrivacy": true,
         "affiliateData": affiliate
     },
 
