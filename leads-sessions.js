@@ -191,9 +191,8 @@ function registerCustomer(name, federalId, phone, email) {
             }
         })
 
-        .then((response) => {
-            var link_checkout = `https://checkout.summersales.com.br/?purchase=${ticket.type}&FbClid=${affiliate.fbClid}&sessionId=${affiliate.sessionId}`;
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&link_checkout=${link_checkout}`;
+         .then((response) => {
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&ticket_type=${ticket.type}&fbclid=${affiliate.fbClid}&sessionid=${affiliate.sessionId}`;
         })
 
         .catch(function (error) {
