@@ -1,5 +1,5 @@
 // Initial Setup
-let apiBaseUrl = 'https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
@@ -85,7 +85,7 @@ function captureAffiliateData() {
         productId: urlParams.get('pid') || null,
         vendorId: urlParams.get('vid') || null,
         offerId: urlParams.get('oid') || '28',
-        clickId: urlParams.get('cid') || '645d01bc3981320001f44bd1',
+        clickId: urlParams.get('cid') || null,
         pixelId: urlParams.get('afx') || null,
         gtmId: urlParams.get('afgtm') || null,
         latDays: urlParams.get('latd') || null,
@@ -93,7 +93,6 @@ function captureAffiliateData() {
         nextStep: urlParams.get('nxstp') || null,
         token: urlParams.get('tkn') || null,
         fbClid: urlParams.get('fbClid') || null,
-        sessionId: urlParams.get('sessionId') || null,
         rawUri: window.location.search
     };
     return affiliateData;
@@ -173,8 +172,7 @@ function registerCustomer(name, federalId, phone, email) {
     console.log(ticket.type);
     console.log(ticket.amount);
 
-    /*  axios.post(apiBaseUrl + 'registerCustomer', { */
-    axios.post(apiBaseUrl, {
+        axios.post(apiBaseUrl + 'registerCustomer', { 
         "name": name,
         "federalId": federalId,
         "phone": phone,
@@ -192,7 +190,7 @@ function registerCustomer(name, federalId, phone, email) {
         })
 
          .then((response) => {
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&ticket_type=${ticket.type}&fbclid=${affiliate.fbClid}&sessionid=${affiliate.sessionId}`;
+            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&ticket_type=${ticket.type}&fbclid=${affiliate.fbClid}&sessionid=${affiliate.clickId}`;
         })
 
         .catch(function (error) {
