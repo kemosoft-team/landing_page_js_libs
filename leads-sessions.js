@@ -135,7 +135,7 @@ function setCookies(latDays) {
                 ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
                 ipinfo['bid'] = '23';
                 ipinfo['oid'] = '28';
-                ipinfo['cid'] = '645d01bc3981320001f44bd1';
+                ipinfo['cid'] = null;
             }
 
             var expirationDays = latDays || 7;
@@ -178,6 +178,7 @@ function registerCustomer(name, federalId, phone, email) {
         "phone": phone,
         "email": email,
         "offerData": { "ticket": ticket },
+        "useTerms": true,
         "affiliateData": affiliate
     },
 
