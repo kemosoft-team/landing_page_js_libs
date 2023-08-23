@@ -132,18 +132,15 @@ function captureAffiliateData() {
 
   let affiliateData = {
 
-    affiliateCode: urlParams.get('af') || null,
+    affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
     source: urlParams.get('source') || null,
     productId: urlParams.get('pid') || null,
     vendorId: urlParams.get('vid') || null,
-    offerId: urlParams.get('oid') || null,
+    offerId: '65',
     clickId: urlParams.get('cid') || null,
     pixelId: urlParams.get('afx') || null,
     gtmId: urlParams.get('afgtm') || null,
-    latDays: urlParams.get('latd') || null,
-    brandId: urlParams.get('bid') || null,
-    nextStep: urlParams.get('nxstp') || null,
-    token: urlParams.get('tkn') || null,
+    gaId: urlParams.get('gaId') || null,
     rawUri: window.location.search
   };
   return affiliateData;
