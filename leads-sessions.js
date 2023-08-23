@@ -73,7 +73,7 @@ function captureAffiliateData() {
     const urlParams = new URLSearchParams(window.location.search);
 
     let affiliateData = {
-        affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
+        affiliateCode: urlParams.get('af') || 'dfsAeGX6FAKNyJz97',
         source: urlParams.get('source') || null,
         productId: urlParams.get('pid') || null,
         vendorId: urlParams.get('vid') || null,
