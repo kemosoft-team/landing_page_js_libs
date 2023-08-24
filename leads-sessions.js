@@ -5,7 +5,7 @@ let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 var btnWillOpen = document.getElementById('btnWillOpen');
 var fullpass = document.getElementById('fullpass');
 var vip = document.getElementById('vip');
-var diamond = document.getElementById('diamond');
+const diamond = document.querySelectorAll('#diamond');
 
 fullpass.addEventListener('click', function () {
     setTicket('fullpass');
@@ -15,8 +15,10 @@ vip.addEventListener('click', function () {
     setTicket('vip');
 });
 
-diamond.addEventListener('click', function () {
-    setTicket('diamond');
+diamond.forEach(function(diamond) {
+    diamond.addEventListener('click', function () {
+        setTicket('diamond');
+    });
 });
 
 // Set Ticket
