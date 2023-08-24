@@ -3,17 +3,17 @@ let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
-var fullpass = document.getElementById('fullpass');
-var vip = document.getElementById('vip');
+//var fullpass = document.getElementById('fullpass');
+//var vip = document.getElementById('vip');
 const diamond = document.querySelectorAll('#diamond');
 
-fullpass.addEventListener('click', function () {
-    setTicket('fullpass');
-});
+//fullpass.addEventListener('click', function () {
+//    setTicket('fullpass');
+//});
 
-vip.addEventListener('click', function () {
-    setTicket('vip');
-});
+//vip.addEventListener('click', function () {
+//    setTicket('vip');
+//});
 
 diamond.forEach(function(diamond) {
     diamond.addEventListener('click', function () {
@@ -24,19 +24,19 @@ diamond.forEach(function(diamond) {
 // Set Ticket
 function setTicket(ticketType) {
     switch (ticketType) {
-        case 'fullpass':
-            localStorage.setItem('ticket', JSON.stringify({ type: 'fullpass', amount: '3997' }));
+        //case 'fullpass':
+          //  localStorage.setItem('ticket', JSON.stringify({ type: 'fullpass', amount: '3997' }));
             /* localStorage.setItem('ticket_type', 'fullpass');
-            localStorage.setItem('ticket_value', '3997'); */
-            btnWillOpen.click();
-            break;
+           // localStorage.setItem('ticket_value', '3997'); */
+          //  btnWillOpen.click();
+          //  break;
 
-        case 'vip':
-            localStorage.setItem('ticket', JSON.stringify({ type: 'vip', amount: '4497' }));
+       // case 'vip':
+           // localStorage.setItem('ticket', JSON.stringify({ type: 'vip', amount: '4497' }));
             /* localStorage.setItem('ticket_type', 'vip');
-            localStorage.setItem('ticket_value', '4497'); */
-            btnWillOpen.click();
-            break;
+           // localStorage.setItem('ticket_value', '4497'); */
+            //btnWillOpen.click();
+           // break;
 
         case 'diamond':
             localStorage.setItem('ticket', JSON.stringify({ type: 'diamond', amount: '5497' }));
