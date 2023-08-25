@@ -113,13 +113,6 @@ async function registerCustomer(name, federalId, phone, email) {
 }
 
 
-const buttonSubmit = document.querySelector(".brz-btn-submit");
-buttonSubmit.addEventListener("click", function (event) {
-    validateForm();
-});
-
-
-
 //validar form
 function validateForm() {
 
