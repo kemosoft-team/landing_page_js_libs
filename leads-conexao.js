@@ -45,7 +45,7 @@ function setCookies(latDays) {
                 }
 
             } else {
-                ipinfo['af'] = 'Vv5P88AWTr7qsU8v8';
+                ipinfo['af'] = 'dfsAeGX6FAKNyJz97';
                 ipinfo['bid'] = '23';
                 ipinfo['oid'] = '27';
                 ipinfo['cid'] = '645d01bc3981320001f44bd1';
