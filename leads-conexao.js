@@ -108,7 +108,7 @@ async function registerCustomer(name, federalId, phone, email) {
             button.removeAttribute('disabled');
             spinner.classList.add('brz-invisible');
             span.textContent = 'CADASTRAR AGORA!';
-            showToast(error.response.data.message);
+            showToast(error.response.data.msg);
         });
 }
 
