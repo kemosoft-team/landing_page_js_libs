@@ -386,13 +386,8 @@ function getNextStep() {
     })
     .then((response) => {
 
-      if (response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable') {
-
-        var testeURL = stepsUrl + response.data.nextStep;
-        
-        window.location.href = testeURL;
-        console.log(testeURL);
-
+      if (response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable') {        
+        window.location.href = stepsUrl + response.data.nextStep;
       } else {
 
         var elementsWait = document.getElementsByClassName('wait');
