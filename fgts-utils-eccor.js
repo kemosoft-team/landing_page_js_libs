@@ -263,7 +263,22 @@ async function registerCustomerAddress(zipcode, address, addressNumber, state, d
 }
 
 //registerCustomerAccount
-async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
+async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType, pixType) {
+
+  switch (pixType) {
+            case "Sim, use meu Email como chave-pix.":
+                pixType = "email";
+                break;
+            case "Sim, use meu CPF como chave-pix.":
+                pixType = "federalId";
+                break;
+            case "Sim, use meu WHATSAPP como chave-pix.":
+                pixType = "phone";
+                break;
+            default:
+                pixType = "Não, prefiro transferência bancária."
+                break;
+        }
 
   const button = document.querySelector('.brz-btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
@@ -278,6 +293,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
     acctType: accountType,
+    pixType: pixType,
     currentStep: getCurrentStep()
   },
     {
@@ -291,7 +307,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     .catch(function (error) {
       button.removeAttribute('disabled');
       spinner.classList.add('brz-invisible');
-      span.textContent = 'Simular';
+      span.textContent = 'Continuar';
       showToast(error.response.data.message);
     });
 
@@ -492,20 +508,21 @@ function validarFormDocs() {
 
 function validarFormAccount() {
 
-  const agency = document.querySelector('[data-label="Agência"]').value;
-  const bank = document.querySelector('[data-label="Banco"]').value;
-  const account = document.querySelector('[data-label="Conta"]').value;
-  const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
-  const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
+        const agency = document.querySelector('[data-label="Agência"]').value;
+        const bank = document.querySelector('[data-label="Banco"]').value;
+        const account = document.querySelector('[data-label="Conta"]').value;
+        const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
+        const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
+        const pixType = document.querySelector('[data-label="PIX"]').value;
 
-  if (agency == "" || bank == "" || account == "" || verifyDigit == "" || accountType == "") {
-    showToast("Por favor, preencha todos os campos.");
-    return false;
-  }
+        if (agency == "" || bank == "" || account == "" || verifyDigit == "" || accountType == "" || pixType == "") {
+            alert("Por favor, preencha todos os campos.");
+            return false;
+        }
 
-  const accountTypeCut = accountType.charAt(0).toString();
-  registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
-}
+        const accountTypeCut = accountType.charAt(0).toString();
+        registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut, pixType);
+    }
 
 //validar form
 function validateForm() {
