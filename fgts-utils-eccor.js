@@ -276,7 +276,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
                 pixType = "phone";
                 break;
             default:
-                pixType = "Não, prefiro transferência bancária."
+                pixType = " "
                 break;
         }
 
