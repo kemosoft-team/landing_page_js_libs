@@ -121,7 +121,7 @@ function validateForm() {
     const email = document.querySelector('[data-label="Email"]').value;
     const federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
 
-    if (name == "" || federalId == "" || phone == "" || email == "") {
+    if (name == "" || phone == "" || email == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
