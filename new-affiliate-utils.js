@@ -97,7 +97,7 @@ function validateForm(){
     registerAffiliate(name, birth, federalId, zipcode, phone, email);
   }
 
-  if(window.location.pathname == '/novo-afiliado' || window.location.pathname == '/novo-afiliado-homeofficealianca'){
+  if(window.location.pathname == '/novo-afiliado' || window.location.pathname == '/novo-afiliado-homeofficeconfianca'){
     //Adiciona termos e condições abaixo do formulário
     let novaDiv = document.createElement('div');
         novaDiv.classList.add('brz-rich-text');
