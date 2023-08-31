@@ -11,7 +11,9 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 
     var url_params = window.location.href;
     var url = new URL(url_params);
-    let referrer = (url.searchParams.get("af") == null) ? "Vv5P88AWTr7qsU8v8" : url.searchParams.get("af");
+    var brand = window.location.pathname; 
+
+    let referrer = (url.searchParams.get("af") == null) ? (window.location.pathname == "/novo-afiliado-homeofficealianca" ? "A6jsrGZdqUAxKRXJA" : "Vv5P88AWTr7qsU8v8") : url.searchParams.get("af");
 
     console.log(referrer);
 
