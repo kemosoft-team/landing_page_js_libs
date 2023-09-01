@@ -188,7 +188,7 @@ function registerCustomer(name, phone, email) {
         })
 
          .then((response) => {
-            window.location.href = `https://summersessions.kemobuilder.site/success`;
+            window.location.href = `https://ingressos.summersales.com.br/success`;
         })
 
         .catch(function (error) {
