@@ -147,7 +147,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-function registerCustomer(name, federalId, phone, email) {
+function registerCustomer(name, phone, email) {
 
     const affiliate = captureAffiliateData();
 
@@ -169,7 +169,6 @@ function registerCustomer(name, federalId, phone, email) {
 
         axios.post(apiBaseUrl + 'registerCustomer', { 
         "name": name,
-        "federalId": federalId,
         "phone": phone,
         "email": email,
         "offerData": { "ticket": ticket },
@@ -188,7 +187,7 @@ function registerCustomer(name, federalId, phone, email) {
         })
 
          .then((response) => {
-            window.location.href = `https://xm16mrwaafp.typeform.com/to/sEzGeuZe#name=${name}&phone=${phone}&email=${email}&ticket_value=${ticket.amount}&ticket_type=${ticket.type}&fbclid=${affiliate.fbClid}&sessionid=${affiliate.clickId}`;
+            window.location.href = `https://summersessions.kemobuilder.site/success`;
         })
 
         .catch(function (error) {
@@ -205,14 +204,13 @@ function validateForm() {
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
-    const federalId = document.querySelector('[data-label="CPF"]').value;
 
-    if (name == "" || federalId == "" || phone == "" || email == "") {
+    if (name == "" || phone == "" || email == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email);
+    registerCustomer(name, phone, email);
 }
 
 
