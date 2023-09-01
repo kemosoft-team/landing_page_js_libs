@@ -147,7 +147,7 @@ function setCookies(latDays) {
 
 
 //registerCustomer
-function registerCustomer(name, phone, email) {
+function registerCustomer(name, phone, federalId, email) {
 
     const affiliate = captureAffiliateData();
 
@@ -175,7 +175,9 @@ function registerCustomer(name, phone, email) {
         "useTerms": true,
         "dataPrivacy": true,
         "dataSearchAllowed": true,
+        "federalId": federalId,
         "affiliateData": affiliate
+            
     },
 
         {
@@ -204,13 +206,14 @@ function validateForm() {
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
+    const federalId = document.querySelector('[data-label="CPF"]').value;
 
-    if (name == "" || phone == "" || email == "") {
+    if (name == "" || phone == "" || email == ""|| federalId == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, phone, email);
+    registerCustomer(name, phone, email, federalId);
 }
 
 
