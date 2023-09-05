@@ -1,6 +1,6 @@
 
 if (typeof apiBaseUrl == 'undefined') {
-  let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+  let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
   let stepsUrl = 'https://correspondente-bmg.faz.vc/';
 }
 //inicia spin loading no button
@@ -61,7 +61,7 @@ function showToast(text) {
 
     if(getCookie('tkn')){
   
-    axios.post(apiBaseUrl+'getTokenStatus', {}, {
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})

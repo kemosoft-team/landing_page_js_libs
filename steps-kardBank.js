@@ -1,5 +1,5 @@
 //API url
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let stepsUrl = 'https://infos.faz.vc/';
 
 // obtem o cookie pelo nome 
@@ -49,7 +49,7 @@ function redirectToNextStep(res) {
 
 function setNextStep() {
 
-    axios.post(apiBaseUrl+'getTokenStatus', {}, {
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -125,7 +125,7 @@ function setBanks(bankList){
   //obtem os bancos
   async function getBanks(){
       
-    axios.post(apiBaseUrl+'getData', {"object":"banks"}, {
+    axios.post(apiBaseUrl+'/getData', {"object":"banks"}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -140,7 +140,7 @@ function setBanks(bankList){
   
 async function getByZipCodeInfo(zipcode){
 
-    axios.post(apiBaseUrl+'getZipcodeInfo', {
+    axios.post(apiBaseUrl+'/getZipcodeInfo', {
       zipcode: zipcode,
     },
     {
@@ -176,7 +176,7 @@ async function getByZipCodeInfo(zipcode){
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
     
-    axios.post(apiBaseUrl+'registerCustomerInfos', {
+    axios.post(apiBaseUrl+'/registerCustomerInfos', {
       zipcode: zipcode,
       address: address, 
       addressNumber: addressNumber, 
@@ -212,7 +212,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl+'registerCustomerInfos', {
+  axios.post(apiBaseUrl+'/registerCustomerInfos', {
     branchNo: agency,
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -245,7 +245,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl+'registerCustomerInfos', {
+  axios.post(apiBaseUrl+'/registerCustomerInfos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
@@ -274,7 +274,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     const spinner = button.querySelector('.brz-form-spinner');
     const span = button.querySelector('.brz-span.brz-text__editor');
 
-    axios.post(apiBaseUrl+'getNextStep', {}, 
+    axios.post(apiBaseUrl+'/getNextStep', {}, 
     {
       headers: {
         'Authorization': `${getCookie('tkn')}`

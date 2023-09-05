@@ -1,6 +1,6 @@
 
 if (typeof apiBaseUrl == 'undefined') {
-    let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+    let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
     let stepsUrl = window.location.origin+'/';
   }
   
@@ -62,7 +62,7 @@ if (typeof apiBaseUrl == 'undefined') {
   
       if(getCookie('tkn')){
     
-      axios.post(apiBaseUrl+'getTokenStatus', {}, {
+      axios.post(apiBaseUrl+'/getTokenStatus', {}, {
         headers: {
           'Authorization': `Bearer ${getCookie('tkn')}`
         }})

@@ -1,5 +1,5 @@
 // Initial Setup
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 
 // Event Listeners for Ticket Types
 var btnWillOpen = document.getElementById('btnWillOpen');
@@ -167,7 +167,7 @@ function registerCustomer(name, phone, email) {
     console.log(ticket.type);
     console.log(ticket.amount);
 
-        axios.post(apiBaseUrl + 'registerCustomer', { 
+        axios.post(apiBaseUrl + '/registerCustomer', { 
         "name": name,
         "phone": phone,
         "email": email,

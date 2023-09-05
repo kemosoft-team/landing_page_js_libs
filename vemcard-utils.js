@@ -1,7 +1,7 @@
 //API url
 let apiUrl = 'https://api.retool.com/v1/workflows/f9000ea1-f16c-4c34-95f6-51ecfcc39285/startTrigger?workflowApiKey=retool_wk_7d2f4f13dd9841fbbd5b5737a82fcfc5';
 let stepsUrl = 'https://vemcard.faz.vc/';
-let apiConsig = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiConsig = 'https://api.consigmais.com.br/lp/main/v2';
 
 //Exibe mensagem no toast
 function showToast(text) {
@@ -76,7 +76,7 @@ function registerCustomerAddress(zipcode, address, addressNumber, complement, st
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl /* + 'registerCustomerInfos' */, {
+    axios.post(apiUrl /* + '/registerCustomerInfos' */, {
         "cpf": cpf,
         "cep": zipcode,
         "logradouro": address,
@@ -114,7 +114,7 @@ function registerCustomerAccount(agency, bank, account, verifyDigit, accountType
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl /* + 'registerCustomerInfos' */, {
+    axios.post(apiUrl /* + '/registerCustomerInfos' */, {
         "cpf": cpf,
         "no_agencia": agency,
         "banco": bank,
@@ -149,7 +149,7 @@ async function registerCustomerDocs(docNumber, docType, issueState) {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    axios.post(apiUrl /* + 'registerCustomerInfos' */, {
+    axios.post(apiUrl /* + '/registerCustomerInfos' */, {
         "cpf": cpf, // Include CPF in the request
         "documento": docNumber,
         "tipo_documento": docType,

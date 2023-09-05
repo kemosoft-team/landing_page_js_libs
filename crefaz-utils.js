@@ -1,5 +1,5 @@
 //API url
-let apiUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let stepsUrl = 'https://crefaz.kemobuilder.site/';
 
 //Obtem o cookie pelo nome 
@@ -18,7 +18,7 @@ function getCookie(name) {
 //Obtem e redireciona para nextstep atraves de consulta com token
 function setNextStep() {
 
-  axios.post(apiUrl + 'getTokenStatus', {}, {
+  axios.post(apiUrl + '/getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
@@ -189,7 +189,7 @@ async function registerCustomer(name, federalId, phone) {
 //Obtem as informamações de endereço com base no CEP
 async function getByZipCodeInfo(zipcode) {
 
-  axios.post(apiUrl + 'getZipcodeInfo', {
+  axios.post(apiUrl + '/getZipcodeInfo', {
     zipcode: zipcode,
   },
     {
@@ -226,7 +226,7 @@ async function registerCustomerAddress(zipcode, address, addressNumber, state, d
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiUrl + 'registerCustomerInfos', {
+  axios.post(apiUrl + '/registerCustomerInfos', {
     zipcode: zipcode,
     address: address,
     addressNumber: addressNumber,
@@ -262,7 +262,7 @@ async function registerCustomerReference(nameRefer, phoneRefer, typeRefer,  name
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiUrl + 'registerCustomerInfos', {
+  axios.post(apiUrl + '/registerCustomerInfos', {
     nameRefer:nameRefer,
     phoneRefer:phoneRefer,
     typeRefer:typeRefer,
@@ -306,7 +306,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiUrl + 'registerCustomerInfos', {
+  axios.post(apiUrl + '/registerCustomerInfos', {
     branchNo: agency.replace(/[^\w\s]/gi, ''),
     bankId: bank,
     acctNo: `${account}-${verifyDigit}`,
@@ -340,7 +340,7 @@ async function registerCustomerDocs(docNumber, docType, issueState, issuingState
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiUrl + 'registerCustomerInfos', {
+  axios.post(apiUrl + '/registerCustomerInfos', {
     docNumber: docNumber,
     docType: docType,
     docState: issueState,
@@ -382,7 +382,7 @@ function getNextStep() {
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
 
-  axios.post(apiUrl + 'getNextStep', {},
+  axios.post(apiUrl + '/getNextStep', {},
     {
       headers: {
         'Authorization': `${getCookie('tkn')}`
