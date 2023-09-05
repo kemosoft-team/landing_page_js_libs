@@ -1,4 +1,4 @@
-let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2/';
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
 let stepsUrl = 'https://eccor.faz.vc/';
 
 
