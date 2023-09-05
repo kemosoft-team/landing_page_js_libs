@@ -72,7 +72,7 @@ function showToast(text) {
 }
 
 //registerCustomer
-async function registerCustomer(name, federalId, phone, email) {
+async function registerCustomer(name, phone, email) {
     
     const cleanedPhone = phone.replace(/[^\d]/g, '');
 
@@ -86,7 +86,6 @@ async function registerCustomer(name, federalId, phone, email) {
 
     axios.post('https://api.consigmais.com.br/signup/affiliate/register', {
         "name": name,
-        "federalId": federalId,
         "mainEmail": email,
         "phone": cleanedPhone, 
         "referrerCode":"kmirnJiDLMZFNqaa7",
@@ -119,14 +118,13 @@ function validateForm() {
     const name = document.querySelector('[data-label="Nome"]').value;
     const phone = document.querySelector('[data-label="Whatsapp"]').value;
     const email = document.querySelector('[data-label="Email"]').value;
-    const federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
 
     if (name == "" || phone == "" || email == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registerCustomer(name, federalId, phone, email);
+    registerCustomer(name, phone, email);
 }
 
 
