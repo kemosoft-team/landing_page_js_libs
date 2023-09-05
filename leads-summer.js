@@ -70,7 +70,7 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-//registerCustomer
+/registerCustomer
 async function registerCustomer(name, federalId, phone, email, local) {
 
   const button = document.querySelector('.brz-btn-submit');

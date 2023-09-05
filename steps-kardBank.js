@@ -165,7 +165,7 @@ async function getByZipCodeInfo(zipcode){
   }
 
   
-  //registerCustomerAccount
+  /registerCustomerAccount
   async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
 
     const button = document.querySelector('.brz-btn-submit');
@@ -201,7 +201,7 @@ async function getByZipCodeInfo(zipcode){
 
     }
 
-//registerCustomerAccount
+/registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
 
   const button = document.querySelector('.brz-btn-submit');

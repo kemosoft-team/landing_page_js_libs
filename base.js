@@ -205,7 +205,7 @@ function setAddressInfo(obj){
   document.querySelector('[data-label="Cidade"]').value = obj.city;
   document.querySelector('[data-label="UF"]').value = obj.state;
 }
-//registerCustomer
+/registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email){
   
   axios.post(APIbaseURL+'/offer-request-start', {
@@ -227,7 +227,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
   }); 
   }
 
-  //registerCustomerAccount
+  /registerCustomerAccount
   async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
 
     axios.post(APIbaseURL+'/offer-request-infos', {
@@ -252,7 +252,7 @@ async function registerCustomer(name, birth, federalId, phone, email){
 
     }
 
-//registerCustomerAccount
+/registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
 
   axios.post(APIbaseURL+'/offer-request-infos', {

@@ -147,7 +147,7 @@ function captureAffiliateData() {
 }
 
 
-//registerCustomer
+/registerCustomer
 async function registerCustomer(name, birth, federalId, phone, federalIdRepresent) {
 
   const affiliate = captureAffiliateData();
@@ -213,7 +213,7 @@ function setAddressInfo(obj){
 }
 
   
-  //registerCustomerAccount
+  /registerCustomerAccount
   async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
   
     const button = document.querySelector('.brz-btn-submit');
@@ -249,7 +249,7 @@ function setAddressInfo(obj){
   
     }
   
-  //registerCustomerAccount
+  /registerCustomerAccount
   async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
   
   const button = document.querySelector('.brz-btn-submit');

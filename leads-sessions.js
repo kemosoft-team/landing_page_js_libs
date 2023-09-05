@@ -146,7 +146,7 @@ function setCookies(latDays) {
 }
 
 
-//registerCustomer
+/registerCustomer
 function registerCustomer(name, phone, email) {
 
     const affiliate = captureAffiliateData();

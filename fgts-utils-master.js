@@ -108,7 +108,7 @@ if (typeof apiBaseUrl == 'undefined') {
   }
   
   
-  //registerCustomer
+  /registerCustomer
   async function registerCustomer(name, birth, federalId, phone, email){
   
       const affiliate = captureAffiliateData();
