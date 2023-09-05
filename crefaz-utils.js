@@ -151,7 +151,7 @@ function captureAffiliateData() {
 }
 
 
-/registerCustomer
+//registerCustomer
 async function registerCustomer(name, federalId, phone) {
 
   const affiliate = captureAffiliateData();
@@ -215,7 +215,7 @@ function setAddressInfo(obj) {
 }
 
 
-/registerCustomerAccount
+//registerCustomerAccount
 async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
 
   const button = document.querySelector('.brz-btn-submit');
@@ -251,7 +251,7 @@ async function registerCustomerAddress(zipcode, address, addressNumber, state, d
     });
 
 }
-/registerCustomerReference
+//registerCustomerReference
 async function registerCustomerReference(nameRefer, phoneRefer, typeRefer,  nameReferS,  phoneReferS, typeReferS,  company, professionalRating, profession, timeJob) {
 
   const button = document.querySelector('.brz-btn-submit');
@@ -295,7 +295,7 @@ async function registerCustomerReference(nameRefer, phoneRefer, typeRefer,  name
 
 
 
-/registerCustomerAccount
+//registerCustomerAccount
 async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
 
   const button = document.querySelector('.brz-btn-submit');

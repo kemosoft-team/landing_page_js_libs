@@ -71,7 +71,7 @@ function showToast(text) {
     setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-/registerCustomer
+//registerCustomer
 async function registerCustomer(name, federalId, phone, email) {
     
     const cleanedPhone = phone.replace(/[^\d]/g, '');
