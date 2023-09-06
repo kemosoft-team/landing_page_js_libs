@@ -49,7 +49,7 @@ function redirectToNextStep(res) {
 
 function setNextStep() {
   
-  axios.post(apiBaseUrl + '/getTokenStatus', {}, {
+  axios.post( + '/getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
@@ -116,7 +116,7 @@ function showToast(text) {
 
     if(getCookie('tkn')){
   
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+    axios.post(+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -183,7 +183,7 @@ function setBanks(bankList) {
 //obtem os bancos
 async function getBanks() {
 
-  axios.post(apiBaseUrl + 'getData', { "object": "banks" }, {
+  axios.post(apiBaseUrl + '/getData', { "object": "banks" }, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
