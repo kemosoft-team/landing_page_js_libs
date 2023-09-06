@@ -183,7 +183,7 @@ function setBanks(bankList) {
 //obtem os bancos
 async function getBanks() {
 
-  axios.post(apiBaseUrl + 'getData', { "object": "banks" }, {
+  axios.post(apiBaseUrl + '/getData', { "object": "banks" }, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
