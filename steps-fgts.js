@@ -186,7 +186,7 @@ function getNextStep() {
         } else {
             for (var n = document.getElementsByClassName("wait"), s = document.getElementsByClassName("success"), i = 0; i < n.length; i++) n[i].style.display = "none", s[i].style.display = "block";
             t.removeAttribute("disabled"), o.classList.add("brz-invisible"), a.textContent = "Dê o próximo passo, preencha seus dados", t.addEventListener("click", (function() {
-                window.location.href = stepsUrl + r.data.nextStep
+                window.location.href = stepsUrl + r.data.nextStep + ( window.location.search || '' )
             }))
         }
     })).catch((function(e) {}))
