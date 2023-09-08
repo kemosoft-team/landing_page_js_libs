@@ -49,7 +49,7 @@ function redirectToNextStep(res) {
 
 function setNextStep() {
   
-  axios.post(apiBaseUrl + '/getTokenStatus', {}, {
+  axios.post( + '/getTokenStatus', {}, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
@@ -116,7 +116,7 @@ function showToast(text) {
 
     if(getCookie('tkn')){
   
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+    axios.post(+'/getTokenStatus', {}, {
       headers: {
         'Authorization': `Bearer ${getCookie('tkn')}`
       }})
@@ -183,7 +183,7 @@ function setBanks(bankList) {
 //obtem os bancos
 async function getBanks() {
 
-  axios.post(apiBaseUrl + 'getData', { "object": "banks" }, {
+  axios.post(apiBaseUrl + '/getData', { "object": "banks" }, {
     headers: {
       'Authorization': `Bearer ${getCookie('tkn')}`
     }
@@ -344,7 +344,7 @@ async function registerCustomer(name, birth, federalId, phone, email) {
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(apiBaseUrl + 'registerCustomer', {
+  axios.post(apiBaseUrl + '/registerCustomer', {
     "name": name,
     "birth": birth,
     "federalId": federalId,
@@ -427,7 +427,7 @@ function processQualification() {
   span.textContent = '';
 
   const sendRequest = () => {
-    axios.post(apiBaseUrl + 'registerCustomerInfos', {
+    axios.post(apiBaseUrl + '/registerCustomerInfos', {
       enable: true,
       authorize: true,
       currentStep: getCurrentStep()
