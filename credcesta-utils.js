@@ -148,7 +148,7 @@ function captureAffiliateData() {
 
 
 //registerCustomer
-async function registerCustomer(name, birth, federalId, phone, federalIdRepresent) {
+async function registerCustomer(name, birth, federalId, phone, representativeFederalId) {
 
   const affiliate = captureAffiliateData();
 
@@ -164,7 +164,7 @@ async function registerCustomer(name, birth, federalId, phone, federalIdRepresen
     "name": name,
     "birth": birth,
     "federalId": federalId,
-    "federalIdRepresent": federalIdRepresent,
+    "representativeFederalId": representativeFederalId,
     "phone": phone,
     "email":"", 
     "useTerms": true,
@@ -348,7 +348,7 @@ function setAddressInfo(obj){
       }
   
     // registerCustomerRepresentative
-    async function registerCustomerRepresent(nameRepresent, birthRepresent) {
+    async function registerCustomerRepresent(representativeName, representativeBirth) {
   
       const button = document.querySelector('.brz-btn-submit');
       const spinner = button.querySelector('.brz-form-spinner');
@@ -359,8 +359,8 @@ function setAddressInfo(obj){
       span.textContent = '';
       
       axios.post(apiUrl+'/registerCustomerInfos', {
-        'nameRepresent': nameRepresent,
-        'birthRepresent': birthRepresent,
+        'representativeName': representativeName,
+        'representativeBirth': representativeBirth,
          currentStep: getCurrentStep()
       },
       {
@@ -485,14 +485,14 @@ function validarFormBenefit(){
 //validarFormRepresentanteLegal
 function validarFormRepresentative(){ 
 
-  const nameRepresent= document.querySelector('[data-label="Nome"]').value;
-  const birthRepresent = document.querySelector('[data-label="Data de Nascimento"]').value;
+  const representativeName= document.querySelector('[data-label="Nome"]').value;
+  const representativeBirth = document.querySelector('[data-label="Data de Nascimento"]').value;
   
-  if (nameRepresent == "" || birthRepresent == "" ) {
+  if (representativeName == "" || representativeBirth == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
-  registerCustomerRepresentative(nameRepresent, birthRepresent);
+  registerCustomerRepresent(representativeName, representativeBirth);
 }
 
 function validarFormAccount(){ 
@@ -521,19 +521,19 @@ function validarFormAccount(){
 //valida form
 function validateForm() {
 
-  const name = document.querySelector('[data-label="Nome"]').value;
+  const name = document.querySelector('[data-label="Nome do Beneficiário"]').value;
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
-  const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-  const federalId = document.querySelector('[data-label="CPF"]').value;
-  const federalIdRepresentElement = document.querySelector('[data-label=" CPF do representante legal (opcional)"]');
-  const federalIdRepresent = federalIdRepresentElement ? federalIdRepresentElement.value : '';
+  const birth = document.querySelector('[data-label="Data de Nascimento do Beneficiário"]').value;
+  const federalId = document.querySelector('[data-label="CPF do Beneficiário"]').value;
+  const federalIdRepresentElement = document.querySelector('[data-label="CPF do Representante (opcional)"]');
+  const representativeFederalId = federalIdRepresentElement ? federalIdRepresentElement.value : '';
 
   if (name == "" || phone == "" || birth == "" || federalId == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
 
-  registerCustomer(name, birth, federalId, phone, federalIdRepresent);
+  registerCustomer(name, birth, federalId, phone, representativeFederalId);
 }
 
 getTokenStatus();
