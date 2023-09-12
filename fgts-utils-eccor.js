@@ -154,10 +154,12 @@ function showToast(text) {
         const param = window.location.search || '';
         
         const link = document.querySelector('a.btn-continue');
-        link.setAttribute('href', stepsUrl + response.data.nextStep + param);
+        link.setAttribute('href', stepsUrl + response.data.nextStep + param + 'scheduledTo=' + response.data.scheduledTo);
+
 
          document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-         var botao = document.querySelector(".btn-lead-info");
+        
+         var botao = document.querySelector(".btn-lead-info");        
          botao.click();
 
       })
