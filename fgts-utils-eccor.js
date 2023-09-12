@@ -154,7 +154,7 @@ function showToast(text) {
         const param = window.location.search || '';
         
         const link = document.querySelector('a.btn-continue');
-        link.setAttribute('href', stepsUrl + response.data.nextStep + param + reponse.data.scheduledTo);
+        link.setAttribute('href', stepsUrl + response.data.nextStep + param + response.data.scheduledTo);
 
          document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
          var botao = document.querySelector(".btn-lead-info");
