@@ -39,7 +39,7 @@ function redirectToNextStep(res) {
       window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
       break;
     case 'scheduled':
-      window.location.href = stepsUrl + nextStep + param + '&' + 'scheduledTo=' + encodeURIComponent(JSON.stringify(res.scheduledTo));
+      window.location.href = stepsUrl + nextStep + param + '&' + '?scheduledTo=' + encodeURIComponent(JSON.stringify(res.scheduledTo));
       break;
     default:
       window.location.href = stepsUrl + nextStep + param;
