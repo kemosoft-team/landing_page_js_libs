@@ -70,25 +70,54 @@ function setLinkSignature() {
 }
 
 function setSchedule() {
+        window.addEventListener('DOMContentLoaded', function () {
+            var currentURL = window.location.href;
 
-  window.addEventListener('DOMContentLoaded', function () {
+            var datePattern = /(\d{4}-\d{2}-\d{2})/;
 
-    var encodedData = window.location.search.substring(1);
-    const decodedValue = decodeURIComponent(encodedData);
+            var match = currentURL.match(datePattern);
 
-    var scheduleElement = document.getElementById('schedule');
-    var currentText = scheduleElement.textContent;
-    var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
+            if (match && match[1]) {
 
-    scheduleElement.textContent = modifiedText;
-    scheduleElement.style.fontFamily = 'Montserrat';
-    scheduleElement.style.fontSize = '20px';
-    scheduleElement.style.color = '#706666';
-    scheduleElement.style.fontWeight = '700';
-    scheduleElement.style.marginTop = '32px';
-    scheduleElement.style.marginBottom = '22px';
-  });
-}
+                var dateParts = match[1].split('-');
+
+                var formattedDate = dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
+
+                var scheduleElement = document.getElementById('schedule');
+                var currentText = scheduleElement.textContent;
+                var modifiedText = currentText.replace('xx/xx/xxxx', formattedDate);
+
+                scheduleElement.textContent = modifiedText;
+                scheduleElement.style.fontFamily = 'Montserrat';
+                scheduleElement.style.fontSize = '20px';
+                scheduleElement.style.color = '#706666';
+                scheduleElement.style.fontWeight = '700';
+                scheduleElement.style.marginTop = '32px';
+                scheduleElement.style.marginBottom = '22px';
+            }
+        });
+    }
+
+/* function setSchedule() {
+
+    window.addEventListener('DOMContentLoaded', function () {
+  
+      var encodedData = window.location.search.substring(1);
+      const decodedValue = decodeURIComponent(encodedData);
+  
+      var scheduleElement = document.getElementById('schedule');
+      var currentText = scheduleElement.textContent;
+      var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
+  
+      scheduleElement.textContent = modifiedText;
+      scheduleElement.style.fontFamily = 'Montserrat';
+      scheduleElement.style.fontSize = '20px';
+      scheduleElement.style.color = '#706666';
+      scheduleElement.style.fontWeight = '700';
+      scheduleElement.style.marginTop = '32px';
+      scheduleElement.style.marginBottom = '22px';
+    });
+  } */
 
 //setar token
 function handleSetToken(value) {
