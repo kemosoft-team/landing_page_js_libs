@@ -400,7 +400,7 @@ function getNextStep() {
 
         button.removeAttribute('disabled');
         spinner.classList.add('brz-invisible');
-        span.textContent = 'Continuar';
+        span.textContent = 'CONTINUAR';
 
         button.addEventListener('click', function () {
           window.location.href = stepsUrl + response.data.nextStep;
