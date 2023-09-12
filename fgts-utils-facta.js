@@ -395,7 +395,7 @@ function getNextStep() {
 
         for (var i = 0; i < elementsWait.length; i++) {
           elementsWait[i].style.display = 'none';
-          elementsSuccess[i].style.display = 'block';
+          elementsSuccess[i].style.display = 'flex';
         }
 
         button.removeAttribute('disabled');
