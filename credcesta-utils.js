@@ -525,10 +525,11 @@ function validateForm() {
   const phone = document.querySelector('[data-label="Whatsapp"]').value;
   const birth = document.querySelector('[data-label="Data de Nascimento do Beneficiário"]').value;
   const federalId = document.querySelector('[data-label="CPF do Beneficiário"]').value;
-  const federalIdRepresentElement = document.querySelector('[data-label="CPF do Representante (opcional)"]');
+  const federalIdRepresentElement = document.querySelector('[data-label="CPF do representante"]');
   const representativeFederalId = federalIdRepresentElement ? federalIdRepresentElement.value : '';
+  const representativeSelect = document.querySelector('[data-label="É representante legal de alguém?"]').value;
 
-  if (name == "" || phone == "" || birth == "" || federalId == "" ) {
+  if (name == "" || phone == "" || birth == "" || federalId == "" || representativeSelect == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
