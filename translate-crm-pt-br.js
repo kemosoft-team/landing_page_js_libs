@@ -9,13 +9,13 @@ function applyTranslate() {
   const nTexto = "Painel da Agência";
   spansToTranslat1.textContent = nTexto;
 
-  const spansToTranslat2 = document.querySelectorAll('a .nav-title')[0];
+  const spansToTranslat2 = document.querySelectorAll('a .nav-title')[1];
   const nTexto2 = "Prospecção";
   spansToTranslat2.textContent = nTexto2;
 
 }
   
-  setTimeout(applyTranslate, 4000);
+  setTimeout(applyTranslate, 2000);
   
   function handlePathChange() {
     const newPath = window.location.pathname;
