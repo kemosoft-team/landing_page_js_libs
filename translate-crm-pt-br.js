@@ -33,6 +33,14 @@ function applyTranslate() {
   const nTexto7 = "Portal de Afiliados";
   spansToTranslat7.textContent = nTexto7;
 
+  const spansToTranslat8 = document.querySelectorAll('a .nav-title')[7];
+  const nTexto8 = "Parceiros";
+  spansToTranslat8.textContent = nTexto8;
+
+  const spansToTranslat9 = document.querySelectorAll('a .nav-title')[8];
+  const nTexto9 = "Universidade";
+  spansToTranslat9.textContent = nTexto9;
+
 
 
 }
