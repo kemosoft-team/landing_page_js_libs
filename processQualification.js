@@ -447,8 +447,6 @@ function getNextStep() {
 
 }
 
-
-/* ===================================================================== */
 // Qualifica o lead
 function processQualification() {
     // Recupere os valores do localStorage, se existirem
@@ -464,8 +462,9 @@ function processQualification() {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
+    // Função para enviar a solicitação
     function sendRequest() {
-      console.log('sendRequest Iniciou execução')
+        console.log('sendRequest Iniciou execução')
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
             enable: true,
             authorize: true,
@@ -475,37 +474,35 @@ function processQualification() {
                 'Authorization': `${getCookie('tkn')}`
             }
         })
-            .then((response) => {
-                getNextStep();
-                attemptsCatch = 2;
-                attempts++;
-                // Salve os valores atualizados no localStorage
-                localStorage.setItem('attempts', attempts);
-                localStorage.setItem('attemptsCatch', attemptsCatch);
-            })
-            .catch(function (error) {
-                attemptsCatch++;
-                if (attemptsCatch < 2) {
-                    sendRequest();
-                } else {
-                    window.location.href = stepsUrl + 'offline';
-                }
-            });
+        .then((response) => {
+            getNextStep();
+            attemptsCatch = 2;
+            attempts++;
+            // Salve os valores atualizados no localStorage
+            localStorage.setItem('attempts', attempts);
+            localStorage.setItem('attemptsCatch', attemptsCatch);
+        })
+        .catch(function (error) {
+            attemptsCatch++;
+            if (attemptsCatch < 2) {
+                sendRequest();
+            } else {
+                window.location.href = stepsUrl + 'offline';
+            }
+        });
     }
 
-
-
+    // Verifica se attempts é igual a 0 antes de chamar sendRequest()
+    if (attempts === 0) {
+        sendRequest();
+    }
 
     // Salve os valores finais no localStorage
     localStorage.setItem('attempts', attempts);
     localStorage.setItem('minimize', minimize);
     localStorage.setItem('attemptsCatch', attemptsCatch);
-
-    if (attempts === 0) {
-        sendRequest();
-    }
 }
-/* ===================================================================== */
+
 
 
 
