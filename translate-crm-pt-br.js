@@ -41,6 +41,22 @@ function applyTranslate() {
   const nTexto9 = "Universidade";
   spansToTranslat9.textContent = nTexto9;
 
+  const spansToTranslat10 = document.querySelectorAll('a .nav-title')[9];
+  const nTexto10 = "Educação SaaS";
+  spansToTranslat10.textContent = nTexto10;
+
+  const spansToTranslat11 = document.querySelectorAll('a .nav-title')[10];
+  const nTexto11 = "Ideias";
+  spansToTranslat11.textContent = nTexto11;
+
+  const spansToTranslat12 = document.querySelectorAll('a .nav-title')[11];
+  const nTexto12 = "Aplicativo Móvel";
+  spansToTranslat12.textContent = nTexto12;
+
+  const spansToTranslat13 = document.querySelectorAll('a .nav-title')[12];
+  const nTexto13 = "Conectar WhatsApp";
+  spansToTranslat13.textContent = nTexto13;
+
 
 
 }
