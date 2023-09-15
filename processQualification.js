@@ -1,196 +1,452 @@
-let apiBaseUrl = "https://api.consigmais.com.br/lp/main/v2",
-    stepsUrl = window.location.origin + "/";
+let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
+let stepsUrl = 'window.location.href' + '/';
 
-function getCookie(e) {
-    let t = {};
-    return document.cookie.split(";").forEach((function (e) {
-        let [o, a] = e.split("=");
-        t[o.trim()] = a
-    })), t[e]
+
+// obtem o cookie pelo nome 
+function getCookie(name) {
+
+  let cookie = {};
+
+  document.cookie.split(';').forEach(function (el) {
+    let [k, v] = el.split('=');
+    cookie[k.trim()] = v;
+  })
+
+  return cookie[name];
+}
+
+//inicia spin loading no button
+function setLoading() {
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+}
+
+//para spin loading no button
+function stopLoading(textButton) {
+  button.removeAttribute('disabled');
+  spinner.classList.add('brz-invisible');
+  span.textContent = textButton;
+}
+
+function redirectToNextStep(res) {
+
+  const param = window.location.search || '';
+  const nextStep = res.nextStep;
+
+  switch (nextStep) {
+    case 'signature':
+      window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
+      break;
+    case 'scheduled':
+      window.location.href = stepsUrl + nextStep + '?' + param + '&scheduledTo=' + encodeURIComponent(JSON.stringify(res.scheduledTo));
+
+      break;
+    default:
+      window.location.href = stepsUrl + nextStep + param;
+      break;
+  }
 }
 
 function setNextStep() {
-    axios.post(apiBaseUrl + "/getTokenStatus", {}, {
-        headers: {
-            Authorization: `Bearer ${getCookie("tkn")}`
-        }
-    }).then((function (e) {
-        window.location.href = stepsUrl + e.data.nextStep
-    })).catch((function (e) {
-        console.log(e)
-    }))
-}
-
-function redirectToNextStep(e) {
-    const t = e.nextStep,
-        o = window.location.search || "";
-    switch (t) {
-        case "signature":
-            window.location.href = stepsUrl + t + o + "&" + encodeURIComponent(JSON.stringify(e.formalizatioLink));
-            break;
-        case "scheduled":
-            window.location.href = stepsUrl + t + o + "&" + encodeURIComponent(JSON.stringify(e.scheduledTo));
-            break;
-        default:
-            window.location.href = stepsUrl + t + o
+  
+  axios.post(apiBaseUrl + '/getTokenStatus', {}, {
+    headers: {
+      'Authorization': `Bearer ${getCookie('tkn')}`
     }
+  })
+    .then(function (response) {
+        window.location.href = stepsUrl + response.data.nextStep; 
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 function setLinkSignature() {
-    var e = window.location.search.substring(1);
-    const t = decodeURIComponent(e);
-    document.querySelector(".brz-a").href = t
+  var encodedData = window.location.search.substring(1);
+  const decodedValue = decodeURIComponent(encodedData);
+  const link = document.querySelector('.brz-a');
+  link.href = decodedValue;
 }
 
 function setSchedule() {
-    window.addEventListener("DOMContentLoaded", (function () {
-        var e = window.location.search.substring(1);
-        const t = decodeURIComponent(e);
-        var o = document.getElementById("schedule"),
-            a = o.textContent.replace("xx/xx/xxxx", t);
-        o.textContent = a, o.style.fontFamily = "Montserrat", o.style.fontSize = "20px", o.style.color = "#706666", o.style.fontWeight = "700", o.style.marginTop = "32px", o.style.marginBottom = "22px"
-    }))
+        window.addEventListener('DOMContentLoaded', function () {
+            var currentURL = window.location.href;
+
+            var datePattern = /(\d{4}-\d{2}-\d{2})/;
+
+            var match = currentURL.match(datePattern);
+
+            if (match && match[1]) {
+
+                var dateParts = match[1].split('-');
+
+                var formattedDate = dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
+
+                var scheduleElement = document.getElementById('schedule');
+                var currentText = scheduleElement.textContent;
+                var modifiedText = currentText.replace('xx/xx/xxxx', formattedDate);
+
+                scheduleElement.textContent = modifiedText;
+                scheduleElement.style.fontFamily = 'Montserrat';
+                scheduleElement.style.fontSize = '20px';
+                scheduleElement.style.color = '#706666';
+                scheduleElement.style.fontWeight = '700';
+                scheduleElement.style.marginTop = '32px';
+                scheduleElement.style.marginBottom = '22px';
+            }
+        });
+    }
+
+/* function setSchedule() {
+
+    window.addEventListener('DOMContentLoaded', function () {
+  
+      var encodedData = window.location.search.substring(1);
+      const decodedValue = decodeURIComponent(encodedData);
+  
+      var scheduleElement = document.getElementById('schedule');
+      var currentText = scheduleElement.textContent;
+      var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
+  
+      scheduleElement.textContent = modifiedText;
+      scheduleElement.style.fontFamily = 'Montserrat';
+      scheduleElement.style.fontSize = '20px';
+      scheduleElement.style.color = '#706666';
+      scheduleElement.style.fontWeight = '700';
+      scheduleElement.style.marginTop = '32px';
+      scheduleElement.style.marginBottom = '22px';
+    });
+  } */
+
+//setar token
+function handleSetToken(value) {
+  // console.log("handleToken");
+  document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=eccor.faz.vc; path=/;`;
 }
 
+//obtem o step atual pela url
 function getCurrentStep() {
-    return window.location.pathname.split("/")[1]
+  const path = window.location.pathname;
+  const value = path.split('/')[1];
+  return value;
 }
 
-function showToast(e) {
-    var t = document.getElementById("snackbar");
-    t.className = "show", document.getElementById("snackbar").innerHTML = e, setTimeout((function () {
-        t.className = t.className.replace("show", `${e}`)
-    }), 3e3)
+//showToast
+function showToast(text) {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  document.getElementById("snackbar").innerHTML = text;
+  setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
-function setBanks(e) {
-    e.reverse();
-    document.querySelectorAll('select[data-label="Banco"]').forEach((t => {
-        e.forEach((e => {
-            const o = document.createElement("option");
-            o.text = e.name, o.value = e.id, t.insertBefore(o, t.firstChild)
-        }))
-    }))
+//get Token Status info-return
+  function getTokenStatus(){
+
+    if(getCookie('tkn')){
+  
+    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }})
+      .then(function (response) {
+
+        const param = window.location.search || '';
+        
+        const link = document.querySelector('a.btn-continue');
+        link.setAttribute('href', stepsUrl + response.data.nextStep + param + '?scheduledTo=' + response.data.scheduledTo);
+
+
+         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
+        
+         var botao = document.querySelector(".btn-lead-info");        
+         botao.click();
+
+      })
+      .catch(function (error) {
+          console.log(error);
+      }); 
+    }
+  }
+
+
+//obtem os parametros do afiliado oriondos dos cookies
+function captureAffiliateData() {
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  let affiliateData = {
+    affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
+    source: urlParams.get('source') || null,
+    productId: urlParams.get('pid') || null,
+    vendorId: urlParams.get('vid') || null,
+    offerId: '62',
+    clickId: urlParams.get('cid') || null,
+    pixelId: urlParams.get('afx') || null,
+    gtmId: urlParams.get('afgtm') || null,
+    latDays: urlParams.get('latd') || null,
+    brandId: urlParams.get('bid') || null,
+    nextStep: urlParams.get('nxstp') || null,
+    token: urlParams.get('tkn') || null,
+    rawUri: window.location.search
+  };
+  return affiliateData;
 }
+
+//setBanks
+function setBanks(bankList) {
+
+  bankList.reverse();
+  const selects = document.querySelectorAll('select[data-label="Banco"]');
+
+  selects.forEach(select => {
+
+    bankList.forEach(bank => {
+      const option = document.createElement('option');
+      option.text = bank.name;
+      option.value = bank.id;
+      select.insertBefore(option, select.firstChild);
+
+    });
+  });
+}
+
+//obtem os bancos
 async function getBanks() {
-    axios.post(apiBaseUrl + "/getData", {
-        object: "banks"
-    }, {
-        headers: {
-            Authorization: `Bearer ${getCookie("tkn")}`
-        }
-    }).then((function (e) {
-        setBanks(e.data)
-    })).catch((function (e) {
-        console.log(e)
-    }))
-}
-async function getByZipCodeInfo(e) {
-    axios.post(apiBaseUrl + "/getZipcodeInfo", {
-        zipcode: e
-    }, {
-        headers: {
-            Authorization: `Bearer ${getCookie("tkn")}`
-        }
-    }).then((e => {
-        setAddressInfo(e.data)
-    })).catch((function (e) {
-        showToast(e.response.data.message)
-    }))
+
+  axios.post(apiBaseUrl + '/getData', { "object": "banks" }, {
+    headers: {
+      'Authorization': `Bearer ${getCookie('tkn')}`
+    }
+  })
+    .then(function (response) {
+      setBanks(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
-function setAddressInfo(e) {
-    document.querySelector('[data-label="Rua"]').value = e.address, document.querySelector('[data-label="Bairro"]').value = e.district, document.querySelector('[data-label="Cidade"]').value = e.city, document.querySelector('[data-label="UF"]').value = e.state
+
+async function getByZipCodeInfo(zipcode) {
+
+  axios.post(apiBaseUrl + '/getZipcodeInfo', {
+    zipcode: zipcode,
+  },
+    {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
+      setAddressInfo(response.data);
+    })
+    .catch(function (error) {
+      showToast(error.response.data.message);
+    });
+
+
 }
-async function registerCustomerAddress(e, t, o, a, r, n) {
-    const s = document.querySelector(".brz-btn-submit"),
-        i = s.querySelector(".brz-form-spinner"),
-        c = s.querySelector(".brz-span.brz-text__editor");
-    s.setAttribute("disabled", !0), i.classList.remove("brz-invisible"), c.textContent = "", axios.post(apiBaseUrl + "/registerCustomerInfos", {
-        zipcode: e,
-        address: t,
-        addressNumber: o,
-        state: a,
-        district: r,
-        city: n,
-        currentStep: getCurrentStep()
-    }, {
-        headers: {
-            Authorization: `Bearer ${getCookie("tkn")}`
-        }
-    }).then((e => {
-        redirectToNextStep(e.data)
-    })).catch((function (e) {
-        s.removeAttribute("disabled"), i.classList.add("brz-invisible"), c.textContent = "Sim, quero antecipar meu FGTS!", showToast(e.response.data.message)
-    }))
+
+function setAddressInfo(obj) {
+  document.querySelector('[data-label="Rua"]').value = obj.address;
+  document.querySelector('[data-label="Bairro"]').value = obj.district;
+  document.querySelector('[data-label="Cidade"]').value = obj.city;
+  document.querySelector('[data-label="UF"]').value = obj.state;
 }
-async function registerCustomerAccount(e, t, o, a, r) {
-    const n = document.querySelector(".brz-btn-submit"),
-        s = n.querySelector(".brz-form-spinner"),
-        i = n.querySelector(".brz-span.brz-text__editor");
-    n.setAttribute("disabled", !0), s.classList.remove("brz-invisible"), i.textContent = "", axios.post(apiBaseUrl + "/registerCustomerInfos", {
-        branchNo: e.replace(/[^\w\s]/gi, ""),
-        bankId: t,
-        acctNo: `${o}-${a}`,
-        acctType: r,
-        currentStep: getCurrentStep()
-    }, {
-        headers: {
-            Authorization: `Bearer ${getCookie("tkn")}`
-        }
-    }).then((e => {
-        redirectToNextStep(e.data)
-    })).catch((function (e) {
-        n.removeAttribute("disabled"), s.classList.add("brz-invisible"), i.textContent = "Simular", showToast(e.response.data.message)
-    }))
+
+
+//registerCustomerAccount
+async function registerCustomerAddress(zipcode, address, addressNumber, state, district, city) {
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl + '/registerCustomerInfos', {
+    zipcode: zipcode,
+    address: address,
+    addressNumber: addressNumber,
+    state: state,
+    district: district,
+    city: city,
+    currentStep: getCurrentStep()
+  },
+    {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
+      redirectToNextStep(response.data);
+    })
+    .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Sim, quero antecipar meu FGTS!';
+      showToast(error.response.data.message);
+    });
+
 }
-async function registerCustomerDocs(e, t, o, a) {
-    const r = document.querySelector(".brz-btn-submit"),
-        n = r.querySelector(".brz-form-spinner"),
-        s = r.querySelector(".brz-span.brz-text__editor");
-    r.setAttribute("disabled", !0), n.classList.remove("brz-invisible"), s.textContent = "", axios.post(apiBaseUrl + "/registerCustomerInfos", {
-        docNumber: e,
-        docType: t,
-        docState: o,
-        mother: a,
-        currentStep: getCurrentStep()
-    }, {
-        headers: {
-            Authorization: `${getCookie("tkn")}`
-        }
-    }).then((e => {
-        redirectToNextStep(e.data)
-    })).catch((function (e) {
-        r.removeAttribute("disabled"), n.classList.add("brz-invisible"), s.textContent = "Sim, quero antecipar meu FGTS!", showToast(e.response.data.message)
-    }))
+
+//registerCustomerAccount
+async function registerCustomerAccount(agency, bank, account, verifyDigit, accountType) {
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl + '/registerCustomerInfos', {
+    branchNo: agency,
+    bankId: bank,
+    acctNo: `${account}-${verifyDigit}`,
+    acctType: accountType,
+    currentStep: getCurrentStep()
+  },
+    {
+      headers: {
+        'Authorization': `Bearer ${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
+      redirectToNextStep(response.data);
+    })
+    .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Continuar';
+      showToast(error.response.data.message);
+    });
+
 }
+// registerCustomerAccount
+async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl + '/registerCustomerInfos', {
+    docNumber: docNumber,
+    docType: docType,
+    docState: issueState,
+    mother: motherName,
+    currentStep: getCurrentStep()
+  },
+    {
+      headers: {
+        'Authorization': `${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
+      redirectToNextStep(response.data);
+    })
+    .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'Sim, quero antecipar meu FGTS!';
+      showToast(error.response.data.message);
+    });
+
+}
+
+//registerCustomer
+async function registerCustomer(name, birth, federalId, phone, email) {
+
+  const affiliate = captureAffiliateData();
+
+  const button = document.querySelector('.btn-submit-fgts');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
+  axios.post(apiBaseUrl + '/registerCustomer', {
+    "name": name,
+    "birth": birth,
+    "federalId": federalId,
+    "phone": phone,
+    "email": email,
+    "useTerms": true,
+    "dataPrivacy": true,
+    "dataSearchAllowed": true,
+    "affiliateData": affiliate
+  })
+    .then((response) => {
+      handleSetToken(response.data.token);
+      if (response.data.forceNewOfferLead) {
+        window.location.replace(`${stepsUrl}ongoing`);
+      } else {
+        redirectToNextStep(response.data);
+      }
+    })
+    .catch(function (error) {
+      button.removeAttribute('disabled');
+      spinner.classList.add('brz-invisible');
+      span.textContent = 'ACEITAR E CONTINUAR';
+      showToast(error.response.data.message);
+    });
+}
+
 
 function getNextStep() {
-    const e = localStorage.getItem("attempts") || 0,
-        t = document.querySelector(".brz-btn-submit"),
-        o = t.querySelector(".brz-form-spinner"),
-        a = t.querySelector(".brz-span.brz-text__editor");
-    axios.post(apiBaseUrl + "/getNextStep", {}, {
-        headers: {
-            Authorization: `${getCookie("tkn")}`
+
+  const button = document.querySelector('.brz-btn-submit');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
+
+  axios.post(apiBaseUrl + '/getNextStep', {},
+    {
+      headers: {
+        'Authorization': `${getCookie('tkn')}`
+      }
+    })
+    .then((response) => {
+
+      if (response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable') {
+
+        window.location.href = stepsUrl + response.data.nextStep;
+
+      } else {
+
+        var elementsWait = document.getElementsByClassName('wait');
+        var elementsSuccess = document.getElementsByClassName('success');
+
+        for (var i = 0; i < elementsWait.length; i++) {
+          elementsWait[i].style.display = 'none';
+          elementsSuccess[i].style.display = 'block';
         }
-    }).then((r => {
-        const params = window.location.search || '';
-        if (2 == e && "keepcalm" == r.data.nextStep) window.location.href = stepsUrl + "offline" + params;
-        else if ("noBalance" == r.data.nextStep || "authorize" == r.data.nextStep || "enable" == r.data.nextStep) {
-            if ("authorize" == r.data.nextStep) {
-                const e = localStorage.getItem("authorizeLimit") || 0;
-                localStorage.setItem("authorizeLimit", parseInt(e) + 1)
-            }
-            window.location.href = stepsUrl + r.data.nextStep
-        } else {
-            for (var n = document.getElementsByClassName("wait"), s = document.getElementsByClassName("success"), i = 0; i < n.length; i++) n[i].style.display = "none", s[i].style.display = "block";
-            t.removeAttribute("disabled"), o.classList.add("brz-invisible"), a.textContent = "Dê o próximo passo, preencha seus dados", t.addEventListener("click", (function () {
-                window.location.href = stepsUrl + r.data.nextStep + (window.location.search || '')
-            }))
-        }
-    })).catch((function (e) { }))
+
+        button.removeAttribute('disabled');
+        spinner.classList.add('brz-invisible');
+        span.textContent = 'Dê o próximo passo, preencha seus dados';
+
+        button.addEventListener('click', function () {
+          window.location.href = stepsUrl + response.data.nextStep;
+        });
+      }
+
+    })
+    .catch(function (error) {
+    });
+
 }
+
 /* ===================================================================== */
 // Qualifica o lead
 function processQualification() {
@@ -246,32 +502,77 @@ function processQualification() {
 }
 /* ===================================================================== */
 
+//validarFormDocs
 function validarFormAddress() {
-    const e = document.querySelector('[data-label="CEP"]').value,
-        t = document.querySelector('[data-label="Rua"]').value,
-        o = document.querySelector('[data-label="Número"]').value,
-        a = document.querySelector('[data-label="UF"]').value,
-        r = document.querySelector('[data-label="Bairro"]').value,
-        n = document.querySelector('[data-label="Cidade"]').value;
-    if ("" == e || "" == t || "" == o || "" == a || "" == r || "" == n) return showToast("Por favor, preencha todos os campos."), !1;
-    registerCustomerAddress(e, t, o, a, r, n)
+
+  const zipcode = document.querySelector('[data-label="CEP"]').value;
+  const address = document.querySelector('[data-label="Rua"]').value;
+  const addressNumber = document.querySelector('[data-label="Número"]').value;
+  const state = document.querySelector('[data-label="UF"]').value;
+  const district = document.querySelector('[data-label="Bairro"]').value;
+  const city = document.querySelector('[data-label="Cidade"]').value;
+
+
+  if (zipcode == "" || address == "" || addressNumber == "" || state == "" || district == "" || city == "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
+  registerCustomerAddress(zipcode, address, addressNumber, state, district, city);
+
 }
 
+//validarFormDocs
 function validarFormDocs() {
-    const e = document.querySelector('[data-label="Tipo de Documento"]').value,
-        t = document.querySelector('[data-label="Número do Documento"]').value,
-        o = document.querySelector('[data-label="UF Expeditor"]').value,
-        a = document.querySelector('[data-label="Nome da sua Mãe"]').value;
-    if ("" == e || "" == t || "" == o || "" == a) return showToast("Por favor, preencha todos os campos."), !1;
-    registerCustomerDocs(t, e, o, a)
+
+  const docType = document.querySelector('[data-label="Tipo de Documento"]').value;
+  const docNumber = document.querySelector('[data-label="Número do Documento"]').value;
+  const issueState = document.querySelector('[data-label="UF Expeditor"]').value;
+  const motherName = document.querySelector('[data-label="Nome da sua Mãe"]').value;
+
+
+  if (docType == "" || docNumber == "" || issueState == "" || motherName == "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
+  registerCustomerDocs(docNumber, docType, issueState, motherName);
 }
 
 function validarFormAccount() {
-    const e = document.querySelector('[data-label="Agência"]').value;
-    var t = "";
-    const o = document.querySelector('[data-label="Conta"]').value,
-        a = document.querySelector('[data-label="Dígito"]').value,
-        r = document.querySelector('[data-label="Tipo de conta"]').value;
-    if (t = "block" == document.querySelectorAll("div.brz-forms2__item")[1].style.display ? document.querySelector('[data-label="Nome Banco"]').value : document.querySelector('[data-label="Banco"]').value, "" == e || "" == t || "" == o || "" == a || "" == r) return showToast("Por favor, preencha todos os campos."), !1;
-    registerCustomerAccount(e, t, o, a, r.charAt(0).toString())
+
+        const agency = document.querySelector('[data-label="Agência"]').value;
+        const bank = document.querySelector('[data-label="Banco"]').value;
+        const account = document.querySelector('[data-label="Conta"]').value;
+        const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
+        const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
+
+        if (agency == "" || bank == "" || account == "" || verifyDigit == "" || accountType == "") {
+            alert("Por favor, preencha todos os campos.");
+            return false;
+        }
+
+        const accountTypeCut = accountType.charAt(0).toString();
+        registerCustomerAccount(agency, bank, account, verifyDigit, accountTypeCut);
+    }
+
+//validar form
+function validateForm() {
+
+  const name = document.querySelector('[data-label="Nome"]').value;
+  const phone = document.querySelector('[data-label="Whatsapp"]').value;
+  const email = document.querySelector('[data-label="Email"]').value;
+  const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
+  const federalId = document.querySelector('[data-label="CPF"]').value;
+
+  if (name == "" || phone == "" || birth == "" || federalId == "" || email == "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  }
+
+  registerCustomer(name, birth, federalId, phone, email);
 }
+
+getTokenStatus();
+
+
+
+
