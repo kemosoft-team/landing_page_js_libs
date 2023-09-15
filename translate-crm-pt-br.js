@@ -15,7 +15,11 @@ function applyTranslate() {
 
   const spansToTranslat3 = document.querySelectorAll('a .nav-title')[2];
   const nTexto3 = "Subcontas";
-  spansToTranslat3.textContent = nTexto2;
+  spansToTranslat3.textContent = nTexto3;
+
+  const spansToTranslat4 = document.querySelectorAll('a .nav-title')[3];
+  const nTexto4 = "Capturas de Conta";
+  spansToTranslat4.textContent = nTexto4;
 
 }
   
