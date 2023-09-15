@@ -465,6 +465,7 @@ function processQualification() {
     span.textContent = '';
 
     function sendRequest() {
+      console.log('sendRequest Iniciou execução')
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
             enable: true,
             authorize: true,
