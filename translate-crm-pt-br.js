@@ -21,6 +21,16 @@ function applyTranslate() {
   const nTexto4 = "Capturas de Conta";
   spansToTranslat4.textContent = nTexto4;
 
+  const spansToTranslat5 = document.querySelectorAll('a .nav-title')[4];
+  const nTexto5 = "Revenda";
+  spansToTranslat5.textContent = nTexto5;
+
+  const spansToTranslat6 = document.querySelectorAll('a .nav-title')[5];
+  const nTexto6 = "Mercado";
+  spansToTranslat6.textContent = nTexto6;
+
+
+
 }
   
   setTimeout(applyTranslate, 2000);
