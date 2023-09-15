@@ -493,7 +493,7 @@ function processQualification() {
     }
 
     // Verifica se attempts é igual a 0 antes de chamar sendRequest()
-    if (attempts === 0) {
+    if (attempts == 0) {
         sendRequest();
     }
 
