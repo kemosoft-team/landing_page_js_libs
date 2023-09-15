@@ -29,6 +29,10 @@ function applyTranslate() {
   const nTexto6 = "Mercado";
   spansToTranslat6.textContent = nTexto6;
 
+  const spansToTranslat7 = document.querySelectorAll('a .nav-title')[6];
+  const nTexto7 = "Portal de Afiliados";
+  spansToTranslat7.textContent = nTexto7;
+
 
 
 }
