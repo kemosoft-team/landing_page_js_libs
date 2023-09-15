@@ -492,17 +492,20 @@ function processQualification() {
             });
     }
 
-    if (attempts === 0) {
-        sendRequest();
-        console.log('sendRequest executado no IF = 0')
-    }
+
+
 
     // Salve os valores finais no localStorage
     localStorage.setItem('attempts', attempts);
     localStorage.setItem('minimize', minimize);
     localStorage.setItem('attemptsCatch', attemptsCatch);
+
+    if (attempts === 0) {
+        sendRequest();
+    }
 }
 /* ===================================================================== */
+
 
 
 //validarFormDocs
