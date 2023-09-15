@@ -463,8 +463,7 @@ function processQualification() {
     span.textContent = '';
 
     // Função para enviar a solicitação
-    function sendRequest() {
-        console.log('sendRequest Iniciou execução')
+    const sendRequest = () => {
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
             enable: true,
             authorize: true,
@@ -474,25 +473,24 @@ function processQualification() {
                 'Authorization': `${getCookie('tkn')}`
             }
         })
-        .then((response) => {
-            getNextStep();
-            attemptsCatch = 2;
-            attempts++;
-            // Salve os valores atualizados no localStorage
-            localStorage.setItem('attempts', attempts);
-            localStorage.setItem('attemptsCatch', attemptsCatch);
-        })
-        .catch(function (error) {
-            attemptsCatch++;
-            if (attemptsCatch < 2) {
-                sendRequest();
-            } else {
-                window.location.href = stepsUrl + 'offline';
-            }
-        });
+            .then((response) => {
+                getNextStep();
+                attemptsCatch = 2;
+                attempts++;
+                // Salve os valores atualizados no localStorage
+                localStorage.setItem('attempts', attempts);
+                localStorage.setItem('attemptsCatch', attemptsCatch);
+            })
+            .catch(function (error) {
+                attemptsCatch++;
+                if (attemptsCatch < 2) {
+                    sendRequest();
+                } else {
+                    window.location.href = stepsUrl + 'offline';
+                }
+            });
     }
 
-    // Verifica se attempts é igual a 0 antes de chamar sendRequest()
     if (attempts == 0) {
         sendRequest();
     }
