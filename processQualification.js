@@ -447,6 +447,7 @@ function getNextStep() {
 
 }
 
+
 /* ===================================================================== */
 // Qualifica o lead
 function processQualification() {
@@ -454,6 +455,14 @@ function processQualification() {
     let attempts = localStorage.getItem('attempts') || 0;
     let minimize = localStorage.getItem('minimize') || false;
     let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
+
+    const button = document.querySelector('.brz-btn-submit');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
 
     function sendRequest() {
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
@@ -485,15 +494,8 @@ function processQualification() {
 
     if (attempts === 0) {
         sendRequest();
+        console.log('sendRequest executado no IF = 0')
     }
-
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
-
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
 
     // Salve os valores finais no localStorage
     localStorage.setItem('attempts', attempts);
@@ -501,6 +503,7 @@ function processQualification() {
     localStorage.setItem('attemptsCatch', attemptsCatch);
 }
 /* ===================================================================== */
+
 
 //validarFormDocs
 function validarFormAddress() {
