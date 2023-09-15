@@ -13,6 +13,10 @@ function applyTranslate() {
   const nTexto2 = "Prospecção";
   spansToTranslat2.textContent = nTexto2;
 
+  const spansToTranslat3 = document.querySelectorAll('a .nav-title')[2];
+  const nTexto3 = "Subcontas";
+  spansToTranslat3.textContent = nTexto2;
+
 }
   
   setTimeout(applyTranslate, 2000);
