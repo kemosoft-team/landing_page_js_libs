@@ -32,21 +32,20 @@ function setNextStep() {
 
 //Redireciona para subpágina
 function redirectToNextStep(res) {
-const nextStep = res.nextStep;
 
-switch (nextStep) {
-  case 'signature':
-    window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
-    break;
-  case 'scheduled':
-    window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
-    break;
-  default:
-   window.location.href = stepsUrl + nextStep; 
-   console.log(stepsUrl + nextStep);
-    break;
+    const param = window.location.search || '';
+    const nextStep = res.nextStep;
+
+    switch (nextStep) {
+        case 'notAvailable':
+            window.location.href = stepsUrl + nextStep + param + '&' + 'firstName=' + encodeURIComponent(JSON.stringify(res.firstName)) + '&' + 'motive=' + encodeURIComponent(JSON.stringify(res.motive));
+            break;
+        default:
+            window.location.href = stepsUrl + nextStep + param;
+            break;
+    }
 }
-}
+
 
 //Seta cookie
 function handleSetToken(value) {
