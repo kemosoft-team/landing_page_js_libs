@@ -533,6 +533,11 @@ function validateForm() {
     return false;
   }
 
+    if (representativeSelect == 'Sou representante' && representativeFederalId == ""){
+     showToast("Por favor, preencha todos os campos.");
+    return false;
+    }
+
   registerCustomer(name, birth, federalId, phone, representativeFederalId);
 }
 
