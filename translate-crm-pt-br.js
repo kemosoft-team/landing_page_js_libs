@@ -81,7 +81,7 @@ function traduzirTexto() {
 
 
 /*  setTimeout(applyTranslate, 2000); */
-setTimeout(traduzirTexto, 2000);
+setTimeout(traduzirTexto, 4000);
 
 function handlePathChange() {
     const newPath = window.location.pathname;
