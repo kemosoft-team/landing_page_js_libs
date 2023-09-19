@@ -1,3 +1,4 @@
+//Nav e Dashboard
 var translatesCardsDashboards = [
   "Receita do Último Mês",
   "Receita Mensal Recorrente",
@@ -20,7 +21,8 @@ var translatesNav = [
   "Educação SaaS",
   "Ideias",
   "Aplicativo Móvel",
-  "Conectar WhatsApp"
+  "Conectar WhatsApp",
+  "Configurações"
 ];
 
 
@@ -34,7 +36,8 @@ function translateElements(elements, translations) {
 
 function translates() {
 
-  const navTitles = document.querySelectorAll('a .nav-title');
+  //Seleciona os elementos a serem alterados
+  const navTitles = document.querySelectorAll('.nav-title');
   const cardsTitle = document.querySelectorAll('.card-title');
 
   translateElements(navTitles, translatesNav);
