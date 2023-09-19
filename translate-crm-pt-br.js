@@ -1,62 +1,46 @@
+var translatesCardsDashboards = [
+  "Receita do Último Mês",
+  "Receita Mensal Recorrente",
+  "Clientes no Stripe",
+  "Novos Clientes neste Mês",
+  "Distribuição de Receita",
+  "Crescimento nos Últimos 6 Meses"
+];
 
-//Injeta tradução dos cards do dashboard
-function translateCards(){
+var translatesNav = [
+  "Painel da Agência",
+  "Prospecção",
+  "Subcontas",
+  "Capturas de Conta",
+  "Revenda",
+  "Mercado",
+  "Portal de Afiliados",
+  "Parceiros",
+  "Universidade",
+  "Educação SaaS",
+  "Ideias",
+  "Aplicativo Móvel",
+  "Conectar WhatsApp"
+];
 
-  const translates = [
-    "Receita do Último Mês",
-    "Receita Mensal Recorrente",
-    "Clientes no Stripe",
-    "Novos Clientes neste Mês",
-    "Distribuição de Receita",
-    "Crescimento nos Últimos 6 Meses"
-  ];
 
-    const cardsTitle = document.querySelectorAll('.card-title');
-
-    for (const index in cardsTitle) { 
-      const text = translates[index];
-      const cardDiv = document.querySelectorAll('.card-title')[index];
-      cardDiv.textContent = text;
+function translateElements(elements, translations) {
+  elements.forEach((element, index) => {
+    if (index < translations.length) {
+      element.textContent = translations[index];
     }
-
-};
-
-
-//Injeta tradução dos links do nav
-function translateNav(){
-
-  const translates = [
-    "Painel da Agência",
-    "Prospecção",
-    "Subcontas",
-    "Capturas de Conta",
-    "Revenda",
-    "Mercado",
-    "Portal de Afiliados",
-    "Parceiros",
-    "Universidade",
-    "Educação SaaS",
-    "Ideas",
-    "Aplicativo Móvel",
-    "Conectar WhatsApp"
-  ];
-
-    const navTitles = document.querySelectorAll('a .nav-title');
-
-    for (const index in navTitles) { 
-      const text = translates[index];
-      const nav = document.querySelectorAll('a .nav-title')[index];
-      nav.textContent = text;
-    }
-
-};
+  });
+}
 
 function translates() {
-  translateCards();
-  translateNav();
+
+  const navTitles = document.querySelectorAll('a .nav-title');
+  const cardsTitle = document.querySelectorAll('.card-title');
+
+  translateElements(navTitles, translatesNav);
+  translateElements(cardsTitle, translatesCardsDashboards);
+
 };
-
-
 
 /*  setTimeout(applyTranslate, 2000); */
 function handlePathChange() {
