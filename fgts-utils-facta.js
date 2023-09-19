@@ -423,62 +423,8 @@ function getNextStep() {
 
 }
 
-// Qualifica o lead
+
 function processQualification() {
-    // Recupere os valores do localStorage, se existirem
-    let attempts = localStorage.getItem('attempts') || 0;
-    let minimize = localStorage.getItem('minimize') || false;
-    let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
-
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
-
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
-
-    // Função para enviar a solicitação
-    const sendRequest = () => {
-        axios.post(apiBaseUrl + '/registerCustomerInfos', {
-            enable: true,
-            authorize: true,
-            currentStep: getCurrentStep()
-        }, {
-            headers: {
-                'Authorization': `${getCookie('tkn')}`
-            }
-        })
-            .then((response) => {
-                getNextStep();
-                attemptsCatch = 2;
-                attempts++;
-                // Salve os valores atualizados no localStorage
-                localStorage.setItem('attempts', attempts);
-                localStorage.setItem('attemptsCatch', attemptsCatch);
-            })
-            .catch(function (error) {
-                attemptsCatch++;
-                if (attemptsCatch < 2) {
-                    sendRequest();
-                } else {
-                    window.location.href = stepsUrl + 'offline';
-                }
-            });
-    }
-
-    if (attempts == 0) {
-        sendRequest();
-    }
-
-    // Salve os valores finais no localStorage
-    localStorage.setItem('attempts', attempts);
-    localStorage.setItem('minimize', minimize);
-    localStorage.setItem('attemptsCatch', attemptsCatch);
-}
-
-
-/* function processQualification() {
 
     let attempts = 0;
   
@@ -515,7 +461,7 @@ function processQualification() {
     };
   
     sendRequest();
-  } */
+  } 
 
 
 
