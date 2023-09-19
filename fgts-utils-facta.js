@@ -467,16 +467,13 @@ function processQualification() {
             });
     }
 
-    if (attempts == 0) {
-        sendRequest();
-    }
+    sendRequest();
 
     // Salve os valores finais no localStorage
     localStorage.setItem('attempts', attempts);
     localStorage.setItem('minimize', minimize);
     localStorage.setItem('attemptsCatch', attemptsCatch);
 }
-
 
 /* function processQualification() {
 
@@ -515,8 +512,7 @@ function processQualification() {
     };
   
     sendRequest();
-  } */
-
+  }  */
 
 
 //validarFormDocs
