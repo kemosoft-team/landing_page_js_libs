@@ -34,7 +34,6 @@ var translateSpan = [
 ];
 
 
-
 function translateElements(elements, translations) {
   elements.forEach((element, index) => {
     if (index < translations.length) {
@@ -49,7 +48,7 @@ function translates() {
   const navTitles = document.querySelectorAll('.nav-title');
   const cardsTitle = document.querySelectorAll('.card-title');
   const h1Text = document.querySelectorAll('h1[data-v-4b953133=""]');
-  const spanNav = document.querySelectorAll('span .hl_text-overflow');
+  const spanNav = document.querySelectorAll('.hl_location-text .hl_text-overflow');
 
   translateElements(navTitles, translatesNav);
   translateElements(cardsTitle, translatesCardsDashboards);
