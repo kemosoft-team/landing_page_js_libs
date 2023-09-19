@@ -77,12 +77,13 @@ function traduzirTexto() {
 
 
 /*  setTimeout(applyTranslate, 2000); */
-setTimeout(traduzirTexto, 4000);
+
 
 function handlePathChange() {
     const newPath = window.location.pathname;
 
     console.log(`O path da URL foi alterado para: ${newPath}`);
+    setTimeout(traduzirTexto, 4000);
     console.log('test');
 }
 
