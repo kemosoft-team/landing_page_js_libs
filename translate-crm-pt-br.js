@@ -29,6 +29,11 @@ var translateH1 = [
   "Painel da Agência"
 ];
 
+var translateSpan = [
+  "Clique aqui para alternar"
+];
+
+
 
 function translateElements(elements, translations) {
   elements.forEach((element, index) => {
@@ -44,10 +49,12 @@ function translates() {
   const navTitles = document.querySelectorAll('.nav-title');
   const cardsTitle = document.querySelectorAll('.card-title');
   const h1Text = document.querySelectorAll('h1[data-v-4b953133=""]');
+  const spanNav = document.querySelectorAll('span .hl_text-overflow');
 
   translateElements(navTitles, translatesNav);
   translateElements(cardsTitle, translatesCardsDashboards);
   translateElements(h1Text, translateH1);
+  translateElements(spanNav, translateSpan);
 
 };
 
