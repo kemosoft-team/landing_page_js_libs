@@ -26,8 +26,8 @@ var translatesNav = [
 ];
 
 var translateH1 = [
-  "Painel da Agência \nRefresh"
-]
+  "Painel da Agência"
+];
 
 
 function translateElements(elements, translations) {
@@ -43,7 +43,7 @@ function translates() {
   //Seleciona os elementos a serem alterados
   const navTitles = document.querySelectorAll('.nav-title');
   const cardsTitle = document.querySelectorAll('.card-title');
-  const h1Text = document.querySelectorAll('.h1');
+  const h1Text = document.querySelectorAll('h1[data-v-4b953133=""]');
 
   translateElements(navTitles, translatesNav);
   translateElements(cardsTitle, translatesCardsDashboards);
