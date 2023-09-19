@@ -462,6 +462,9 @@ function processQualification() {
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
+  var path = window.location.pathname;
+    console.log(path)
+
     // Função para enviar a solicitação
     const sendRequest = () => {
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
