@@ -25,6 +25,10 @@ var translatesNav = [
   "Configurações"
 ];
 
+var translateH1 = [
+  "Painel da Agência \nRefresh"
+]
+
 
 function translateElements(elements, translations) {
   elements.forEach((element, index) => {
@@ -39,9 +43,11 @@ function translates() {
   //Seleciona os elementos a serem alterados
   const navTitles = document.querySelectorAll('.nav-title');
   const cardsTitle = document.querySelectorAll('.card-title');
+  const h1Text = document.querySelectorAll('.h1');
 
   translateElements(navTitles, translatesNav);
   translateElements(cardsTitle, translatesCardsDashboards);
+  translateElements(h1Text, translateH1);
 
 };
 
