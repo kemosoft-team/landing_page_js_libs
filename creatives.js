@@ -2,7 +2,7 @@ var url_params = window.location.href;
 var url = new URL(url_params);
 let offer = url.searchParams.get("id"); 
 
-axios.post('https://api2.kemosoft.com.br/api:workflow/creatives', {
+axios.post('https://api.retool.com/v1/workflows/d10c5c0c-3c49-4889-9993-65a21359aabc/startTrigger', {
     offerId: offer
 })
 .then(function (response) {
