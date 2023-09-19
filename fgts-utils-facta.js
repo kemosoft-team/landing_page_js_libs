@@ -78,7 +78,7 @@ function setSchedule() {
     var encodedData = window.location.search.substring(1);
     const decodedValue = decodeURIComponent(encodedData);
 
-    var scheduleElement = document.getElementById('scheduleTo');
+    var scheduleElement = document.getElementById('scheduledTo');
     var currentText = scheduleElement.textContent;
     var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
 
