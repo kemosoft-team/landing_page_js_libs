@@ -51,6 +51,11 @@ function translateNav(){
 
 };
 
+function translates() {
+  translateCards();
+  translateNav();
+};
+
 
 
 /*  setTimeout(applyTranslate, 2000); */
@@ -58,7 +63,7 @@ function handlePathChange() {
     const newPath = window.location.pathname;
 
     console.log(`O path da URL foi alterado para: ${newPath}`);
-    setTimeout(traduzirTexto, 3000);
+    setTimeout(translates, 3000);
     console.log('foi teste');
 }
 
