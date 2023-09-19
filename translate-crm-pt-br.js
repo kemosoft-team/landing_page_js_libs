@@ -2,7 +2,6 @@
 
 const traducoes = {
   "h1": { 
-    "Agency Dashboard Refresh": "Atualização do Painel da Agência",
     "Agency Dashboard": "Painel da Agência"
   },
   "h4": {
