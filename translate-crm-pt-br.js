@@ -1,4 +1,29 @@
 
+function translateCards(){
+
+  const translates = [
+    "Receita do Último Mês",
+    "Receita Mensal Recorrente",
+    "Clientes no Stripe",
+    "Novos Clientes neste Mês",
+    "Distribuição de Receita",
+    "Crescimento nos Últimos 6 Meses"
+  ];
+
+    const cardsTitle = document.querySelectorAll('.card-title');
+
+    for (const index in cardsTitle) { 
+    
+      const text = translates[index];
+      const cardDiv = document.querySelectorAll('.card-title')[index];
+      cardDiv.textContent = text;
+
+    }
+
+}
+
+
+
 
 const traducoes = {
   "h1": { 
@@ -58,14 +83,12 @@ const traducoes = {
     "Support": "Suporte",
     "Learn More": "Saiba mais",
     "Use setting": "Usar configuração"
-  },
-  "div": {
-    "Revenue Last Month": "Receita no último mês"
   }
 };
 
 // Função para substituir o texto de acordo com as traduções
 function traduzirTexto() {
+  translateCards();
     // Loop através das tags e seus textos
     for (const tag in traducoes) {
         const elementos = document.querySelectorAll(tag);
