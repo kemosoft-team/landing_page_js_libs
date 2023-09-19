@@ -58,6 +58,9 @@ const traducoes = {
     "Support": "Suporte",
     "Learn More": "Saiba mais",
     "Use setting": "Usar configuração"
+  },
+  "div": {
+    "Revenue Last Month": "Receita no último mês"
   }
 };
 
