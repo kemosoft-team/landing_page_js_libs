@@ -429,6 +429,7 @@ function processQualification() {
     let attempts = localStorage.getItem('attempts') || 0;
     let minimize = localStorage.getItem('minimize') || false;
     let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
+    let pathName = localStorage.getItem('pathName') || null
 
     const button = document.querySelector('.brz-btn-submit');
     const spinner = button.querySelector('.brz-form-spinner');
@@ -450,12 +451,34 @@ function processQualification() {
             }
         })
             .then((response) => {
-                getNextStep();
-                attemptsCatch = 2;
-                attempts++;
-                // Salve os valores atualizados no localStorage
-                localStorage.setItem('attempts', attempts);
-                localStorage.setItem('attemptsCatch', attemptsCatch);
+                switch (pathName) {
+                    case '/enable':
+                        getNextStep();
+                        attemptsCatch = 2;
+                        attempts++;
+
+                        localStorage.setItem('attempts', attempts);
+                        localStorage.setItem('attemptsCatch', attemptsCatch);
+                        break;
+                    case '/authorize':
+                        getNextStep();
+                        attemptsCatch = 2;
+                        attemptsAuth++;
+
+                        localStorage.setItem('attemptsAuth', attemptsAuth);
+                        localStorage.setItem('attemptsCatch', attemptsCatch);
+                        break;
+                    default:
+                        getNextStep();
+                        attemptsCatch = 2;
+                        attempts++;
+                        attemptsAuth++;
+
+                        localStorage.setItem('attempts', attempts);
+                        localStorage.setItem('attemptsAuth', attemptsAuth);
+                        localStorage.setItem('attemptsCatch', attemptsCatch);
+                        break;
+                }
             })
             .catch(function (error) {
                 attemptsCatch++;
@@ -471,6 +494,7 @@ function processQualification() {
 
     // Salve os valores finais no localStorage
     localStorage.setItem('attempts', attempts);
+    localStorage.setItem('attemptsAuth', attemptsAuth);
     localStorage.setItem('minimize', minimize);
     localStorage.setItem('attemptsCatch', attemptsCatch);
 }
