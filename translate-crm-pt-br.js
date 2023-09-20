@@ -56,16 +56,24 @@ function translates() {
   translateElements(spanNav, translateSpan);
 
 };
+setTimeout(translates, 3000);
 
-/*  setTimeout(applyTranslate, 2000); */
+
+
 function handlePathChange() {
-    const newPath = window.location.pathname;
-
-    console.log(`O path da URL foi alterado para: ${newPath}`);
-    setTimeout(translates, 3000);
-    console.log('foi teste');
+  const currentPath = window.location.pathname;
+  console.log(`Caminho da página alterado para: ${currentPath}`);
 }
 
+// Adiciona um ouvinte ao evento popstate para detectar mudanças de caminho
 window.addEventListener('popstate', handlePathChange);
 
+// Imprime o caminho inicial quando a página carrega
 handlePathChange();
+
+
+watch: {
+  '$route' (to, from) {
+    console.log('Caminho da página alterado de', from.fullPath, 'para', to.fullPath);
+  }
+}
