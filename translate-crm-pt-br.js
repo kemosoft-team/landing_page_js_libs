@@ -59,20 +59,15 @@ function translates() {
 setTimeout(translates, 3000);
 
 
-
-// Crie um elemento no corpo do documento para adicionar o EventListener
-const body = document.body;
-
-// Adicione um EventListener para o evento popstate no elemento body
-body.addEventListener('popstate', function(event) {
+// Função para tratar a mudança de caminho
+function handlePathChange() {
   const currentPath = window.location.pathname;
   console.log(`Caminho da página alterado para: ${currentPath}`);
-});
+}
 
-// Execute o código acima depois que o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function() {
-  // Adicione o EventListener após o DOM estar completamente carregado
-  // Isso garante que o elemento body esteja disponível para ser selecionado.
-  // Você também pode usar frameworks JavaScript, como jQuery, para isso.
-});
+// Adiciona um ouvinte ao evento popstate para detectar mudanças de caminho
+window.addEventListener('popstate', handlePathChange);
+
+// Imprime o caminho inicial quando a página carrega
+document.addEventListener('DOMContentLoaded', handlePathChange);
 
