@@ -427,6 +427,7 @@ function getNextStep() {
 function processQualification() {
     // Recupere os valores do localStorage, se existirem
     let attempts = localStorage.getItem('attempts') || 0;
+    let attemptsAuth = localStorage.getItem('attemptsAuth') || 0;
     let minimize = localStorage.getItem('minimize') || false;
     let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
     let pathName = localStorage.getItem('pathName') || null
