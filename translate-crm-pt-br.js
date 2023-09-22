@@ -71,3 +71,8 @@ window.addEventListener('popstate', handlePathChange);
 // Imprime o caminho inicial quando a página carrega
 document.addEventListener('DOMContentLoaded', handlePathChange);
 
+window.addEventListener('hashchange', function() {
+  // O código aqui será executado sempre que a parte do fragmento da URL for alterada
+  console.log('Fragmento da URL alterado para: ' + window.location.hash);
+});
+
