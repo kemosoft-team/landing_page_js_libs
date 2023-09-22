@@ -58,7 +58,6 @@ function translates() {
 };
 setTimeout(translates, 3000);
 
-
 // Função para tratar a mudança de caminho
 function handlePathChange() {
   const currentPath = window.location.pathname;
@@ -75,4 +74,30 @@ window.addEventListener('hashchange', function() {
   // O código aqui será executado sempre que a parte do fragmento da URL for alterada
   console.log('Fragmento da URL alterado para: ' + window.location.hash);
 });
+
+
+// Função para imprimir a mensagem
+function imprimirMensagem() {
+  console.log("Olá, mundo!");
+}
+
+// Define o intervalo de tempo em milissegundos (1 segundo = 1000 milissegundos)
+const intervalo = 1000;
+
+// Define o número de vezes que a mensagem será impressa
+const numeroMensagens = 10;  // Altere para o número desejado de mensagens
+
+// Variável para rastrear o número de mensagens impressas
+let mensagensImpressas = 0;
+
+// Define o intervalo de tempo para imprimir a mensagem a cada segundo
+const intervaloID = setInterval(function() {
+  imprimirMensagem();
+  mensagensImpressas++;
+
+  // Verifica se o número de mensagens desejado foi alcançado
+  if (mensagensImpressas === numeroMensagens) {
+    clearInterval(intervaloID); // Interrompe o intervalo após o número desejado de mensagens
+  }
+}, intervalo);
 
