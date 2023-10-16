@@ -8,6 +8,12 @@ function showToast(text) {
     }, 3000);
 }
 
+//Adiciona o inputMode
+const inputBirth = document.querySelector('input[data-q="birth"]');
+if (inputBirth) {
+  inputBirth.setAttribute('inputmode', 'numeric');
+}
+
 /* Remove texto label option-radio */
 var optionRadio = document.querySelector('.option-radio');
 var labelElement = optionRadio.querySelector('label');
