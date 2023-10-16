@@ -208,9 +208,7 @@ function validateForm() {
     const emailFederalId = document.querySelector('[data-q="email_federalId"]').value;
     
     const multiselectElement = document.querySelector('.multiselect');
-
-    if (multiselectElement) {
-      const selectedValueElement = multiselectElement.querySelector('.multiselect__single');
+    const selectedValueElement = multiselectElement.querySelector('.multiselect__single');
 
     // Valida campos vazios
     if (federalId === "" || phone === "" || birth === "" || !selectedValueElement) {
