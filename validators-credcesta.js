@@ -206,9 +206,15 @@ function validateForm() {
     const phone = document.querySelector('[data-q="phone"]').value;
     const birth = document.querySelector('[data-q="birth"]').value;
     const emailFederalId = document.querySelector('[data-q="email_federalId"]').value;
+    
+    const multiselectElement = document.querySelector('.multiselect');
+    const selectedValueElement = multiselectElement.querySelector('.multiselect__single');
+    
+    const representativeSelectedValue = selectedValueElement.textContent.trim();
+ 
 
     // Valida campos vazios
-    if (federalId === "" || phone === "" || birth === "") {
+    if (federalId === "" || phone === "" || birth === "" || representativeSelectedValue == null) {
         showToast("Por favor, preencha todos os campos.");
         return false;
     } else if (!isDateValid(birth)) {
