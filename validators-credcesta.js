@@ -241,6 +241,7 @@ var formularioElement = document.getElementById('meu-formulario');
 
 formularioElement.addEventListener('submit', function(event) {
     // Realize a validação final (se necessário)
+    console.log('teste');
     var isValid = validateForm();
     if (!isValid) {
         event.preventDefault(); // Impede o envio do formulário se a validação falhar
