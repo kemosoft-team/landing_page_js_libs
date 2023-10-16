@@ -229,8 +229,11 @@ function validateForm() {
 
         // Marca o radio oculto e aciona o botão de submissão
         const checkbox = document.querySelector('input[data-q="checked"]');
+        var buttonSubmit = document.querySelector('.button-element')
+
         if (checkbox) {
             checkbox.click();
+            buttonSubmit.click();
         }
 
         return true;
