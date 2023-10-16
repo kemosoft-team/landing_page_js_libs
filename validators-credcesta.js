@@ -14,6 +14,11 @@ if (inputBirth) {
   inputBirth.setAttribute('inputmode', 'numeric');
 }
 
+const inputFederalId = document.querySelector('input[data-q="federal_id"]');
+if (inputFederalId) {
+  inputFederalId.setAttribute('inputmode', 'numeric');
+}
+
 /* Remove texto label option-radio */
 var optionRadio = document.querySelector('.option-radio');
 var labelElement = optionRadio.querySelector('label');
