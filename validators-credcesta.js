@@ -241,7 +241,9 @@ var buttonElement = document.querySelector('.button-element')
 
 buttonElement.addEventListener('click', function clickHandler(event) {
     // Realize a validação
-    console.log(clickHandler(event), new Date())
+    console.log('teste');
+    console.log(clickHandler(event), new Date());
+
     var isValid = validateForm();
     if (isValid) {
         // Gere um clique programaticamente
