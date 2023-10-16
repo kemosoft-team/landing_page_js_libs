@@ -237,11 +237,10 @@ function validateForm() {
     }
 }
 
-var formularioElement = document.getElementById('meu-formulario');
+var buttonElement = document.querySelector('.button-element')
 
-formularioElement.addEventListener('submit', function(event) {
-    // Realize a validação final (se necessário)
-    console.log('teste');
+buttonElement.addEventListener('click', function clickHandler(event) {
+    // Realize a validação
     var isValid = validateForm();
     if (!isValid) {
         event.preventDefault(); // Impede o envio do formulário se a validação falhar
