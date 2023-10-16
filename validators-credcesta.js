@@ -228,10 +228,10 @@ function validateForm() {
         localStorage.setItem('beneficiaryFederalId', federalId);
 
         // Marca o radio oculto e aciona o botão de submissão
-        // const checkbox = document.querySelector('input[data-q="checked"]');
-        // if (checkbox) {
-        //     checkbox.click();
-        // }
+        const checkbox = document.querySelector('input[data-q="checked"]');
+        if (checkbox) {
+            checkbox.click();
+        }
 
         return true;
     }
