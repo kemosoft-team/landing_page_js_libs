@@ -241,6 +241,7 @@ var buttonElement = document.querySelector('.button-element')
 
 buttonElement.addEventListener('click', function clickHandler(event) {
     // Realize a validação
+    console.log('teste');
     var isValid = validateForm();
     if (!isValid) {
         event.preventDefault(); // Impede o envio do formulário se a validação falhar
