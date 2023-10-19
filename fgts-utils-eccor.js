@@ -404,23 +404,15 @@ async function registerCustomer(name, birth, federalId, phone, email) {
 }
 
 
-function getNextStep() {
+function getNextStep(path) {
 
   const button = document.querySelector('.brz-btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
 
-  axios.post(apiBaseUrl + '/getNextStep', {},
-    {
-      headers: {
-        'Authorization': `${getCookie('tkn')}`
-      }
-    })
-    .then((response) => {
+      if (path == 'noBalance' || path == 'authorize' || path == 'enable') {
 
-      if (response.data.nextStep == 'noBalance' || response.data.nextStep == 'authorize' || response.data.nextStep == 'enable') {
-
-        window.location.href = stepsUrl + response.data.nextStep;
+        window.location.href = stepsUrl + path;
 
       } else {
 
@@ -437,13 +429,11 @@ function getNextStep() {
         span.textContent = 'Dê o próximo passo, preencha seus dados';
 
         button.addEventListener('click', function () {
-          window.location.href = stepsUrl + response.data.nextStep;
+          window.location.href = stepsUrl + path;
         });
       }
 
-    })
-    .catch(function (error) {
-    });
+ 
 
 }
 
@@ -478,7 +468,7 @@ function processQualification() {
             .then((response) => {
                 switch (pathName) {
                     case '/enable':
-                        getNextStep();
+                        getNextStep(response.data.nextStep);
                         attemptsCatch = 2;
                         attempts++;
 
@@ -486,7 +476,7 @@ function processQualification() {
                         localStorage.setItem('attemptsCatch', attemptsCatch);
                         break;
                     case '/authorize':
-                        getNextStep();
+                        getNextStep(response.data.nextStep);
                         attemptsCatch = 2;
                         attemptsAuth++;
 
@@ -494,7 +484,7 @@ function processQualification() {
                         localStorage.setItem('attemptsCatch', attemptsCatch);
                         break;
                     default:
-                        getNextStep();
+                        getNextStep(response.data.nextStep);
                         attemptsCatch = 2;
                         attempts++;
                         attemptsAuth++;
