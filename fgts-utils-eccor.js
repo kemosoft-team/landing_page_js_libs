@@ -456,6 +456,11 @@ function processQualification() {
 
     // Função para enviar a solicitação
     const sendRequest = () => {
+
+      if (attemptsCatch == 2) {
+        window.location.href = stepsUrl + 'offline';
+      } 
+
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
             enable: true,
             authorize: true,
