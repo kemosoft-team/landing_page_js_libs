@@ -362,10 +362,16 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     });
 
 }
+//removerAtributos
+function removeAttributeStorage() {
+    localStorage.removeItem("attemptsAuth");
+    localStorage.removeItem("attemptsCatch");
+    localStorage.removeItem("attempts");
+  }
 
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email) {
-
+  removeAttributeStorage();
   const affiliate = captureAffiliateData();
 
   const button = document.querySelector('.btn-submit-fgts');
