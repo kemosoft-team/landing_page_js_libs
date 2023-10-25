@@ -515,6 +515,7 @@ function processQualification() {
             funcAttemptsCatch();
             break;
           default:
+            console.log('default')
             getNextStep(response.data.nextStep);
             attemptsCatch = 2;
             attempts++;
@@ -544,6 +545,7 @@ function processQualification() {
   localStorage.setItem("minimize", minimize);
   localStorage.setItem("attemptsCatch", attemptsCatch);
 }
+
 
 
 
