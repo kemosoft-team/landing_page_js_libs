@@ -4,7 +4,6 @@ let stepsUrl = 'https://eccor.faz.vc/';
 
 // obtem o cookie pelo nome 
 function getCookie(name) {
-
   let cookie = {};
 
   document.cookie.split(';').forEach(function (el) {
@@ -478,13 +477,12 @@ function processQualification() {
         }
       )
       .then((response) => {
-        var switchNextStep = response.data.nextStep;
+        var switchNextStep = response.nextStep;
         console.log(switchNextStep);
         switch (switchNextStep) {
           case "enable":
             console.log("enable");
             getNextStep(response.data.nextStep);
-            attemptsCatch = 2;
             attempts++;
 
             localStorage.setItem("attempts", attempts);
@@ -493,7 +491,6 @@ function processQualification() {
           case "authorize":
             console.log("authorize");
             getNextStep(response.data.nextStep);
-            attemptsCatch = 2;
             attemptsAuth++;
 
             localStorage.setItem("attemptsAuth", attemptsAuth);
@@ -503,20 +500,23 @@ function processQualification() {
             console.log("keepcalm");
             attemptsCatch++;
             localStorage.setItem("attemptsCatch", attemptsCatch);
+
             function funcAttemptsCatch() {
               var setAttemptsCatch = localStorage.getItem("attemptsCatch");
               if (setAttemptsCatch < 2) {
                 console.log("keepcalm2");
-                sendRequest();
+                getNextStep(response.data.nextStep);
               } else {
                 window.location.href = stepsUrl + "offline";
               }
+
             }
 
             funcAttemptsCatch();
+
             break;
           default:
-            console.log('default')
+            console.log("default");
             getNextStep(response.data.nextStep);
             attemptsCatch = 2;
             attempts++;
@@ -546,7 +546,6 @@ function processQualification() {
   localStorage.setItem("minimize", minimize);
   localStorage.setItem("attemptsCatch", attemptsCatch);
 }
-
 
 
 
