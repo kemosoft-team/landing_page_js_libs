@@ -121,6 +121,13 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
+//removerAtributos
+function removeAttributeStorage() {
+    localStorage.removeItem("attemptsAuth");
+    localStorage.removeItem("attemptsCatch");
+    localStorage.removeItem("attempts");
+  }
+
 //get Token Status info-return
   function getTokenStatus(){
 
@@ -136,6 +143,8 @@ function showToast(text) {
         
         const link = document.querySelector('a.btn-continue');
         link.setAttribute('href', stepsUrl + response.data.nextStep + param);
+
+        link.addEventListener("click", removeAttributeStorage());
 
          document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
          var botao = document.querySelector(".btn-lead-info");
@@ -340,13 +349,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     });
 
 }
-
-//removerAtributos
-function removeAttributeStorage() {
-    localStorage.removeItem("attemptsAuth");
-    localStorage.removeItem("attemptsCatch");
-    localStorage.removeItem("attempts");
-  }
 
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email) {
