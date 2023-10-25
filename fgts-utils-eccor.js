@@ -446,79 +446,103 @@ function getNextStep(path) {
 
 // Qualifica o lead
 function processQualification() {
-    // Recupere os valores do localStorage, se existirem
-    let attempts = localStorage.getItem('attempts') || 0;
-    let attemptsAuth = localStorage.getItem('attemptsAuth') || 0;
-    let minimize = localStorage.getItem('minimize') || false;
-    let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
-    let pathName = localStorage.getItem('pathName') || null
+  // Recupere os valores do localStorage, se existirem
+  let attempts = localStorage.getItem("attempts") || 0;
+  let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+  let minimize = localStorage.getItem("minimize") || false;
+  let attemptsCatch = localStorage.getItem("attemptsCatch") || 0;
+  let pathName = localStorage.getItem("pathName") || null;
 
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
+  const button = document.querySelector(".brz-btn-submit");
+  const spinner = button.querySelector(".brz-form-spinner");
+  const span = button.querySelector(".brz-span.brz-text__editor");
 
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
+  button.setAttribute("disabled", true);
+  spinner.classList.remove("brz-invisible");
+  span.textContent = "";
 
-    // Função para enviar a solicitação
-    const sendRequest = () => {
-        axios.post(apiBaseUrl + '/registerCustomerInfos', {
-            enable: true,
-            authorize: true,
-            currentStep: getCurrentStep()
-        }, {
-            headers: {
-                'Authorization': `${getCookie('tkn')}`
+  // Função para enviar a solicitação
+  const sendRequest = () => {
+    axios
+      .post(
+        apiBaseUrl + "/registerCustomerInfos",
+        {
+          enable: true,
+          authorize: true,
+          currentStep: getCurrentStep(),
+        },
+        {
+          headers: {
+            Authorization: `${getCookie("tkn")}`,
+          },
+        }
+      )
+      .then((response) => {
+        var switchNextStep = response.data.nextStep;
+        switch (switchNextStep) {
+          case "/enable":
+            console.log("enable");
+            getNextStep(response.data.nextStep);
+            attemptsCatch = 2;
+            attempts++;
+
+            localStorage.setItem("attempts", attempts);
+            localStorage.setItem("attemptsCatch", attemptsCatch);
+            break;
+          case "/authorize":
+            console.log("authorize");
+            getNextStep(response.data.nextStep);
+            attemptsCatch = 2;
+            attemptsAuth++;
+
+            localStorage.setItem("attemptsAuth", attemptsAuth);
+            localStorage.setItem("attemptsCatch", attemptsCatch);
+            break;
+          case "/keepcalm":
+            console.log("keepcalm");
+            attemptsCatch++;
+            localStorage.setItem("attemptsCatch", attemptsCatch);
+            function funcAttemptsCatch() {
+              var setAttemptsCatch = localStorage.getItem("attemptsCatch");
+              if (setAttemptsCatch < 2) {
+                console.log("keepcalm2");
+                sendRequest();
+              } else {
+                window.location.href = stepsUrl + "offline";
+              }
             }
-        })
-            .then((response) => {
-                switch (pathName) {
-                    case '/enable':
-                        getNextStep();
-                        attemptsCatch = 2;
-                        attempts++;
 
-                        localStorage.setItem('attempts', attempts);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                    case '/authorize':
-                        getNextStep();
-                        attemptsCatch = 2;
-                        attemptsAuth++;
+            funcAttemptsCatch();
+            break;
+          default:
+            getNextStep(response.data.nextStep);
+            attemptsCatch = 2;
+            attempts++;
+            attemptsAuth++;
 
-                        localStorage.setItem('attemptsAuth', attemptsAuth);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                    default:
-                        getNextStep();
-                        attemptsCatch = 2;
-                        attempts++;
-                        attemptsAuth++;
+            localStorage.setItem("attempts", attempts);
+            localStorage.setItem("attemptsAuth", attemptsAuth);
+            localStorage.setItem("attemptsCatch", attemptsCatch);
+            break;
+        }
+      })
+      .catch(function (error) {
+        attemptsCatch++;
+        if (attemptsCatch < 2) {
+          sendRequest();
+        } else {
+          window.location.href = stepsUrl + "offline";
+        }
+      });
+  };
 
-                        localStorage.setItem('attempts', attempts);
-                        localStorage.setItem('attemptsAuth', attemptsAuth);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                }
-            })
-            .catch(function (error) {
-                attemptsCatch++;
-                if (attemptsCatch < 2) {
-                    sendRequest();
-                } else {
-                    window.location.href = stepsUrl + 'offline';
-                }
-            });
-    }
+  sendRequest();
 
-    sendRequest();
-
-    // Salve os valores finais no localStorage
-    localStorage.setItem('attempts', attempts);
-    localStorage.setItem('attemptsAuth', attemptsAuth);
-    localStorage.setItem('minimize', minimize);
-    localStorage.setItem('attemptsCatch', attemptsCatch);
+  // Salve os valores finais no localStorage
+  localStorage.setItem("attempts", attempts);
+  localStorage.setItem("attemptsAuth", attemptsAuth);
+  localStorage.setItem("minimize", minimize);
+  localStorage.setItem("attemptsCatch", attemptsCatch);
 }
 
 
