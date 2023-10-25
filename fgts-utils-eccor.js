@@ -444,87 +444,102 @@ function getNextStep(path) {
 }
 
 // Qualifica o lead
-function processQualification() {
+  function processQualification() {
     // Recupere os valores do localStorage, se existirem
-    let attempts = localStorage.getItem('attempts') || 0;
-    let attemptsAuth = localStorage.getItem('attemptsAuth') || 0;
-    let minimize = localStorage.getItem('minimize') || false;
-    let attemptsCatch = localStorage.getItem('attemptsCatch') || 0;
-    let pathName = localStorage.getItem('pathName') || null
+    let attempts = localStorage.getItem("attempts") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    let minimize = localStorage.getItem("minimize") || false;
+    let attemptsCatch = localStorage.getItem("attemptsCatch") || 0;
+    let pathName = localStorage.getItem("pathName") || null;
 
-    const button = document.querySelector('.brz-btn-submit');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
+    const button = document.querySelector(".brz-btn-submit");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
 
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
 
     // Função para enviar a solicitação
     const sendRequest = () => {
+      //if (attemptsCatch == 2) {
+      //window.location.href = stepsUrl + 'offline';
+      //}
 
-       //if (attemptsCatch == 2) {
-         //window.location.href = stepsUrl + 'offline';
-       //} 
-
-        axios.post(apiBaseUrl + '/registerCustomerInfos', {
+      axios
+        .post(
+          apiBaseUrl + "/registerCustomerInfos",
+          {
             enable: true,
             authorize: true,
-            currentStep: getCurrentStep()
-        }, {
+            currentStep: getCurrentStep(),
+          },
+          {
             headers: {
-                'Authorization': `${getCookie('tkn')}`
-            }
+              Authorization: `${getCookie("tkn")}`,
+            },
+          }
+        )
+        .then((response) => {
+          switch (pathName) {
+            case "/enable":
+              getNextStep(response.data.nextStep);
+              //attemptsCatch = 2;
+              attempts++;
+
+              localStorage.setItem("attempts", attempts);
+              localStorage.setItem("attemptsCatch", attemptsCatch);
+              break;
+            case "/authorize":
+              getNextStep(response.data.nextStep);
+              //attemptsCatch = 2;
+              attemptsAuth++;
+
+              localStorage.setItem("attemptsAuth", attemptsAuth);
+              localStorage.setItem("attemptsCatch", attemptsCatch);
+              break;
+            case "/keepcalm":
+              attemptsCatch++;
+              localStorage.setItem("attemptsCatch", attemptsCatch);
+
+              if (attemptsCatch < 2) {
+                sendRequest();
+              } else {
+                window.location.href = stepsUrl + "offline";
+              }
+
+              break;
+            default:
+              getNextStep(response.data.nextStep);
+              //attemptsCatch = 2;
+              attempts++;
+              attemptsAuth++;
+
+              localStorage.setItem("attempts", attempts);
+              localStorage.setItem("attemptsAuth", attemptsAuth);
+              //localStorage.setItem('attemptsCatch', attemptsCatch);
+              break;
+          }
         })
-            .then((response) => {
-                switch (pathName) {
-                    case '/enable':
-                        getNextStep(response.data.nextStep);
-                        //attemptsCatch = 2;
-                        attempts++;
-
-                        localStorage.setItem('attempts', attempts);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                    case '/authorize':
-                        getNextStep(response.data.nextStep);
-                        //attemptsCatch = 2;
-                        attemptsAuth++;
-
-                        localStorage.setItem('attemptsAuth', attemptsAuth);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                    default:
-                        getNextStep(response.data.nextStep);
-                        //attemptsCatch = 2;
-                        attempts++;
-                        attemptsAuth++;
-
-                        localStorage.setItem('attempts', attempts);
-                        localStorage.setItem('attemptsAuth', attemptsAuth);
-                        //localStorage.setItem('attemptsCatch', attemptsCatch);
-                        break;
-                }
-            })
-            .catch(function (error) {
-                attemptsCatch++;
-                localStorage.setItem('attemptsCatch', attemptsCatch);
-                if (attemptsCatch < 2) {
-                    sendRequest();
-                } else {
-                    window.location.href = stepsUrl + 'offline';
-                }
-            });
-    }
+        .catch(function (error) {
+          attemptsCatch++;
+          localStorage.setItem("attemptsCatch", attemptsCatch);
+          if (attemptsCatch < 2) {
+            sendRequest();
+          } else {
+            window.location.href = stepsUrl + "offline";
+          }
+        });
+    };
 
     sendRequest();
 
     // Salve os valores finais no localStorage
-    localStorage.setItem('attempts', attempts);
-    localStorage.setItem('attemptsAuth', attemptsAuth);
-    localStorage.setItem('minimize', minimize);
-    localStorage.setItem('attemptsCatch', attemptsCatch);
-}
+    localStorage.setItem("attempts", attempts);
+    localStorage.setItem("attemptsAuth", attemptsAuth);
+    localStorage.setItem("minimize", minimize);
+    localStorage.setItem("attemptsCatch", attemptsCatch);
+  }
 
 //validarFormDocs
 function validarFormAddress() {
