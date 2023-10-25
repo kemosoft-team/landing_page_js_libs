@@ -498,8 +498,7 @@ function processQualification() {
 
             attemptsCatch++;
             if (attemptsCatch < 2) {
-              //atribui novamente no botão o nextStep keepcalm
-              getNextStep(response.data.nextStep);
+              sendRequest();
             } else {
               window.location.href = stepsUrl + "offline";
             }
@@ -509,13 +508,11 @@ function processQualification() {
           default:
             console.log("default");
             getNextStep(response.data.nextStep);
-            attemptsCatch = 2;
             attempts++;
             attemptsAuth++;
 
             localStorage.setItem("attempts", attempts);
             localStorage.setItem("attemptsAuth", attemptsAuth);
-            localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
         }
       })
