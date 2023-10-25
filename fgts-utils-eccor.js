@@ -479,6 +479,7 @@ function processQualification() {
       )
       .then((response) => {
         var switchNextStep = response.data.nextStep;
+        console.log(switchNextStep);
         switch (switchNextStep) {
           case "/enable":
             console.log("enable");
