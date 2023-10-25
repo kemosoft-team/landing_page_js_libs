@@ -463,9 +463,9 @@ function processQualification() {
     // Função para enviar a solicitação
     const sendRequest = () => {
 
-      if (attemptsCatch == 2) {
-        window.location.href = stepsUrl + 'offline';
-      } 
+       //if (attemptsCatch == 2) {
+         //window.location.href = stepsUrl + 'offline';
+       //} 
 
         axios.post(apiBaseUrl + '/registerCustomerInfos', {
             enable: true,
@@ -480,7 +480,7 @@ function processQualification() {
                 switch (pathName) {
                     case '/enable':
                         getNextStep(response.data.nextStep);
-                        attemptsCatch = 2;
+                        //attemptsCatch = 2;
                         attempts++;
 
                         localStorage.setItem('attempts', attempts);
@@ -488,7 +488,7 @@ function processQualification() {
                         break;
                     case '/authorize':
                         getNextStep(response.data.nextStep);
-                        attemptsCatch = 2;
+                        //attemptsCatch = 2;
                         attemptsAuth++;
 
                         localStorage.setItem('attemptsAuth', attemptsAuth);
@@ -496,18 +496,19 @@ function processQualification() {
                         break;
                     default:
                         getNextStep(response.data.nextStep);
-                        attemptsCatch = 2;
+                        //attemptsCatch = 2;
                         attempts++;
                         attemptsAuth++;
 
                         localStorage.setItem('attempts', attempts);
                         localStorage.setItem('attemptsAuth', attemptsAuth);
-                        localStorage.setItem('attemptsCatch', attemptsCatch);
+                        //localStorage.setItem('attemptsCatch', attemptsCatch);
                         break;
                 }
             })
             .catch(function (error) {
                 attemptsCatch++;
+                localStorage.setItem('attemptsCatch', attemptsCatch);
                 if (attemptsCatch < 2) {
                     sendRequest();
                 } else {
