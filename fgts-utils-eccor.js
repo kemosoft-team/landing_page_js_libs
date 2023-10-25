@@ -445,12 +445,11 @@ function getNextStep(path) {
 
 // Qualifica o lead
 function processQualification() {
-  // Recupere os valores do localStorage, se existirem
   let attempts = localStorage.getItem("attempts") || 0;
   let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-  let minimize = localStorage.getItem("minimize") || false;
   let attemptsCatch = localStorage.getItem("attemptsCatch") || 0;
-  let pathName = localStorage.getItem("pathName") || null;
+
+  let minimize = localStorage.getItem("minimize") || false;
 
   const button = document.querySelector(".brz-btn-submit");
   const spinner = button.querySelector(".brz-form-spinner");
@@ -460,7 +459,6 @@ function processQualification() {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
-  // Função para enviar a solicitação
   const sendRequest = () => {
     axios
       .post(
@@ -477,43 +475,36 @@ function processQualification() {
         }
       )
       .then((response) => {
-        var switchNextStep = response.nextStep;
+        var switchNextStep = response.data.nextStep;
         console.log(switchNextStep);
+
         switch (switchNextStep) {
           case "enable":
-            console.log("enable");
+            console.log("case enable");
             getNextStep(response.data.nextStep);
             attempts++;
 
             localStorage.setItem("attempts", attempts);
-            localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
           case "authorize":
-            console.log("authorize");
+            console.log("case authorize");
             getNextStep(response.data.nextStep);
             attemptsAuth++;
 
             localStorage.setItem("attemptsAuth", attemptsAuth);
-            localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
           case "keepcalm":
-            console.log("keepcalm");
+            console.log("case keepcalm");
+
             attemptsCatch++;
-            localStorage.setItem("attemptsCatch", attemptsCatch);
-
-            function funcAttemptsCatch() {
-              var setAttemptsCatch = localStorage.getItem("attemptsCatch");
-              if (setAttemptsCatch < 2) {
-                console.log("keepcalm2");
-                getNextStep(response.data.nextStep);
-              } else {
-                window.location.href = stepsUrl + "offline";
-              }
-
+            if (attemptsCatch < 2) {
+              //atribui novamente no botão o nextStep keepcalm
+              getNextStep(response.data.nextStep);
+            } else {
+              window.location.href = stepsUrl + "offline";
             }
 
-            funcAttemptsCatch();
-
+            localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
           default:
             console.log("default");
@@ -546,7 +537,6 @@ function processQualification() {
   localStorage.setItem("minimize", minimize);
   localStorage.setItem("attemptsCatch", attemptsCatch);
 }
-
 
 
 
