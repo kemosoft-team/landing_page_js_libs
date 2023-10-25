@@ -140,34 +140,55 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
+//removerAtributos
+function removeAttributeStorage() {
+    localStorage.removeItem("attemptsAuth");
+    localStorage.removeItem("attemptsCatch");
+    localStorage.removeItem("attempts");
+  }
+
 //get Token Status info-return
-  function getTokenStatus(){
-
-    if(getCookie('tkn')){
-  
-    axios.post(apiBaseUrl+'/getTokenStatus', {}, {
-      headers: {
-        'Authorization': `Bearer ${getCookie('tkn')}`
-      }})
+function getTokenStatus() {
+  if (getCookie("tkn")) {
+    axios
+      .post(
+        apiBaseUrl + "/getTokenStatus",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${getCookie("tkn")}`,
+          },
+        }
+      )
       .then(function (response) {
+        const param = window.location.search || "";
 
-        const param = window.location.search || '';
-        
-        const link = document.querySelector('a.btn-continue');
-        link.setAttribute('href', stepsUrl + response.data.nextStep + param + '?scheduledTo=' + response.data.scheduledTo);
+        const link = document.querySelector("a.btn-continue");
+        link.setAttribute(
+          "href",
+          stepsUrl +
+            response.data.nextStep +
+            param +
+            "?scheduledTo=" +
+            response.data.scheduledTo
+        );
 
+        link.addEventListener("click", removeAttributeStorage());
 
-         document.getElementById("info-return").innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
-        
-         var botao = document.querySelector(".btn-lead-info");        
-         botao.click();
+        document.getElementById(
+          "info-return"
+        ).innerHTML = `<p class="p-info-return">${response.data.message}</p>`;
+
+        var botao = document.querySelector(".btn-lead-info");
+        botao.click();
 
       })
       .catch(function (error) {
-          console.log(error);
-      }); 
-    }
+        console.log(error);
+      });
   }
+}
+
 
 
 //obtem os parametros do afiliado oriondos dos cookies
@@ -362,12 +383,6 @@ async function registerCustomerDocs(docNumber, docType, issueState, motherName) 
     });
 
 }
-//removerAtributos
-function removeAttributeStorage() {
-    localStorage.removeItem("attemptsAuth");
-    localStorage.removeItem("attemptsCatch");
-    localStorage.removeItem("attempts");
-  }
 
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email) {
