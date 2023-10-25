@@ -500,8 +500,8 @@ function processQualification() {
             localStorage.setItem("attemptsCatch", attemptsCatch);
 
             function verifyKeepCalm() {
-              attemptsCatch = localStorage.getItem("attemptsCatch");
-              if (attemptsCatch < 2) {
+              var verifyAttemptsCatch = localStorage.getItem("attemptsCatch");
+              if (verifyAttemptsCatch < 2) {
                 sendRequest();
               } else {
                 window.location.href = stepsUrl + "offline";
@@ -538,6 +538,7 @@ function processQualification() {
   localStorage.setItem("minimize", minimize);
   localStorage.setItem("attemptsCatch", attemptsCatch);
 }
+
 
 
 
