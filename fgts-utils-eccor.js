@@ -481,7 +481,7 @@ function processQualification() {
         var switchNextStep = response.data.nextStep;
         console.log(switchNextStep);
         switch (switchNextStep) {
-          case "/enable":
+          case "enable":
             console.log("enable");
             getNextStep(response.data.nextStep);
             attemptsCatch = 2;
@@ -490,7 +490,7 @@ function processQualification() {
             localStorage.setItem("attempts", attempts);
             localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
-          case "/authorize":
+          case "authorize":
             console.log("authorize");
             getNextStep(response.data.nextStep);
             attemptsCatch = 2;
@@ -499,7 +499,7 @@ function processQualification() {
             localStorage.setItem("attemptsAuth", attemptsAuth);
             localStorage.setItem("attemptsCatch", attemptsCatch);
             break;
-          case "/keepcalm":
+          case "keepcalm":
             console.log("keepcalm");
             attemptsCatch++;
             localStorage.setItem("attemptsCatch", attemptsCatch);
