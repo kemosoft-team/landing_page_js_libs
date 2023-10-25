@@ -328,6 +328,7 @@ async function registerCustomerAccount(agency, bank, account, verifyDigit, accou
     });
 
 }
+
 // registerCustomerAccount
 async function registerCustomerDocs(docNumber, docType, issueState, motherName) {
 
@@ -443,7 +444,7 @@ function getNextStep(path) {
 
 }
 
-// Qualifica o lead
+ // Qualifica o lead
   function processQualification() {
     // Recupere os valores do localStorage, se existirem
     let attempts = localStorage.getItem("attempts") || 0;
@@ -499,6 +500,7 @@ function getNextStep(path) {
               localStorage.setItem("attemptsCatch", attemptsCatch);
               break;
             case "/keepcalm":
+            getNextStep(response.data.nextStep);
               attemptsCatch++;
               localStorage.setItem("attemptsCatch", attemptsCatch);
 
