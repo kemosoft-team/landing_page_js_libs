@@ -457,9 +457,8 @@ function processQualification() {
   button.setAttribute("disabled", true);
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
-  
-  const sendRequest = () => {
 
+  const sendRequest = () => {
     /* if (attemptsCatch == 2) {
       window.location.href = stepsUrl + "offline";
     } */
@@ -500,11 +499,16 @@ function processQualification() {
             attemptsCatch++;
             localStorage.setItem("attemptsCatch", attemptsCatch);
 
-            if (attemptsCatch < 2) {
-              sendRequest();
-            } else {
-              window.location.href = stepsUrl + "offline";
+            function verifyKeepCalm() {
+              attemptsCatch = localStorage.getItem("attemptsCatch");
+              if (attemptsCatch < 2) {
+                sendRequest();
+              } else {
+                window.location.href = stepsUrl + "offline";
+              }
             }
+
+            verifyKeepCalm();
             break;
           default:
             getNextStep(response.data.nextStep);
@@ -534,6 +538,7 @@ function processQualification() {
   localStorage.setItem("minimize", minimize);
   localStorage.setItem("attemptsCatch", attemptsCatch);
 }
+
 
 
 //validarFormDocs
