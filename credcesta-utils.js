@@ -173,6 +173,7 @@ async function registerCustomer(name, birth, federalId, phone, representativeFed
   })
     .then((response) => {
       handleSetToken(response.data.token);
+      console.log(response.data.token)
       redirectToNextStep(response.data);
     })
     .catch(function (error) {
