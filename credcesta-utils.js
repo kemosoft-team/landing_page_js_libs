@@ -520,13 +520,13 @@ function validarFormAccount(){
 //valida form
 function validateForm() {
 
-  const name = document.querySelector('[data-label="Nome do Beneficiário"]').value;
-  const phone = document.querySelector('[data-label="Whatsapp"]').value;
-  const birth = document.querySelector('[data-label="Data de Nascimento do Beneficiário"]').value;
-  const federalId = document.querySelector('[data-label="CPF do Beneficiário"]').value;
-  const federalIdRepresentElement = document.querySelector('[data-label="CPF do representante"]');
+  const name = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
+  const phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
+  const birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
+  const federalId = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
+  const federalIdRepresentElement = document.querySelector('[data-brz-label="CPF do representante"]');
   const representativeFederalId = federalIdRepresentElement ? federalIdRepresentElement.value : '';
-  const representativeSelect = document.querySelector('[data-label="É representante legal de alguém?"]').value;
+  const representativeSelect = document.querySelector('[data-brz-label="É representante legal de alguém?"]').value;
 
   if (name == "" || phone == "" || birth == "" || federalId == "" || representativeSelect == "" ) {
     showToast("Por favor, preencha todos os campos.");
