@@ -49,7 +49,7 @@ function redirectToNextStep(res) {
 
 //Seta cookie
 function handleSetToken(value) {
-  document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=.credcesta.faz.vc; path=/;`;
+  document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=consigmaisinss.kemobuilder.site; path=/;`;
 }
 
 //Obtem o step atual pela url
