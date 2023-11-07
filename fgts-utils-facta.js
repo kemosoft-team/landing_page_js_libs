@@ -622,11 +622,11 @@ function validarFormAccount() {
 //validar form
 function validateForm() {
 
-  const name = document.querySelector('[data-label="Nome"]').value;
-  const phone = document.querySelector('[data-label="Whatsapp"]').value;
-  const email = document.querySelector('[data-label="Email"]').value;
-  const birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-  const federalId = document.querySelector('[data-label="CPF"]').value;
+  const name = document.querySelector('[data-brz-label="Nome"]').value;
+  const phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
+  const email = document.querySelector('[data-brz-label="Email"]').value;
+  const birth = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+  const federalId = document.querySelector('[data-brz-label="CPF"]').value;
 
   if (name == "" || phone == "" || birth == "" || federalId == "" || email == "") {
     showToast("Por favor, preencha todos os campos.");
