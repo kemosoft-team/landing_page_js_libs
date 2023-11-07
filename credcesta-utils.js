@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2';
-let stepsUrl = 'https://credcesta.faz.vc/';
+let stepsUrl = 'https://consigmaisinss.kemobuilder.site/';
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
