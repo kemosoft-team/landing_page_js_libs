@@ -96,7 +96,7 @@ function showToast(text) {
 //Popula o select de bancos
 function setBanks(bankList) {
   bankList.reverse();
-  const selects = document.querySelectorAll('select[data-label="Banco"]');
+  const selects = document.querySelectorAll('select[data-brz-label="Banco"]');
 
   selects.forEach(select => {
     bankList.forEach(bank => {
@@ -205,10 +205,10 @@ async function getByZipCodeInfo(zipcode){
 
 //Preenche os campos de endereço do form
 function setAddressInfo(obj){
-  document.querySelector('[data-label="Rua"]').value = obj.address;
-  document.querySelector('[data-label="Bairro"]').value = obj.district;
-  document.querySelector('[data-label="Cidade"]').value = obj.city;
-  document.querySelector('[data-label="UF"]').value = obj.state;
+  document.querySelector('[data-brz-label="Rua"]').value = obj.address;
+  document.querySelector('[data-brz-label="Bairro"]').value = obj.district;
+  document.querySelector('[data-brz-label="Cidade"]').value = obj.city;
+  document.querySelector('[data-brz-label="UF"]').value = obj.state;
 }
 
   
@@ -437,12 +437,12 @@ function setAddressInfo(obj){
 //validarFormAddress
 function validarFormAddress(){ 
   
-  const zipcode = document.querySelector('[data-label="CEP"]').value;
-  const address = document.querySelector('[data-label="Rua"]').value;
-  const addressNumber = document.querySelector('[data-label="Número"]').value;
-  const state = document.querySelector('[data-label="UF"]').value;
-  const district = document.querySelector('[data-label="Bairro"]').value;
-  const city = document.querySelector('[data-label="Cidade"]').value;
+  const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
+  const address = document.querySelector('[data-brz-label="Rua"]').value;
+  const addressNumber = document.querySelector('[data-brz-label="Número"]').value;
+  const state = document.querySelector('[data-brz-label="UF"]').value;
+  const district = document.querySelector('[data-brz-label="Bairro"]').value;
+  const city = document.querySelector('[data-brz-label="Cidade"]').value;
 
   
   if (zipcode == "" || address == "" || addressNumber == "" || state =="" || district =="" || city =="") {
@@ -456,10 +456,10 @@ function validarFormAddress(){
 //validarFormDocs
 function validarFormDocs(){ 
 
-  const docType = document.querySelector('[data-label="Tipo de Documento"]').value;
-  const docNumber = document.querySelector('[data-label="Número do Documento"]').value;
-  const issueState = document.querySelector('[data-label="UF Expeditor"]').value;
-  const motherName = document.querySelector('[data-label="Nome da sua Mãe"]').value;
+  const docType = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+  const docNumber = document.querySelector('[data-brz-label="Número do Documento"]').value;
+  const issueState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+  const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
   
   if (docType == "" || docNumber == "" || issueState == "" || motherName =="") {
@@ -472,7 +472,7 @@ function validarFormDocs(){
 //validarFormDocs
 function validarFormBenefit(){ 
 
-  const enrollment = document.querySelector('[data-label="Número de benefício"]').value;
+  const enrollment = document.querySelector('[data-brz-label="Número de benefício"]').value;
   
   if (enrollment == "") {
     showToast("Por favor, preencha o campo.");
@@ -484,8 +484,8 @@ function validarFormBenefit(){
 //validarFormRepresentanteLegal
 function validarFormRepresentative(){ 
 
-  const representativeName= document.querySelector('[data-label="Nome"]').value;
-  const representativeBirth = document.querySelector('[data-label="Data de Nascimento"]').value;
+  const representativeName= document.querySelector('[data-brz-label="Nome"]').value;
+  const representativeBirth = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
   
   if (representativeName == "" || representativeBirth == "" ) {
     showToast("Por favor, preencha todos os campos.");
@@ -496,16 +496,16 @@ function validarFormRepresentative(){
 
 function validarFormAccount(){ 
 
-  const agency = document.querySelector('[data-label="Agência"]').value;
+  const agency = document.querySelector('[data-brz-label="Agência"]').value;
   var bank = '';
-  const account = document.querySelector('[data-label="Conta"]').value;
-  const verifyDigit = document.querySelector('[data-label="Dígito"]').value;
-  const accountType = document.querySelector('[data-label="Tipo de conta"]').value;
+  const account = document.querySelector('[data-brz-label="Conta"]').value;
+  const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
+  const accountType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
 
     if(document.querySelectorAll('div.brz-forms2__item')[1].style.display == "block"){
-      bank = document.querySelector('[data-label="Nome Banco"]').value;
+      bank = document.querySelector('[data-brz-label="Nome Banco"]').value;
     }else{
-      bank = document.querySelector('[data-label="Banco"]').value;
+      bank = document.querySelector('[data-brz-label="Banco"]').value;
     }
 
   if (agency == "" || bank == "" || account == "" || verifyDigit =="" || accountType =="") {
