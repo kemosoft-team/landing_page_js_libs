@@ -655,7 +655,7 @@
       verifyDigit == "" ||
       accountType == ""
     ) {
-      alert("Por favor, preencha todos os campos.");
+       showToast("Por favor, preencha todos os campos.");
       return false;
     }
 
