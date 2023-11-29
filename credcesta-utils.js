@@ -1,6 +1,6 @@
 //API url
 let apiUrl = 'https://api.consigmais.com.br/lp/main/v2';
-let stepsUrl = 'https://consigmaisinss.kemobuilder.site/';
+let stepsUrl = window.location.host + "/";
 
 //Obtem o cookie pelo nome 
 function getCookie(name) {
