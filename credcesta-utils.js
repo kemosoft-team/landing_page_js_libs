@@ -467,7 +467,7 @@ function validarFormDocs() {
   const docType = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
   const docNumber = document.querySelector('[data-brz-label="Número do Documento"]').value;
   const issueState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
-  const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
+  const motherName = document.querySelector('[data-brz-label="Nome da mãe do beneficiário "]').value;
 
 
   if (docType == "" || docNumber == "" || issueState == "" || motherName == "") {
