@@ -114,7 +114,8 @@ function setSchedule() {
 //setar token
 function handleSetToken(value) {
   // console.log("handleToken");
-  document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=eccor-fgts.faz.vc; path=/;`;
+  const host = window.location.host;
+  document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=${host}; path=/;`;
 }
 
 //obtem o step atual pela url
