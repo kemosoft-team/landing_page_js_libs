@@ -111,27 +111,6 @@ function setSchedule() {
   });
 }
 
-/* function setSchedule() {
-
-  window.addEventListener('DOMContentLoaded', function () {
-
-    var encodedData = window.location.search.substring(1);
-    const decodedValue = decodeURIComponent(encodedData);
-
-    var scheduleElement = document.getElementById('schedule');
-    var currentText = scheduleElement.textContent;
-    var modifiedText = currentText.replace('xx/xx/xxxx', decodedValue);
-
-    scheduleElement.textContent = modifiedText;
-    scheduleElement.style.fontFamily = 'Montserrat';
-    scheduleElement.style.fontSize = '20px';
-    scheduleElement.style.color = '#706666';
-    scheduleElement.style.fontWeight = '700';
-    scheduleElement.style.marginTop = '32px';
-    scheduleElement.style.marginBottom = '22px';
-  });
-} */
-
 //setar token
 function handleSetToken(value) {
   // console.log("handleToken");
@@ -212,7 +191,7 @@ function captureAffiliateData() {
     source: urlParams.get("source") || null,
     productId: urlParams.get("pid") || null,
     vendorId: urlParams.get("vid") || null,
-    offerId: "62",
+    offerId: "18",
     clickId: urlParams.get("cid") || null,
     pixelId: urlParams.get("afx") || null,
     gtmId: urlParams.get("afgtm") || null,
