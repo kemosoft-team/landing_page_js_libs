@@ -1,7 +1,7 @@
 
 if (typeof apiBaseUrl == 'undefined') {
   let apiBaseUrl = 'https://api.consigmais.com.br/lp/main/v2';
-  let stepsUrl = 'https://correspondente-bmg.faz.vc/';
+  let stepsUrl = window.location.origin+'/';
 }
 //inicia spin loading no button
 function setLoading(){
@@ -18,21 +18,87 @@ span.textContent = textButton;
 }
 
 function redirectToNextStep(res) {
-
-  const param = window.location.search || '';
+  const param = window.location.search || "";
   const nextStep = res.nextStep;
 
   switch (nextStep) {
-    case 'signature':
-      window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.formalizatioLink));
+    case "signature":
+      window.location.href =
+        stepsUrl +
+        nextStep +
+        param +
+        "&" +
+        encodeURIComponent(JSON.stringify(res.formalizatioLink));
       break;
-    case 'scheduled':
-      window.location.href = stepsUrl + nextStep + param + '&' + encodeURIComponent(JSON.stringify(res.scheduledTo));
+    case "scheduled":
+      window.location.href =
+        stepsUrl +
+        nextStep +
+        "?" +
+        param +
+        "&scheduledTo=" +
+        encodeURIComponent(JSON.stringify(res.scheduledTo));
+
       break;
     default:
       window.location.href = stepsUrl + nextStep + param;
       break;
   }
+}
+
+function setNextStep() {
+  axios
+    .post(
+      apiBaseUrl + "/getTokenStatus",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${getCookie("tkn")}`,
+        },
+      }
+    )
+    .then(function (response) {
+      window.location.href = stepsUrl + response.data.nextStep;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+function setLinkSignature() {
+  var encodedData = window.location.search.substring(1);
+  const decodedValue = decodeURIComponent(encodedData);
+  const link = document.querySelector(".brz-a");
+  link.href = decodedValue;
+}
+
+function setSchedule() {
+  window.addEventListener("DOMContentLoaded", function () {
+    var currentURL = window.location.href;
+
+    var datePattern = /(\d{4}-\d{2}-\d{2})/;
+
+    var match = currentURL.match(datePattern);
+
+    if (match && match[1]) {
+      var dateParts = match[1].split("-");
+
+      var formattedDate =
+        dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
+
+      var scheduleElement = document.getElementById("schedule");
+      var currentText = scheduleElement.textContent;
+      var modifiedText = currentText.replace("xx/xx/xxxx", formattedDate);
+
+      scheduleElement.textContent = modifiedText;
+      scheduleElement.style.fontFamily = "Montserrat";
+      scheduleElement.style.fontSize = "20px";
+      scheduleElement.style.color = "#706666";
+      scheduleElement.style.fontWeight = "700";
+      scheduleElement.style.marginTop = "32px";
+      scheduleElement.style.marginBottom = "22px";
+    }
+  });
 }
 
 //setar token
@@ -55,6 +121,13 @@ function showToast(text) {
     document.getElementById("snackbar").innerHTML = text;
     setTimeout(function(){ x.className = x.className.replace("show", `${text}`); }, 3000);
   }
+
+    //removerAtributos
+    function removeAttributeStorage() {
+      localStorage.removeItem("attemptsAuth");
+      localStorage.removeItem("attemptsCatch");
+      localStorage.removeItem("attempts");
+    }
   
   //get Token Status info-return
   function getTokenStatus(){
@@ -105,7 +178,6 @@ function captureAffiliateData(){
     };
       return affiliateData;
 }
-
 
 //registerCustomer
 async function registerCustomer(name, birth, federalId, phone, email){
