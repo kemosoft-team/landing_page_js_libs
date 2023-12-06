@@ -656,8 +656,7 @@ function validateForm() {
     name == "" ||
     phone == "" ||
     birth == "" ||
-    federalId == "" ||
-    email == ""
+    federalId == ""
   ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
