@@ -1,5 +1,5 @@
   let apiBaseUrl = "https://api.consigmais.com.br/lp/main/v2";
-  let stepsUrl = "https://eccor.faz.vc/";
+  let stepsUrl = "https://eccor-fgts.faz.vc/";
 
   // obtem o cookie pelo nome
   function getCookie(name) {
@@ -135,7 +135,7 @@
   //setar token
   function handleSetToken(value) {
     // console.log("handleToken");
-    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=eccor.faz.vc; path=/;`;
+    document.cookie = `tkn=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT; domain=eccor-fgts.faz.vc; path=/;`;
   }
 
   //obtem o step atual pela url
