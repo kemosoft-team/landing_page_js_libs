@@ -1,11 +1,11 @@
-var federalId = document.querySelector('[data-label="CPF"]'),
-    phone = document.querySelector('[data-label="Whatsapp"]'),
-    birth = document.querySelector('[data-label="Data de Nascimento"]'),
-    agency = document.querySelector('[data-label="Agência"]'),
-    dig = document.querySelector('[data-label="Dígito"]'),
-    account = document.querySelector('[data-label="Conta"]'),
-    federalIdB = document.querySelector('[data-label="CPF/CNPJ"]'),
-    cep = document.querySelector('[data-label="CEP"]');
+var federalId = document.querySelector('[data-brz-label="CPF"]'),
+    phone = document.querySelector('[data-brz-label="Whatsapp"]'),
+    birth = document.querySelector('[data-brz-label="Data de Nascimento"]'),
+    agency = document.querySelector('[data-brz-label="Agência"]'),
+    dig = document.querySelector('[data-brz-label="Dígito"]'),
+    account = document.querySelector('[data-brz-label="Conta"]'),
+    federalIdB = document.querySelector('[data-brz-label="CPF/CNPJ"]'),
+    cep = document.querySelector('[data-brz-label="CEP"]');
 
 
 if (federalId) {
