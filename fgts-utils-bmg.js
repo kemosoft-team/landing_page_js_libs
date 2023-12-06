@@ -646,7 +646,7 @@ function validarFormAccount() {
 function validateForm() {
   const name = document.querySelector('[data-brz-label="Nome"]').value;
   const phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
-  const email = document.querySelector('[data-brz-label="Email"]').value;
+  const email = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
   const birth = document.querySelector(
     '[data-brz-label="Data de Nascimento"]'
   ).value;
