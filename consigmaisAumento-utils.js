@@ -189,12 +189,16 @@ function validateForm() {
     showToast("Por favor, digite seu nome completo");
     return false;
   }
-  if (representativeSelect == 'Possui Representante' && (federalId_Representive == "" || name_Representive == "")) {
+  if ((representativeSelect == "Possui Representante" && federalId_Representive == "") || (representativeSelect == "Possui Representante" &&  name_Representive == "")) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   } 
   if (federalId == federalId_Representive) {
     showToast("Os CPFs do beneficiário e do representante devem ser diferentes!");
+    return false;
+  } 
+  if (!validateCPF(federalId_Representive)) {
+    showToast("O CPF informado não é válido!");
     return false;
   } 
   if (!validateCPF(federalId)) {
@@ -221,6 +225,8 @@ function validateForm() {
     );
     return false;
   }
+
+  
 
   registerCustomer(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive);
 }
