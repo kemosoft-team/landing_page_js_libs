@@ -185,6 +185,10 @@ function validateForm() {
     showToast("Por favor, preencha todos os campos.");
     return false;
   } 
+  if (name.trim() !== '' && name.includes(' ')) {
+    showToast("Por favor, digite seu nome completo");
+    return false;
+  } 
   if (representativeSelect == 'Possui Representante' && (federalId_Representive == "" || name_Representive == "")) {
     showToast("Por favor, preencha todos os campos.");
     return false;
