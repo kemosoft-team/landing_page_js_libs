@@ -190,7 +190,7 @@ function validateForm() {
   } else if (federalId == federalId_Representive) {
     showToast("Os CPFs do beneficiário e do representante devem ser diferentes!");
     return false;
-  } else if (!validateCPF(federal_id)) {
+  } else if (!validateCPF(federalId)) {
     showToast("O CPF informado não é válido!");
     return false;
   } else if (enrollment.length > 10) {
