@@ -184,47 +184,37 @@ function validateForm() {
     federalId_Representive == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } 
-   if (name.trim() === '' || !name.includes(' ') || !/[a-zA-ZÀ-ÿ]/.test(name.split(' ')[1])) {
+  } else if (name.trim() === '' || !name.includes(' ') || !/[a-zA-ZÀ-ÿ]/.test(name.split(' ')[1])) {
     showToast("Por favor, digite seu nome completo");
     return false;
-  }
-  if (representativeSelect == 'Possui Representante' && name_Representive == "" ) {
+  }else if (representativeSelect == 'Possui Representante' && name_Representive == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } 
-  if (representativeSelect == 'Possui Representante' && federalId_Representive == "" ) {
+  }else if (representativeSelect == 'Possui Representante' && federalId_Representive == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } 
-  if (federalId == federalId_Representive) {
+  } else if (federalId == federalId_Representive) {
     showToast("Os CPFs do beneficiário e do representante devem ser diferentes!");
     return false;
-  } 
-  if (!validateCPF(federalId_Representive)) {
+  } else if (!validateCPF(federalId_Representive)) {
     showToast("O CPF informado não é válido!");
     return false;
-  } 
-  if (!validateCPF(federalId)) {
+  } else if (!validateCPF(federalId)) {
     showToast("O CPF informado não é válido!");
     return false;
-  } 
-  if (enrollment.length > 10) {
+  } else  if (enrollment.length > 10) {
     showToast("O número do benefício não pode ter mais de 10 caracteres."
     );
     return false;
-  } 
-  if (!validarNumeroBeneficio(enrollment)) {
+  } else if (!validarNumeroBeneficio(enrollment)) {
     showToast("O número do benefício informado é inválido!"
     );
     return false;
-  } 
-  if (!isDateValid(birth)) {
+  } else if (!isDateValid(birth)) {
     showToast("A data de nascimento informada não é válida!"
     );
     return false;
-  }
-  if (!isBirthValid(birth)) {
+  } else if (!isBirthValid(birth)) {
     showToast("Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
     );
     return false;
