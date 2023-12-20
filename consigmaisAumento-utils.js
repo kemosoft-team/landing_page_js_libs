@@ -189,7 +189,11 @@ function validateForm() {
     showToast("Por favor, digite seu nome completo");
     return false;
   }
-  if ((representativeSelect == "Possui Representante" && federalId_Representive == "") || (representativeSelect == "Possui Representante" &&  name_Representive == "")) {
+  if (representativeSelect == 'Possui Representante' && name_Representive == "" ) {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  } 
+  if (representativeSelect == 'Possui Representante' && federalId_Representive == "" ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
   } 
