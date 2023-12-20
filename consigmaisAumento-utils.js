@@ -128,7 +128,7 @@ async function registerCustomer(name, phone, federalId, birth, enrollment, name_
 
   const affiliate = captureAffiliateData();
 
-  const button = document.querySelector('.btn-submit-fgts');
+  const button = document.querySelector('.btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
 
