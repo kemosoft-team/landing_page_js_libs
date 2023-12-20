@@ -185,7 +185,7 @@ function validateForm() {
     showToast("Por favor, preencha todos os campos.");
     return false;
   } 
-   if (!name.includes(' ')) {
+   if (name.trim() === '' || !name.includes(' ') || !/[a-zA-ZÀ-ÿ]/.test(name.split(' ')[1])) {
     showToast("Por favor, digite seu nome completo");
     return false;
   }
