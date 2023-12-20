@@ -37,7 +37,7 @@ function captureAffiliateData() {
 
 //VALIDAR CPF
 function validateCPF(cpf) {
-
+  cpf = cpf.replace(/[^\d]/g, "");
   if (cpf.length !== 11) return false;
   let sum = 0,
     remainder;
