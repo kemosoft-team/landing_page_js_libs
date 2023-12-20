@@ -152,37 +152,14 @@ async function registerCustomer(name, phone, federalId, birth, enrollment, name_
     //"affiliateData": affiliate
   })
     .then((response) => {
-      handleSetToken(response.data.token);
-      console.log(response.data.token)
-      redirectToNextStep(response.data);
+      console.log("Deu bom!")
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
       spinner.classList.add('brz-invisible');
-      span.textContent = 'ACEITAR E CONTINUAR';
+      span.textContent = 'Simular Agora!';
       showToast(error.response.data.message);
     });
-}
-
-
-
-//validarFormAddress
-function validarFormAddress() {
-
-  const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
-  const address = document.querySelector('[data-brz-label="Rua"]').value;
-  const addressNumber = document.querySelector('[data-brz-label="Número"]').value;
-  const state = document.querySelector('[data-brz-label="UF"]').value;
-  const district = document.querySelector('[data-brz-label="Bairro"]').value;
-  const city = document.querySelector('[data-brz-label="Cidade"]').value;
-
-
-  if (zipcode == "" || address == "" || addressNumber == "" || state == "" || district == "" || city == "") {
-    showToast("Por favor, preencha todos os campos.");
-    return false;
-  }
-  registerCustomerAddress(zipcode, address, addressNumber, state, district, city);
-
 }
 
 //valida form
@@ -193,8 +170,6 @@ function validateForm() {
   const federalId = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
   const birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
   const enrollment = document.querySelector('[data-brz-label="Matrícula"]').value;
-
-
   const representativeSelect = document.querySelector('[data-brz-label="O Benefício possui representante legal ?"]').value;
   const name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]');
   const federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]');
@@ -236,15 +211,5 @@ function validateForm() {
     return false;
   }
 
-
-
-
-
-
-
-
-
   registerCustomer(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive);
 }
-
-getTokenStatus();
