@@ -184,28 +184,35 @@ function validateForm() {
     federalId_Representive == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } else if (representativeSelect == 'Possui Representante' && (federalId_Representive == "" || name_Representive == "")) {
+  } 
+  if (representativeSelect == 'Possui Representante' && (federalId_Representive == "" || name_Representive == "")) {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } else if (federalId == federalId_Representive) {
+  } 
+  if (federalId == federalId_Representive) {
     showToast("Os CPFs do beneficiário e do representante devem ser diferentes!");
     return false;
-  } else if (!validateCPF(federalId)) {
+  } 
+  if (!validateCPF(federalId)) {
     showToast("O CPF informado não é válido!");
     return false;
-  } else if (enrollment.length > 10) {
+  } 
+  if (enrollment.length > 10) {
     showToast("O número do benefício não pode ter mais de 10 caracteres."
     );
     return false;
-  } else if (!validarNumeroBeneficio(enrollment)) {
+  } 
+  if (!validarNumeroBeneficio(enrollment)) {
     showToast("O número do benefício informado é inválido!"
     );
     return false;
-  } else if (!isDateValid(birth)) {
+  } 
+  if (!isDateValid(birth)) {
     showToast("A data de nascimento informada não é válida!"
     );
     return false;
-  } else if (!isBirthValid(birth)) {
+  }
+  if (!isBirthValid(birth)) {
     showToast("Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
     );
     return false;
