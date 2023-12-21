@@ -187,7 +187,7 @@ function isBirthValid(dateString) {
   const currentDate = new Date();
   const maxBirthYear = currentDate.getFullYear();
 
-  if (maxBirthYear - yearInt >= 75) {
+  if (maxBirthYear - yearInt > 76) {
     return false;
   }
 
@@ -227,7 +227,7 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
   })
     .then((response) => {
       localStorage.setItem("federalId", federalId_replaced);
-      window.location.href = nextStep;
+      /* window.location.href = nextStep; */
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
@@ -300,7 +300,7 @@ function validateForm() {
     return false;
   }
   if (!isBirthValid(birth)) {
-    showToast("Ops! Você deve ter no máximo 74 anos e 11 meses para prosseguir com a simulação."
+    showToast("Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
     );
     return false;
   }
