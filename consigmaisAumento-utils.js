@@ -1,5 +1,5 @@
 //API url
-let API_URL = 'https://api.consigmais.com.br/lp/main/v2';
+let API_URL = 'https://ms-crm-az.kemosoft.com.br/v1';
 let step_URL = window.location.host + "/";
 
 
@@ -11,31 +11,102 @@ function showToast(text) {
   setTimeout(function () { x.className = x.className.replace("show", `${text}`); }, 3000);
 }
 
+/* VALIDAR WHATSAPP */
+function validatePhone(phone) {
+  const numericPhone = phone.replace(/\D/g, "");
 
+  if (numericPhone.length !== 11) {
+    return false;
+  }
 
+  const validDDDs = [
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "21",
+    "22",
+    "24",
+    "27",
+    "28",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "37",
+    "38",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "51",
+    "53",
+    "54",
+    "55",
+    "61",
+    "62",
+    "63",
+    "64",
+    "65",
+    "66",
+    "67",
+    "68",
+    "69",
+    "71",
+    "73",
+    "74",
+    "75",
+    "77",
+    "79",
+    "81",
+    "82",
+    "83",
+    "84",
+    "85",
+    "86",
+    "87",
+    "88",
+    "89",
+    "91",
+    "92",
+    "93",
+    "94",
+    "95",
+    "96",
+    "97",
+    "98",
+    "99",
+  ];
 
-//OBTER PARAMETROS DO AFILIADO
-function captureAffiliateData() {
+  const firstTwoDigits = numericPhone.substring(0, 2);
+  if (!validDDDs.includes(firstTwoDigits)) {
+    return false;
+  }
 
-  const urlParams = new URLSearchParams(window.location.search);
+  if (numericPhone[2] !== "9") {
+    return false;
+  }
 
-  let affiliateData = {
+  const firstDigit = numericPhone[0];
+  if (numericPhone.split("").every((digit) => digit === firstDigit)) {
+    return false;
+  }
 
-    affiliateCode: urlParams.get('af') || 'Vv5P88AWTr7qsU8v8',
-    source: urlParams.get('source') || null,
-    productId: urlParams.get('pid') || null,
-    vendorId: urlParams.get('vid') || null,
-    offerId: '65',
-    clickId: urlParams.get('cid') || null,
-    pixelId: urlParams.get('afx') || null,
-    gtmId: urlParams.get('afgtm') || null,
-    gaId: urlParams.get('gaId') || null,
-    rawUri: window.location.search
-  };
-  return affiliateData;
+  return true;
 }
 
-//VALIDAR CPF
+/* VALIDAR CPF */
 function validateCPF(cpf) {
   cpf = cpf.replace(/[^\d]/g, "");
   if (cpf.length !== 11) return false;
@@ -123,10 +194,12 @@ function isBirthValid(dateString) {
   return true;
 }
 
-//registerCustomer
-async function registerCustomer(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive) {
+//CRIAR CONTATO
+async function criar_contato(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive) {
 
-  const affiliate = captureAffiliateData();
+  const nextStep = "/qualification"
+  const pipelineId = "ee507528-ae09-43ef-9e1c-d5700a18a25d"
+  const productId = "1234"
 
   const button = document.querySelector('.btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
@@ -136,23 +209,21 @@ async function registerCustomer(name, phone, federalId, birth, enrollment, name_
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(API_URL + '/registerCustomer', {
+  axios.post(API_URL + '/criar-contato', {
     "name": name,
     "phone": phone,
     "federalId": federalId,
     "birthDate": birth,
     "enrollment": enrollment,
     "name_Representive": name_Representive,
-    "name_Representive": name_Representive,
     "federalId_Representive": federalId_Representive,
 
-    "pipelineId": "string",
-    "productId": "string",
-
-    //"affiliateData": affiliate
+    "pipelineId": pipelineId,
+    "productId": productId,
   })
     .then((response) => {
-      console.log("Deu bom!")
+      localStorage.setItem("federalId", federalId);
+      window.location.href = step_URL + nextStep;
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
@@ -171,54 +242,54 @@ function validateForm() {
   const birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
   const enrollment = document.querySelector('[data-brz-label="Matrícula"]').value;
   const representativeSelect = document.querySelector('[data-brz-label="O Benefício possui representante legal ?"]').value;
-  const name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]');
-  const federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]');
+  const name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]').value;
+  const federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]').value;
 
   if (name == "" ||
     phone == "" ||
     federalId == "" ||
     birth == "" ||
     enrollment == "" ||
-    representativeSelect == "" ||
-    name_Representive == "" ||
-    federalId_Representive == "") {
+    representativeSelect == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  } 
-   if (name.trim() === '' || !name.includes(' ') || !/[a-zA-ZÀ-ÿ]/.test(name.split(' ')[1])) {
+  }
+  if (name.trim() === '' || !name.includes(' ') || !/[a-zA-ZÀ-ÿ]/.test(name.split(' ')[1])) {
     showToast("Por favor, digite seu nome completo");
     return false;
   }
-  if (representativeSelect == 'Possui Representante' && name_Representive == "" ) {
-    showToast("Por favor, preencha todos os campos.");
+  if (representativeSelect == 'Possui Representante' && name_Representive == "") {
+    showToast("Por favor, preencha o Nome do Representante.");
     return false;
-  } 
-  if (representativeSelect == 'Possui Representante' && federalId_Representive == "" ) {
-    showToast("Por favor, preencha todos os campos.");
+  }
+  if (representativeSelect == 'Possui Representante' && federalId_Representive == "") {
+    showToast("Por favor, preencha o CPF do Representante.");
     return false;
-  } 
+  }
   if (federalId == federalId_Representive) {
     showToast("Os CPFs do beneficiário e do representante devem ser diferentes!");
     return false;
-  } 
-  if (!validateCPF(federalId_Representive)) {
-    showToast("O CPF informado não é válido!");
-    return false;
-  } 
+  }
   if (!validateCPF(federalId)) {
-    showToast("O CPF informado não é válido!");
+    showToast("O CPF do Beneficiário não é válido!");
     return false;
-  } 
+  }
+
+  if (representativeSelect == 'Possui Representante' && !validateCPF(federalId_Representive)) {
+    showToast("O CPF do Representante não é válido!");
+    return false;
+  }
+
   if (enrollment.length > 10) {
     showToast("O número do benefício não pode ter mais de 10 caracteres."
     );
     return false;
-  } 
+  }
   if (!validarNumeroBeneficio(enrollment)) {
     showToast("O número do benefício informado é inválido!"
     );
     return false;
-  } 
+  }
   if (!isDateValid(birth)) {
     showToast("A data de nascimento informada não é válida!"
     );
@@ -229,8 +300,11 @@ function validateForm() {
     );
     return false;
   }
+  if (!validatePhone(phone)) {
+    showToast("O número do Whatsapp informado não é válido!"
+    );
+    return false;
+  }
 
-  
-
-  registerCustomer(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive);
-}
+  criar_contato(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive);
+}  
