@@ -197,7 +197,7 @@ function isBirthValid(dateString) {
 //CRIAR CONTATO
 async function criar_contato(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive) {
 
-  const nextStep = step_URL + "/qualification"
+  const nextStep = "qualification"
   const pipelineId = "ee507528-ae09-43ef-9e1c-d5700a18a25d"
   const productId = "1234"
 
@@ -213,7 +213,8 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
   spinner.classList.remove('brz-invisible');
   span.textContent = '';
 
-  axios.post(API_URL + '/criar-contato', {
+ /*  axios.post(API_URL + '/criar-contato', { */
+  axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", {
     "name": name,
     "phone": phone,
     "federalId": federalId_replaced,
