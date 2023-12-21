@@ -201,6 +201,10 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
   const pipelineId = "ee507528-ae09-43ef-9e1c-d5700a18a25d"
   const productId = "1234"
 
+  /* REPLACE */
+  const federalId_replaced = federalId.replace(/[^\d]/g, "");
+  const federalId_Representive_replaced = federalId_Representive.replace(/[^\d]/g, "");
+
   const button = document.querySelector('.btn-submit');
   const spinner = button.querySelector('.brz-form-spinner');
   const span = button.querySelector('.brz-span.brz-text__editor');
@@ -212,17 +216,17 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
   axios.post(API_URL + '/criar-contato', {
     "name": name,
     "phone": phone,
-    "federalId": federalId,
+    "federalId": federalId_replaced,
     "birthDate": birth,
     "enrollment": enrollment,
     "name_Representive": name_Representive,
-    "federalId_Representive": federalId_Representive,
+    "federalId_Representive": federalId_Representive_replaced,
 
     "pipelineId": pipelineId,
     "productId": productId,
   })
     .then((response) => {
-      localStorage.setItem("federalId", federalId);
+      localStorage.setItem("federalId", federalId_replaced);
       window.location.href = step_URL + nextStep;
     })
     .catch(function (error) {
