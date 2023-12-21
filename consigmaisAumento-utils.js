@@ -2,8 +2,7 @@
 let API_URL = 'https://ms-crm-az.kemosoft.com.br/v1';
 let step_URL = window.location.host + "/";
 
-
-//Exibe mensagem no toast
+//EXIBIR NO TOAST
 function showToast(text) {
   var x = document.getElementById("snackbar");
   x.className = "show";
@@ -226,8 +225,15 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
     "productId": productId,
   })
     .then((response) => {
-      localStorage.setItem("federalId", federalId_replaced);
-      /* window.location.href = nextStep; */
+      var infoQualification = {
+        pipelineId: pipelineId,
+        federalId: federalId_replaced
+      };
+
+      var objetoInfoQualification = JSON.stringify(infoQualification);
+
+      localStorage.setItem('infoQualification', objetoInfoQualification);
+      window.location.href = nextStep;
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
