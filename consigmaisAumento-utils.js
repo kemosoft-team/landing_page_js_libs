@@ -196,7 +196,9 @@ function isBirthValid(dateString) {
 //CRIAR CONTATO
 async function criar_contato(name, phone, federalId, birth, enrollment, name_Representive, federalId_Representive) {
 
+  //CONFIG
   const nextStep = "qualification"
+  const param = "?" + "conv=inss"
   const pipelineId = "ee507528-ae09-43ef-9e1c-d5700a18a25d"
   const productId = ""
 
@@ -241,7 +243,7 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
       var objetoInfoQualification = JSON.stringify(infoQualification);
 
       localStorage.setItem('infoQualification', objetoInfoQualification);
-      window.location.href = nextStep;
+      window.location.href = nextStep + param;
     })
     .catch(function (error) {
       button.removeAttribute('disabled');
