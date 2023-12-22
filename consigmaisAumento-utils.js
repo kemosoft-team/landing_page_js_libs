@@ -226,8 +226,16 @@ async function criar_contato(name, phone, federalId, birth, enrollment, name_Rep
   })
     .then((response) => {
       var infoQualification = {
+        name: name,
+        phone: phone,
+        federalId: federalId_replaced,
+        birthDate: birth,
+        enrollment: enrollment,
+        name_Representive: name_Representive,
+        federalId_Representive: federalId_Representive_replaced,
+
         pipelineId: pipelineId,
-        federalId: federalId_replaced
+        productId: productId,
       };
 
       var objetoInfoQualification = JSON.stringify(infoQualification);
