@@ -398,7 +398,7 @@ function qualification() {
     let federalId = infoQualification.federalId;
 
     //OBTER INFO DA URL
-    var url = step_URL;
+    var url = new URL(window.location.href);
     var pipelineSlug = url.searchParams.get("pipeline_slug");
 
     /* CONSOLE */
