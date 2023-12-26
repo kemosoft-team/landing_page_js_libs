@@ -239,8 +239,8 @@ async function criar_contato_inss(name, phone, federalId, birth, enrollment, nam
         "federalId": federalId_replaced,
         "birthDate": birth,
         "enrollment": enrollment,
-        "name_Representive": name_Representive,
-        "federalId_Representive": federalId_Representive_replaced,
+        "representativeName": name_Representive,
+        "representativeFederalId": federalId_Representive_replaced,
 
         "pipelineSlug": pipeline_slug,
     })
