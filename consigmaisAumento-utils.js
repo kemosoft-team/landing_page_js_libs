@@ -1,6 +1,6 @@
 //API url
 let API_URL = 'https://ms-crm-az.kemosoft.com.br/v1';
-let step_URL = window.location.host + "/";
+let step_URL = window.location.host;
 let URL_redirect = "";
 
 //EXIBIR NO TOAST
@@ -391,22 +391,25 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
 
+    //OBTER INFO DO LOCALSTORAGE
     var DataInfoQualification = localStorage.getItem("dataQualification");
     var infoQualification = JSON.parse(DataInfoQualification);
 
-
-    let pipeline_slug = infoQualification.pipelineSlug;
     let federalId = infoQualification.federalId;
+
+    //OBTER INFO DA URL
+    var url = step_URL;
+    var pipelineSlug = url.searchParams.get("pipeline_slug");
 
     /* CONSOLE */
     console.log("Informações de qualificação");
-    console.log(pipeline_slug);
+    console.log(pipelineSlug);
     console.log(federalId);
 
 
 
     axios
-        .get(`${API_URL}/proxima-etapa/${pipeline_slug}/${federalId}`, {})
+        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
         .then((response) => {
             var protocol = response.data.qualificationId;
             var qualificationMessage = response.data.qualificationMessage;
