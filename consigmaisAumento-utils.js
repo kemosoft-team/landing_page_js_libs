@@ -232,8 +232,8 @@ async function criar_contato_inss(name, phone, federalId, birth, enrollment, nam
     spinner.classList.remove('brz-invisible');
     span.textContent = '';
 
-    /* axios.post(API_URL + '/criar-contato', { */
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    axios.post(API_URL + '/criar-contato', {
         "name": name,
         "phone": phone,
         "federalId": federalId_replaced,
@@ -361,8 +361,8 @@ async function criar_contato_fgts() {
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
 
-    /* axios.post(API_URL + '/criar-contato', { */
-    axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    /*     axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    axios.post(API_URL + '/criar-contato', {
         "name": name,
         "phone": phone,
         "federalId": federalId,
@@ -409,7 +409,7 @@ function qualification() {
 
 
     axios
-        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
+        .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
         .then((response) => {
             var protocol = response.data.qualificationId;
             var qualificationMessage = response.data.qualificationMessage;
