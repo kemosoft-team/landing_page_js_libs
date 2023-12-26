@@ -358,7 +358,7 @@ async function criar_contato_fgts() {
     }
 
     //CONFIG
-    const nextStep = "qualification-fgts"
+    const nextStep = "qualification"
     const pipeline_slug = "fgts"
 
     /* axios.post(API_URL + '/criar-contato', { */
@@ -367,9 +367,6 @@ async function criar_contato_fgts() {
         "phone": phone,
         "federalId": federalId,
         "birthDate": birth,
-        "enrollment": enrollment,
-        "name_Representive": name_Representive,
-        "federalId_Representive": federalId_Representive_replaced,
         "pipelineSlug": pipeline_slug,
     })
         .then((response) => {
@@ -387,6 +384,9 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
+
+
+
 
 //QUALIFICAÇÃO
 function qualification() {
