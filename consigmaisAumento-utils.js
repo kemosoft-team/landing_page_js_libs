@@ -273,7 +273,7 @@ function validateForm() {
     const phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
     const federalId = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
     const birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
-    const enrollment = document.querySelector('[data-brz-label="Matrícula"]').value;
+    const enrollment = document.querySelector('[data-brz-label="Número do beneficio"]').value;
     const representativeSelect = document.querySelector('[data-brz-label="O Benefício possui representante legal ?"]').value;
     const name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]').value;
     const federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]').value;
