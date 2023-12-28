@@ -387,12 +387,6 @@ async function criar_contato_fgts() {
         });
 }
 
-getDataURL(){
-
-}
-
-
-
 
 //QUALIFICAÇÃO
 function qualification() {
