@@ -2,6 +2,7 @@
 let API_URL = 'https://ms-crm-az.kemosoft.com.br/v1';
 let step_URL = window.location.host;
 let URL_redirect = "";
+let origin = window.location.href;
 
 //EXIBIR NO TOAST
 function showToast(text) {
@@ -241,8 +242,8 @@ async function criar_contato_inss(name, phone, federalId, birth, enrollment, nam
         "enrollment": enrollment,
         "representativeName": name_Representive,
         "representativeFederalId": federalId_Representive_replaced,
-
         "pipelineSlug": pipeline_slug,
+        "origin": origin,
     })
         .then((response) => {
             saveDataToLocalStorage({
@@ -368,6 +369,7 @@ async function criar_contato_fgts() {
         "federalId": federalId,
         "birthDate": birth,
         "pipelineSlug": pipeline_slug,
+        "origin": origin,
     })
         .then((response) => {
             saveDataToLocalStorage({
@@ -383,6 +385,10 @@ async function criar_contato_fgts() {
         .catch(function (error) {
             showToast(error.response.data.message);
         });
+}
+
+getDataURL(){
+
 }
 
 
@@ -451,7 +457,6 @@ function qualification() {
             console.log(error, "Não foi possível obter a qualificação");
         });
 };
-
 
 
 
