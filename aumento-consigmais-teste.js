@@ -343,21 +343,18 @@ async function criar_contato_inss() {
       ""
     );
   }
-
-  /* axios
-      .post(API_URL + "/criar-contato", { */
-  axios
-    .post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", {
-      name: name,
-      phone: phone,
-      federalId: federalId_replaced,
-      birthDate: birth,
-      enrollment: enrollment,
-      representativeName: name_Representive,
-      representativeFederalId: federalId_Representive_replaced,
-      pipelineSlug: pipeline_slug,
-      origin: origin,
-    })
+  /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
+  axios.post(API_URL + "/criar-contato", {
+    name: name,
+    phone: phone,
+    federalId: federalId_replaced,
+    birthDate: birth,
+    enrollment: enrollment,
+    representativeName: name_Representive,
+    representativeFederalId: federalId_Representive_replaced,
+    pipelineSlug: pipeline_slug,
+    origin: origin,
+  })
     .then((response) => {
       saveDataToLocalStorage({
         name,
@@ -398,8 +395,8 @@ async function criar_contato_fgts() {
   const nextStep = "qualification"
   const pipeline_slug = "fgts"
 
-  /*  axios.post(API_URL + '/criar-contato', { */
-  axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+  /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+  axios.post(API_URL + '/criar-contato', {
     "name": name,
     "phone": phone,
     "federalId": federalId,
