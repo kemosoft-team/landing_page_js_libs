@@ -236,6 +236,12 @@ function saveDataToLocalStorage({
 
 //VALIDAR FORMULARIO
 function validateFormBenefit() {
+  name = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
+  phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
+  federalId = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
+  birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
+  enrollment = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
+
   if (name == "" || phone == "" || federalId == "" || birth == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
@@ -277,10 +283,15 @@ function validateFormBenefit() {
     return false;
   }
 
-  return true;
+  //ABRA O POP UP DE QUESTIONARIO
+  const questionBtn = document.getElementById("question_representative");
+  questionBtn.click();
 }
 
 function validateFormRepresentative() {
+  name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]').value;
+  federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]').value;
+
   if (name_Representive == "" || federalId_Representive == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
@@ -295,39 +306,12 @@ function validateFormRepresentative() {
     );
     return false;
   }
-  return true;
+
+  //MUDE O TEXTO
+  submitRepresentative.innerHTML = "Carregando... Aguarde!";
+  //EXECUTAR A CRIAÇÃO DE CONTATO
+  criar_contato_inss();
 }
-
-// Função para criar o elemento de spinner
-function criarSpinner() {
-  var spinner = document.createElement("i");
-  spinner.className = "fa fa-spinner fa-spin";
-  return spinner;
-}
-
-// FORMULARIO INICIAL
-var submitFormBtn = document.getElementById("submit_form_initial");
-var questionBtn = document.getElementById("question_representative");
-
-submitFormBtn.addEventListener("click", function () {
-  name = document.querySelector(
-    '[data-brz-label="Nome do Beneficiário"]'
-  ).value;
-  phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
-  federalId = document.querySelector(
-    '[data-brz-label="CPF do Beneficiário"]'
-  ).value;
-  birth = document.querySelector(
-    '[data-brz-label="Data de Nascimento do Beneficiário"]'
-  ).value;
-  enrollment = document.querySelector(
-    '[data-brz-label="Número do Benefício/Matrícula (Opcional)"]'
-  ).value;
-
-  if (validateFormBenefit()) {
-    questionBtn.click();
-  }
-});
 
 var formRepresentative = document.getElementById("form_representative");
 var representative_true = document.getElementById("representative_true");
@@ -339,34 +323,9 @@ representative_true.addEventListener("click", function () {
   formRepresentative.click();
 });
 
-var submitRepresentative = document.getElementById(
-  "submit_form_representative"
-);
-
-// FORMULARIO REPRESENTANTE
-submitRepresentative.addEventListener("click", function () {
-  name_Representive = document.querySelector(
-    '[data-brz-label="Nome do Representante"]'
-  ).value;
-  federalId_Representive = document.querySelector(
-    '[data-brz-label="CPF do Representante"]'
-  ).value;
-
-  if (validateFormRepresentative()) {
-    submitRepresentative.innerHTML = "";
-    submitRepresentative.appendChild(criarSpinner());
-
-    if (!criar_contato_inss()) {
-      representative_false.innerHTML = "NÃO possui Representante";
-    }
-  }
-});
-
 //BOTÃO NÃO POSSUI REPRESENTANTE
 representative_false.addEventListener("click", function () {
-  representative_false.innerHTML = "";
-  representative_false.appendChild(criarSpinner());
-
+  representative_false.innerHTML = "Carregando... Aguarde!";
   if (!criar_contato_inss()) {
     representative_false.innerHTML = "NÃO possui Representante";
   }
@@ -389,14 +348,14 @@ async function criar_contato_inss() {
     );
   }
 
-   const button = document.querySelector('#submit_form_initial');
-    const spinner = button.querySelector('.brz-form-spinner');
-    const span = button.querySelector('.brz-span.brz-text__editor');
+  const button = document.querySelector('.submit_form_initial');
+  const spinner = button.querySelector('.brz-form-spinner');
+  const span = button.querySelector('.brz-span.brz-text__editor');
 
-    button.setAttribute('disabled', true);
-    spinner.classList.remove('brz-invisible');
-    span.textContent = '';
-  
+  button.setAttribute('disabled', true);
+  spinner.classList.remove('brz-invisible');
+  span.textContent = '';
+
   /* axios
       .post(API_URL + "/criar-contato", { */
   axios
@@ -481,4 +440,3 @@ function qualification() {
       console.log(error, "Não foi possível obter a qualificação");
     });
 }
-
