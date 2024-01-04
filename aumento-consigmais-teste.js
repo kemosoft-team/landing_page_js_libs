@@ -15,6 +15,10 @@ let name_Representive;
 let federalId_Representive;
 let federalId_Representive_replaced;
 
+let retiredOrPensioner;
+let hasTakenLoan;
+let benefitAmountRange;
+
 //EXIBIR NO TOAST
 function showToast(text) {
   var x = document.getElementById("snackbar");
@@ -235,6 +239,30 @@ function saveDataToLocalStorage({
   localStorage.setItem("dataQualification", objDataQualification);
 }
 
+//VALIDAR PERGUNTAS INICIAIS
+function validatorQuestions() {
+
+  const firstChoice = document.querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]').value;
+  const secondChoice = document.querySelector('[data-brz-label="Já contratou empréstimo consignado?"]').value;
+  const thirdChoice = document.querySelector('[data-brz-label="Em qual dos valores listados, se enquadra seu benefício?"]').value;
+
+  if (firstChoice == "" || secondChoice == "" || thirdChoice == "") {
+      showToast("Por favor, responda todas as perguntas.");
+      return false;
+  }
+
+  retiredOrPensioner = firstChoice; //bolean
+  hasTakenLoan = secondChoice; //bolean
+  benefitAmountRange = thirdChoice; //string
+
+  //ABRA O POP UP DE QUESTIONARIO
+  const representativeQuestions = document.getElementById("question_representative");
+  const close_questions = document.getElementById("close_questions");
+  close_questions.click()
+  representativeQuestions.click();
+
+}
+
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
   const nameElement = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
@@ -292,8 +320,8 @@ function validateFormBenefit() {
   enrollment = enrollmentElement;
 
   //ABRA O POP UP DE QUESTIONARIO
-  const questionBtn = document.getElementById("question_representative");
-  questionBtn.click();
+  const representativeQuestions = document.getElementById("question_representative");
+  representativeQuestions.click();
 }
 
 //VALIDAR FORMULARIO REPRESENTANTE
@@ -352,6 +380,10 @@ async function criar_contato_inss() {
     enrollment: enrollment,
     representativeName: name_Representive,
     representativeFederalId: federalId_Representive_replaced,
+    //questionario:
+    retiredOrPensioner: retiredOrPensioner,
+    hasTakenLoan: hasTakenLoan,
+    benefitAmountRange: benefitAmountRange,
     pipelineSlug: pipeline_slug,
     origin: origin,
   })
@@ -364,6 +396,9 @@ async function criar_contato_inss() {
         enrollment,
         name_Representive,
         federalId_Representive: federalId_Representive_replaced,
+        retiredOrPensioner: retiredOrPensioner,
+        hasTakenLoan: hasTakenLoan,
+        benefitAmountRange: benefitAmountRange,
         pipeline_slug,
       });
 
