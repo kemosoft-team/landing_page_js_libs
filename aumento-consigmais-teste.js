@@ -388,12 +388,55 @@ async function criar_contato_inss() {
       });
 
       window.location.href =
-      nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+        nextStep + "?" + "pipeline_slug=" + pipeline_slug;
       console.log("Contato INSS criado");
     })
     .catch(function (error) {
       showToast(error.response.data.message);
       return false;
+    });
+}
+
+//CRIAR CONTATO FGTS
+async function criar_contato_fgts() {
+
+  //OBTER INFORMAÇÕES DO LOCALSTORAGE
+  var dataQualification = localStorage.getItem("dataQualification");
+  var dataFromInss = JSON.parse(dataQualification);
+
+  if (dataFromInss) {
+    var name = dataFromInss.name;
+    var phone = dataFromInss.phone;
+    var federalId = dataFromInss.federalId;
+    var birth = dataFromInss.birthDate;
+  }
+
+  //CONFIG
+  const nextStep = "qualification"
+  const pipeline_slug = "fgts"
+
+  /*  axios.post(API_URL + '/criar-contato', { */
+  axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
+    "name": name,
+    "phone": phone,
+    "federalId": federalId,
+    "birthDate": birth,
+    "pipelineSlug": pipeline_slug,
+    "origin": origin,
+  })
+    .then((response) => {
+      saveDataToLocalStorage({
+        name,
+        phone,
+        federalId: federalId,
+        birth,
+        pipeline_slug,
+      });
+      window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+      console.log("Contato FGTS criado")
+    })
+    .catch(function (error) {
+      showToast(error.response.data.message);
     });
 }
 
