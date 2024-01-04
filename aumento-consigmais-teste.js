@@ -235,7 +235,7 @@ function saveDataToLocalStorage({
   localStorage.setItem("dataQualification", objDataQualification);
 }
 
-//VALIDAR FORMULARIO
+//VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
   const nameElement = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
   const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
@@ -296,6 +296,7 @@ function validateFormBenefit() {
   questionBtn.click();
 }
 
+//VALIDAR FORMULARIO REPRESENTANTE
 function validateFormRepresentative() {
   const name_RepresentiveElement = document.querySelector('[data-brz-label="Nome do Representante"]').value;
   const federalId_RepresentiveElement = document.querySelector('[data-brz-label="CPF do Representante"]').value;
@@ -324,24 +325,6 @@ function validateFormRepresentative() {
   //EXECUTAR A CRIAÇÃO DE CONTATO
   criar_contato_inss();
 }
-
-var formRepresentative = document.getElementById("form_representative");
-var representative_true = document.getElementById("representative_true");
-var representative_false = document.getElementById("representative_false");
-
-//BOTÃO POSSUI REPRESENTANTE
-representative_true.addEventListener("click", function () {
-  document.getElementById("close_popUp").click();
-  formRepresentative.click();
-});
-
-//BOTÃO NÃO POSSUI REPRESENTANTE
-representative_false.addEventListener("click", function () {
-  representative_false.innerHTML = "Carregando... Aguarde!";
-  if (!criar_contato_inss()) {
-    representative_false.innerHTML = "NÃO possui Representante";
-  }
-});
 
 // CRIAR CONTATO INSS
 async function criar_contato_inss() {
