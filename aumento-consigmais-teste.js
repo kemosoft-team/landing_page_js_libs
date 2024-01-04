@@ -279,7 +279,7 @@ function validateFormBenefit() {
     );
     return false;
   }
-  if (!validatephone(phoneElement)) {
+  if (!validatePhone(phoneElement)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
   }
