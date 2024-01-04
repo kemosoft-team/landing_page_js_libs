@@ -247,15 +247,15 @@ function validatorQuestions() {
   const thirdChoice = document.querySelector('[data-brz-label="Em qual dos valores listados, se enquadra seu benefício?"]').value;
 
   if (firstChoice == "" || secondChoice == "" || thirdChoice == "") {
-      showToast("Por favor, responda todas as perguntas.");
-      return false;
+    showToast("Por favor, responda todas as perguntas.");
+    return false;
   }
 
   retiredOrPensioner = firstChoice; //bolean
   hasTakenLoan = secondChoice; //bolean
   benefitAmountRange = thirdChoice; //string
 
-  //ABRA O POP UP DE QUESTIONARIO
+  //ABRA O POP UP DE QUESTIONARIO REPRESENTANTE
   const representativeQuestions = document.getElementById("question_representative");
   const close_questions = document.getElementById("close_questions");
   close_questions.click()
@@ -320,8 +320,8 @@ function validateFormBenefit() {
   enrollment = enrollmentElement;
 
   //ABRA O POP UP DE QUESTIONARIO
-  const representativeQuestions = document.getElementById("question_representative");
-  representativeQuestions.click();
+  const questions = document.getElementById("questions");
+  questions.click();
 }
 
 //VALIDAR FORMULARIO REPRESENTANTE
