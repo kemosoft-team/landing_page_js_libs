@@ -10,6 +10,7 @@ let phone;
 let federalId;
 let birth;
 let enrollment;
+
 let name_Representive;
 let federalId_Representive;
 let federalId_Representive_replaced;
@@ -236,52 +237,59 @@ function saveDataToLocalStorage({
 
 //VALIDAR FORMULARIO
 function validateFormBenefit() {
-  name = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
-  phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
-  federalId = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
-  birth = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
-  enrollment = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
+  const nameElement = document.querySelector('[data-brz-label="Nome do Beneficiário"]').value;
+  const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
+  const federalIdElement = document.querySelector('[data-brz-label="CPF do Beneficiário"]').value;
+  const birthElement = document.querySelector('[data-brz-label="Data de Nascimento do Beneficiário"]').value;
+  const enrollmentElement = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
 
-  if (name == "" || phone == "" || federalId == "" || birth == "") {
+  if (nameElement == "" || phoneElement == "" || federalIdElement == "" || birthElement == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
   if (
-    name.trim() === "" ||
-    !name.includes(" ") ||
-    !/[a-zA-ZÀ-ÿ]/.test(name.split(" ")[1])
+    nameElement.trim() === "" ||
+    !nameElement.includes(" ") ||
+    !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
   ) {
     showToast("Por favor, digite seu nome completo");
     return false;
   }
-  if (enrollment !== "" && enrollment.length > 10) {
+  if (enrollmentElement !== "" && enrollmentElement.length > 10) {
     showToast("O número do benefício não pode ter mais de 10 caracteres.");
     return false;
   }
 
-  if (enrollment !== "" && !validarNumeroBeneficio(enrollment)) {
+  if (enrollmentElement !== "" && !validarNumeroBeneficio(enrollmentElement)) {
     showToast("O número do benefício informado é inválido!");
     return false;
   }
 
-  if (!validateCPF(federalId)) {
+  if (!validateCPF(federalIdElement)) {
     showToast("O CPF do Beneficiário não é válido!");
     return false;
   }
-  if (!isDateValid(birth)) {
+  if (!isDateValid(birthElement)) {
     showToast("A data de nascimento informada não é válida!");
     return false;
   }
-  if (!isBirthValid(birth)) {
+  if (!isBirthValid(birthElement)) {
     showToast(
       "Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
     );
     return false;
   }
-  if (!validatePhone(phone)) {
+  if (!validatephoneElement(phoneElement)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
   }
+
+  //SALVAR NAS VARIAVEIS GLOBAIS
+  name = nameElement;
+  phone = phoneElement;
+  federalId = federalIdElement;
+  birth = birthElement;
+  enrollment = enrollmentElement;
 
   //ABRA O POP UP DE QUESTIONARIO
   const questionBtn = document.getElementById("question_representative");
@@ -289,23 +297,27 @@ function validateFormBenefit() {
 }
 
 function validateFormRepresentative() {
-  name_Representive = document.querySelector('[data-brz-label="Nome do Representante"]').value;
-  federalId_Representive = document.querySelector('[data-brz-label="CPF do Representante"]').value;
+  const name_RepresentiveElement = document.querySelector('[data-brz-label="Nome do Representante"]').value;
+  const federalId_RepresentiveElement = document.querySelector('[data-brz-label="CPF do Representante"]').value;
 
-  if (name_Representive == "" || federalId_Representive == "") {
+  if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   }
-  if (!validateCPF(federalId_Representive)) {
+  if (!validateCPF(federalId_RepresentiveElement)) {
     showToast("O CPF do Representante não é válido!");
     return false;
   }
-  if (federalId == federalId_Representive) {
+  if (federalId == federalId_RepresentiveElement) {
     showToast(
       "Os CPFs do beneficiário e do representante devem ser diferentes!"
     );
     return false;
   }
+
+  //SALVAR NAS VARIAVEIS GLOBAIS
+  name_Representive = name_RepresentiveElement;
+  federalId_Representive = federalId_RepresentiveElement;
 
   //MUDE O TEXTO
   submitRepresentative.innerHTML = "Carregando... Aguarde!";
@@ -334,6 +346,7 @@ representative_false.addEventListener("click", function () {
 // CRIAR CONTATO INSS
 async function criar_contato_inss() {
   console.log("Função criar contato iniciada")
+
   // CONFIG
   const nextStep = "qualification";
   const pipeline_slug = "inss";
@@ -347,14 +360,6 @@ async function criar_contato_inss() {
       ""
     );
   }
-
-  const button = document.querySelector('.submit_form_initial');
-  const spinner = button.querySelector('.brz-form-spinner');
-  const span = button.querySelector('.brz-span.brz-text__editor');
-
-  button.setAttribute('disabled', true);
-  spinner.classList.remove('brz-invisible');
-  span.textContent = '';
 
   /* axios
       .post(API_URL + "/criar-contato", { */
@@ -381,8 +386,9 @@ async function criar_contato_inss() {
         federalId_Representive: federalId_Representive_replaced,
         pipeline_slug,
       });
+
       window.location.href =
-        nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+      nextStep + "?" + "pipeline_slug=" + pipeline_slug;
       console.log("Contato INSS criado");
     })
     .catch(function (error) {
