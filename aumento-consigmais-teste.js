@@ -377,8 +377,8 @@ async function criar_contato_inss() {
       ""
     );
   }
-  axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", {
-    /* axios.post(API_URL + "/criar-contato", { */
+  /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
+  axios.post(API_URL + "/criar-contato", {
     name: name,
     phone: phone,
     federalId: federalId_replaced,
@@ -436,8 +436,8 @@ async function criar_contato_fgts() {
   const nextStep = "qualification"
   const pipeline_slug = "fgts"
 
-  axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
-    /* axios.post(API_URL + '/criar-contato', { */
+  /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+  axios.post(API_URL + '/criar-contato', {
     "name": name,
     "phone": phone,
     "federalId": federalId,
