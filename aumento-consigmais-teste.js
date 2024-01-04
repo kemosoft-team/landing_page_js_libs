@@ -250,7 +250,7 @@ function validatorQuestions() {
 
   const firstChoice = document.querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]').value.toLowerCase();
   const secondChoice = document.querySelector('[data-brz-label="Já contratou empréstimo consignado?"]').value.toLowerCase();
-  const thirdChoice = document.querySelector('[data-brz-label="Em qual dos valores listados, se enquadra seu benefício?"]').value;
+  const thirdChoice = document.querySelector('[data-brz-label="Em qual dos valores, se enquadra o seu benefício?"]').value;
 
   if (firstChoice === "" || secondChoice === "" || thirdChoice === "") {
     showToast("Por favor, responda todas as perguntas.");
