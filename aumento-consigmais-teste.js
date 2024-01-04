@@ -374,6 +374,7 @@ representative_false.addEventListener("click", function () {
 
 // CRIAR CONTATO INSS
 async function criar_contato_inss() {
+  console.log("Função criar contato iniciada")
   // CONFIG
   const nextStep = "qualification";
   const pipeline_slug = "inss";
