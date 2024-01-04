@@ -387,6 +387,15 @@ async function criar_contato_inss() {
       ""
     );
   }
+
+   const button = document.querySelector('#submit_form_initial');
+    const spinner = button.querySelector('.brz-form-spinner');
+    const span = button.querySelector('.brz-span.brz-text__editor');
+
+    button.setAttribute('disabled', true);
+    spinner.classList.remove('brz-invisible');
+    span.textContent = '';
+  
   /* axios
       .post(API_URL + "/criar-contato", { */
   axios
