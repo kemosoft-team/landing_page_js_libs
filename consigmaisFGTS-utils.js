@@ -168,14 +168,7 @@ function isDateValid(dateString) {
 // ENVIAR DADOS PARA O LOCALSTORAGE
 function saveDataToLocalStorage() {
     var dataQualification = {
-        name,
-        phone,
-        federalId,
-        birthDate: birth,
-        pipelineSlug,
-        workWithSignedWorkCard,
-        withdrawalEnabled,
-        origin,
+        federalId
     };
 
     var objDataQualification = JSON.stringify(dataQualification);
