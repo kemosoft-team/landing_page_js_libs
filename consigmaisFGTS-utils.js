@@ -166,9 +166,25 @@ function isDateValid(dateString) {
 }
 
 // ENVIAR DADOS PARA O LOCALSTORAGE
-function saveDataToLocalStorage() {
+function saveDataToLocalStorage(
+    name,
+    phone,
+    federalId,
+    birthDate,
+    pipelineSlug,
+    workWithSignedWorkCard,
+    withdrawalEnabled,
+    origin
+) {
     var dataQualification = {
-        federalId
+        name,
+        phone,
+        federalId,
+        birthDate,
+        pipelineSlug,
+        workWithSignedWorkCard,
+        withdrawalEnabled,
+        origin
     };
 
     var objDataQualification = JSON.stringify(dataQualification);
@@ -271,7 +287,16 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
-            saveDataToLocalStorage(); 
+            saveDataToLocalStorage(
+                name,
+                phone,
+                federalId,
+                birth,
+                pipeline_slug,
+                workWithSignedWorkCard,
+                withdrawalEnabled,
+                origin
+            );
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
