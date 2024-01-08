@@ -302,7 +302,7 @@ async function criar_contato_fgts() {
             console.log("Contato FGTS criado");
         })
         .catch(function (error) {
-            showToast(error.response.data.message);
+            /* showToast(error.response.data.message); */
             console.log(response)
         });
 }
