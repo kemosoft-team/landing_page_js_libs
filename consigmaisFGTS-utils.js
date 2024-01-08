@@ -167,16 +167,7 @@ function isDateValid(dateString) {
 }
 
 // ENVIAR DADOS PARA O LOCALSTORAGE
-function saveDataToLocalStorage({
-    name,
-    phone,
-    federalId,
-    birthDate,
-    pipelineSlug,
-    workWithSignedWorkCard,
-    withdrawalEnabled,
-    origin,
-}) {
+function saveDataToLocalStorage() {
     var dataQualification = {
         name,
         phone,
@@ -288,16 +279,7 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
-            /* saveDataToLocalStorage({
-                name,
-                phone,
-                federalId,
-                birthDate,
-                pipelineSlug,
-                workWithSignedWorkCard,
-                withdrawalEnabled,
-                origin,
-            }); */
+            saveDataToLocalStorage(); 
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
