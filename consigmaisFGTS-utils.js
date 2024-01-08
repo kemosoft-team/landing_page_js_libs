@@ -207,7 +207,7 @@ function validatorQuestions() {
     }
 
     workWithSignedWorkCard = firstChoice;
-    withdrawalEnabled = secondChoice;
+    withdrawalEnabled = secondChoice === "Sim, Já Tenho o Saque Habilitado 😎✅";
 
     criar_contato_fgts();
 }
