@@ -279,7 +279,6 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
-            saveDataToLocalStorage(); 
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
