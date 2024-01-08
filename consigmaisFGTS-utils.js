@@ -271,23 +271,23 @@ function validateFormBenefit() {
 
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
-    //CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "fgts";
 
-    /* axios.post(API_URL + "/criar-contato", { */
-    axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", {
-        name: name,
-        phone: phone,
-        federalId: federalId,
-        birthDate: birth,
-        pipelineSlug: pipeline_slug,
-        workWithSignedWorkCard: workWithSignedWorkCard,
-        withdrawalEnabled: withdrawalEnabled,
-        origin: origin,
+    //CONFIG
+    const nextStep = "qualification"
+    const pipeline_slug = "fgts"
+
+    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    axios.post(API_URL + '/criar-contato', {
+        "name": name,
+        "phone": phone,
+        "federalId": federalId,
+        "birthDate": birth,
+        "pipelineSlug": pipeline_slug,
+        "workWithSignedWorkCard": workWithSignedWorkCard,
+        "withdrawalEnabled": withdrawalEnabled,
+        "origin": origin,
     })
         .then((response) => {
-            console.log(response);
             saveDataToLocalStorage({
                 name,
                 phone,
@@ -298,12 +298,11 @@ async function criar_contato_fgts() {
                 withdrawalEnabled,
                 origin,
             });
-            window.location.href = nextStep;
-            console.log("Contato FGTS criado");
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            console.log("Contato FGTS criado")
         })
         .catch(function (error) {
-            /* showToast(error.response.data.message); */
-            console.log(response)
+            showToast(error.response.data.message);
         });
 }
 
