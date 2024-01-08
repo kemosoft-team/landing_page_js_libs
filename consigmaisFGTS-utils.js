@@ -166,7 +166,7 @@ function isDateValid(dateString) {
 }
 
 // ENVIAR DADOS PARA O LOCALSTORAGE
-function saveDataToLocalStorage(
+function saveDataToLocalStorage({ 
     name,
     phone,
     federalId,
@@ -174,8 +174,7 @@ function saveDataToLocalStorage(
     pipelineSlug,
     workWithSignedWorkCard,
     withdrawalEnabled,
-    origin
-) {
+    origin }) {
     var dataQualification = {
         name,
         phone,
