@@ -3,7 +3,6 @@ let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
-
 let name;
 let phone;
 let federalId;
@@ -172,7 +171,7 @@ function saveDataToLocalStorage() {
         name,
         phone,
         federalId,
-        birthDate,
+        birthDate: birth,
         pipelineSlug,
         workWithSignedWorkCard,
         withdrawalEnabled,
@@ -279,6 +278,7 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
+            saveDataToLocalStorage(); 
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
