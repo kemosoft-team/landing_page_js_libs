@@ -275,11 +275,14 @@ async function criar_contato_fgts() {
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
 
+    /* REPLACE */
+    const federalId_replaced = federalId.replace(/[^\d]/g, "");
+
     /* axios.post(API_URL + '/criar-contato', { */
     axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', {
         "name": name,
         "phone": phone,
-        "federalId": federalId,
+        "federalId": federalId_replaced,
         "birthDate": birth,
         "pipelineSlug": pipeline_slug,
         "workWithSignedWorkCard": workWithSignedWorkCard,
@@ -287,16 +290,16 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
-            saveDataToLocalStorage(
+            saveDataToLocalStorage({
                 name,
                 phone,
-                federalId,
+                federalId: federalId_replaced,
                 birth,
                 pipeline_slug,
                 workWithSignedWorkCard,
                 withdrawalEnabled,
                 origin
-            );
+            });
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
