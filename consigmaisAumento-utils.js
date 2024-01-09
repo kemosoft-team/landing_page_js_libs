@@ -282,11 +282,6 @@ function validatorQuestions() {
     hasTakenLoan = secondChoice === "sim"; // boolean
     benefitAmountRange = thirdChoice; // string
 
-    // Adicione console.log para verificar os valores
-    console.log("retiredOrPensioner:", retiredOrPensioner);
-    console.log("hasTakenLoan:", hasTakenLoan);
-    console.log("benefitAmountRange:", benefitAmountRange);
-
     // ABRA O POP-UP DE QUESTIONÁRIO REPRESENTANTE
     const representativeQuestions = document.getElementById("question_representative");
     const closeQuestions = document.getElementById("close_questions");
@@ -435,7 +430,6 @@ async function criar_contato_inss() {
 
             window.location.href =
                 nextStep + "?" + "pipeline_slug=" + pipeline_slug;
-            console.log("Contato INSS criado");
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -473,8 +467,7 @@ async function updateBenefit() {
 
     })
         .then((response) => {
-            /* window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug; */
-            console.log("Update exec")
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug; 
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -517,7 +510,6 @@ async function criar_contato_fgts() {
                 pipeline_slug,
             });
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
-            console.log("Contato FGTS criado")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
