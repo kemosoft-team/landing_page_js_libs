@@ -532,38 +532,38 @@ function qualification() {
         .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
         .then((response) => {
             let URL_redirect;
-            var protocol = response.data.protocol;
+            var protocolo = response.data.protocolo;
             var mensagem = response.data.mensagem;
             var situacao = response.data.situacao;
 
             switch (situacao) {
                 //SUCCESS
                 case "exibir-oportunidade":
-                    URL_redirect = `/success?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //NOQUALIFIED
                 case "nao-qualificado":
-                    URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //NOOPPORTUNITY
                 case "sem-oportunidade":
-                    URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //REQUIRESTREATMENT
                 case "requer-tratamento":
-                    URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //ENROLLMENT INSS
                 case "acao-adicional":
-                    URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocolo}`;
                     window.location.href = URL_redirect;
                     break;
 
