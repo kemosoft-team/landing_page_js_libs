@@ -254,12 +254,12 @@ function validatorStepBenefit() {
         showToast("O número do benefício não pode ter mais de 10 caracteres.");
         return false;
     }
-    if (validarNumeroBeneficio(benefit)) {
+    if (!validarNumeroBeneficio(benefit)) {
         showToast("O número do benefício informado é inválido!");
         return false;
     }
 
-    console.log("Validador Benefit  exec")
+
     updateBenefit()
 
 }
@@ -443,8 +443,7 @@ async function criar_contato_inss() {
 
 // UPDATE BENEFIT
 async function updateBenefit() {
-
-    console.log("Update Benefit")
+    
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
     var dataQualification = localStorage.getItem("dataQualification");
     var dataFromInss = JSON.parse(dataQualification);
