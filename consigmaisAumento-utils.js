@@ -457,6 +457,15 @@ async function updateBenefit() {
     const nextStep = "qualification";
     const pipeline_slug = "inss";
 
+    //BOTÃOSUBMIT
+    const button = document.querySelector(".submit_benefit");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
 
     /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios.post(API_URL + "/criar-contato", {
