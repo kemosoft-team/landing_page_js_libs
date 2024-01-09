@@ -223,6 +223,7 @@ function saveDataToLocalStorage({
     hasTakenLoan,
     benefitAmountRange,
     pipeline_slug,
+    origin,
 }) {
     var dataQualification = {
         name,
@@ -236,6 +237,7 @@ function saveDataToLocalStorage({
         hasTakenLoan,
         benefitAmountRange,
         pipeline_slug,
+        origin,
     };
 
     var objDataQualification = JSON.stringify(dataQualification);
@@ -426,6 +428,7 @@ async function criar_contato_inss() {
                 hasTakenLoan: hasTakenLoan,
                 benefitAmountRange: benefitAmountRange,
                 pipeline_slug,
+                origin,
             });
 
             window.location.href =
@@ -482,10 +485,11 @@ async function criar_contato_fgts() {
     var dataFromInss = JSON.parse(dataQualification);
 
     if (dataFromInss) {
-        var name = dataFromInss.name;
-        var phone = dataFromInss.phone;
-        var federalId = dataFromInss.federalId;
-        var birth = dataFromInss.birthDate;
+        name = dataFromInss.name;
+        phone = dataFromInss.phone;
+        federalId = dataFromInss.federalId;
+        birth = dataFromInss.birthDate;
+        origin = dataFromInss.origin;
     }
 
     //CONFIG
@@ -494,12 +498,12 @@ async function criar_contato_fgts() {
 
     /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
     axios.post(API_URL + '/criar-contato', {
-        "name": name,
-        "phone": phone,
-        "federalId": federalId,
-        "birthDate": birth,
-        "pipelineSlug": pipeline_slug,
-        "origin": origin,
+        name: name,
+        phone: phone,
+        federalId: federalId,
+        birthDate: birth,
+        pipelineSlug: pipeline_slug,
+        origin: origin,
     })
         .then((response) => {
             saveDataToLocalStorage({
@@ -508,6 +512,7 @@ async function criar_contato_fgts() {
                 federalId: federalId,
                 birth,
                 pipeline_slug,
+                origin,
             });
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
