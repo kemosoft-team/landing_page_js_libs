@@ -259,6 +259,7 @@ function validatorStepBenefit() {
         return false;
     }
 
+    console.log("Validador Benefit  exec")
     updateBenefit()
 
 }
@@ -442,6 +443,8 @@ async function criar_contato_inss() {
 
 // UPDATE BENEFIT
 async function updateBenefit() {
+
+    console.log("Update Benefit")
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
     var dataQualification = localStorage.getItem("dataQualification");
     var dataFromInss = JSON.parse(dataQualification);
@@ -456,15 +459,6 @@ async function updateBenefit() {
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
-
-    //BOTÃOSUBMIT
-    const button = document.querySelector(".submit_benefit");
-    const spinner = button.querySelector(".brz-form-spinner");
-    const span = button.querySelector(".brz-span.brz-text__editor");
-
-    button.setAttribute("disabled", true);
-    spinner.classList.remove("brz-invisible");
-    span.textContent = "";
 
 
     /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
