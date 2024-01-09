@@ -1,4 +1,3 @@
-
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let origin = window.location.href;
@@ -8,6 +7,7 @@ let phone;
 let federalId;
 let birth;
 let enrollment;
+let benefit;
 
 let name_Representive;
 let federalId_Representive;
@@ -243,6 +243,25 @@ function saveDataToLocalStorage({
     localStorage.setItem("dataQualification", objDataQualification);
 }
 
+//VALIDAR NÚMERO DO BENEFÍCIO
+function validatorStepBenefit() {
+    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula"]').value;
+    if (benefit == "") {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    } if (benefit.length > 10) {
+        showToast("O número do benefício não pode ter mais de 10 caracteres.");
+        return false;
+    }
+    if (validarNumeroBeneficio(benefit)) {
+        showToast("O número do benefício informado é inválido!");
+        return false;
+    }
+
+    updateBenefit()
+
+}
+
 // VALIDAR PERGUNTAS INICIAIS
 function validatorQuestions() {
 
@@ -364,7 +383,6 @@ function validateFormRepresentative() {
 
 // CRIAR CONTATO INSS
 async function criar_contato_inss() {
-    console.log("Função criar contato iniciada")
 
     // CONFIG
     const nextStep = "qualification";
@@ -379,6 +397,7 @@ async function criar_contato_inss() {
             ""
         );
     }
+
     /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios.post(API_URL + "/criar-contato", {
         name: name,
@@ -417,6 +436,42 @@ async function criar_contato_inss() {
         .catch(function (error) {
             showToast(error.response.data.message);
             return false;
+        });
+}
+
+// UPDATE BENEFIT
+async function updateBenefit() {
+    //OBTER INFORMAÇÕES DO LOCALSTORAGE
+    var dataQualification = localStorage.getItem("dataQualification");
+    var dataFromInss = JSON.parse(dataQualification);
+
+    if (dataFromInss) {
+        name = dataFromInss.name;
+        phone = dataFromInss.phone;
+        federalId = dataFromInss.federalId;
+        birth = dataFromInss.birthDate;
+    }
+
+    // CONFIG
+    const nextStep = "qualification";
+    const pipeline_slug = "inss";
+
+
+    /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
+    axios.post(API_URL + "/criar-contato", {
+        name: name,
+        phone: phone,
+        federalId: federalId_replaced,
+        birthDate: birth,
+        enrollment: benefit,
+        pipelineSlug: pipeline_slug,
+
+    })
+        .then((response) => {
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+        })
+        .catch(function (error) {
+            showToast(error.response.data.message);
         });
 }
 
@@ -508,9 +563,9 @@ function qualification() {
                     window.location.href = URL_redirect;
                     break;
 
-                //BENEFIT
+                //ENROLLMENT INSS
                 case "acao-adicional":
-                    URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/enrollment?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
