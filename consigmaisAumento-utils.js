@@ -508,9 +508,9 @@ function qualification() {
                     window.location.href = URL_redirect;
                     break;
 
-                //ENROLLMENT INSS
+                //BENEFIT
                 case "acao-adicional":
-                    URL_redirect = `/enrollment?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
