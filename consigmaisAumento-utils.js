@@ -8,7 +8,6 @@ let phone;
 let federalId;
 let birth;
 let enrollment;
-let benefit;
 
 let name_Representive;
 let federalId_Representive;
@@ -262,6 +261,9 @@ function validatorStepBenefit() {
 
     updateBenefit()
 
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    enrollment = benefit;
+
 }
 
 // VALIDAR PERGUNTAS INICIAIS
@@ -466,7 +468,7 @@ async function updateBenefit() {
         phone: phone,
         federalId: federalId,
         birthDate: birth,
-        enrollment: benefit,
+        enrollment: enrollment,
         pipelineSlug: pipeline_slug,
 
     })
