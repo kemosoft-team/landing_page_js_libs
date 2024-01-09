@@ -480,37 +480,37 @@ function qualification() {
         .then((response) => {
             let URL_redirect;
             var protocol = response.data.protocol;
-            var qualificationMessage = response.data.qualificationMessage;
-            var qualificationStatus = response.data.qualificationStatus;
+            var mensagem = response.data.mensagem;
+            var situacao = response.data.situacao;
 
-            switch (qualificationStatus) {
+            switch (situacao) {
                 //SUCCESS
                 case "exibir-oportunidade":
-                    URL_redirect = `/success?message=${qualificationMessage}&protocolo=${protocol}`;
+                    URL_redirect = `/success?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //NOQUALIFIED
                 case "nao-qualificado":
-                    URL_redirect = `/noqualified?message=${qualificationMessage}&protocolo=${protocol}`;
+                    URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //NOOPPORTUNITY
                 case "sem-oportunidade":
-                    URL_redirect = `/nooppotunity?message=${qualificationMessage}&protocolo=${protocol}`;
+                    URL_redirect = `/nooppotunity?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
-                //REQUIRESTREATMENT
+                //NOOPPORTUNITY
                 case "requer-tratamento":
-                    URL_redirect = `/nooppotunity?message=${qualificationMessage}&protocolo=${protocol}`;
+                    URL_redirect = `/nooppotunity?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
                 //ENROLLMENT
                 case "acao-adicional":
-                    URL_redirect = `/enrollment?message=${qualificationMessage}&protocolo=${protocol}`;
+                    URL_redirect = `/enrollment?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
@@ -518,6 +518,7 @@ function qualification() {
                 default:
                     URL_redirect = `/offline`;
                     window.location.href = URL_redirect;
+
                     break;
             }
         })
