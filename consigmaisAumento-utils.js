@@ -498,17 +498,17 @@ function qualification() {
 
                 //NOOPPORTUNITY
                 case "sem-oportunidade":
-                    URL_redirect = `/nooppotunity?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
-                //NOOPPORTUNITY
+                //REQUIRESTREATMENT
                 case "requer-tratamento":
-                    URL_redirect = `/nooppotunity?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
-                //ENROLLMENT
+                //ENROLLMENT INSS
                 case "acao-adicional":
                     URL_redirect = `/enrollment?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
