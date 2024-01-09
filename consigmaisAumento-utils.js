@@ -480,7 +480,7 @@ function qualification() {
   axios
     .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
     .then((response) => {
-      var protocol = response.data.qualificationId;
+      var protocol = response.data.protocol;
       var qualificationMessage = response.data.qualificationMessage;
       var qualificationStatus = response.data.qualificationStatus;
 
