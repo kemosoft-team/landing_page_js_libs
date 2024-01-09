@@ -443,7 +443,7 @@ async function criar_contato_inss() {
 
 // UPDATE BENEFIT
 async function updateBenefit() {
-    
+
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
     var dataQualification = localStorage.getItem("dataQualification");
     var dataFromInss = JSON.parse(dataQualification);
@@ -471,7 +471,8 @@ async function updateBenefit() {
 
     })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            /* window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug; */
+            console.log("Update exec")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
