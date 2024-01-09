@@ -462,7 +462,7 @@ async function updateBenefit() {
     axios.post(API_URL + "/criar-contato", {
         name: name,
         phone: phone,
-        federalId: federalId_replaced,
+        federalId: federalId,
         birthDate: birth,
         enrollment: benefit,
         pipelineSlug: pipeline_slug,
