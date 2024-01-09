@@ -1,3 +1,4 @@
+
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let origin = window.location.href;
@@ -565,7 +566,7 @@ function qualification() {
 
                 //ENROLLMENT INSS
                 case "acao-adicional":
-                    URL_redirect = `/enrollment?message=${mensagem}&protocolo=${protocol}`;
+                    URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocol}`;
                     window.location.href = URL_redirect;
                     break;
 
