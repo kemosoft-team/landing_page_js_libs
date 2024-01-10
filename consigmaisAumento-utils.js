@@ -611,7 +611,7 @@ function qualification() {
           default:
             console.log("indisponivel ou não listado");
             attempt++;
-            if (attempt < 2) {
+            if (attempt < 3) {
               sendRequest();
             } else {
               URL_redirect = `/offline`;
@@ -623,7 +623,7 @@ function qualification() {
       .catch(function (error) {
         console.log(error, "Não foi possível obter a qualificação");
         attempt++;
-        if (attempt < 2) {
+        if (attempt < 3) {
           sendRequest();
         } else {
           URL_redirect = `/offline`;
