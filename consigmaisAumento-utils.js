@@ -211,13 +211,9 @@ function isBirthValid(dateString) {
   );
 
   if (maxBirthYear - yearInt < 18) {
-    representativeFalseButton.disabled = true;
-    representativeFalseButton.style.backgroundColor = "gray";
-    representativeFalseButton.style.color = "white";
+    representativeFalseButton.style.display = "none";
   } else {
-    representativeFalseButton.disabled = false;
-    representativeFalseButton.style.backgroundColor = "";
-    representativeFalseButton.style.color = "";
+    representativeFalseButton.style.display = "block";
   }
 
   return true;
