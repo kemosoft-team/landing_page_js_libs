@@ -565,55 +565,71 @@ function qualification() {
   //OBTER INFO DA URL
   var url = new URL(window.location.href);
   var pipelineSlug = url.searchParams.get("pipeline_slug");
+  var attempt = 0;
 
-  axios
-    .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
-    .then((response) => {
-      let URL_redirect;
-      var protocolo = response.data.protocolo;
-      var mensagem = response.data.mensagem;
-      var situacao = response.data.situacao;
+  const sendRequest = () => {
+    axios
+      .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+      .then((response) => {
+        let URL_redirect;
+        var protocolo = response.data.protocolo;
+        var mensagem = response.data.mensagem;
+        var situacao = response.data.situacao;
 
-      switch (situacao) {
-        //SUCCESS
-        case "exibir-oportunidade":
-          URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
-          window.location.href = URL_redirect;
-          break;
+        switch (situacao) {
+          //SUCCESS
+          case "exibir-oportunidade":
+            URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
+            window.location.href = URL_redirect;
+            break;
 
-        //NOQUALIFIED
-        case "nao-qualificado":
-          URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
-          window.location.href = URL_redirect;
-          break;
+          //NOQUALIFIED
+          case "nao-qualificado":
+            URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
+            window.location.href = URL_redirect;
+            break;
 
-        //NOOPPORTUNITY
-        case "sem-oportunidade":
-          URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
-          window.location.href = URL_redirect;
-          break;
+          //NOOPPORTUNITY
+          case "sem-oportunidade":
+            URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
+            window.location.href = URL_redirect;
+            break;
 
-        //REQUIRESTREATMENT
-        case "requer-tratamento":
-          URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
-          window.location.href = URL_redirect;
-          break;
+          //REQUIRESTREATMENT
+          case "requer-tratamento":
+            URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
+            window.location.href = URL_redirect;
+            break;
 
-        //ENROLLMENT INSS
-        case "acao-adicional":
-          URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocolo}`;
-          window.location.href = URL_redirect;
-          break;
+          //ENROLLMENT INSS
+          case "acao-adicional":
+            URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocolo}`;
+            window.location.href = URL_redirect;
+            break;
 
-        //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
-        default:
+          //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
+          default:
+            console.log("indisponivel ou não listado");
+            attempt++;
+            if (attempt < 2) {
+              sendRequest();
+            } else {
+              URL_redirect = `/offline`;
+              window.location.href = URL_redirect;
+            }
+            break;
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "Não foi possível obter a qualificação");
+        attempt++;
+        if (attempt < 2) {
+          sendRequest();
+        } else {
           URL_redirect = `/offline`;
           window.location.href = URL_redirect;
-
-          break;
-      }
-    })
-    .catch(function (error) {
-      console.log(error, "Não foi possível obter a qualificação");
-    });
+        }
+      });
+  };
+  sendRequest();
 }
