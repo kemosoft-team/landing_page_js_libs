@@ -299,10 +299,12 @@ function validatorStepBenefit() {
         return false;
     }
 
-    updateBenefit();
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     enrollment = benefit;
+
+    updateBenefit();
+
+
 }
 
 // VALIDAR PERGUNTAS INICIAIS
