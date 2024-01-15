@@ -85,15 +85,15 @@ function postKommo(name, phone, email) {
   const tkn = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodGR4cW92ZG9uYWNvdmljZ21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA5Nzk5MjQsImV4cCI6MjAwNjU1NTkyNH0.BoHMzjNlAGXtg4-Rd-RQ3L1ykS0mKcDEWpsqH299Umc';
 
   axios.post(API_URL, {
-    name: name,
-    phone: phone,
-    email: email
+    "name": name,
+    "email": email,
+    "phone": phone
   }, {
     headers: {
-      'apikey': tkn,
       'Authorization': `Bearer ${tkn}`,
       'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
+      'Prefer': 'return=minimal',
+      'apikey': tkn
     }
   })
     .then((response) => {
