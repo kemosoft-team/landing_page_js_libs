@@ -16,6 +16,9 @@ let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
 
+
+
+
 //EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -303,8 +306,31 @@ function validatorStepBenefit() {
     enrollment = benefit;
 
     updateBenefit();
+}
 
+//VALIDAR NÚMERO DO BENEFÍCIO
+function validatorPopUpBenefit() {
+    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula"]').value;
 
+    if (benefit != "" && benefit.length != 10) {
+        showToast("O número do benefício deve conter 10 caracteres.");
+        return false;
+    } else if (benefit != "" && !validarNumeroBeneficio(benefit)) {
+        showToast("O número do benefício informado é inválido! Revise a informação!");
+        return false;
+    } else if (benefit != "" && !validateMod11Digit(benefit, 1, 9, true)) {
+        showToast("O número do benefício informado é inválido!! Revise a informação!");
+        return false;
+    }
+
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    enrollment = benefit;
+
+    //ABRI POP UP QUESTIONARIOS
+    const close_benefit = document.getElementById("close_benefit");
+    const questions = document.getElementById("questions");
+    close_benefit.click()
+    questions.click();
 }
 
 // VALIDAR PERGUNTAS INICIAIS
@@ -395,9 +421,9 @@ function validateFormBenefit() {
     federalId = federalIdElement;
     birth = birthElement;
 
-    //ABRA O POP UP DE QUESTIONARIO
-    const questions = document.getElementById("questions");
-    questions.click();
+    //ABRA O POP UP DE INFO BENEFIT
+    const benefit = document.getElementById("benefit");
+    benefit.click();
 }
 
 //VALIDAR FORMULARIO REPRESENTANTE
@@ -459,6 +485,7 @@ async function criar_contato_inss() {
             birthDate: birth,
             representativeName: name_Representive,
             representativeFederalId: federalId_Representive_replaced,
+            enrollment: enrollment,
             //questionario:
             retiredOrPensioner: retiredOrPensioner,
             hasTakenLoan: hasTakenLoan,
@@ -474,6 +501,7 @@ async function criar_contato_inss() {
                 birth,
                 name_Representive,
                 federalId_Representive: federalId_Representive_replaced,
+                enrollment,
                 retiredOrPensioner: retiredOrPensioner,
                 hasTakenLoan: hasTakenLoan,
                 benefitAmountRange: benefitAmountRange,
@@ -591,21 +619,21 @@ function qualification() {
                 var situacao = response.data.situacao;
 
                 switch (situacao) {
-                    //SUCCESS
+                    //OPPORTUNITY
                     case "exibir-oportunidade":
-                        URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
-                        break;
-
-                    //NOQUALIFIED
-                    case "nao-qualificado":
-                        URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
+                        URL_redirect = `/opportunity?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
 
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
+                        window.location.href = URL_redirect;
+                        break;
+
+                    //NOQUALIFIED
+                    case "nao-qualificado":
+                        URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
 
@@ -647,3 +675,6 @@ function qualification() {
     };
     sendRequest();
 }
+
+
+
