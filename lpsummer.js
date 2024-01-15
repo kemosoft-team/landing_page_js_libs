@@ -71,7 +71,7 @@ btnSubmit.forEach(function (button) {
 });
 
 function postKommo(name, phone, email) {
-  const API_URL = "https://n8n.kemosoft.com.br/webhook/new-lead";
+  const API_URL = "https://ahtdxqovdonacovicgmg.supabase.co/rest/v1/leads";
   /* const API_URL = "https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb"; */
 
   const button = document.querySelector(".brz-btn-submit");
@@ -82,22 +82,20 @@ function postKommo(name, phone, email) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
-  axios
-    .post(
-      API_URL,
-      {
-        record: {
-          name: name,
-          email: email,
-          phone: phone,
-        },
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+  const tkn = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodGR4cW92ZG9uYWNvdmljZ21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA5Nzk5MjQsImV4cCI6MjAwNjU1NTkyNH0.BoHMzjNlAGXtg4-Rd-RQ3L1ykS0mKcDEWpsqH299Umc';
+
+  axios.post(API_URL, {
+    name: name,
+    phone: phone,
+    email: email
+  }, {
+    headers: {
+      'apikey': tkn,
+      'Authorization': `Bearer ${tkn}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    }
+  })
     .then((response) => {
       if (isBuy == true) {
         const redirectUrl = `https://checkout.summersales.com.br/?nm=${name}&ph=${phone}&ml=${email}`;
