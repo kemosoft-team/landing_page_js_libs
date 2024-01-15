@@ -552,6 +552,10 @@ async function updateBenefit() {
         })
         .then((response) => {
             saveDataToLocalStorage({
+                name,
+                phone,
+                federalId,
+                birth,
                 enrollment,
             });
 
