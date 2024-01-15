@@ -552,19 +552,9 @@ async function updateBenefit() {
         })
         .then((response) => {
             saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId_replaced,
-                birth,
-                name_Representive,
-                federalId_Representive: federalId_Representive_replaced,
                 enrollment,
-                retiredOrPensioner: retiredOrPensioner,
-                hasTakenLoan: hasTakenLoan,
-                benefitAmountRange: benefitAmountRange,
-                pipeline_slug,
-                origin,
             });
+
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
         .catch(function (error) {
