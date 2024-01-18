@@ -1,7 +1,7 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let origin =  window.location.href;
-
+let referrer =  document.referrer;
 
 let name;
 let phone;
@@ -265,6 +265,7 @@ function saveDataToLocalStorage({
     benefitAmountRange,
     pipeline_slug,
     origin,
+    referrer,
 }) {
     var dataQualification = {
         name,
@@ -279,6 +280,7 @@ function saveDataToLocalStorage({
         benefitAmountRange,
         pipeline_slug,
         origin,
+        referrer,
     };
 
     var objDataQualification = JSON.stringify(dataQualification);
@@ -495,6 +497,7 @@ async function criar_contato_inss() {
             benefitAmountRange: benefitAmountRange,
             pipelineSlug: pipeline_slug,
             origin: origin,
+            referrer: referrer,
         })
         .then((response) => {
             saveDataToLocalStorage({
@@ -510,6 +513,7 @@ async function criar_contato_inss() {
                 benefitAmountRange: benefitAmountRange,
                 pipeline_slug,
                 origin,
+                referrer,
             });
 
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
