@@ -101,7 +101,7 @@ function postKommo(name, phone, email) {
   })
     .then((response) => {
       if (isBuy == true) {
-        const redirectUrl = `https://checkout.summersales.com.br/?nm=${name}&ph=${phone}&ml=${email}`;
+        const redirectUrl = `https://checkout.summersales.com.br/?nm=${name}&ph=${phoneReplace}&ml=${email}`;
         window.location.href = redirectUrl;
       } else if (isService == true) {
         const redirectUrl = `https://api.whatsapp.com/send?phone=558496954147&text=Ol%C3%A1,%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20Summer%20Sales!`;
