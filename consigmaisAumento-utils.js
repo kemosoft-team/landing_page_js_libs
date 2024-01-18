@@ -1,9 +1,6 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let origin = {
-    currentURL: window.location.href,
-    lastVisitedURL: document.referrer
-};
+let origin =  window.location.href;
 
 
 let name;
