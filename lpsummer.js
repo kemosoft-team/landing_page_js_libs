@@ -74,6 +74,8 @@ function postKommo(name, phone, email) {
   const API_URL = "https://zavqrvlbtffdfsbajpog.supabase.co/rest/v1/leads";
   /* const API_URL = "https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb"; */
 
+  var phoneReplace = phone.replace(/[^\d]/g, '');
+
   const button = document.querySelector(".brz-btn-submit");
   const spinner = button.querySelector(".brz-form-spinner");
   const span = button.querySelector(".brz-span.brz-text__editor");
@@ -87,7 +89,7 @@ function postKommo(name, phone, email) {
   axios.post(API_URL, {
     "name": name,
     "email": email,
-    "phone": phone
+    "phone": phoneReplace
   }, {
     headers: {
       'Authorization': `Bearer ${tkn}`,
