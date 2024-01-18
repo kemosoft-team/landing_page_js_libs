@@ -71,7 +71,7 @@ btnSubmit.forEach(function (button) {
 });
 
 function postKommo(name, phone, email) {
-  const API_URL = "https://ahtdxqovdonacovicgmg.supabase.co/rest/v1/leads";
+  const API_URL = "https://zavqrvlbtffdfsbajpog.supabase.co/rest/v1/leads";
   /* const API_URL = "https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb"; */
 
   const button = document.querySelector(".brz-btn-submit");
@@ -82,7 +82,7 @@ function postKommo(name, phone, email) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
-  const tkn = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodGR4cW92ZG9uYWNvdmljZ21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA5Nzk5MjQsImV4cCI6MjAwNjU1NTkyNH0.BoHMzjNlAGXtg4-Rd-RQ3L1ykS0mKcDEWpsqH299Umc';
+  const tkn = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphdnFydmxidGZmZGZzYmFqcG9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUzNDIwNDQsImV4cCI6MjAyMDkxODA0NH0.2xAsEU6LLBZvBEehpVM9ZoSL2TKkBIwPjIp1uC5AXy4';
 
   axios.post(API_URL, {
     "name": name,
