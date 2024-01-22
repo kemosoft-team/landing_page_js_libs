@@ -1,7 +1,7 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let origin =  window.location.href;
-let referrer =  document.referrer;
+let origin = window.location.href;
+let referrer = document.referrer;
 
 let name;
 let phone;
@@ -333,13 +333,13 @@ function validatorPopUpBenefit() {
 
     //ABRI POP UP QUESTIONARIOS
     const close_benefit = document.getElementById("close_benefit");
-    const questions = document.getElementById("questions");
-    close_benefit.click()
-    questions.click();
+    const representativeQuestions = document.getElementById("question_representative");
+    close_benefit.click();
+    representativeQuestions.click();
 }
 
 // VALIDAR PERGUNTAS INICIAIS
-function validatorQuestions() {
+/* function validatorQuestions() {
     const firstChoice = document
         .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
         .value.toLowerCase();
@@ -366,7 +366,7 @@ function validatorQuestions() {
     const closeQuestions = document.getElementById("close_questions");
     closeQuestions.click();
     representativeQuestions.click();
-}
+} */
 
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
@@ -382,12 +382,20 @@ function validateFormBenefit() {
     const birthElement = document.querySelector(
         '[data-brz-label="Data de Nascimento do Beneficiário"]'
     ).value;
+    const firstChoice = document
+        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
+        .value.toLowerCase();
+    const secondChoice = document
+        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
+        .value.toLowerCase();
 
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == ""
+        birthElement == "" ||
+        firstChoice == "" ||
+        secondChoice == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -425,6 +433,8 @@ function validateFormBenefit() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
+    retiredOrPensioner = firstChoice === "sim"; // boolean
+    hasTakenLoan = secondChoice === "sim"; // boolean
 
     //ABRA O POP UP DE INFO BENEFIT
     const benefit = document.getElementById("benefit");
@@ -690,6 +700,3 @@ function qualification() {
     };
     sendRequest();
 }
-
-
-
