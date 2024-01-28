@@ -17,6 +17,8 @@ let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
 
+let controlNoOpportunity = false;
+
 
 
 
@@ -652,8 +654,15 @@ function qualification() {
 
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
+                        if (!controlNoOpportunity) {
+                            controlNoOpportunity = true;
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 3000);
+                        } else {
+                            URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
+                            window.location.href = URL_redirect;
+                        }
                         break;
 
                     //NOQUALIFIED
