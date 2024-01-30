@@ -21,7 +21,7 @@ let benefitAmountRange;
 let controlNoOpportunity = false;
 
 /* VARIAVEIS DE TENTATIVA */
-var attemptBenefit = 0;
+var attemptBenefit;
 console.log(attemptBenefit)
 
 
