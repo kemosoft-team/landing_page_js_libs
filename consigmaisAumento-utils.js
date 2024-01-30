@@ -683,12 +683,12 @@ function qualification() {
 
                     //ENROLLMENT INSS
                     case "acao-adicional":
+                        attemptBenefit++;
                         if (attemptBenefit > 2) {
-                            URL_redirect = `/qualifywhatsapp?`;
+                            URL_redirect = `/qualifywhatsapp`;
                             window.location.href = URL_redirect;
                         } else {
-                            attemptBenefit++;
-                            URL_redirect = `/benefit?`;
+                            URL_redirect = `/benefit`;
                             window.location.href = URL_redirect;
                         }
                         break;
