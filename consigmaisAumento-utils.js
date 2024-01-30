@@ -17,7 +17,11 @@ let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
 
+/* VARIAVEIS DE CONTROLE */
 let controlNoOpportunity = false;
+
+/* VARIAVEIS DE TENTATIVA */
+let attemptBenefit = 0;
 
 
 
@@ -679,8 +683,14 @@ function qualification() {
 
                     //ENROLLMENT INSS
                     case "acao-adicional":
-                        URL_redirect = `/benefit?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
+                        if (attemptBenefit > 2) {
+                            URL_redirect = `/qualifywhatsapp?`;
+                            window.location.href = URL_redirect;
+                        } else {
+                            attemptBenefit++;
+                            URL_redirect = `/benefit?`;
+                            window.location.href = URL_redirect;
+                        }
                         break;
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
