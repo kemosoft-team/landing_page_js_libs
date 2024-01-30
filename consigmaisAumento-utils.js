@@ -22,6 +22,7 @@ let controlNoOpportunity = false;
 
 /* VARIAVEIS DE TENTATIVA */
 var attemptBenefit = 0;
+console.log(attemptBenefit)
 
 
 
@@ -684,6 +685,7 @@ function qualification() {
                     //ENROLLMENT INSS
                     case "acao-adicional":
                         attemptBenefit++;
+                        console.log(attemptBenefit)
                         if (attemptBenefit > 2) {
                             URL_redirect = `/qualifywhatsapp`;
                             window.location.href = URL_redirect;
