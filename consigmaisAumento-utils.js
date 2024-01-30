@@ -683,7 +683,7 @@ function qualification() {
                         var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
 
                         if (attemptBenefitStorage === null) {
-                            localStorage.setItem('attemptBenefitStorage', 0);
+                            localStorage.setItem('attemptBenefitStorage', 1);
                             console.log(attemptBenefitStorage)
                         } else {
                             attemptBenefitStorage++;
