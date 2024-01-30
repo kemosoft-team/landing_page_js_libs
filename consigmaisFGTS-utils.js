@@ -299,7 +299,7 @@ async function criar_contato_fgts() {
                 withdrawalEnabled,
                 origin
             });
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            window.location.href = "https://qualificationconsigmais.brizy.site/" + "?" + "pipeline_slug=" + pipeline_slug;
             console.log("Contato FGTS criado")
         })
         .catch(function (error) {
