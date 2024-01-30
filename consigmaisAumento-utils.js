@@ -20,10 +20,6 @@ let benefitAmountRange;
 /* VARIAVEIS DE CONTROLE */
 let controlNoOpportunity = false;
 
-/* VARIAVEIS DE TENTATIVA */
-let attemptBenefit = 0;
-console.log(attemptBenefit)
-
 
 
 
@@ -684,8 +680,19 @@ function qualification() {
 
                     //ENROLLMENT INSS
                     case "acao-adicional":
-                        attemptBenefit++;
-                        console.log(attemptBenefit)
+                        var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
+
+                        if (attemptBenefitStorage === null) {
+                            localStorage.setItem('attemptBenefitStorage', 0);
+                            console.log(attemptBenefitStorage)
+                        } else {
+                            attemptBenefitStorage++;
+                            localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
+                            console.log(attemptBenefitStorage)
+                        }
+
+                        var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
+
                         if (attemptBenefit > 2) {
                             URL_redirect = `/qualifywhatsapp`;
                             window.location.href = URL_redirect;
