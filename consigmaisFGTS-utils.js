@@ -262,6 +262,7 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
+    var attemptWaiting = 0;
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -369,8 +370,16 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
-                        URL_redirect = `#`;
-                        window.location.href = URL_redirect;
+                        attemptWaiting++;
+                        if (attemptWaiting < 4) {
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 3000);
+                        } else {
+                            var popUpNoResponse =document.querySelector("#popUpNoResponse");
+                            popUpNoResponse.click()
+                        }
+
                         break;
 
 
