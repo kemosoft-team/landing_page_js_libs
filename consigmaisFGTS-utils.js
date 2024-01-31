@@ -243,7 +243,7 @@ async function criar_contato_fgts() {
         "origin": origin,
     })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "federalId=" + federalId_replaced;
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             console.log("Contato FGTS criado")
         })
         .catch(function (error) {
