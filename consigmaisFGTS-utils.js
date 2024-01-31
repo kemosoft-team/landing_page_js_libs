@@ -209,26 +209,20 @@ function setBanks(bankList) {
 
 
 function getBank() {
-    const requestData = {
+    const url = 'https://n8n.kemosoft.com.br/webhook/banks';
+
+    const data = {
         sql: "select b.name, b.bank_no from product_bank pb left join product p on p.id = pb.product_id left join bank b on b.id = pb.bank_id",
         other_property: "value",
         another_property: 42
     };
 
-    // Configuração da requisição
-    const requestOptions = {
-        method: 'post',
-        url: 'https://n8n.kemosoft.com.br/webhook/banks',
-        data: requestData
-    };
-
-    // Realiza a requisição usando Axios
-    axios(requestOptions)
+    axios.post(url, data)
         .then(response => {
-            console.log('Resposta do servidor:', response.data);
+            setBanks(response.data);
         })
         .catch(error => {
-            console.error('Erro na requisição:', error);
+            console.error('Error:', error.message);
         });
 }
 
