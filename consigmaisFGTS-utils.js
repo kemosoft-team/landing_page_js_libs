@@ -197,20 +197,22 @@ function setBanks(bankList) {
     const selects = document.querySelectorAll('select[data-label="Banco"]');
 
     selects.forEach(select => {
+        // Limpar opções existentes no select antes de adicionar novas
+        select.innerHTML = "";
+
         bankList.forEach(bank => {
             const option = document.createElement('option');
             option.text = bank.name;
             option.value = bank.bank_no;
-            select.insertBefore(option, select.firstChild);
+            select.add(option);
         });
     });
 }
 
-
-function getBank() {
+function getBanks() {  // Renomeei a função para getBanks
     const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
-    axios.post(url)
+    axios.get(url)  // Alterei para um pedido GET
         .then(response => {
             setBanks(response.data.banks);
         })
