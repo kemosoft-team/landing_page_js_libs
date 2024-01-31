@@ -209,15 +209,9 @@ function setBanks(bankList) {
 
 
 function getBank() {
-    const url = 'https://n8n.kemosoft.com.br/webhook/banks';
+    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
-    const data = {
-        sql: "select b.name, b.bank_no from product_bank pb left join product p on p.id = pb.product_id left join bank b on b.id = pb.bank_id",
-        other_property: "value",
-        another_property: 42
-    };
-
-    axios.post(url, data)
+    axios.post(url)
         .then(response => {
             setBanks(response.data);
         })
