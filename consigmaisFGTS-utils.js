@@ -372,6 +372,7 @@ function qualification() {
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
                         attemptWaiting++;
+                        console.log("contator: ", attemptWaiting)
                         if (attemptWaiting < 4) {
                             setTimeout(function () {
                                 sendRequest();
