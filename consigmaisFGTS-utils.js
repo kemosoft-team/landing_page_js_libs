@@ -290,7 +290,6 @@ function qualification() {
             .then((response) => {
                 let URL_redirect;
                 const contexto = response.data.contexto;
-                console.log("Esse é o contexto: ", contexto)
                 const situacao = response.data.situacao;
                 const perfil = response.data.perfil;
                 const mensagem = response.data.mensagem;
@@ -298,7 +297,7 @@ function qualification() {
                 /* PEDIR INFO */
                 const pedirInfos = response.data.pedirInfos;
                 /* OPORTUNIDADE */
-                const oportunidades = reponse.data.oportunidades;
+                const oportunidades = response.data.oportunidades;
                 const id = response.data.oportunidades.id;
                 const produto = response.data.oportunidades.produto;
                 const banco = response.data.oportunidades.banco;
@@ -349,7 +348,7 @@ function qualification() {
                             URL_redirect = `/success?protocol="${protocolo}"`;
                             window.location.href = URL_redirect;
                         }
-
+                        break;
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -378,7 +377,7 @@ function qualification() {
                                 sendRequest();
                             }, 3000);
                         } else {
-                            var popUpNoResponse =document.querySelector("#popUpNoResponse");
+                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
                             popUpNoResponse.click()
                         }
 
