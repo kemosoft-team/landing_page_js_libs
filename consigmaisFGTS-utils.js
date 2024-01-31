@@ -290,6 +290,7 @@ function qualification() {
             .then((response) => {
                 let URL_redirect;
                 const contexto = response.data.contexto;
+                console.log("Esse é o contexto: " contexto)
                 const situacao = response.data.situacao;
                 const perfil = response.data.perfil;
                 const mensagem = response.data.mensagem;
