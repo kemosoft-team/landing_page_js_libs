@@ -261,6 +261,8 @@ async function criar_contato_fgts() {
 
 //QUALIFICAÇÃO
 function qualification() {
+    var attempt = 0;
+    
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -278,6 +280,8 @@ function qualification() {
 
     const dataQualificationJSON = JSON.stringify(dataQualification);
     localStorage.setItem('dataQualification', dataQualificationJSON);
+
+
 
     const sendRequest = () => {
         axios
