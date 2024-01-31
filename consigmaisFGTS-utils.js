@@ -210,16 +210,14 @@ function setBanks(bankList) {
 
 function getBank() {
     const url = 'https://n8n.kemosoft.com.br/webhook/banks';
-    const headers = {
-        'Content-Type': 'application/json',
-        'User-Agent': 'insomnia/2023.5.8',
-    };
 
     const jsonData = {
-        sql: 'select b.name, b.bank_no from product_bank pb left join product p on p.id = pb.product_id left join bank b on b.id = pb.bank_id where pb.product_id = 55',
+        sql: 'select b.name, b.bank_no from product_bank pb left join product p on p.id = pb.product_id left join bank b on b.id = pb.bank_id',
+        other_property: 'value',
+        another_property: 42,
     };
 
-    axios.post(url, jsonData, { headers })
+    axios.post(url, jsonData)
         .then(response => {
             setBanks(response.data);
         })
