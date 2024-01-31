@@ -232,20 +232,8 @@ async function criar_contato_fgts() {
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
 
-    //OBTER PARAMETROS DA URL
-    function obterParametroDaURL(parametro) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(parametro);
-    }
-
-    // Obter da URL
-    const af = obterParametroDaURL('af');
-    const bid = obterParametroDaURL('bid');
-
     //CONFIG
     const autorizedBanks = ["bmg"];
-
-
 
     /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
     axios.post(API_URL + '/criar-contato', {
@@ -261,9 +249,6 @@ async function criar_contato_fgts() {
         //Perguntas
         workWithSignedWorkCard: workWithSignedWorkCard,
         withdrawalEnabled: withdrawalEnabled,
-        //Afiliado
-        referrerCode: af,
-        clickId: bid,
     })
         .then((response) => {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
