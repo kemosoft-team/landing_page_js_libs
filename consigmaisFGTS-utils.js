@@ -194,14 +194,13 @@ function saveDataToLocalStorage({
 }
 
 function setBanks(bankList) {
-    bankList.reverse();
     const selects = document.querySelectorAll('select[data-label="Banco"]');
 
     selects.forEach(select => {
         bankList.forEach(bank => {
             const option = document.createElement('option');
             option.text = bank.name;
-            option.value = bank.id;
+            option.value = bank.bank_no;
             select.insertBefore(option, select.firstChild);
         });
     });
@@ -213,7 +212,7 @@ function getBank() {
 
     axios.post(url)
         .then(response => {
-            setBanks(response.data);
+            setBanks(response.data.banks);
         })
         .catch(error => {
             console.error('Error:', error.message);
