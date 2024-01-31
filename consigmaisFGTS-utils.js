@@ -3,6 +3,7 @@ let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
+let referrer = document.referrer;
 let name;
 let phone;
 let federalId;
@@ -209,10 +210,10 @@ function setBanks(bankList) {
     });
 }
 
-function getBanks() {  
+function getBanks() {
     const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
-    axios.get(url) 
+    axios.get(url)
         .then(response => {
             setBanks(response.data.banks);
         })
@@ -231,16 +232,38 @@ async function criar_contato_fgts() {
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
 
+    //OBTER PARAMETROS DA URL
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // Obter da URL
+    const af = obterParametroDaURL('af');
+    const bid = obterParametroDaURL('bid');
+
+    //CONFIG
+    const autorizedBanks = ["bmg"];
+
+
+
     /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
     axios.post(API_URL + '/criar-contato', {
-        "name": name,
-        "phone": phone,
-        "federalId": federalId_replaced,
-        "birthDate": birth,
-        "pipelineSlug": pipeline_slug,
-        "workWithSignedWorkCard": workWithSignedWorkCard,
-        "withdrawalEnabled": withdrawalEnabled,
-        "origin": origin,
+        //Formulario inicial
+        name: name,
+        phone: phone,
+        birthDate: birth,
+        federalId: federalId_replaced,
+        autorizedBanks: autorizedBanks,
+        pipelineSlug: pipeline_slug,
+        origin: origin,
+        referrer: referrer,
+        //Perguntas
+        workWithSignedWorkCard: workWithSignedWorkCard,
+        withdrawalEnabled: withdrawalEnabled,
+        //Afiliado
+        referrerCode: af,
+        clickId: bid,
     })
         .then((response) => {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
@@ -253,19 +276,23 @@ async function criar_contato_fgts() {
 
 //QUALIFICAÇÃO
 function qualification() {
-    //OBTER INFO DO LOCALSTORAGE
-    /* var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId; */
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
 
-    // Obter da URL
+    // OBTER DA URL
     const pipelineSlug = obterParametroDaURL('pipeline_slug');
     const federalId = obterParametroDaURL('federalId');
+
+    //ENVIAR PARA O LOCALSTORAGE
+    const dataQualification = {
+        pipelineSlug: pipelineSlug,
+        federalId: federalId
+    };
+
+    const dataQualificationJSON = JSON.stringify(dataQualification);
+    localStorage.setItem('dataQualification', dataQualificationJSON);
 
     const sendRequest = () => {
         axios
