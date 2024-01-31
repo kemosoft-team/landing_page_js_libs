@@ -194,7 +194,7 @@ function saveDataToLocalStorage({
 }
 
 function setBanks(bankList) {
-    const selects = document.querySelectorAll('select[data-label="Banco"]');
+    const selects = document.querySelectorAll('[data-brz-label="Banco"]');
 
     selects.forEach(select => {
         // Limpar opções existentes no select antes de adicionar novas
@@ -209,10 +209,10 @@ function setBanks(bankList) {
     });
 }
 
-function getBanks() {  // Renomeei a função para getBanks
+function getBanks() {  
     const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
-    axios.get(url)  // Alterei para um pedido GET
+    axios.get(url) 
         .then(response => {
             setBanks(response.data.banks);
         })
