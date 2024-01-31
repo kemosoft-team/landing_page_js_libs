@@ -10,6 +10,8 @@ let birth;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
 
+let controlNoOpportunity = false;
+
 //EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -166,7 +168,7 @@ function isDateValid(dateString) {
 }
 
 // ENVIAR DADOS PARA O LOCALSTORAGE
-function saveDataToLocalStorage({ 
+function saveDataToLocalStorage({
     name,
     phone,
     federalId,
@@ -191,7 +193,315 @@ function saveDataToLocalStorage({
     localStorage.setItem("dataQualification", objDataQualification);
 }
 
-// VALIDAR PERGUNTAS INICIAIS
+function setBanks(bankList) {
+    bankList.reverse();
+    const selects = document.querySelectorAll('select[data-label="Banco"]');
+
+    selects.forEach(select => {
+        bankList.forEach(bank => {
+            const option = document.createElement('option');
+            option.text = bank.name;
+            option.value = bank.id;
+            select.insertBefore(option, select.firstChild);
+        });
+    });
+}
+
+
+function getBank() {
+    const url = 'https://n8n.kemosoft.com.br/webhook/banks';
+    const headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'insomnia/2023.5.8',
+    };
+
+    const jsonData = {
+        sql: 'select b.name, b.bank_no from product_bank pb left join product p on p.id = pb.product_id left join bank b on b.id = pb.bank_id where pb.product_id = 55',
+    };
+
+    axios.post(url, jsonData, { headers })
+        .then(response => {
+            setBanks(response.data);
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+}
+
+//CRIAR CONTATO FGTS
+async function criar_contato_fgts() {
+
+    //CONFIG
+    const nextStep = "qualification"
+    const pipeline_slug = "fgts"
+
+    /* REPLACE */
+    const federalId_replaced = federalId.replace(/[^\d]/g, "");
+
+    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    axios.post(API_URL + '/criar-contato', {
+        "name": name,
+        "phone": phone,
+        "federalId": federalId_replaced,
+        "birthDate": birth,
+        "pipelineSlug": pipeline_slug,
+        "workWithSignedWorkCard": workWithSignedWorkCard,
+        "withdrawalEnabled": withdrawalEnabled,
+        "origin": origin,
+    })
+        .then((response) => {
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "federalId=" + federalId_replaced;
+            console.log("Contato FGTS criado")
+        })
+        .catch(function (error) {
+            showToast(error.response.data.message);
+        });
+}
+
+//QUALIFICAÇÃO
+function qualification() {
+    //OBTER INFO DO LOCALSTORAGE
+    /* var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId; */
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // Obter da URL
+    const pipelineSlug = obterParametroDaURL('pipeline_slug');
+    const federalId = obterParametroDaURL('federalId');
+
+    const sendRequest = () => {
+        axios
+            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+            .then((response) => {
+                let URL_redirect;
+                const contexto = response.data.contexto;
+                const situacao = response.data.situacao;
+                const perfil = response.data.perfil;
+                const mensagem = response.data.mensagem;
+                const protocolo = response.data.protocolo;
+                /* PEDIR INFO */
+                const pedirInfos = response.data.pedirInfos;
+                /* OPORTUNIDADE */
+                const oportunidades = reponse.data.oportunidades;
+                const id = response.data.oportunidades.id;
+                const produto = response.data.oportunidades.produto;
+                const banco = response.data.oportunidades.banco;
+                const etapa = response.data.oportunidades.etapa;
+                const acao = response.data.oportunidades.acao;
+                const linkAssinatura = response.data.oportunidades.linkAssinatura;
+
+                switch (contexto) {
+                    //REQUER AÇÃO DO CLIENTE
+                    case "resolver-situação":
+                        switch (situacao) {
+                            case "matricula":
+                                URL_redirect = `/benefit`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "habilitar-saque":
+                                URL_redirect = `/enable`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "autorizar-banco":
+                                URL_redirect = `/authorize`;
+                                window.location.href = URL_redirect;
+                                break
+                            case "assinatura-pendente":
+                                switch (banco) {
+                                    case "eccor":
+                                        URL_redirect = `/signature?tp="wpp"`;
+                                        window.location.href = URL_redirect;
+                                        break
+                                    case "facta":
+                                        localStorage.setItem('oportunidades', JSON.stringify(oportunidades));
+                                        URL_redirect = `/signature?tp="link"`;
+                                        window.location.href = URL_redirect;
+                                        break
+                                    case "bmg":
+                                        URL_redirect = `/signature?tp="sms"`;
+                                        window.location.href = URL_redirect;
+                                        break
+                                }
+                        }
+
+                    //TEM OPORTUNIDADE
+                    case "tem-oportunidade":
+                        if (pedirInfos.length > 0) {
+                            URL_redirect = `/opportunity?protocol="${protocolo}"`;
+                            window.location.href = URL_redirect;
+                        } else {
+                            URL_redirect = `/success?protocol="${protocolo}"`;
+                            window.location.href = URL_redirect;
+                        }
+
+                    //NOOPPORTUNITY
+                    case "sem-oportunidade":
+                        if (!controlNoOpportunity) {
+                            controlNoOpportunity = true;
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 3000);
+                        } else {
+                            URL_redirect = `/noopportunity`;
+                            window.location.href = URL_redirect;
+                        }
+                        break;
+
+                    //NOQUALIFIED
+                    case "nao-qualificado":
+                        URL_redirect = `/noqualified`;
+                        window.location.href = URL_redirect;
+                        break;
+
+                    //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
+                    case "aguardando-qualificacao":
+                        URL_redirect = `#`;
+                        window.location.href = URL_redirect;
+                        break;
+
+
+                    //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
+                    default:
+                        console.log("indisponivel ou não listado");
+                        attempt++;
+                        if (attempt < 3) {
+                            sendRequest();
+                        } else {
+                            URL_redirect = `/offline`;
+                            window.location.href = URL_redirect;
+                        }
+                        break;
+                }
+            })
+            .catch(function (error) {
+                console.log(error, "Não foi possível obter a qualificação");
+                attempt++;
+                if (attempt < 3) {
+                    sendRequest();
+                } else {
+                    URL_redirect = `/offline`;
+                    window.location.href = URL_redirect;
+                }
+            });
+    };
+    sendRequest();
+}
+
+function onTheWeb() {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    axios.get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+        .then((response) => {
+            /* PEDIR INFO */
+            const pedirInfos = response.data.pedirInfos;
+
+            if (pedirInfos.includes("documento")) {
+                URL_redirect = `/document`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("endereco")) {
+                URL_redirect = `/address`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("conta")) {
+                URL_redirect = `/account`;
+                window.location.href = URL_redirect;
+            }
+
+
+
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+//REGISTRAR FORMULARIOS
+function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "address": address,
+            "addressNumber": addressNumber,
+            "district": district,
+            "city": city,
+            "state": state,
+            "zipcode": zipcode
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+function registrarEndereco(type, number, issueDate, agency, agencyState) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "type": type,
+            "number": number,
+            "issueDate": issueDate,
+            "agency": agency,
+            "agencyState": agencyState
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+function registrarConta(bankNo, branch, acctNo, acctType) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "bankNo": bankNo,
+            "branch": branch,
+            "acctNo": acctNo,
+            "acctType": acctType
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+
+
+//VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
         .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
@@ -211,7 +521,6 @@ function validatorQuestions() {
     criar_contato_fgts();
 }
 
-//VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
@@ -267,88 +576,70 @@ function validateFormBenefit() {
     questions.click();
 }
 
-//CRIAR CONTATO FGTS
-async function criar_contato_fgts() {
+function validateEndereco() {
+    const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
+    const address = document.querySelector('[data-brz-label="Rua"]').value;
+    const addressNumber = document.querySelector('[data-brz-label="Número"]').value;
+    const district = document.querySelector('[data-brz-label="Bairro"]').value;
+    const city = document.querySelector('[data-brz-label="Cidade"]').value;
+    const state = document.querySelector('[data-brz-label="UF"]').value;
 
-    //CONFIG
-    const nextStep = "qualification"
-    const pipeline_slug = "fgts"
+    if (
+        zipcode == "" ||
+        address == "" ||
+        addressNumber == "" ||
+        state == "" ||
+        district == "" ||
+        city == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
 
-    /* REPLACE */
-    const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
-    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
-    axios.post(API_URL + '/criar-contato', {
-        "name": name,
-        "phone": phone,
-        "federalId": federalId_replaced,
-        "birthDate": birth,
-        "pipelineSlug": pipeline_slug,
-        "workWithSignedWorkCard": workWithSignedWorkCard,
-        "withdrawalEnabled": withdrawalEnabled,
-        "origin": origin,
-    })
-        .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId_replaced,
-                birth,
-                pipeline_slug,
-                workWithSignedWorkCard,
-                withdrawalEnabled,
-                origin
-            });
-            window.location.href = "https://qualificationconsigmais.brizy.site/" + "?" + "pipeline_slug=" + pipeline_slug;
-            console.log("Contato FGTS criado")
-        })
-        .catch(function (error) {
-            showToast(error.response.data.message);
-        });
+    registrarEndereco(zipcode, address, addressNumber, district, city, state);
 }
 
-//QUALIFICAÇÃO
-function qualification() {
-    //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
+function validateDocumento() {
+    const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+    const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
+    const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
+    const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
+    const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
 
-    let federalId = infoQualification.federalId;
+    if (
+        type == "" ||
+        number == "" ||
+        issueDate == "" ||
+        agency == "" ||
+        agencyState == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
 
-    axios
-        .get(`${API_URL}/fgts/proxima-etapa/${federalId}`, {})
-        .then((response) => {
-            var protocol = response.data.qualificationId;
-            var qualificationMessage = response.data.qualificationMessage;
-            var qualificationStatus = response.data.qualificationStatus;
+    registrarEndereco(type, number, issueDate, agency, agencyState);
+}
 
-            switch (qualificationStatus) {
-                //SUCCESS
-                case "qualificado":
-                    URL_redirect = `${step_URL}/success?message=${qualificationMessage}&protocolo=${protocol}`;
-                    window.location.href = URL_redirect;
-                    break;
+function validateConta() {
+    const bank = document.querySelector('[data-brz-label="Banco"]').value;
+    const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
+    const branch = document.querySelector('[data-brz-label="Agência"]').value;
+    const account = document.querySelector('[data-brz-label="Conta"]').value;
+    const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
 
-                //SUCCESS
-                case "nao-identificado":
-                    URL_redirect = `${step_URL}/success?message=${qualificationMessage}&protocolo=${protocol}`;
-                    window.location.href = URL_redirect;
-                    break;
+    if (
+        bank == "" ||
+        acctType == "" ||
+        branch == "" ||
+        account == "" ||
+        verifyDigit == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
 
-                //NOQUALIFIED
-                case "nao-qualificado":
-                    URL_redirect = `${step_URL}/noqualified?message=${qualificationMessage}&protocolo=${protocol}`;
-                    window.location.href = URL_redirect;
-                    break;
+    let acctNo = account + verifyDigit;
+    let bankNo = bank.bank_no;
 
-                default:
-                    URL_redirect = `${step_URL}/offline?message=${qualificationMessage}&protocolo=${protocol}`;
-                    window.location.href = URL_redirect;
-
-                    break;
-            }
-        })
-        .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
-        });
+    registrarConta(bankNo, branch, acctNo, acctType);
 }
