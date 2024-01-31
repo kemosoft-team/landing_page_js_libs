@@ -219,10 +219,6 @@ function getBank() {
     const requestOptions = {
         method: 'post',
         url: 'https://n8n.kemosoft.com.br/webhook/banks',
-        headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'insomnia/2023.5.8'
-        },
         data: requestData
     };
 
