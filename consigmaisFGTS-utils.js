@@ -262,7 +262,7 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-    
+
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -285,7 +285,7 @@ function qualification() {
 
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
             .then((response) => {
                 let URL_redirect;
                 const contexto = response.data.contexto;
