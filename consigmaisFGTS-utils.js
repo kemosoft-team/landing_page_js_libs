@@ -428,38 +428,23 @@ function qualification() {
 }
 
 function redirectToSignature() {
-    // Obter as oportunidades do localStorage
     const oportunidadesJSON = localStorage.getItem("oportunidades");
+    const oportunidadesData = JSON.parse(oportunidadesJSON);
+    const oportunidades = oportunidadesData.oportunidades;
 
-    if (oportunidadesJSON) {
-        // Fazer o parse das oportunidades
-        const oportunidades = JSON.parse(oportunidadesJSON);
+    // Encontrar a oportunidade com a ação "confirmar"
+    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+        return oportunidade.acao === 'confirmar';
+    });
 
-        // Variável para armazenar a oportunidade com a ação "confirmar"
-        let oportunidadeConfirmar = null;
+    if (oportunidadeConfirmar) {
+        const banco = oportunidadeConfirmar.banco;
 
-        // Percorrer manualmente o array de oportunidades
-        for (let i = 0; i < oportunidades.length; i++) {
-            if (oportunidades[i].acao === 'confirmar') {
-                oportunidadeConfirmar = oportunidades[i];
-                break;  // Se encontrou, interrompe o loop
-            }
-        }
-
-        if (oportunidadeConfirmar) {
-            const banco = oportunidadeConfirmar.banco;
-
-            // Substitua bankRedirect pelo que você precisa fazer com o banco
-            console.log("Redirecionando para o banco:", banco);
-        } else {
-            console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
-        }
+        bankRedirect(banco);
     } else {
-        console.log("Nenhuma informação 'oportunidades' encontrada no localStorage.");
+        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
     }
 }
-
-
 
 function onTheWeb() {
     //OBTER INFO DO LOCALSTORAGE
