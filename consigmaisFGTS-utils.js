@@ -307,8 +307,8 @@ function qualification() {
     }
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const pipelineSlug = obterParametroDaURL('pipeline_slug');
-    const federalId = obterParametroDaURL('federalId');
+    let pipelineSlug = obterParametroDaURL('pipeline_slug');
+    let federalId = obterParametroDaURL('federalId');
 
     if (pipelineSlug && federalId) {
         const dataQualification = {
