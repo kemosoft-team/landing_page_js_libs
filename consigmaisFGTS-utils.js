@@ -425,16 +425,18 @@ function redirectToSignature() {
     const oportunidadesData = JSON.parse(oportunidadesJSON);
     const oportunidades = oportunidadesData.oportunidades;
 
-    if (oportunidades.length > 0) {
-        const banco = oportunidades[0].banco;
+    // Encontrar a oportunidade com a ação "confirmar"
+    const oportunidadeConfirmar = oportunidades.find(function(oportunidade) {
+        return oportunidade.acao === 'confirmar';
+    });
 
-        bankRedirect(banco)
+    if (oportunidadeConfirmar) {
+        const banco = oportunidadeConfirmar.banco;
 
-
+        bankRedirect(banco);
     } else {
-        console.log("Nenhuma oportunidade encontrada no localStorage.");
+        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
     }
-
 }
 
 function onTheWeb() {
