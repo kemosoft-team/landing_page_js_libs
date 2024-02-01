@@ -1,29 +1,18 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let step_URL = window.location.host;
+let URL_redirect = "";
 let origin = window.location.href;
 let referrer = document.referrer;
-
 let name;
 let phone;
 let federalId;
 let birth;
-let enrollment;
+let workWithSignedWorkCard;
+let withdrawalEnabled;
 
-let name_Representive;
-let federalId_Representive;
-let federalId_Representive_replaced;
-
-let retiredOrPensioner;
-let hasTakenLoan;
-let benefitAmountRange;
-
-/* VARIAVEIS DE CONTROLE */
 let controlNoOpportunity = false;
 
-
-
-
-//EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -149,51 +138,6 @@ function validateCPF(cpf) {
     return true;
 }
 
-//VALIDAR ENROLLMENT
-function validarNumeroBeneficio(numeroBeneficio) {
-    var regexBeneficio = /^[0-9]{10}$/;
-
-    if (regexBeneficio.test(numeroBeneficio)) {
-        var sequenciaRepetida = /(\d)\1{9}/;
-
-        if (sequenciaRepetida.test(numeroBeneficio)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    return false;
-}
-
-//VALIDAR ENROLLMENT
-function validateMod11Digit(code, numDig, limMult, x10) {
-    if (!numDig) numDig = 1;
-
-    let dado = code.substring(0, code.length - numDig);
-
-    let mult, soma, i, n, dig;
-
-    if (!x10) x10 = 1; // Correção aqui
-    for (n = 1; n <= numDig; n++) {
-        soma = 0;
-        mult = 2;
-        for (i = dado.length - 1; i >= 0; i--) {
-            soma += (mult * parseInt(dado.charAt(i)));
-            if (++mult > limMult) mult = 2;
-        }
-        if (x10) {
-            dig = ((soma * 10) % 11) % 10;
-        } else {
-            dig = soma % 11;
-            if (dig == 10) dig = "X";
-        }
-        dado += (dig);
-    }
-
-    return (dado === code);
-}
-
 //VALIDAR DATA
 function isDateValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
@@ -223,67 +167,25 @@ function isDateValid(dateString) {
     return false;
 }
 
-//VALIDA DATA DE NASCIMENTO MAX
-function isBirthValid(dateString) {
-    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if (!datePattern.test(dateString)) {
-        return false;
-    }
 
-    const [, , , year] = dateString.match(datePattern);
-
-    const yearInt = parseInt(year, 10);
-
-    const currentDate = new Date();
-    const maxBirthYear = currentDate.getFullYear();
-
-    if (maxBirthYear - yearInt > 76) {
-        return false;
-    }
-
-    var representativeFalseButton = document.getElementById(
-        "representative_false"
-    );
-
-    if (maxBirthYear - yearInt < 18) {
-        representativeFalseButton.style.display = "none";
-    } else {
-        representativeFalseButton.style.display = "block";
-    }
-
-    return true;
-}
-
-// ENVIAR DADOS PARA O LOCALSTORAGE
 function saveDataToLocalStorage({
     name,
     phone,
     federalId,
-    birth,
-    name_Representive,
-    federalId_Representive,
-    enrollment,
-    retiredOrPensioner,
-    hasTakenLoan,
-    benefitAmountRange,
-    pipeline_slug,
-    origin,
-    referrer,
-}) {
+    birthDate,
+    pipelineSlug,
+    workWithSignedWorkCard,
+    withdrawalEnabled,
+    origin }) {
     var dataQualification = {
         name,
         phone,
         federalId,
-        birthDate: birth,
-        name_Representive,
-        federalId_Representive,
-        enrollment,
-        retiredOrPensioner,
-        hasTakenLoan,
-        benefitAmountRange,
-        pipeline_slug,
-        origin,
-        referrer,
+        birthDate,
+        pipelineSlug,
+        workWithSignedWorkCard,
+        withdrawalEnabled,
+        origin
     };
 
     var objDataQualification = JSON.stringify(dataQualification);
@@ -291,333 +193,148 @@ function saveDataToLocalStorage({
     localStorage.setItem("dataQualification", objDataQualification);
 }
 
-//VALIDAR NÚMERO DO BENEFÍCIO
-function validatorStepBenefit() {
-    const benefit = document.querySelector(
-        '[data-brz-label="Número do Benefício/Matrícula"]'
-    ).value;
-    if (benefit == "") {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    } else if (benefit.length != 10) {
-        showToast("O número do benefício deve conter 10 caracteres.");
-        return false;
-    } else if (!validarNumeroBeneficio(benefit)) {
-        showToast("O número do benefício informado é inválido! Revise a informação!");
-        return false;
-    } else if (!validateMod11Digit(benefit, 1, 9, true)) {
-        showToast("O número do benefício informado é inválido!! Revise a informação!");
-        return false;
-    }
+function setBanks(bankList) {
+    const selects = document.querySelectorAll('[data-brz-label="Banco"]');
 
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    enrollment = benefit;
+    selects.forEach(select => {
+        // Limpar opções existentes no select antes de adicionar novas
+        select.innerHTML = "";
 
-    updateBenefit();
+        bankList.forEach(bank => {
+            const option = document.createElement('option');
+            option.text = bank.name;
+            option.value = bank.bank_no;
+            select.add(option);
+        });
+    });
 }
 
-//VALIDAR NÚMERO DO BENEFÍCIO
-function validatorPopUpBenefit() {
-    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
-
-    if (benefit != "" && benefit.length != 10) {
-        showToast("O número do benefício deve conter 10 caracteres.");
-        return false;
-    } else if (benefit != "" && !validarNumeroBeneficio(benefit)) {
-        showToast("O número do benefício informado é inválido! Revise a informação!");
-        return false;
-    } else if (benefit != "" && !validateMod11Digit(benefit, 1, 9, true)) {
-        showToast("O número do benefício informado é inválido!! Revise a informação!");
-        return false;
+function bankRedirect(banco) {
+    switch (banco) {
+        case "eccor":
+            URL_redirect = `/signature?tp=wpp`;
+            window.location.href = URL_redirect;
+            break
+        case "facta":
+            URL_redirect = `/signature?tp=link`;
+            window.location.href = URL_redirect;
+            break
+        case "bmg":
+            URL_redirect = `/signature?tp=sms`;
+            window.location.href = URL_redirect;
+            break
+        default:
+            console.log("Banco não reconhecido.");
     }
-
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    enrollment = benefit;
-
-    //ABRI POP UP QUESTIONARIOS
-    const close_benefit = document.getElementById("close_benefit");
-    const representativeQuestions = document.getElementById("question_representative");
-    close_benefit.click();
-    representativeQuestions.click();
 }
 
-// VALIDAR PERGUNTAS INICIAIS
-/* function validatorQuestions() {
-    const firstChoice = document
-        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
-        .value.toLowerCase();
-    const secondChoice = document
-        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
-        .value.toLowerCase();
-    const thirdChoice = document.querySelector(
-        '[data-brz-label="Em qual dos valores se enquadra o seu benefício?"]'
-    ).value;
+function getBanks() {
+    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
-    if (firstChoice === "" || secondChoice === "" || thirdChoice === "") {
-        showToast("Por favor, responda todas as perguntas.");
-        return false;
-    }
-
-    retiredOrPensioner = firstChoice === "sim"; // boolean
-    hasTakenLoan = secondChoice === "sim"; // boolean
-    benefitAmountRange = thirdChoice; // string
-
-    // ABRA O POP-UP DE QUESTIONÁRIO REPRESENTANTE
-    const representativeQuestions = document.getElementById(
-        "question_representative"
-    );
-    const closeQuestions = document.getElementById("close_questions");
-    closeQuestions.click();
-    representativeQuestions.click();
-} */
-
-//VALIDAR FORMULARIO BENEFICIARIO
-function validateFormBenefit() {
-    const nameElement = document.querySelector(
-        '[data-brz-label="Nome do Beneficiário"]'
-    ).value;
-    const phoneElement = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
-    ).value;
-    const federalIdElement = document.querySelector(
-        '[data-brz-label="CPF do Beneficiário"]'
-    ).value;
-    const birthElement = document.querySelector(
-        '[data-brz-label="Data de Nascimento do Beneficiário"]'
-    ).value;
-    const firstChoice = document
-        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
-        .value.toLowerCase();
-    const secondChoice = document
-        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
-        .value.toLowerCase();
-
-    if (
-        nameElement == "" ||
-        phoneElement == "" ||
-        federalIdElement == "" ||
-        birthElement == "" ||
-        firstChoice == "" ||
-        secondChoice == ""
-    ) {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    }
-    if (
-        nameElement.trim() === "" ||
-        !nameElement.includes(" ") ||
-        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
-    ) {
-        showToast("Por favor, digite seu nome completo");
-        return false;
-    }
-
-    if (!validateCPF(federalIdElement)) {
-        showToast("O CPF do Beneficiário não é válido!");
-        return false;
-    }
-    if (!isDateValid(birthElement)) {
-        showToast("A data de nascimento informada não é válida!");
-        return false;
-    }
-    if (!isBirthValid(birthElement)) {
-        showToast(
-            "Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
-        );
-        return false;
-    }
-    if (!validatePhone(phoneElement)) {
-        showToast("O número do Whatsapp informado não é válido!");
-        return false;
-    }
-
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    name = nameElement;
-    phone = phoneElement;
-    federalId = federalIdElement;
-    birth = birthElement;
-    retiredOrPensioner = firstChoice === "sim"; // boolean
-    hasTakenLoan = secondChoice === "sim"; // boolean
-
-    //ABRA O POP UP DE INFO BENEFIT
-    const benefit = document.getElementById("benefit");
-    benefit.click();
-}
-
-//VALIDAR FORMULARIO REPRESENTANTE
-function validateFormRepresentative() {
-    const name_RepresentiveElement = document.querySelector(
-        '[data-brz-label="Nome do Representante"]'
-    ).value;
-    const federalId_RepresentiveElement = document.querySelector(
-        '[data-brz-label="CPF do Representante"]'
-    ).value;
-
-    if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    }
-    if (!validateCPF(federalId_RepresentiveElement)) {
-        showToast("O CPF do Representante não é válido!");
-        return false;
-    }
-    if (federalId == federalId_RepresentiveElement) {
-        showToast(
-            "Os CPFs do beneficiário e do representante devem ser diferentes!"
-        );
-        return false;
-    }
-
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    name_Representive = name_RepresentiveElement;
-    federalId_Representive = federalId_RepresentiveElement;
-
-    //MUDE O TEXTO
-    submitRepresentative.innerHTML = "Carregando... Aguarde!";
-    //EXECUTAR A CRIAÇÃO DE CONTATO
-    criar_contato_inss();
-}
-
-// CRIAR CONTATO INSS
-async function criar_contato_inss() {
-    // CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "inss";
-
-    /* REPLACE */
-    const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
-    if (federalId_Representive) {
-        federalId_Representive_replaced = federalId_Representive.replace(
-            /[^\d]/g,
-            ""
-        );
-    }
-
-    /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
-    axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
-            federalId: federalId_replaced,
-            birthDate: birth,
-            representativeName: name_Representive,
-            representativeFederalId: federalId_Representive_replaced,
-            enrollment: enrollment,
-            //questionario:
-            retiredOrPensioner: retiredOrPensioner,
-            hasTakenLoan: hasTakenLoan,
-            benefitAmountRange: benefitAmountRange,
-            pipelineSlug: pipeline_slug,
-            origin: origin,
-            referrer: referrer,
+    axios.get(url)
+        .then(response => {
+            setBanks(response.data.banks);
         })
-        .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId_replaced,
-                birth,
-                name_Representive,
-                federalId_Representive: federalId_Representive_replaced,
-                enrollment,
-                retiredOrPensioner: retiredOrPensioner,
-                hasTakenLoan: hasTakenLoan,
-                benefitAmountRange: benefitAmountRange,
-                pipeline_slug,
-                origin,
-                referrer,
-            });
-
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
-        })
-        .catch(function (error) {
-            showToast(error.response.data.message);
-            return false;
+        .catch(error => {
+            console.error('Error:', error.message);
         });
 }
 
-// UPDATE BENEFIT
-async function updateBenefit() {
-    //OBTER INFORMAÇÕES DO LOCALSTORAGE
-    var dataQualification = localStorage.getItem("dataQualification");
-    var dataFromInss = JSON.parse(dataQualification);
+function proposal() {
+    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+    const pipelineSlug = storedDataQualification.pipelineSlug;
+    const federalId = storedDataQualification.federalId;
 
-    if (dataFromInss) {
-        name = dataFromInss.name;
-        phone = dataFromInss.phone;
-        federalId = dataFromInss.federalId;
-        birth = dataFromInss.birthDate;
-    }
-
-    // CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "inss";
-
-    /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
-            federalId: federalId,
-            birthDate: birth,
-            enrollment: enrollment,
-            pipelineSlug: pipeline_slug,
-        })
+        .post(`${API_URL}/proposal/${federalId}`, {})
         .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId,
-                birth,
-                enrollment,
-            });
 
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
         .catch(function (error) {
-            showToast(error.response.data.message);
+            
+        });
+}
+
+function redirectToSignature() {
+    const oportunidadesJSON = localStorage.getItem("oportunidades");
+    const oportunidadesData = JSON.parse(oportunidadesJSON);
+    const oportunidades = oportunidadesData.oportunidades;
+
+    // Encontrar a oportunidade com a ação "confirmar"
+    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+        return oportunidade.acao === 'confirmar';
+    });
+
+    if (oportunidadeConfirmar) {
+        const banco = oportunidadeConfirmar.banco;
+
+        bankRedirect(banco);
+    } else {
+        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+    }
+}
+
+function onTheWeb() {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    console.log("OnTheWebExecutado");
+
+    axios.get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+        .then((response) => {
+            /* PEDIR INFO */
+            const pedirInfos = response.data.pedirInfos;
+
+            if (pedirInfos.includes("documento")) {
+                URL_redirect = `/document`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("endereco")) {
+                URL_redirect = `/address`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("conta")) {
+                URL_redirect = `/account`;
+                window.location.href = URL_redirect;
+            }
+
+
+
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
         });
 }
 
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
-    //OBTER INFORMAÇÕES DO LOCALSTORAGE
-    var dataQualification = localStorage.getItem("dataQualification");
-    var dataFromInss = JSON.parse(dataQualification);
-
-    if (dataFromInss) {
-        name = dataFromInss.name;
-        phone = dataFromInss.phone;
-        federalId = dataFromInss.federalId;
-        birth = dataFromInss.birthDate;
-        origin = dataFromInss.origin;
-    }
 
     //CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "fgts";
+    const nextStep = "qualification"
+    const pipeline_slug = "fgts"
+    const autorizedBanks = ["bmg"];
 
-    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
-    axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
-            federalId: federalId,
-            birthDate: birth,
-            pipelineSlug: pipeline_slug,
-            origin: origin,
-        })
+    const federalId_replaced = federalId.replace(/[^\d]/g, "");
+
+    axios.post(API_URL + '/criar-contato', {
+        name: name,
+        phone: phone,
+        birthDate: birth,
+        federalId: federalId_replaced,
+        autorizedBanks: autorizedBanks,
+        pipelineSlug: pipeline_slug,
+        origin: origin,
+        referrer: referrer,
+        workWithSignedWorkCard: workWithSignedWorkCard,
+        withdrawalEnabled: withdrawalEnabled,
+    })
         .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId,
-                birth,
-                pipeline_slug,
-                origin,
-            });
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            console.log("Contato FGTS criado")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -626,31 +343,95 @@ async function criar_contato_fgts() {
 
 //QUALIFICAÇÃO
 function qualification() {
-    //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId;
-
-    //OBTER INFO DA URL
-    var url = new URL(window.location.href);
-    var pipelineSlug = url.searchParams.get("pipeline_slug");
     var attempt = 0;
+    var attemptWaiting = 0;
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    let pipelineSlug = obterParametroDaURL('pipeline_slug');
+    let federalId = obterParametroDaURL('federalId');
+
+    if (pipelineSlug && federalId) {
+        const dataQualification = {
+            pipelineSlug: pipelineSlug,
+            federalId: federalId
+        };
+
+        const dataQualificationJSON = JSON.stringify(dataQualification);
+        localStorage.setItem('dataQualification', dataQualificationJSON);
+        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
+    } else {
+        const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+        if (dataQualificationLocalStorage) {
+            const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+            pipelineSlug = storedDataQualification.pipelineSlug;
+            federalId = storedDataQualification.federalId;
+
+            console.log("Não tinha na URL: ", pipelineSlug, federalId);
+        } else {
+            console.log('Nenhum valor armazenado no localStorage para dataQualification');
+        }
+    }
+
 
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
             .then((response) => {
                 let URL_redirect;
-                var protocolo = response.data.protocolo;
-                var mensagem = response.data.mensagem;
-                var situacao = response.data.situacao;
+                const contexto = response.data.contexto;
+                const situacao = response.data.situacao;
+                const perfil = response.data.perfil;
+                const mensagem = response.data.mensagem;
+                const protocolo = response.data.protocolo;
+                /* PEDIR INFO */
+                const pedirInfos = response.data.pedirInfos;
+                /* OPORTUNIDADE */
+                const oportunidades = response.data.oportunidades;
+                // ENVIAR OPORTUNIDADE PARA O LOCALSTORAGE
+                const oportunidadesJSON = JSON.stringify(oportunidades);
+                localStorage.setItem('oportunidades', oportunidadesJSON);
 
-                switch (situacao) {
-                    //OPPORTUNITY
-                    case "exibir-oportunidade":
-                        URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
+                const id = response.data.oportunidades.id;
+                const produto = response.data.oportunidades.produto;
+                const banco = response.data.oportunidades.banco;
+                const etapa = response.data.oportunidades.etapa;
+                const acao = response.data.oportunidades.acao;
+                const linkAssinatura = response.data.oportunidades.linkAssinatura;
+
+                switch (contexto) {
+                    //REQUER AÇÃO DO CLIENTE
+                    case "resolver-situação":
+                        switch (situacao) {
+                            case "matricula":
+                                URL_redirect = `/benefit`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "habilitar-saque":
+                                URL_redirect = `/enable`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "autorizar-banco":
+                                URL_redirect = `/authorize`;
+                                window.location.href = URL_redirect;
+                                break
+                            case "assinatura-pendente":
+                                bankRedirect(banco)
+                        }
+
+                    //TEM OPORTUNIDADE
+                    case "tem-oportunidade":
+                        if (pedirInfos.length > 0 && (perfil == "novato" || perfil == "tomador")) {
+                            URL_redirect = `/opportunity?protocol=${protocolo}`;
+                            window.location.href = URL_redirect;
+                        } else {
+                            URL_redirect = `/success?protocol=${protocolo}`;
+                            window.location.href = URL_redirect;
+                        }
                         break;
 
                     //NOOPPORTUNITY
@@ -661,45 +442,30 @@ function qualification() {
                                 sendRequest();
                             }, 3000);
                         } else {
-                            URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
+                            URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
                         }
                         break;
 
                     //NOQUALIFIED
                     case "nao-qualificado":
-                        URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
+                        URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
 
-                    //REQUIRESTREATMENT
-                    case "requer-tratamento":
-                        URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
-                        break;
-
-                    //ENROLLMENT INSS
-                    case "acao-adicional":
-                        var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-
-                        if (attemptBenefitStorage === null) {
-                            localStorage.setItem('attemptBenefitStorage', 1);
-                            console.log(attemptBenefitStorage)
+                    //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
+                    case "aguardando-qualificacao":
+                        attemptWaiting++;
+                        console.log("contator: ", attemptWaiting)
+                        if (attemptWaiting < 4) {
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 3000);
                         } else {
-                            attemptBenefitStorage++;
-                            localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
-                            console.log(attemptBenefitStorage)
+                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
+                            popUpNoResponse.click()
                         }
 
-                        var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
-
-                        if (attemptBenefit > 2) {
-                            URL_redirect = `/qualifywhatsapp`;
-                            window.location.href = URL_redirect;
-                        } else {
-                            URL_redirect = `/benefit`;
-                            window.location.href = URL_redirect;
-                        }
                         break;
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
@@ -727,4 +493,221 @@ function qualification() {
             });
     };
     sendRequest();
+}
+
+//REGISTRAR FORMULARIOS
+function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "address": address,
+            "addressNumber": addressNumber,
+            "district": district,
+            "city": city,
+            "state": state,
+            "zipcode": zipcode
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+function registrarEndereco(type, number, issueDate, agency, agencyState) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "type": type,
+            "number": number,
+            "issueDate": issueDate,
+            "agency": agency,
+            "agencyState": agencyState
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+function registrarConta(bankNo, branch, acctNo, acctType) {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+
+    axios
+        .get(`${API_URL}/registrar-endereco`, {
+            "federalId": federalId,
+            "bankNo": bankNo,
+            "branch": branch,
+            "acctNo": acctNo,
+            "acctType": acctType
+        })
+        .then((response) => {
+            qualification()
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
+//VALIDAÇÕES
+function validatorQuestions() {
+    const firstChoice = document
+        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
+        .value.toLowerCase();
+    const secondChoice = document
+        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
+        .value.toLowerCase();
+
+    if (firstChoice === "" || secondChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+    }
+
+    workWithSignedWorkCard = firstChoice;
+    withdrawalEnabled = secondChoice === "sim";
+
+    criar_contato_fgts();
+}
+
+function validateFormBenefit() {
+    const nameElement = document.querySelector(
+        '[data-brz-label="Nome Completo"]'
+    ).value;
+    const phoneElement = document.querySelector(
+        '[data-brz-label="WhatsApp"]'
+    ).value;
+    const federalIdElement = document.querySelector(
+        '[data-brz-label="CPF"]'
+    ).value;
+    const birthElement = document.querySelector(
+        '[data-brz-label="Data de Nascimento"]'
+    ).value;
+
+    if (
+        nameElement == "" ||
+        phoneElement == "" ||
+        federalIdElement == "" ||
+        birthElement == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+    if (
+        nameElement.trim() === "" ||
+        !nameElement.includes(" ") ||
+        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
+    ) {
+        showToast("Por favor, digite seu nome completo");
+        return false;
+    }
+    if (!validateCPF(federalIdElement)) {
+        showToast("O CPF do Beneficiário não é válido!");
+        return false;
+    }
+    if (!isDateValid(birthElement)) {
+        showToast("A data de nascimento informada não é válida!");
+        return false;
+    }
+    if (!validatePhone(phoneElement)) {
+        showToast("O número do Whatsapp informado não é válido!");
+        return false;
+    }
+
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    name = nameElement;
+    phone = phoneElement;
+    federalId = federalIdElement;
+    birth = birthElement;
+
+    //ABRA O POP UP DE QUESTIONARIO
+    const questions = document.getElementById("questions");
+    questions.click();
+}
+
+function validateEndereco() {
+    const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
+    const address = document.querySelector('[data-brz-label="Rua"]').value;
+    const addressNumber = document.querySelector('[data-brz-label="Número"]').value;
+    const district = document.querySelector('[data-brz-label="Bairro"]').value;
+    const city = document.querySelector('[data-brz-label="Cidade"]').value;
+    const state = document.querySelector('[data-brz-label="UF"]').value;
+
+    if (
+        zipcode == "" ||
+        address == "" ||
+        addressNumber == "" ||
+        state == "" ||
+        district == "" ||
+        city == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    registrarEndereco(zipcode, address, addressNumber, district, city, state);
+}
+
+function validateDocumento() {
+    const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+    const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
+    const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
+    const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
+    const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+
+    if (
+        type == "" ||
+        number == "" ||
+        issueDate == "" ||
+        agency == "" ||
+        agencyState == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    registrarEndereco(type, number, issueDate, agency, agencyState);
+}
+
+function validateConta() {
+    const bank = document.querySelector('[data-brz-label="Banco"]').value;
+    const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
+    const branch = document.querySelector('[data-brz-label="Agência"]').value;
+    const account = document.querySelector('[data-brz-label="Conta"]').value;
+    const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
+
+    if (
+        bank == "" ||
+        acctType == "" ||
+        branch == "" ||
+        account == "" ||
+        verifyDigit == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    let acctNo = account + verifyDigit;
+    let bankNo = bank.bank_no;
+
+    registrarConta(bankNo, branch, acctNo, acctType);
 }
