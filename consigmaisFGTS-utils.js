@@ -275,7 +275,7 @@ function redirectToSignature() {
     }
 }
 
-function onTheWeb() {
+function nextStepInfos() {
     //OBTER INFO DO LOCALSTORAGE
     var DataInfoQualification = localStorage.getItem("dataQualification");
     var infoQualification = JSON.parse(DataInfoQualification);
@@ -515,7 +515,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             "zipcode": zipcode
         })
         .then((response) => {
-            qualification()
+            nextStepInfos();
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
@@ -539,7 +539,7 @@ function registrarEndereco(type, number, issueDate, agency, agencyState) {
             "agencyState": agencyState
         })
         .then((response) => {
-            qualification()
+            nextStepInfos()
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
@@ -562,7 +562,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             "acctType": acctType
         })
         .then((response) => {
-            qualification()
+            nextStepInfos()
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
