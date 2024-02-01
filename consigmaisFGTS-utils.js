@@ -240,6 +240,75 @@ function getBanks() {
         });
 }
 
+function proposal() {
+    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+    const pipelineSlug = storedDataQualification.pipelineSlug;
+    const federalId = storedDataQualification.federalId;
+
+    axios
+        .post(`${API_URL}/proposal/${federalId}`, {})
+        .then((response) => {
+
+        })
+        .catch(function (error) {
+            
+        });
+}
+
+function redirectToSignature() {
+    const oportunidadesJSON = localStorage.getItem("oportunidades");
+    const oportunidadesData = JSON.parse(oportunidadesJSON);
+    const oportunidades = oportunidadesData.oportunidades;
+
+    // Encontrar a oportunidade com a ação "confirmar"
+    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+        return oportunidade.acao === 'confirmar';
+    });
+
+    if (oportunidadeConfirmar) {
+        const banco = oportunidadeConfirmar.banco;
+
+        bankRedirect(banco);
+    } else {
+        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+    }
+}
+
+function onTheWeb() {
+    //OBTER INFO DO LOCALSTORAGE
+    var DataInfoQualification = localStorage.getItem("dataQualification");
+    var infoQualification = JSON.parse(DataInfoQualification);
+
+    let federalId = infoQualification.federalId;
+    let pipelineSlug = infoQualification.pipelineSlug;
+
+    axios.get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+        .then((response) => {
+            /* PEDIR INFO */
+            const pedirInfos = response.data.pedirInfos;
+
+            if (pedirInfos.includes("documento")) {
+                URL_redirect = `/document`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("endereco")) {
+                URL_redirect = `/address`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("conta")) {
+                URL_redirect = `/account`;
+                window.location.href = URL_redirect;
+            }
+
+
+
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
 
@@ -356,16 +425,14 @@ function qualification() {
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
                         if (pedirInfos.length > 0 && (perfil == "novato" || perfil == "tomador")) {
-                            URL_redirect = `/opportunity?protocol=${protocolo}&tp=wpp`;
-                            window.location.href = URL_redirect;
-                        } else if (pedirInfos.length > 0 && perfil == "tomador") {
-                            URL_redirect = `/opportunity?tp=web`;
+                            URL_redirect = `/opportunity?protocol=${protocolo}`;
                             window.location.href = URL_redirect;
                         } else {
                             URL_redirect = `/success?protocol=${protocolo}`;
                             window.location.href = URL_redirect;
                         }
                         break;
+
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -392,7 +459,7 @@ function qualification() {
                         if (attemptWaiting < 4) {
                             setTimeout(function () {
                                 sendRequest();
-                            }, 7000);
+                            }, 3000);
                         } else {
                             var popUpNoResponse = document.querySelector("#popUpNoResponse");
                             popUpNoResponse.click()
@@ -425,58 +492,6 @@ function qualification() {
             });
     };
     sendRequest();
-}
-
-function redirectToSignature() {
-    const oportunidadesJSON = localStorage.getItem("oportunidades");
-    const oportunidadesData = JSON.parse(oportunidadesJSON);
-    const oportunidades = oportunidadesData.oportunidades;
-
-    // Encontrar a oportunidade com a ação "confirmar"
-    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
-        return oportunidade.acao === 'confirmar';
-    });
-
-    if (oportunidadeConfirmar) {
-        const banco = oportunidadeConfirmar.banco;
-
-        bankRedirect(banco);
-    } else {
-        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
-    }
-}
-
-function onTheWeb() {
-    //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId;
-
-    axios.get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
-        .then((response) => {
-            /* PEDIR INFO */
-            const pedirInfos = response.data.pedirInfos;
-
-            if (pedirInfos.includes("documento")) {
-                URL_redirect = `/document`;
-                window.location.href = URL_redirect;
-
-            } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/address`;
-                window.location.href = URL_redirect;
-
-            } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/account`;
-                window.location.href = URL_redirect;
-            }
-
-
-
-        })
-        .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
-        });
 }
 
 //REGISTRAR FORMULARIOS
@@ -552,8 +567,6 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             console.log(error, "Não foi possível obter a qualificação");
         });
 }
-
-
 
 //VALIDAÇÕES
 function validatorQuestions() {
