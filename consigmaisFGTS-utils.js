@@ -432,36 +432,32 @@ function redirectToSignature() {
     const oportunidadesJSON = localStorage.getItem("oportunidades");
 
     if (oportunidadesJSON) {
-        try {
-            // Tentar fazer o parse da string JSON para um array
-            const oportunidades = JSON.parse(oportunidadesJSON);
+        // Fazer o parse das oportunidades
+        const oportunidades = JSON.parse(oportunidadesJSON);
 
-            // Verificar se oportunidades é um array
-            if (Array.isArray(oportunidades)) {
-                // Encontrar a oportunidade com a ação "confirmar"
-                const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
-                    return oportunidade.acao === 'confirmar';
-                });
+        // Variável para armazenar a oportunidade com a ação "confirmar"
+        let oportunidadeConfirmar = null;
 
-                if (oportunidadeConfirmar) {
-                    const banco = oportunidadeConfirmar.banco;
-
-                    // Substitua bankRedirect pelo que você precisar fazer com o banco
-                    console.log("Redirecionando para o banco:", banco);
-                } else {
-                    console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
-                }
-            } else {
-                console.log("O conteúdo de 'oportunidades' no localStorage não é um array.");
+        // Percorrer manualmente o array de oportunidades
+        for (let i = 0; i < oportunidades.length; i++) {
+            if (oportunidades[i].acao === 'confirmar') {
+                oportunidadeConfirmar = oportunidades[i];
+                break;  // Se encontrou, interrompe o loop
             }
-        } catch (error) {
-            console.error("Erro ao fazer parse da string JSON:", error);
+        }
+
+        if (oportunidadeConfirmar) {
+            const banco = oportunidadeConfirmar.banco;
+
+            // Substitua bankRedirect pelo que você precisa fazer com o banco
+            console.log("Redirecionando para o banco:", banco);
+        } else {
+            console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
         }
     } else {
         console.log("Nenhuma informação 'oportunidades' encontrada no localStorage.");
     }
 }
-
 
 
 
