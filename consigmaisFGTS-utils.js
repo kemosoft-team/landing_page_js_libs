@@ -252,7 +252,7 @@ function proposal() {
 
         })
         .catch(function (error) {
-            
+
         });
 }
 
@@ -283,10 +283,11 @@ function onTheWeb() {
     let federalId = infoQualification.federalId;
     let pipelineSlug = infoQualification.pipelineSlug;
 
-    axios.get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+    axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
         .then((response) => {
             /* PEDIR INFO */
             const pedirInfos = response.data.pedirInfos;
+            console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
                 URL_redirect = `/document`;
