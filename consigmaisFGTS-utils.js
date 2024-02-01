@@ -13,7 +13,6 @@ let withdrawalEnabled;
 
 let controlNoOpportunity = false;
 
-//EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -168,7 +167,7 @@ function isDateValid(dateString) {
     return false;
 }
 
-// ENVIAR DADOS PARA O LOCALSTORAGE
+
 function saveDataToLocalStorage({
     name,
     phone,
@@ -247,16 +246,11 @@ async function criar_contato_fgts() {
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
-
-    /* REPLACE */
-    const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
-    //CONFIG
     const autorizedBanks = ["bmg"];
 
-    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
+    const federalId_replaced = federalId.replace(/[^\d]/g, "");
+
     axios.post(API_URL + '/criar-contato', {
-        //Formulario inicial
         name: name,
         phone: phone,
         birthDate: birth,
@@ -265,7 +259,6 @@ async function criar_contato_fgts() {
         pipelineSlug: pipeline_slug,
         origin: origin,
         referrer: referrer,
-        //Perguntas
         workWithSignedWorkCard: workWithSignedWorkCard,
         withdrawalEnabled: withdrawalEnabled,
     })
@@ -282,24 +275,6 @@ async function criar_contato_fgts() {
 function qualification() {
     var attempt = 0;
     var attemptWaiting = 0;
-
-    /* function obterParametroDaURL(parametro) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(parametro);
-    }
-
-    // OBTER DA URL
-    const pipelineSlug = obterParametroDaURL('pipeline_slug');
-    const federalId = obterParametroDaURL('federalId');
-
-    //ENVIAR PARA O LOCALSTORAGE
-    const dataQualification = {
-        pipelineSlug: pipelineSlug,
-        federalId: federalId
-    };
-
-    const dataQualificationJSON = JSON.stringify(dataQualification);
-    localStorage.setItem('dataQualification', dataQualificationJSON); */
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -453,23 +428,31 @@ function qualification() {
 }
 
 function redirectToSignature() {
+    // Obter as oportunidades do localStorage
     const oportunidadesJSON = localStorage.getItem("oportunidades");
-    const oportunidadesData = JSON.parse(oportunidadesJSON);
-    const oportunidades = oportunidadesData.oportunidades;
 
-    // Encontrar a oportunidade com a ação "confirmar"
-    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
-        return oportunidade.acao === 'confirmar';
-    });
+    if (oportunidadesJSON) {
+        // Fazer o parse das oportunidades
+        const oportunidades = JSON.parse(oportunidadesJSON);
 
-    if (oportunidadeConfirmar) {
-        const banco = oportunidadeConfirmar.banco;
+        // Encontrar a oportunidade com a ação "confirmar"
+        const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+            return oportunidade.acao === 'confirmar';
+        });
 
-        bankRedirect(banco);
+        if (oportunidadeConfirmar) {
+            const banco = oportunidadeConfirmar.banco;
+
+            // Substitua bankRedirect pelo que você precisar fazer com o banco
+            console.log("Redirecionando para o banco:", banco);
+        } else {
+            console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+        }
     } else {
-        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+        console.log("Nenhuma informação 'oportunidades' encontrada no localStorage.");
     }
 }
+
 
 function onTheWeb() {
     //OBTER INFO DO LOCALSTORAGE
