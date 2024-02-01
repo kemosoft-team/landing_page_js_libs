@@ -435,23 +435,29 @@ function redirectToSignature() {
         // Fazer o parse das oportunidades
         const oportunidades = JSON.parse(oportunidadesJSON);
 
-        // Encontrar a oportunidade com a ação "confirmar"
-        const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
-            return oportunidade.acao === 'confirmar';
-        });
+        // Verificar se oportunidades é um array
+        if (Array.isArray(oportunidades)) {
+            // Encontrar a oportunidade com a ação "confirmar"
+            const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+                return oportunidade.acao === 'confirmar';
+            });
 
-        if (oportunidadeConfirmar) {
-            const banco = oportunidadeConfirmar.banco;
+            if (oportunidadeConfirmar) {
+                const banco = oportunidadeConfirmar.banco;
 
-            // Substitua bankRedirect pelo que você precisar fazer com o banco
-            console.log("Redirecionando para o banco:", banco);
+                // Substitua bankRedirect pelo que você precisar fazer com o banco
+                console.log("Redirecionando para o banco:", banco);
+            } else {
+                console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+            }
         } else {
-            console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+            console.log("O conteúdo de 'oportunidades' no localStorage não é um array.");
         }
     } else {
         console.log("Nenhuma informação 'oportunidades' encontrada no localStorage.");
     }
 }
+
 
 
 function onTheWeb() {
