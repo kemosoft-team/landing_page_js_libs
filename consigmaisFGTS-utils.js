@@ -213,14 +213,17 @@ function setBanks(bankList) {
 function bankRedirect(banco) {
     switch (banco) {
         case "eccor":
-            window.location.href = "https://seusite.com/signature?tp=wpp";
-            break;
+            URL_redirect = `/signature?tp=wpp`;
+            window.location.href = URL_redirect;
+            break
         case "facta":
-            window.location.href = "https://seusite.com/signature?tp=link";
-            break;
+            URL_redirect = `/signature?tp=link`;
+            window.location.href = URL_redirect;
+            break
         case "bmg":
-            window.location.href = "https://seusite.com/signature?tp=sms";
-            break;
+            URL_redirect = `/signature?tp=sms`;
+            window.location.href = URL_redirect;
+            break
         default:
             console.log("Banco não reconhecido.");
     }
@@ -426,7 +429,7 @@ function redirectToSignature() {
     const oportunidades = oportunidadesData.oportunidades;
 
     // Encontrar a oportunidade com a ação "confirmar"
-    const oportunidadeConfirmar = oportunidades.find(function(oportunidade) {
+    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
         return oportunidade.acao === 'confirmar';
     });
 
