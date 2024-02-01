@@ -2,27 +2,19 @@
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let origin = window.location.href;
 let referrer = document.referrer;
-
 let name;
 let phone;
 let federalId;
 let birth;
 let enrollment;
-
 let name_Representive;
 let federalId_Representive;
 let federalId_Representive_replaced;
-
 let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
-
 /* VARIAVEIS DE CONTROLE */
 let controlNoOpportunity = false;
-
-
-
-
 //EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -32,15 +24,12 @@ function showToast(text) {
         x.className = x.className.replace("show", `${text}`);
     }, 3000);
 }
-
 /* VALIDAR WHATSAPP */
 function validatePhone(phone) {
     const numericPhone = phone.replace(/\D/g, "");
-
     if (numericPhone.length !== 11) {
         return false;
     }
-
     const validDDDs = [
         "11",
         "12",
@@ -110,70 +99,53 @@ function validatePhone(phone) {
         "98",
         "99",
     ];
-
     const firstTwoDigits = numericPhone.substring(0, 2);
     if (!validDDDs.includes(firstTwoDigits)) {
         return false;
     }
-
     if (numericPhone[2] !== "9") {
         return false;
     }
-
     const firstDigit = numericPhone[0];
     if (numericPhone.split("").every((digit) => digit === firstDigit)) {
         return false;
     }
-
     return true;
 }
-
 /* VALIDAR CPF */
 function validateCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, "");
     if (cpf.length !== 11) return false;
     let sum = 0,
         remainder;
-
     for (let i = 0; i < 9; i++) sum += parseInt(cpf.charAt(i)) * (10 - i);
     remainder = 11 - (sum % 11);
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(9))) return false;
-
     sum = 0;
     for (let i = 0; i < 10; i++) sum += parseInt(cpf.charAt(i)) * (11 - i);
     remainder = 11 - (sum % 11);
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(10))) return false;
-
     return true;
 }
-
 //VALIDAR ENROLLMENT
 function validarNumeroBeneficio(numeroBeneficio) {
     var regexBeneficio = /^[0-9]{10}$/;
-
     if (regexBeneficio.test(numeroBeneficio)) {
         var sequenciaRepetida = /(\d)\1{9}/;
-
         if (sequenciaRepetida.test(numeroBeneficio)) {
             return false;
         }
-
         return true;
     }
-
     return false;
 }
-
 //VALIDAR ENROLLMENT
 function validateMod11Digit(code, numDig, limMult, x10) {
     if (!numDig) numDig = 1;
-
     let dado = code.substring(0, code.length - numDig);
-
     let mult, soma, i, n, dig;
-
     if (!x10) x10 = 1; // Correção aqui
     for (n = 1; n <= numDig; n++) {
         soma = 0;
@@ -190,27 +162,21 @@ function validateMod11Digit(code, numDig, limMult, x10) {
         }
         dado += (dig);
     }
-
     return (dado === code);
 }
-
 //VALIDAR DATA
 function isDateValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
     if (!datePattern.test(dateString)) {
         return false;
     }
-
     const [, day, month, year] = dateString.match(datePattern);
-
     const dayInt = parseInt(day, 10);
     const monthInt = parseInt(month, 10);
     const yearInt = parseInt(year, 10);
-
     if (yearInt < 1900 || yearInt > 2099) {
         return false;
     }
-
     const date = new Date(yearInt, monthInt - 1, dayInt);
     if (
         date.getDate() === dayInt &&
@@ -219,41 +185,31 @@ function isDateValid(dateString) {
     ) {
         return true;
     }
-
     return false;
 }
-
 //VALIDA DATA DE NASCIMENTO MAX
 function isBirthValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
     if (!datePattern.test(dateString)) {
         return false;
     }
-
     const [, , , year] = dateString.match(datePattern);
-
     const yearInt = parseInt(year, 10);
-
     const currentDate = new Date();
     const maxBirthYear = currentDate.getFullYear();
-
     if (maxBirthYear - yearInt > 76) {
         return false;
     }
-
     var representativeFalseButton = document.getElementById(
         "representative_false"
     );
-
     if (maxBirthYear - yearInt < 18) {
         representativeFalseButton.style.display = "none";
     } else {
         representativeFalseButton.style.display = "block";
     }
-
     return true;
 }
-
 // ENVIAR DADOS PARA O LOCALSTORAGE
 function saveDataToLocalStorage({
     name,
@@ -285,12 +241,9 @@ function saveDataToLocalStorage({
         origin,
         referrer,
     };
-
     var objDataQualification = JSON.stringify(dataQualification);
-
     localStorage.setItem("dataQualification", objDataQualification);
 }
-
 //VALIDAR NÚMERO DO BENEFÍCIO
 function validatorStepBenefit() {
     const benefit = document.querySelector(
@@ -309,17 +262,13 @@ function validatorStepBenefit() {
         showToast("O número do benefício informado é inválido!! Revise a informação!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     enrollment = benefit;
-
     updateBenefit();
 }
-
 //VALIDAR NÚMERO DO BENEFÍCIO
 function validatorPopUpBenefit() {
     const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
-
     if (benefit != "" && benefit.length != 10) {
         showToast("O número do benefício deve conter 10 caracteres.");
         return false;
@@ -330,17 +279,14 @@ function validatorPopUpBenefit() {
         showToast("O número do benefício informado é inválido!! Revise a informação!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     enrollment = benefit;
-
     //ABRI POP UP QUESTIONARIOS
     const close_benefit = document.getElementById("close_benefit");
     const representativeQuestions = document.getElementById("question_representative");
     close_benefit.click();
     representativeQuestions.click();
 }
-
 // VALIDAR PERGUNTAS INICIAIS
 /* function validatorQuestions() {
     const firstChoice = document
@@ -352,16 +298,13 @@ function validatorPopUpBenefit() {
     const thirdChoice = document.querySelector(
         '[data-brz-label="Em qual dos valores se enquadra o seu benefício?"]'
     ).value;
-
     if (firstChoice === "" || secondChoice === "" || thirdChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
     }
-
     retiredOrPensioner = firstChoice === "sim"; // boolean
     hasTakenLoan = secondChoice === "sim"; // boolean
     benefitAmountRange = thirdChoice; // string
-
     // ABRA O POP-UP DE QUESTIONÁRIO REPRESENTANTE
     const representativeQuestions = document.getElementById(
         "question_representative"
@@ -370,7 +313,6 @@ function validatorPopUpBenefit() {
     closeQuestions.click();
     representativeQuestions.click();
 } */
-
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
     const nameElement = document.querySelector(
@@ -391,7 +333,6 @@ function validateFormBenefit() {
     const secondChoice = document
         .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
         .value.toLowerCase();
-
     if (
         nameElement == "" ||
         phoneElement == "" ||
@@ -411,7 +352,6 @@ function validateFormBenefit() {
         showToast("Por favor, digite seu nome completo");
         return false;
     }
-
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF do Beneficiário não é válido!");
         return false;
@@ -430,7 +370,6 @@ function validateFormBenefit() {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
     phone = phoneElement;
@@ -438,12 +377,10 @@ function validateFormBenefit() {
     birth = birthElement;
     retiredOrPensioner = firstChoice === "sim"; // boolean
     hasTakenLoan = secondChoice === "sim"; // boolean
-
     //ABRA O POP UP DE INFO BENEFIT
     const benefit = document.getElementById("benefit");
     benefit.click();
 }
-
 //VALIDAR FORMULARIO REPRESENTANTE
 function validateFormRepresentative() {
     const name_RepresentiveElement = document.querySelector(
@@ -452,7 +389,6 @@ function validateFormRepresentative() {
     const federalId_RepresentiveElement = document.querySelector(
         '[data-brz-label="CPF do Representante"]'
     ).value;
-
     if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -467,33 +403,27 @@ function validateFormRepresentative() {
         );
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     name_Representive = name_RepresentiveElement;
     federalId_Representive = federalId_RepresentiveElement;
-
     //MUDE O TEXTO
     submitRepresentative.innerHTML = "Carregando... Aguarde!";
     //EXECUTAR A CRIAÇÃO DE CONTATO
     criar_contato_inss();
 }
-
 // CRIAR CONTATO INSS
 async function criar_contato_inss() {
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
-
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
     if (federalId_Representive) {
         federalId_Representive_replaced = federalId_Representive.replace(
             /[^\d]/g,
             ""
         );
     }
-
     /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios
         .post(API_URL + "/criar-contato", {
@@ -528,7 +458,6 @@ async function criar_contato_inss() {
                 origin,
                 referrer,
             });
-
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
         .catch(function (error) {
@@ -536,24 +465,20 @@ async function criar_contato_inss() {
             return false;
         });
 }
-
 // UPDATE BENEFIT
 async function updateBenefit() {
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
     var dataQualification = localStorage.getItem("dataQualification");
     var dataFromInss = JSON.parse(dataQualification);
-
     if (dataFromInss) {
         name = dataFromInss.name;
         phone = dataFromInss.phone;
         federalId = dataFromInss.federalId;
         birth = dataFromInss.birthDate;
     }
-
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
-
     /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios
         .post(API_URL + "/criar-contato", {
@@ -572,20 +497,17 @@ async function updateBenefit() {
                 birth,
                 enrollment,
             });
-
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
         .catch(function (error) {
             showToast(error.response.data.message);
         });
 }
-
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
     var dataQualification = localStorage.getItem("dataQualification");
     var dataFromInss = JSON.parse(dataQualification);
-
     if (dataFromInss) {
         name = dataFromInss.name;
         phone = dataFromInss.phone;
@@ -593,11 +515,9 @@ async function criar_contato_fgts() {
         birth = dataFromInss.birthDate;
         origin = dataFromInss.origin;
     }
-
     //CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "fgts";
-
     /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
     axios
         .post(API_URL + "/criar-contato", {
@@ -623,20 +543,16 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
-
 //QUALIFICAÇÃO
 function qualification() {
     //OBTER INFO DO LOCALSTORAGE
     var DataInfoQualification = localStorage.getItem("dataQualification");
     var infoQualification = JSON.parse(DataInfoQualification);
-
     let federalId = infoQualification.federalId;
-
     //OBTER INFO DA URL
     var url = new URL(window.location.href);
     var pipelineSlug = url.searchParams.get("pipeline_slug");
     var attempt = 0;
-
     const sendRequest = () => {
         axios
             .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
@@ -645,14 +561,12 @@ function qualification() {
                 var protocolo = response.data.protocolo;
                 var mensagem = response.data.mensagem;
                 var situacao = response.data.situacao;
-
                 switch (situacao) {
                     //OPPORTUNITY
                     case "exibir-oportunidade":
                         URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
-
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -665,23 +579,19 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
-
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
-
                     //REQUIRESTREATMENT
                     case "requer-tratamento":
                         URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
-
                     //ENROLLMENT INSS
                     case "acao-adicional":
                         var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-
                         if (attemptBenefitStorage === null) {
                             localStorage.setItem('attemptBenefitStorage', 1);
                             console.log(attemptBenefitStorage)
@@ -690,9 +600,7 @@ function qualification() {
                             localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
                             console.log(attemptBenefitStorage)
                         }
-
                         var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
-
                         if (attemptBenefit > 2) {
                             URL_redirect = `/qualifywhatsapp`;
                             window.location.href = URL_redirect;
@@ -701,7 +609,6 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
-
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
