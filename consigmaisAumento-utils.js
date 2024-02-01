@@ -649,7 +649,7 @@ function qualification() {
                 switch (situacao) {
                     //OPPORTUNITY
                     case "exibir-oportunidade":
-                        URL_redirect = `/opportunity?message=${mensagem}&protocolo=${protocolo}`;
+                        URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
 
