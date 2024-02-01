@@ -210,6 +210,22 @@ function setBanks(bankList) {
     });
 }
 
+function bankRedirect(banco) {
+    switch (banco) {
+        case "eccor":
+            window.location.href = "https://seusite.com/signature?tp=wpp";
+            break;
+        case "facta":
+            window.location.href = "https://seusite.com/signature?tp=link";
+            break;
+        case "bmg":
+            window.location.href = "https://seusite.com/signature?tp=sms";
+            break;
+        default:
+            console.log("Banco não reconhecido.");
+    }
+}
+
 function getBanks() {
     const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
 
@@ -298,6 +314,10 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 /* OPORTUNIDADE */
                 const oportunidades = response.data.oportunidades;
+                // ENVIAR OPORTUNIDADE PARA O LOCALSTORAGE
+                const oportunidadesJSON = JSON.stringify(oportunidades);
+                localStorage.setItem('oportunidades', oportunidadesJSON);
+
                 const id = response.data.oportunidades.id;
                 const produto = response.data.oportunidades.produto;
                 const banco = response.data.oportunidades.banco;
@@ -322,30 +342,19 @@ function qualification() {
                                 window.location.href = URL_redirect;
                                 break
                             case "assinatura-pendente":
-                                switch (banco) {
-                                    case "eccor":
-                                        URL_redirect = `/signature?tp="wpp"`;
-                                        window.location.href = URL_redirect;
-                                        break
-                                    case "facta":
-                                        localStorage.setItem('oportunidades', JSON.stringify(oportunidades));
-                                        URL_redirect = `/signature?tp="link"`;
-                                        window.location.href = URL_redirect;
-                                        break
-                                    case "bmg":
-                                        URL_redirect = `/signature?tp="sms"`;
-                                        window.location.href = URL_redirect;
-                                        break
-                                }
+                                bankRedirect(banco)
                         }
 
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
-                        if (pedirInfos.length > 0) {
-                            URL_redirect = `/opportunity?protocol="${protocolo}"`;
+                        if (pedirInfos.length > 0 && (perfil == "novato" || perfil == "tomador")) {
+                            URL_redirect = `/opportunity?protocol=${protocolo}&tp=wpp`;
+                            window.location.href = URL_redirect;
+                        } else if (pedirInfos.length > 0 && perfil == "tomador") {
+                            URL_redirect = `/opportunity?tp=web`;
                             window.location.href = URL_redirect;
                         } else {
-                            URL_redirect = `/success?protocol="${protocolo}"`;
+                            URL_redirect = `/success?protocol=${protocolo}`;
                             window.location.href = URL_redirect;
                         }
                         break;
@@ -409,6 +418,23 @@ function qualification() {
             });
     };
     sendRequest();
+}
+
+function redirectToSignature() {
+    const oportunidadesJSON = localStorage.getItem("oportunidades");
+    const oportunidadesData = JSON.parse(oportunidadesJSON);
+    const oportunidades = oportunidadesData.oportunidades;
+
+    if (oportunidades.length > 0) {
+        const banco = oportunidades[0].banco;
+
+        bankRedirect(banco)
+
+
+    } else {
+        console.log("Nenhuma oportunidade encontrada no localStorage.");
+    }
+
 }
 
 function onTheWeb() {
