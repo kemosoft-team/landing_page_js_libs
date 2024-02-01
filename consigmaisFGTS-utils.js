@@ -392,7 +392,7 @@ function qualification() {
                         if (attemptWaiting < 4) {
                             setTimeout(function () {
                                 sendRequest();
-                            }, 3000);
+                            }, 7000);
                         } else {
                             var popUpNoResponse = document.querySelector("#popUpNoResponse");
                             popUpNoResponse.click()
