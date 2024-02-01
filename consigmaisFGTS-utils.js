@@ -283,7 +283,7 @@ function qualification() {
     var attempt = 0;
     var attemptWaiting = 0;
 
-    function obterParametroDaURL(parametro) {
+    /* function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
@@ -299,8 +299,38 @@ function qualification() {
     };
 
     const dataQualificationJSON = JSON.stringify(dataQualification);
-    localStorage.setItem('dataQualification', dataQualificationJSON);
+    localStorage.setItem('dataQualification', dataQualificationJSON); */
 
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const pipelineSlug = obterParametroDaURL('pipeline_slug');
+    const federalId = obterParametroDaURL('federalId');
+
+    if (pipelineSlug && federalId) {
+        const dataQualification = {
+            pipelineSlug: pipelineSlug,
+            federalId: federalId
+        };
+
+        const dataQualificationJSON = JSON.stringify(dataQualification);
+        localStorage.setItem('dataQualification', dataQualificationJSON);
+        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
+    } else {
+        const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+        if (dataQualificationLocalStorage) {
+            const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+            pipelineSlug = storedDataQualification.pipelineSlug;
+            federalId = storedDataQualification.federalId;
+
+            console.log("Não tinha na URL: ", pipelineSlug, federalId);
+        } else {
+            console.log('Nenhum valor armazenado no localStorage para dataQualification');
+        }
+    }
 
 
     const sendRequest = () => {
@@ -394,7 +424,6 @@ function qualification() {
                         }
 
                         break;
-
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
