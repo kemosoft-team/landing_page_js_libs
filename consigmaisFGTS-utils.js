@@ -685,7 +685,7 @@ function validateDocumento() {
         return false;
     }
 
-    registrarEndereco(type, number, issueDate, agency, agencyState);
+    registrarDocumento(type, number, issueDate, agency, agencyState);
 }
 
 function validateConta() {
@@ -708,6 +708,8 @@ function validateConta() {
 
     let acctNo = account + verifyDigit;
     let bankNo = bank.bank_no;
+
     console.log(bankNo, branch, acctNo, acctType);
+
     registrarConta(bankNo, branch, acctNo, acctType);
 }
