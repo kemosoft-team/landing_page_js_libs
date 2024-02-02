@@ -505,7 +505,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
 
     axios
-        .get(`${API_URL}/registrar-endereco`, {
+        .post(`${API_URL}/registrar-endereco`, {
             "federalId": federalId,
             "address": address,
             "addressNumber": addressNumber,
@@ -530,7 +530,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
     let federalId = infoQualification.federalId;
 
     axios
-        .get(`${API_URL}/registrar-documento`, {
+        .post(`${API_URL}/registrar-documento`, {
             "federalId": federalId,
             "type": type,
             "number": number,
@@ -554,7 +554,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     let federalId = infoQualification.federalId;
 
     axios
-        .get(`${API_URL}/registrar-conta`, {
+        .post(`${API_URL}/registrar-conta`, {
             "federalId": federalId,
             "bankNo": bankNo,
             "branch": branch,
