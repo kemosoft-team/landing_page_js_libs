@@ -300,6 +300,8 @@ function nextStepInfos() {
             } else if (pedirInfos.includes("conta")) {
                 URL_redirect = `/account`;
                 window.location.href = URL_redirect;
+            } else {
+                qualification()
             }
 
 
