@@ -167,6 +167,19 @@ function isDateValid(dateString) {
     return false;
 }
 
+function getCEP(cep) {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            // Preenchendo os campos
+            document.querySelectorAll('[data-brz-label="Rua"]').value = data.logradouro || '';
+            document.querySelectorAll('[data-brz-label="Número"]').focus(); // Move o foco para o campo Número
+            document.querySelectorAll('[data-brz-label="Bairro"]').value = data.bairro || '';
+            document.querySelectorAll('[data-brz-label="Cidade"]').value = data.localidade || '';
+            document.querySelectorAll('[data-brz-label="UF"]').value = data.uf || '';
+        })
+        .catch(error => console.error('Erro ao obter endereço:', error));
+}
 
 function saveDataToLocalStorage({
     name,
