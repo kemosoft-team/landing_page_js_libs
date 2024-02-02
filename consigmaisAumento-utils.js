@@ -544,7 +544,7 @@ function qualification() {
     var attempt = 0;
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {
+            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
                 headers: {
                     'api-key': API_KEY
                 }
@@ -552,12 +552,11 @@ function qualification() {
             .then((response) => {
                 let URL_redirect;
                 var protocolo = response.data.protocolo;
-                var mensagem = response.data.mensagem;
-                var situacao = response.data.situacao;
-                switch (situacao) {
+                var contexto = response.data.contexto;
+                switch (contexto) {
                     //OPPORTUNITY
-                    case "exibir-oportunidade":
-                        URL_redirect = `/success?message=${mensagem}&protocolo=${protocolo}`;
+                    case "tem-oportunidade":
+                        URL_redirect = `/success?protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
                     //NOOPPORTUNITY
@@ -568,22 +567,17 @@ function qualification() {
                                 sendRequest();
                             }, 3000);
                         } else {
-                            URL_redirect = `/noopportunity?message=${mensagem}&protocolo=${protocolo}`;
+                            URL_redirect = `/noopportunity?protocolo=${protocolo}`;
                             window.location.href = URL_redirect;
                         }
                         break;
                     //NOQUALIFIED
                     case "nao-qualificado":
-                        URL_redirect = `/noqualified?message=${mensagem}&protocolo=${protocolo}`;
-                        window.location.href = URL_redirect;
-                        break;
-                    //REQUIRESTREATMENT
-                    case "requer-tratamento":
-                        URL_redirect = `/requirestreatment?message=${mensagem}&protocolo=${protocolo}`;
+                        URL_redirect = `/noqualified?protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
                     //ENROLLMENT INSS
-                    case "acao-adicional":
+                    case "resolver-situação":
                         var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
                         if (attemptBenefitStorage === null) {
                             localStorage.setItem('attemptBenefitStorage', 1);
