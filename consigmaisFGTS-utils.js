@@ -522,7 +522,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarEndereco(type, number, issueDate, agency, agencyState) {
+function registrarDocumento(type, number, issueDate, agency, agencyState) {
     //OBTER INFO DO LOCALSTORAGE
     var DataInfoQualification = localStorage.getItem("dataQualification");
     var infoQualification = JSON.parse(DataInfoQualification);
@@ -530,7 +530,7 @@ function registrarEndereco(type, number, issueDate, agency, agencyState) {
     let federalId = infoQualification.federalId;
 
     axios
-        .get(`${API_URL}/registrar-endereco`, {
+        .get(`${API_URL}/registrar-documento`, {
             "federalId": federalId,
             "type": type,
             "number": number,
@@ -554,7 +554,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     let federalId = infoQualification.federalId;
 
     axios
-        .get(`${API_URL}/registrar-endereco`, {
+        .get(`${API_URL}/registrar-conta`, {
             "federalId": federalId,
             "bankNo": bankNo,
             "branch": branch,
