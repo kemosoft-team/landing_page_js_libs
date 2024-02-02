@@ -172,11 +172,11 @@ function getCEP(cep) {
         .then(response => response.json())
         .then(data => {
             // Preenchendo os campos
-            document.querySelectorAll('[data-brz-label="Rua"]').value = data.logradouro || '';
-            document.querySelectorAll('[data-brz-label="Número"]').focus(); // Move o foco para o campo Número
-            document.querySelectorAll('[data-brz-label="Bairro"]').value = data.bairro || '';
-            document.querySelectorAll('[data-brz-label="Cidade"]').value = data.localidade || '';
-            document.querySelectorAll('[data-brz-label="UF"]').value = data.uf || '';
+            document.querySelector('[data-brz-label="Rua"]').value = data.logradouro || '';
+            document.querySelector('[data-brz-label="Número"]').focus(); // Move o foco para o campo Número
+            document.querySelector('[data-brz-label="Bairro"]').value = data.bairro || '';
+            document.querySelector('[data-brz-label="Cidade"]').value = data.localidade || '';
+            document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
         })
         .catch(error => console.error('Erro ao obter endereço:', error));
 }
