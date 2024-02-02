@@ -518,10 +518,10 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     let federalId = infoQualification.federalId;
 
-    const button = document.querySelector(".submit_conta");
+    const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
+    
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
