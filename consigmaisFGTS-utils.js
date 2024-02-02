@@ -521,7 +521,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-    
+
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
@@ -556,10 +556,10 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
 
     let federalId = infoQualification.federalId;
 
-    const button = document.querySelector(".submit_documento");
+    const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
+    
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
@@ -592,10 +592,10 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
 
     let federalId = infoQualification.federalId;
 
-    const button = document.querySelector(".submit_conta");
+    const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
+    
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
