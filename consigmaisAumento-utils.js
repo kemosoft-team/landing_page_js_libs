@@ -552,7 +552,7 @@ function qualification() {
                         break;
 
                     //ENROLLMENT INSS
-                    case "resolver-situação":
+                    case "resolver-situacao":
                         switch (situacao) {
                             case "informar-matricula":
                                 var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
