@@ -1,7 +1,10 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc";
+
 let origin = window.location.href;
 let referrer = document.referrer;
+
 let name;
 let phone;
 let federalId;
@@ -15,7 +18,8 @@ let hasTakenLoan;
 let benefitAmountRange;
 /* VARIAVEIS DE CONTROLE */
 let controlNoOpportunity = false;
-//EXIBIR NO TOAST
+
+
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -287,32 +291,7 @@ function validatorPopUpBenefit() {
     close_benefit.click();
     representativeQuestions.click();
 }
-// VALIDAR PERGUNTAS INICIAIS
-/* function validatorQuestions() {
-    const firstChoice = document
-        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
-        .value.toLowerCase();
-    const secondChoice = document
-        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
-        .value.toLowerCase();
-    const thirdChoice = document.querySelector(
-        '[data-brz-label="Em qual dos valores se enquadra o seu benefício?"]'
-    ).value;
-    if (firstChoice === "" || secondChoice === "" || thirdChoice === "") {
-        showToast("Por favor, responda todas as perguntas.");
-        return false;
-    }
-    retiredOrPensioner = firstChoice === "sim"; // boolean
-    hasTakenLoan = secondChoice === "sim"; // boolean
-    benefitAmountRange = thirdChoice; // string
-    // ABRA O POP-UP DE QUESTIONÁRIO REPRESENTANTE
-    const representativeQuestions = document.getElementById(
-        "question_representative"
-    );
-    const closeQuestions = document.getElementById("close_questions");
-    closeQuestions.click();
-    representativeQuestions.click();
-} */
+
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
     const nameElement = document.querySelector(
@@ -424,24 +403,26 @@ async function criar_contato_inss() {
             ""
         );
     }
-    /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
-    axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
-            federalId: federalId_replaced,
-            birthDate: birth,
-            representativeName: name_Representive,
-            representativeFederalId: federalId_Representive_replaced,
-            enrollment: enrollment,
-            //questionario:
-            retiredOrPensioner: retiredOrPensioner,
-            hasTakenLoan: hasTakenLoan,
-            benefitAmountRange: benefitAmountRange,
-            pipelineSlug: pipeline_slug,
-            origin: origin,
-            referrer: referrer,
-        })
+
+    axios.post(API_URL + "/criar-contato", {
+        name: name,
+        phone: phone,
+        federalId: federalId_replaced,
+        birthDate: birth,
+        representativeName: name_Representive,
+        representativeFederalId: federalId_Representive_replaced,
+        enrollment: enrollment,
+        retiredOrPensioner: retiredOrPensioner,
+        hasTakenLoan: hasTakenLoan,
+        benefitAmountRange: benefitAmountRange,
+        pipelineSlug: pipeline_slug,
+        origin: origin,
+        referrer: referrer,
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
         .then((response) => {
             saveDataToLocalStorage({
                 name,
@@ -488,6 +469,10 @@ async function updateBenefit() {
             birthDate: birth,
             enrollment: enrollment,
             pipelineSlug: pipeline_slug,
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
         .then((response) => {
             saveDataToLocalStorage({
@@ -527,6 +512,10 @@ async function criar_contato_fgts() {
             birthDate: birth,
             pipelineSlug: pipeline_slug,
             origin: origin,
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
         .then((response) => {
             saveDataToLocalStorage({
@@ -555,7 +544,11 @@ function qualification() {
     var attempt = 0;
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {})
+            .get(`${API_URL}/${pipelineSlug}/proxima-etapa/${federalId}`, {
+                headers: {
+                    'api-key': API_KEY
+                }
+            })
             .then((response) => {
                 let URL_redirect;
                 var protocolo = response.data.protocolo;
