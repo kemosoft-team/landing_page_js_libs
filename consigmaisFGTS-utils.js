@@ -708,6 +708,6 @@ function validateConta() {
 
     let acctNo = account + verifyDigit;
     let bankNo = bank.bank_no;
-
+    console.log(bankNo, branch, acctNo, acctType);
     registrarConta(bankNo, branch, acctNo, acctType);
 }
