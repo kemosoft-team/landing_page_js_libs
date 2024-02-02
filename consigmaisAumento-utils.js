@@ -268,7 +268,7 @@ function validatorStepBenefit() {
     }
     //SALVAR NAS VARIAVEIS GLOBAIS
     enrollment = benefit;
-    updateBenefit();
+    registrarBenefit();
 }
 //VALIDAR NÚMERO DO BENEFÍCIO
 function validatorPopUpBenefit() {
@@ -291,7 +291,6 @@ function validatorPopUpBenefit() {
     close_benefit.click();
     representativeQuestions.click();
 }
-
 
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
@@ -432,92 +431,35 @@ async function criar_contato_inss() {
             showToast(error.response.data.message);
         });
 }
-// UPDATE BENEFIT
-async function updateBenefit() {
+
+//REGISTRAR BENEFIT
+async function registrarBenefit() {
     //OBTER INFORMAÇÕES DO LOCALSTORAGE
-    var dataQualification = localStorage.getItem("dataQualification");
-    var dataFromInss = JSON.parse(dataQualification);
-    if (dataFromInss) {
-        name = dataFromInss.name;
-        phone = dataFromInss.phone;
-        federalId = dataFromInss.federalId;
-        birth = dataFromInss.birthDate;
-    }
+    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+    const pipelineSlug = storedDataQualification.pipelineSlug;
+    const federalId = storedDataQualification.federalId;
+
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
-    /* axios.post("https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb", { */
     axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
+        .post(API_URL + "/registrar-dados-empregaticios", {
             federalId: federalId,
-            birthDate: birth,
             enrollment: enrollment,
-            pipelineSlug: pipeline_slug,
         }, {
             headers: {
                 'api-key': API_KEY
             }
         })
         .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId,
-                birth,
-                enrollment,
-            });
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
         })
         .catch(function (error) {
             showToast(error.response.data.message);
         });
 }
-//CRIAR CONTATO FGTS
-async function criar_contato_fgts() {
-    //OBTER INFORMAÇÕES DO LOCALSTORAGE
-    var dataQualification = localStorage.getItem("dataQualification");
-    var dataFromInss = JSON.parse(dataQualification);
-    if (dataFromInss) {
-        name = dataFromInss.name;
-        phone = dataFromInss.phone;
-        federalId = dataFromInss.federalId;
-        birth = dataFromInss.birthDate;
-        origin = dataFromInss.origin;
-    }
-    //CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "fgts";
-    /* axios.post('https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb', { */
-    axios
-        .post(API_URL + "/criar-contato", {
-            name: name,
-            phone: phone,
-            federalId: federalId,
-            birthDate: birth,
-            pipelineSlug: pipeline_slug,
-            origin: origin,
-        }, {
-            headers: {
-                'api-key': API_KEY
-            }
-        })
-        .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId,
-                birth,
-                pipeline_slug,
-                origin,
-            });
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
-        })
-        .catch(function (error) {
-            showToast(error.response.data.message);
-        });
-}
+
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
@@ -551,7 +493,7 @@ function qualification() {
             console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
-        }
+        } 
     }
 
 
@@ -659,4 +601,21 @@ function qualification() {
             });
     };
     sendRequest();
+}
+
+function requalify(enrollment) {
+    axios
+        .post(API_URL + "/card/${leadId}/requalify", {
+            enrollment: enrollment,
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+        })
+        .catch(function (error) {
+            showToast(error.response.data.message);
+        });
 }
