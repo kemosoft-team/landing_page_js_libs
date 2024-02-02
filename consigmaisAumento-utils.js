@@ -425,26 +425,11 @@ async function criar_contato_inss() {
         }
     })
         .then((response) => {
-            saveDataToLocalStorage({
-                name,
-                phone,
-                federalId: federalId_replaced,
-                birth,
-                name_Representive,
-                federalId_Representive: federalId_Representive_replaced,
-                enrollment,
-                retiredOrPensioner: retiredOrPensioner,
-                hasTakenLoan: hasTakenLoan,
-                benefitAmountRange: benefitAmountRange,
-                pipeline_slug,
-                origin,
-                referrer,
-            });
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            console.log("Contato INSS criado")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
-            return false;
         });
 }
 // UPDATE BENEFIT
@@ -535,14 +520,41 @@ async function criar_contato_fgts() {
 }
 //QUALIFICAÇÃO
 function qualification() {
-    //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-    let federalId = infoQualification.federalId;
-    //OBTER INFO DA URL
-    var url = new URL(window.location.href);
-    var pipelineSlug = url.searchParams.get("pipeline_slug");
     var attempt = 0;
+    var attemptWaiting = 0;
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    let pipelineSlug = obterParametroDaURL('pipeline_slug');
+    let federalId = obterParametroDaURL('federalId');
+
+    if (pipelineSlug && federalId) {
+        const dataQualification = {
+            pipelineSlug: pipelineSlug,
+            federalId: federalId
+        };
+
+        const dataQualificationJSON = JSON.stringify(dataQualification);
+        localStorage.setItem('dataQualification', dataQualificationJSON);
+        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
+    } else {
+        const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+        if (dataQualificationLocalStorage) {
+            const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+            pipelineSlug = storedDataQualification.pipelineSlug;
+            federalId = storedDataQualification.federalId;
+
+            console.log("Não tinha na URL: ", pipelineSlug, federalId);
+        } else {
+            console.log('Nenhum valor armazenado no localStorage para dataQualification');
+        }
+    }
+
+
     const sendRequest = () => {
         axios
             .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
