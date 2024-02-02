@@ -292,6 +292,7 @@ function validatorPopUpBenefit() {
     representativeQuestions.click();
 }
 
+
 //VALIDAR FORMULARIO BENEFICIARIO
 function validateFormBenefit() {
     const nameElement = document.querySelector(
@@ -551,8 +552,12 @@ function qualification() {
             })
             .then((response) => {
                 let URL_redirect;
-                var protocolo = response.data.protocolo;
-                var contexto = response.data.contexto;
+                const contexto = response.data.contexto;
+                const situacao = response.data.situacao;
+                const perfil = response.data.perfil;
+                const mensagem = response.data.mensagem;
+                const protocolo = response.data.protocolo;
+
                 switch (contexto) {
                     //OPPORTUNITY
                     case "tem-oportunidade":
@@ -576,26 +581,47 @@ function qualification() {
                         URL_redirect = `/noqualified?protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
+
+                    //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
+                    case "aguardando-qualificacao":
+                        attemptWaiting++;
+                        console.log("contator: ", attemptWaiting)
+                        if (attemptWaiting < 4) {
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 4000);
+                        } else {
+                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
+                            popUpNoResponse.click()
+                        }
+
+                        break;
+
                     //ENROLLMENT INSS
                     case "resolver-situação":
-                        var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-                        if (attemptBenefitStorage === null) {
-                            localStorage.setItem('attemptBenefitStorage', 1);
-                            console.log(attemptBenefitStorage)
-                        } else {
-                            attemptBenefitStorage++;
-                            localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
-                            console.log(attemptBenefitStorage)
+                        switch (situacao) {
+                            case "informar-matricula":
+                                var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
+                                if (attemptBenefitStorage === null) {
+                                    localStorage.setItem('attemptBenefitStorage', 1);
+                                    console.log(attemptBenefitStorage)
+                                } else {
+                                    attemptBenefitStorage++;
+                                    localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
+                                    console.log(attemptBenefitStorage)
+                                }
+                                var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
+                                if (attemptBenefit > 2) {
+                                    URL_redirect = `/qualifywhatsapp`;
+                                    window.location.href = URL_redirect;
+                                } else {
+                                    URL_redirect = `/benefit`;
+                                    window.location.href = URL_redirect;
+                                }
+                                break;
                         }
-                        var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
-                        if (attemptBenefit > 2) {
-                            URL_redirect = `/qualifywhatsapp`;
-                            window.location.href = URL_redirect;
-                        } else {
-                            URL_redirect = `/benefit`;
-                            window.location.href = URL_redirect;
-                        }
-                        break;
+
+
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
