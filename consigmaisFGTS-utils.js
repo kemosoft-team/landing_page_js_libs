@@ -505,6 +505,14 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     let federalId = infoQualification.federalId;
 
+    const button = document.querySelector(".submit_conta");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
 
     axios
         .post(`${API_URL}/registrar-endereco`, {
@@ -520,7 +528,11 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             nextStepInfos();
         })
         .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
 
@@ -530,6 +542,14 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
     var infoQualification = JSON.parse(DataInfoQualification);
 
     let federalId = infoQualification.federalId;
+
+    const button = document.querySelector(".submit_documento");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
 
     axios
         .post(`${API_URL}/registrar-documento`, {
@@ -544,7 +564,11 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
             nextStepInfos()
         })
         .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
 
@@ -554,6 +578,14 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     var infoQualification = JSON.parse(DataInfoQualification);
 
     let federalId = infoQualification.federalId;
+
+    const button = document.querySelector(".submit_conta");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
 
     axios
         .post(`${API_URL}/registrar-conta`, {
@@ -567,7 +599,11 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             nextStepInfos()
         })
         .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
 
