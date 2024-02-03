@@ -214,184 +214,56 @@ function isBirthValid(dateString) {
     }
     return true;
 }
-// ENVIAR DADOS PARA O LOCALSTORAGE
-function saveDataToLocalStorage({
-    name,
-    phone,
+
+function setItemStorage({
+    pipelineSlug,
     federalId,
-    birth,
-    name_Representive,
-    federalId_Representive,
-    enrollment,
-    retiredOrPensioner,
-    hasTakenLoan,
-    benefitAmountRange,
-    pipeline_slug,
-    origin,
-    referrer,
+    leadId,
 }) {
     var dataQualification = {
-        name,
-        phone,
+        pipelineSlug,
         federalId,
-        birthDate: birth,
-        name_Representive,
-        federalId_Representive,
-        enrollment,
-        retiredOrPensioner,
-        hasTakenLoan,
-        benefitAmountRange,
-        pipeline_slug,
-        origin,
-        referrer,
+        leadId,
     };
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
 }
-//VALIDAR NÚMERO DO BENEFÍCIO
-function validatorStepBenefit() {
-    const benefit = document.querySelector(
-        '[data-brz-label="Número do Benefício/Matrícula"]'
-    ).value;
-    if (benefit == "") {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    } else if (benefit.length != 10) {
-        showToast("O número do benefício deve conter 10 caracteres.");
-        return false;
-    } else if (!validarNumeroBeneficio(benefit)) {
-        showToast("O número do benefício informado é inválido! Revise a informação!");
-        return false;
-    } else if (!validateMod11Digit(benefit, 1, 9, true)) {
-        showToast("O número do benefício informado é inválido!! Revise a informação!");
-        return false;
-    }
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    enrollment = benefit;
-    registrarBenefit();
-}
-//VALIDAR NÚMERO DO BENEFÍCIO
-function validatorPopUpBenefit() {
-    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
-    if (benefit != "" && benefit.length != 10) {
-        showToast("O número do benefício deve conter 10 caracteres.");
-        return false;
-    } else if (benefit != "" && !validarNumeroBeneficio(benefit)) {
-        showToast("O número do benefício informado é inválido! Revise a informação!");
-        return false;
-    } else if (benefit != "" && !validateMod11Digit(benefit, 1, 9, true)) {
-        showToast("O número do benefício informado é inválido!! Revise a informação!");
-        return false;
-    }
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    enrollment = benefit;
-    //ABRI POP UP QUESTIONARIOS
-    const close_benefit = document.getElementById("close_benefit");
-    const representativeQuestions = document.getElementById("question_representative");
-    close_benefit.click();
-    representativeQuestions.click();
+
+function getItemStorage() {
+    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+
+    return {
+        pipelineSlug: storedDataQualification.pipelineSlug,
+        federalId: storedDataQualification.federalId,
+        leadId: storedDataQualification.leadId
+    };
 }
 
-//VALIDAR FORMULARIO BENEFICIARIO
-function validateFormBenefit() {
-    const nameElement = document.querySelector(
-        '[data-brz-label="Nome do Beneficiário"]'
-    ).value;
-    const phoneElement = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
-    ).value;
-    const federalIdElement = document.querySelector(
-        '[data-brz-label="CPF do Beneficiário"]'
-    ).value;
-    const birthElement = document.querySelector(
-        '[data-brz-label="Data de Nascimento do Beneficiário"]'
-    ).value;
-    const firstChoice = document
-        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
-        .value.toLowerCase();
-    const secondChoice = document
-        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
-        .value.toLowerCase();
-    if (
-        nameElement == "" ||
-        phoneElement == "" ||
-        federalIdElement == "" ||
-        birthElement == "" ||
-        firstChoice == "" ||
-        secondChoice == ""
-    ) {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    }
-    if (
-        nameElement.trim() === "" ||
-        !nameElement.includes(" ") ||
-        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
-    ) {
-        showToast("Por favor, digite seu nome completo");
-        return false;
-    }
-    if (!validateCPF(federalIdElement)) {
-        showToast("O CPF do Beneficiário não é válido!");
-        return false;
-    }
-    if (!isDateValid(birthElement)) {
-        showToast("A data de nascimento informada não é válida!");
-        return false;
-    }
-    if (!isBirthValid(birthElement)) {
-        showToast(
-            "Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
-        );
-        return false;
-    }
-    if (!validatePhone(phoneElement)) {
-        showToast("O número do Whatsapp informado não é válido!");
-        return false;
-    }
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    name = nameElement;
-    phone = phoneElement;
-    federalId = federalIdElement;
-    birth = birthElement;
-    retiredOrPensioner = firstChoice === "sim"; // boolean
-    hasTakenLoan = secondChoice === "sim"; // boolean
-    //ABRA O POP UP DE INFO BENEFIT
-    const benefit = document.getElementById("benefit");
-    benefit.click();
+function requalify(enrollment) {
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
+    axios
+        .post(API_URL + `/card/${leadId}/requalify`, {
+            enrollment: enrollment,
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
+            window.location.href = URL_redirect;
+        })
+        .catch(function (error) {
+            showToast(error.response.data.message);
+        });
 }
-//VALIDAR FORMULARIO REPRESENTANTE
-function validateFormRepresentative() {
-    const name_RepresentiveElement = document.querySelector(
-        '[data-brz-label="Nome do Representante"]'
-    ).value;
-    const federalId_RepresentiveElement = document.querySelector(
-        '[data-brz-label="CPF do Representante"]'
-    ).value;
-    if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    }
-    if (!validateCPF(federalId_RepresentiveElement)) {
-        showToast("O CPF do Representante não é válido!");
-        return false;
-    }
-    if (federalId == federalId_RepresentiveElement) {
-        showToast(
-            "Os CPFs do beneficiário e do representante devem ser diferentes!"
-        );
-        return false;
-    }
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    name_Representive = name_RepresentiveElement;
-    federalId_Representive = federalId_RepresentiveElement;
-    //MUDE O TEXTO
-    submitRepresentative.innerHTML = "Carregando... Aguarde!";
-    //EXECUTAR A CRIAÇÃO DE CONTATO
-    criar_contato_inss();
-}
+
+
 // CRIAR CONTATO INSS
-async function criar_contato_inss() {
+function criar_contato_inss() {
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
@@ -432,34 +304,6 @@ async function criar_contato_inss() {
         });
 }
 
-//REGISTRAR BENEFIT
-async function registrarBenefit() {
-    //OBTER INFORMAÇÕES DO LOCALSTORAGE
-    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
-    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
-    const pipelineSlug = storedDataQualification.pipelineSlug;
-    const federalId = storedDataQualification.federalId;
-
-    // CONFIG
-    const nextStep = "qualification";
-    const pipeline_slug = "inss";
-    axios
-        .post(API_URL + "/registrar-dados-empregaticios", {
-            federalId: federalId,
-            enrollment: enrollment,
-        }, {
-            headers: {
-                'api-key': API_KEY
-            }
-        })
-        .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
-        })
-        .catch(function (error) {
-            showToast(error.response.data.message);
-        });
-}
-
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
@@ -489,11 +333,9 @@ function qualification() {
             const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
-
-            console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
-        } 
+        }
     }
 
 
@@ -508,9 +350,10 @@ function qualification() {
                 let URL_redirect;
                 const contexto = response.data.contexto;
                 const situacao = response.data.situacao;
-                const perfil = response.data.perfil;
-                const mensagem = response.data.mensagem;
                 const protocolo = response.data.protocolo;
+                const leadId = response.data.id;
+
+                setItemStorage(pipelineSlug, federalId, leadId);
 
                 switch (contexto) {
                     //OPPORTUNITY
@@ -518,6 +361,7 @@ function qualification() {
                         URL_redirect = `/success?protocolo=${protocolo}`;
                         window.location.href = URL_redirect;
                         break;
+
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -603,9 +447,14 @@ function qualification() {
     sendRequest();
 }
 
-function requalify(enrollment) {
+//REGISTRAR FORMULÁRIOS
+function registrarBenefit(enrollment) {
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
     axios
-        .post(API_URL + "/card/${leadId}/requalify", {
+        .post(API_URL + "/registrar-dados-empregaticios", {
+            federalId: federalId,
             enrollment: enrollment,
         }, {
             headers: {
@@ -613,9 +462,157 @@ function requalify(enrollment) {
             }
         })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug;
+            requalify(enrollment)
         })
         .catch(function (error) {
             showToast(error.response.data.message);
         });
 }
+
+//VALIDAR FORMULÁRIOS
+function validateFormInss() {
+    const nameElement = document.querySelector(
+        '[data-brz-label="Nome do Beneficiário"]'
+    ).value;
+    const phoneElement = document.querySelector(
+        '[data-brz-label="WhatsApp"]'
+    ).value;
+    const federalIdElement = document.querySelector(
+        '[data-brz-label="CPF do Beneficiário"]'
+    ).value;
+    const birthElement = document.querySelector(
+        '[data-brz-label="Data de Nascimento do Beneficiário"]'
+    ).value;
+    const firstChoice = document
+        .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
+        .value.toLowerCase();
+    const secondChoice = document
+        .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
+        .value.toLowerCase();
+    if (
+        nameElement == "" ||
+        phoneElement == "" ||
+        federalIdElement == "" ||
+        birthElement == "" ||
+        firstChoice == "" ||
+        secondChoice == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+    if (
+        nameElement.trim() === "" ||
+        !nameElement.includes(" ") ||
+        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
+    ) {
+        showToast("Por favor, digite seu nome completo");
+        return false;
+    }
+    if (!validateCPF(federalIdElement)) {
+        showToast("O CPF do Beneficiário não é válido!");
+        return false;
+    }
+    if (!isDateValid(birthElement)) {
+        showToast("A data de nascimento informada não é válida!");
+        return false;
+    }
+    if (!isBirthValid(birthElement)) {
+        showToast(
+            "Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
+        );
+        return false;
+    }
+    if (!validatePhone(phoneElement)) {
+        showToast("O número do Whatsapp informado não é válido!");
+        return false;
+    }
+
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    name = nameElement;
+    phone = phoneElement;
+    federalId = federalIdElement;
+    birth = birthElement;
+    retiredOrPensioner = firstChoice === "sim";
+    hasTakenLoan = secondChoice === "sim";
+
+    //ABRA O POP UP DE INFO BENEFIT
+    const benefit = document.getElementById("benefit");
+    benefit.click();
+}
+function validateBenefit() {
+    const benefit = document.querySelector(
+        '[data-brz-label="Número do Benefício/Matrícula"]'
+    ).value;
+    if (benefit == "") {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    } else if (benefit.length != 10) {
+        showToast("O número do benefício deve conter 10 caracteres.");
+        return false;
+    } else if (!validarNumeroBeneficio(benefit)) {
+        showToast("O número do benefício informado é inválido! Revise a informação!");
+        return false;
+    } else if (!validateMod11Digit(benefit, 1, 9, true)) {
+        showToast("O número do benefício informado é inválido!! Revise a informação!");
+        return false;
+    }
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    enrollment = benefit;
+
+    registrarBenefit(enrollment);
+}
+function validateFormRepresentative() {
+    const name_RepresentiveElement = document.querySelector(
+        '[data-brz-label="Nome do Representante"]'
+    ).value;
+    const federalId_RepresentiveElement = document.querySelector(
+        '[data-brz-label="CPF do Representante"]'
+    ).value;
+    if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+    if (!validateCPF(federalId_RepresentiveElement)) {
+        showToast("O CPF do Representante não é válido!");
+        return false;
+    }
+    if (federalId == federalId_RepresentiveElement) {
+        showToast(
+            "Os CPFs do beneficiário e do representante devem ser diferentes!"
+        );
+        return false;
+    }
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    name_Representive = name_RepresentiveElement;
+    federalId_Representive = federalId_RepresentiveElement;
+    //MUDE O TEXTO
+    submitRepresentative.innerHTML = "Carregando... Aguarde!";
+    //EXECUTAR A CRIAÇÃO DE CONTATO
+    criar_contato_inss();
+}
+
+function validatorPopUpBenefit() {
+    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
+    if (benefit != "" && benefit.length != 10) {
+        showToast("O número do benefício deve conter 10 caracteres.");
+        return false;
+    } else if (benefit != "" && !validarNumeroBeneficio(benefit)) {
+        showToast("O número do benefício informado é inválido! Revise a informação!");
+        return false;
+    } else if (benefit != "" && !validateMod11Digit(benefit, 1, 9, true)) {
+        showToast("O número do benefício informado é inválido!! Revise a informação!");
+        return false;
+    }
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    enrollment = benefit;
+    //ABRI POP UP QUESTIONARIOS
+    const close_benefit = document.getElementById("close_benefit");
+    const representativeQuestions = document.getElementById("question_representative");
+    close_benefit.click();
+    representativeQuestions.click();
+}
+
+
+
+
+
