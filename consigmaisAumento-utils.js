@@ -20,6 +20,18 @@ let benefitAmountRange;
 let controlNoOpportunity = false;
 
 
+function resetLocalStorage() {
+    let attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
+
+    if (attemptBenefitStorage > 3) {
+        localStorage.removeItem('attemptBenefitStorage');
+        console.log('Valor de attemptBenefitStorage resetado.');
+    }
+}
+
+resetLocalStorage()
+
+
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -229,6 +241,7 @@ function setItemStorage({
     localStorage.setItem("dataQualification", objDataQualification);
 }
 
+
 function getItemStorage() {
     const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
@@ -353,7 +366,11 @@ function qualification() {
                 const protocolo = response.data.protocolo;
                 const leadId = response.data.id;
 
-                setItemStorage(pipelineSlug, federalId, leadId);
+                setItemStorage({
+                    pipelineSlug: pipelineSlug,
+                    federalId: federalId,
+                    leadId: leadId
+                });
 
                 switch (contexto) {
                     //OPPORTUNITY
