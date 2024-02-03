@@ -29,9 +29,6 @@ function resetLocalStorage() {
     }
 }
 
-resetLocalStorage()
-
-
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -277,6 +274,8 @@ function requalify(enrollment) {
 
 // CRIAR CONTATO INSS
 function criar_contato_inss() {
+    resetLocalStorage()
+    
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
@@ -469,6 +468,14 @@ function registrarBenefit(enrollment) {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
 
+    const button = document.querySelector(".brz-btn-submit.submit_benefit");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
     axios
         .post(API_URL + "/registrar-dados-empregaticios", {
             federalId: federalId,
@@ -482,7 +489,11 @@ function registrarBenefit(enrollment) {
             requalify(enrollment)
         })
         .catch(function (error) {
-            showToast(error.response.data.message);
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
 
