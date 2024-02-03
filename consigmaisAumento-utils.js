@@ -219,11 +219,13 @@ function setItemStorage({
     pipelineSlug,
     federalId,
     leadId,
+    protocolo
 }) {
     var dataQualification = {
         pipelineSlug,
         federalId,
         leadId,
+        protocolo
     };
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
@@ -236,7 +238,8 @@ function getItemStorage() {
     return {
         pipelineSlug: storedDataQualification.pipelineSlug,
         federalId: storedDataQualification.federalId,
-        leadId: storedDataQualification.leadId
+        leadId: storedDataQualification.leadId,
+        protocolo: storedDataQualification.protocolo
     };
 }
 
@@ -297,7 +300,6 @@ function criar_contato_inss() {
     })
         .then((response) => {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            console.log("Contato INSS criado")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -326,7 +328,6 @@ function qualification() {
 
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
-        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
     } else {
         const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
         if (dataQualificationLocalStorage) {
@@ -334,7 +335,7 @@ function qualification() {
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
         } else {
-            console.log('Nenhum valor armazenado no localStorage para dataQualification');
+            console.log('Nenhum valor armazenado no localStorage para qualificação');
         }
     }
 
@@ -356,7 +357,8 @@ function qualification() {
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
-                    leadId: leadId
+                    leadId: leadId,
+                    protocolo: protocolo
                 });
 
                 switch (contexto) {
@@ -384,7 +386,7 @@ function qualification() {
                         window.location.href = URL_redirect;
                         break;
 
-                    //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
+                    //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
                         attemptWaiting++;
                         console.log("contator: ", attemptWaiting)
@@ -423,6 +425,10 @@ function qualification() {
                                                                     URL_redirect = `/benefit`;
                                                                     window.location.href = URL_redirect;
                                                                 } */
+                                break;
+                            case "solicitar-in100":
+                                URL_redirect = `/requirestreatment?protocolo=${protocolo}`;
+                                window.location.href = URL_redirect;
                                 break;
                         }
 
