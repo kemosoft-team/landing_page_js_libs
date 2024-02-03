@@ -1,5 +1,8 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
+
+
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
@@ -167,6 +170,51 @@ function isDateValid(dateString) {
     return false;
 }
 
+function setItemStorage({
+    pipelineSlug,
+    federalId,
+    leadId,
+}) {
+    var dataQualification = {
+        pipelineSlug,
+        federalId,
+        leadId,
+    };
+    var objDataQualification = JSON.stringify(dataQualification);
+    localStorage.setItem("dataQualification", objDataQualification);
+}
+
+function getItemStorage() {
+    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
+    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
+
+    return {
+        pipelineSlug: storedDataQualification.pipelineSlug,
+        federalId: storedDataQualification.federalId,
+        leadId: storedDataQualification.leadId
+    };
+}
+
+function requalify() {
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
+    axios
+        .post(API_URL + `/card/${leadId}/requalify`, {}, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
+            window.location.href = URL_redirect;
+        })
+        .catch(function (error) {
+            showToast(error.response.data.message);
+        });
+}
+
+
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -181,30 +229,6 @@ function getCEP(cep) {
         .catch(error => console.error('Erro ao obter endereço:', error));
 }
 
-function saveDataToLocalStorage({
-    name,
-    phone,
-    federalId,
-    birthDate,
-    pipelineSlug,
-    workWithSignedWorkCard,
-    withdrawalEnabled,
-    origin }) {
-    var dataQualification = {
-        name,
-        phone,
-        federalId,
-        birthDate,
-        pipelineSlug,
-        workWithSignedWorkCard,
-        withdrawalEnabled,
-        origin
-    };
-
-    var objDataQualification = JSON.stringify(dataQualification);
-
-    localStorage.setItem("dataQualification", objDataQualification);
-}
 
 function setBanks(bankList) {
     const selects = document.querySelectorAll('[data-brz-label="Banco"]');
@@ -222,6 +246,17 @@ function setBanks(bankList) {
     });
 }
 
+function getBanks() {
+    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
+
+    axios.get(url)
+        .then(response => {
+            setBanks(response.data.banks);
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+}
 function bankRedirect(banco) {
     switch (banco) {
         case "eccor":
@@ -241,26 +276,42 @@ function bankRedirect(banco) {
     }
 }
 
-function getBanks() {
-    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
+function getOpportunity() {
 
-    axios.get(url)
-        .then(response => {
-            setBanks(response.data.banks);
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
+    axios
+        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
-        .catch(error => {
-            console.error('Error:', error.message);
+        .then((response) => {
+
+            const oportunidades = response.data.oportunidades;
+            const id = response.data.oportunidades.id;
+            const produto = response.data.oportunidades.produto;
+            const banco = response.data.oportunidades.banco;
+            const etapa = response.data.oportunidades.etapa;
+            const acao = response.data.oportunidades.acao;
+            const linkAssinatura = response.data.oportunidades.linkAssinatura;
+
+
+        })
+        .catch(function (error) {
+
         });
 }
 
 function proposal() {
-    const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
-    const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
-    const pipelineSlug = storedDataQualification.pipelineSlug;
-    const federalId = storedDataQualification.federalId;
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     axios
-        .post(`${API_URL}/proposal/${federalId}`, {})
+        .post(`${API_URL}/proposal/${federalId}`, {}, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
         .then((response) => {
 
         })
@@ -296,7 +347,11 @@ function nextStepInfos() {
     let federalId = infoQualification.federalId;
     let pipelineSlug = infoQualification.pipelineSlug;
 
-    axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
+    axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
         .then((response) => {
             /* PEDIR INFO */
             const pedirInfos = response.data.pedirInfos;
@@ -314,7 +369,7 @@ function nextStepInfos() {
                 URL_redirect = `/account`;
                 window.location.href = URL_redirect;
             } else {
-                qualification()
+                requalify();
             }
 
 
@@ -346,6 +401,10 @@ async function criar_contato_fgts() {
         referrer: referrer,
         workWithSignedWorkCard: workWithSignedWorkCard,
         withdrawalEnabled: withdrawalEnabled,
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
     })
         .then((response) => {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
@@ -395,37 +454,34 @@ function qualification() {
 
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {})
+            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
+                headers: {
+                    'api-key': API_KEY
+                }
+            })
             .then((response) => {
                 let URL_redirect;
                 const contexto = response.data.contexto;
                 const situacao = response.data.situacao;
                 const perfil = response.data.perfil;
-                const mensagem = response.data.mensagem;
                 const protocolo = response.data.protocolo;
-                /* PEDIR INFO */
+                const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
-                /* OPORTUNIDADE */
                 const oportunidades = response.data.oportunidades;
-                // ENVIAR OPORTUNIDADE PARA O LOCALSTORAGE
-                const oportunidadesJSON = JSON.stringify(oportunidades);
-                localStorage.setItem('oportunidades', oportunidadesJSON);
-
-                const id = response.data.oportunidades.id;
-                const produto = response.data.oportunidades.produto;
                 const banco = response.data.oportunidades.banco;
-                const etapa = response.data.oportunidades.etapa;
-                const acao = response.data.oportunidades.acao;
-                const linkAssinatura = response.data.oportunidades.linkAssinatura;
+
+                setItemStorage({
+                    pipelineSlug: pipelineSlug,
+                    federalId: federalId,
+                    leadId: leadId,
+                    oportunidades: oportunidades
+                });
+
 
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
                     case "resolver-situação":
                         switch (situacao) {
-                            case "matricula":
-                                URL_redirect = `/benefit`;
-                                window.location.href = URL_redirect;
-                                break;
                             case "habilitar-saque":
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
@@ -440,7 +496,7 @@ function qualification() {
 
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
-                        if (pedirInfos.length > 0 && (perfil == "novato" || perfil == "tomador")) {
+                        if (pedirInfos.length > 0) {
                             URL_redirect = `/opportunity?protocol=${protocolo}`;
                             window.location.href = URL_redirect;
                         } else {
@@ -536,6 +592,10 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             "city": city,
             "state": state,
             "zipcode": zipcode
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
         .then((response) => {
             nextStepInfos();
@@ -559,7 +619,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-    
+
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
@@ -572,6 +632,10 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
             "issueDate": issueDate,
             "agency": agency,
             "agencyState": agencyState
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
         .then((response) => {
             nextStepInfos()
@@ -595,7 +659,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-    
+
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
@@ -607,6 +671,10 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             "branch": branch,
             "acctNo": acctNo,
             "acctType": acctType
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
         })
         .then((response) => {
             nextStepInfos()
