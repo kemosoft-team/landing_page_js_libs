@@ -20,15 +20,6 @@ let benefitAmountRange;
 let controlNoOpportunity = false;
 
 
-function resetLocalStorage() {
-    let attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-
-    if (attemptBenefitStorage > 3) {
-        localStorage.removeItem('attemptBenefitStorage');
-        console.log('Valor de attemptBenefitStorage resetado.');
-    }
-}
-
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -238,7 +229,6 @@ function setItemStorage({
     localStorage.setItem("dataQualification", objDataQualification);
 }
 
-
 function getItemStorage() {
     const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
@@ -274,8 +264,6 @@ function requalify(enrollment) {
 
 // CRIAR CONTATO INSS
 function criar_contato_inss() {
-    resetLocalStorage()
-    
     // CONFIG
     const nextStep = "qualification";
     const pipeline_slug = "inss";
@@ -415,23 +403,26 @@ function qualification() {
                     case "resolver-situacao":
                         switch (situacao) {
                             case "informar-matricula":
-                                var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-                                if (attemptBenefitStorage === null) {
-                                    localStorage.setItem('attemptBenefitStorage', 1);
-                                    console.log(attemptBenefitStorage)
-                                } else {
-                                    attemptBenefitStorage++;
-                                    localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
-                                    console.log(attemptBenefitStorage)
-                                }
-                                var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
-                                if (attemptBenefit > 2) {
-                                    URL_redirect = `/qualifywhatsapp`;
-                                    window.location.href = URL_redirect;
-                                } else {
-                                    URL_redirect = `/benefit`;
-                                    window.location.href = URL_redirect;
-                                }
+                                URL_redirect = `/benefit`;
+                                window.location.href = URL_redirect;
+                                /* 
+                                                                var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
+                                                                if (attemptBenefitStorage === null) {
+                                                                    localStorage.setItem('attemptBenefitStorage', 1);
+                                                                    console.log(attemptBenefitStorage)
+                                                                } else {
+                                                                    attemptBenefitStorage++;
+                                                                    localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
+                                                                    console.log(attemptBenefitStorage)
+                                                                }
+                                                                var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
+                                                                if (attemptBenefit > 2) {
+                                                                    URL_redirect = `/qualifywhatsapp`;
+                                                                    window.location.href = URL_redirect;
+                                                                } else {
+                                                                    URL_redirect = `/benefit`;
+                                                                    window.location.href = URL_redirect;
+                                                                } */
                                 break;
                         }
 
