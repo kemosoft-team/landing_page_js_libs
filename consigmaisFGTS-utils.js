@@ -323,17 +323,15 @@ function proposal() {
         });
 }
 
-
 function redirectToSignature() {
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
-    const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
+    const oportunidadeConfirmar = opportunity.find(function (oportunidade) {
         return oportunidade.acao === 'confirmar';
     });
 
     if (oportunidadeConfirmar) {
         const banco = oportunidadeConfirmar.banco;
-
         bankRedirect(banco);
     } else {
         console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
@@ -523,15 +521,28 @@ function qualification() {
                     case "aguardando-qualificacao":
                         attemptWaiting++;
                         console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting)
-                            if (attemptWaiting < 4) {
-                                setTimeout(function () {
+                        if (attemptWaiting = 2) {
+                            const { pipelineSlug, federalId, leadId } = getItemStorage();
+                            axios.post(API_URL + `/card/${leadId}/requalify`, {}, {
+                                headers: {
+                                    'api-key': API_KEY
+                                }
+                            })
+                                .then((response) => {
                                     sendRequest();
-                                }, 3000);
-                            } else {
-                                var popUpNoResponse = document.querySelector("#popUpNoResponse");
-                                popUpNoResponse.click()
-                            }
+                                })
+                                .catch(function (error) {
+                                    showToast(error.response.data.message);
+                                });
+                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 4)) {
+                            setTimeout(function () {
+                                sendRequest();
+                            }, 5000);
+                        } else {
+                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
+                            popUpNoResponse.click();
+                        }
+
 
                         break;
 
