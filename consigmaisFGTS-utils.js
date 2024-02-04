@@ -1,6 +1,6 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
+let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dcds"
 
 
 let step_URL = window.location.host;
@@ -174,11 +174,13 @@ function setItemStorage({
     pipelineSlug,
     federalId,
     leadId,
+    opportunity
 }) {
     var dataQualification = {
         pipelineSlug,
         federalId,
         leadId,
+        opportunity
     };
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
@@ -191,7 +193,8 @@ function getItemStorage() {
     return {
         pipelineSlug: storedDataQualification.pipelineSlug,
         federalId: storedDataQualification.federalId,
-        leadId: storedDataQualification.leadId
+        leadId: storedDataQualification.leadId,
+        opportunity: storedDataQualification.opportunity
     };
 }
 
@@ -221,7 +224,7 @@ function getCEP(cep) {
         .then(data => {
             // Preenchendo os campos
             document.querySelector('[data-brz-label="Rua"]').value = data.logradouro || '';
-            document.querySelector('[data-brz-label="Número"]').focus(); // Move o foco para o campo Número
+            document.querySelector('[data-brz-label="Número"]').focus(); 
             document.querySelector('[data-brz-label="Bairro"]').value = data.bairro || '';
             document.querySelector('[data-brz-label="Cidade"]').value = data.localidade || '';
             document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
@@ -321,9 +324,7 @@ function proposal() {
 }
 
 function redirectToSignature() {
-    const oportunidadesJSON = localStorage.getItem("oportunidades");
-    const oportunidadesData = JSON.parse(oportunidadesJSON);
-    const oportunidades = oportunidadesData.oportunidades;
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     // Encontrar a oportunidade com a ação "confirmar"
     const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
@@ -340,12 +341,8 @@ function redirectToSignature() {
 }
 
 function nextStepInfos() {
-    //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
 
-    let federalId = infoQualification.federalId;
-    let pipelineSlug = infoQualification.pipelineSlug;
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
         headers: {
@@ -464,7 +461,6 @@ function qualification() {
                 const contexto = response.data.contexto;
                 const situacao = response.data.situacao;
                 const perfil = response.data.perfil;
-                const protocolo = response.data.protocolo;
                 const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
@@ -474,7 +470,7 @@ function qualification() {
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
-                    oportunidades: oportunidades
+                    opportunity: oportunidades
                 });
 
 
@@ -497,10 +493,10 @@ function qualification() {
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
                         if (pedirInfos.length > 0) {
-                            URL_redirect = `/opportunity?protocol=${protocolo}`;
+                            URL_redirect = `/opportunity`;
                             window.location.href = URL_redirect;
                         } else {
-                            URL_redirect = `/success?protocol=${protocolo}`;
+                            URL_redirect = `/success`;
                             window.location.href = URL_redirect;
                         }
                         break;
@@ -569,10 +565,7 @@ function qualification() {
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
     //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId;
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -611,10 +604,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
 function registrarDocumento(type, number, issueDate, agency, agencyState) {
     //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId;
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -651,10 +641,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
 
 function registrarConta(bankNo, branch, acctNo, acctType) {
     //OBTER INFO DO LOCALSTORAGE
-    var DataInfoQualification = localStorage.getItem("dataQualification");
-    var infoQualification = JSON.parse(DataInfoQualification);
-
-    let federalId = infoQualification.federalId;
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -708,7 +695,7 @@ function validatorQuestions() {
     criar_contato_fgts();
 }
 
-function validateFormBenefit() {
+function validateForm() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
     ).value;
