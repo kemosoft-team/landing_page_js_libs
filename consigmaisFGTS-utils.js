@@ -224,7 +224,7 @@ function getCEP(cep) {
         .then(data => {
             // Preenchendo os campos
             document.querySelector('[data-brz-label="Rua"]').value = data.logradouro || '';
-            document.querySelector('[data-brz-label="Número"]').focus(); 
+            document.querySelector('[data-brz-label="Número"]').focus();
             document.querySelector('[data-brz-label="Bairro"]').value = data.bairro || '';
             document.querySelector('[data-brz-label="Cidade"]').value = data.localidade || '';
             document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
@@ -322,6 +322,7 @@ function proposal() {
 
         });
 }
+
 
 function redirectToSignature() {
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
@@ -448,12 +449,11 @@ function qualification() {
 
 
     const sendRequest = () => {
-        axios
-            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
-                headers: {
-                    'api-key': API_KEY
-                }
-            })
+        axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
             .then((response) => {
                 let URL_redirect;
                 const contexto = response.data.contexto;
