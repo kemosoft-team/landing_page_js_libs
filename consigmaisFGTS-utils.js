@@ -262,7 +262,7 @@ function getBanks() {
 }
 function bankRedirect(banco) {
     switch (banco) {
-        case "eccor":
+        case "Eccor Open FGTS":
             URL_redirect = `/signature?tp=wpp`;
             window.location.href = URL_redirect;
             break
@@ -270,7 +270,7 @@ function bankRedirect(banco) {
             URL_redirect = `/signature?tp=link`;
             window.location.href = URL_redirect;
             break
-        case "bmg":
+        case "Banco BMG S.A.":
             URL_redirect = `/signature?tp=sms`;
             window.location.href = URL_redirect;
             break
@@ -327,7 +327,6 @@ function proposal() {
 function redirectToSignature() {
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
-    // Encontrar a oportunidade com a ação "confirmar"
     const oportunidadeConfirmar = oportunidades.find(function (oportunidade) {
         return oportunidade.acao === 'confirmar';
     });
@@ -345,11 +344,12 @@ function nextStepInfos() {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
 
-    axios.get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
-        headers: {
-            'api-key': API_KEY
-        }
-    })
+    axios
+        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
         .then((response) => {
             /* PEDIR INFO */
             const pedirInfos = response.data.pedirInfos;
@@ -382,7 +382,7 @@ async function criar_contato_fgts() {
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
-    const autorizedBanks = ["bmg"];
+    const autorizedBanks = ["bmg", "eccor"];
 
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
 
@@ -523,14 +523,15 @@ function qualification() {
                     case "aguardando-qualificacao":
                         attemptWaiting++;
                         console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting < 4) {
-                            setTimeout(function () {
-                                sendRequest();
-                            }, 3000);
-                        } else {
-                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
-                            popUpNoResponse.click()
-                        }
+                        if (attemptWaiting)
+                            if (attemptWaiting < 4) {
+                                setTimeout(function () {
+                                    sendRequest();
+                                }, 3000);
+                            } else {
+                                var popUpNoResponse = document.querySelector("#popUpNoResponse");
+                                popUpNoResponse.click()
+                            }
 
                         break;
 
