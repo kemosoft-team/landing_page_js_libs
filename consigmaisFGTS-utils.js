@@ -1,6 +1,6 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dcds"
+let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
 
 
 let step_URL = window.location.host;
