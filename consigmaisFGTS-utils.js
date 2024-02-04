@@ -232,6 +232,10 @@ function getCEP(cep) {
         .catch(error => console.error('Erro ao obter endereço:', error));
 }
 
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex';
+}
+
 
 function setBanks(bankList) {
     const selects = document.querySelectorAll('[data-brz-label="Banco"]');
