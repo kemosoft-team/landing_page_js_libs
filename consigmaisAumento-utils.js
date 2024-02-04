@@ -364,7 +364,7 @@ function qualification() {
                 switch (contexto) {
                     //OPPORTUNITY
                     case "tem-oportunidade":
-                        URL_redirect = `/success?protocolo=${protocolo}`;
+                        URL_redirect = `/success?`;
                         window.location.href = URL_redirect;
                         break;
 
@@ -376,13 +376,13 @@ function qualification() {
                                 sendRequest();
                             }, 3000);
                         } else {
-                            URL_redirect = `/noopportunity?protocolo=${protocolo}`;
+                            URL_redirect = `/noopportunity?`;
                             window.location.href = URL_redirect;
                         }
                         break;
                     //NOQUALIFIED
                     case "nao-qualificado":
-                        URL_redirect = `/noqualified?protocolo=${protocolo}`;
+                        URL_redirect = `/noqualified?`;
                         window.location.href = URL_redirect;
                         break;
 
@@ -427,7 +427,7 @@ function qualification() {
                                                                 } */
                                 break;
                             case "solicitar-in100":
-                                URL_redirect = `/requirestreatment?protocolo=${protocolo}`;
+                                URL_redirect = `/requirestreatment?`;
                                 window.location.href = URL_redirect;
                                 break;
                         }
