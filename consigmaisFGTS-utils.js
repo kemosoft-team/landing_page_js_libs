@@ -279,6 +279,46 @@ function bankRedirect(banco) {
     }
 }
 
+function redirectLink() {
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    const oportunidades = opportunity.oportunidades;
+
+    // Verificar se há pelo menos uma oportunidade
+    if (oportunidades.length > 0) {
+        // Acessar o link de assinatura da primeira oportunidade
+        const linkAssinatura = oportunidades[0].linkAssinatura;
+
+        window.open(linkAssinatura, "_blank");
+    } else {
+        showToast("Nenhum link foi encontrado.");
+    }
+
+}
+
+function redirectLink() {
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    const oportunidadesConfirmar = opportunity.filter(function (oportunidade) {
+        return oportunidade.acao === 'confirmar';
+    });
+
+    if (oportunidadesConfirmar.length > 0) {
+        const oportunidadeMaiorValor = oportunidadesConfirmar.reduce(function (max, oportunidade) {
+            return oportunidade.valor > max.valor ? oportunidade : max;
+        }, oportunidadesConfirmar[0]);
+
+
+        const linkAssinatura = oportunidadeMaiorValor.linkAssinatura;
+
+        window.open(linkAssinatura, "_blank");
+    } else {
+        showToast("Nenhum link de assinatura encontrado para oportunidades com ação 'confirmar'.");
+    }
+}
+
+
+
 function getOpportunity() {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
@@ -340,7 +380,7 @@ function redirectToSignature() {
 
 function nextStepInfos() {
 
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     axios
         .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
