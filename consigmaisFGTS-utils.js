@@ -369,8 +369,6 @@ function nextStepInfos() {
                 requalify();
             }
 
-
-
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
