@@ -450,7 +450,7 @@ function qualification() {
 
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
+            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
                 headers: {
                     'api-key': API_KEY
                 }
