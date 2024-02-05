@@ -573,7 +573,7 @@ function qualification() {
                     case "aguardando-qualificacao":
                         attemptWaiting++;
                         console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting = 2) {
+                        if (attemptWaiting == 2) {
                             const { pipelineSlug, federalId, leadId } = getItemStorage();
                             axios.post(API_URL + `/card/${leadId}/requalify`, {}, {
                                 headers: {
@@ -586,7 +586,8 @@ function qualification() {
                                 .catch(function (error) {
                                     showToast(error.response.data.message);
                                 });
-                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 4)) {
+
+                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 5)) {
                             setTimeout(function () {
                                 sendRequest();
                             }, 5000);
@@ -784,7 +785,7 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-    workWithSignedWorkCard = firstChoice;
+    workWithSignedWorkCard = firstChoice === "sim";
     withdrawalEnabled = secondChoice === "sim";
 
     criar_contato_fgts();
