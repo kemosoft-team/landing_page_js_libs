@@ -1,6 +1,7 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
+let API_KEY = "92bb024f-cb57-4be0-816c-47ff99f97536"
+
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
@@ -12,6 +13,7 @@ let birth;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
 let controlNoOpportunity = false;
+
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -289,29 +291,31 @@ function redirectToSignature() {
         bankRedirect(banco);
     } else {
         console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
-
-    
-          
-            
-    
-
-          
-          Expand Down
-          
-            
-    
-
-          
-          Expand Up
-    
-    @@ -523,15 +521,28 @@ function qualification() {
-  
     }
 }
+
 function nextStepInfos() {
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlCallBack = obterParametroDaURL('callbackUrl');
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
     axios
-        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+        .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
             headers: {
                 'api-key': API_KEY
             }
@@ -320,23 +324,33 @@ function nextStepInfos() {
             /* PEDIR INFO */
             const pedirInfos = response.data.pedirInfos;
             console.log(pedirInfos)
+
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/document`;
+                URL_redirect = `/documento?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
+
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/address`;
+                URL_redirect = `/endereco?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
+
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/account`;
+                URL_redirect = `/conta?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
-                requalify();
+                if (urlCallBack) {
+                    callback(urlCallBack)
+                } else {
+                    qualification()
+                }
             }
+
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
         });
 }
+
+
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //CONFIG
@@ -372,18 +386,22 @@ async function criar_contato_fgts() {
 function qualification() {
     var attempt = 0;
     var attemptWaiting = 0;
+
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
+
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     let pipelineSlug = obterParametroDaURL('pipeline_slug');
     let federalId = obterParametroDaURL('federalId');
+
     if (pipelineSlug && federalId) {
         const dataQualification = {
             pipelineSlug: pipelineSlug,
             federalId: federalId
         };
+
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
         console.log("Enviou para o Storage: ", pipelineSlug, federalId)
@@ -393,11 +411,14 @@ function qualification() {
             const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
+
             console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
         }
     }
+
+
     const sendRequest = () => {
         axios
             .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
@@ -414,12 +435,15 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
                 const banco = response.data.oportunidades.banco;
+
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
                     opportunity: oportunidades
                 });
+
+
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
                     case "resolver-situação":
@@ -435,6 +459,7 @@ function qualification() {
                             case "assinatura-pendente":
                                 bankRedirect(banco)
                         }
+
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
                         if (pedirInfos.length > 0) {
@@ -445,63 +470,51 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
+
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
                             controlNoOpportunity = true;
                             setTimeout(function () {
                                 sendRequest();
-                            }, 3000);
+                            }, 5000);
                         } else {
                             URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
                         }
                         break;
+
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
+
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
-                        attemptWaiting++;
-                        console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting = 2) {
-                            const { pipelineSlug, federalId, leadId } = getItemStorage();
-                            axios.post(API_URL + `/card/${leadId}/requalify`, {}, {
-                                headers: {
-                                    'api-key': API_KEY
-                                }
-                            })
-                                .then((response) => {
-                                    sendRequest();
-                                })
-                                .catch(function (error) {
-                                    showToast(error.response.data.message);
-                                });
-                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 4)) {
-                            setTimeout(function () {
+
+                        let segundos = 20;
+
+                        const timeoutElement = document.getElementById("timeout");
+                        timeoutElement.style.display = "block";
+                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
+                        timeoutElement.style.fontSize = "25px";
+                        timeoutElement.style.textAlign = "center";
+                        timeoutElement.style.fontWeight = "700";
+
+
+                        const timer = setInterval(function () {
+                            console.log("Tempo restante: " + segundos + " segundos");
+                            timeoutElement.innerText = segundos;
+                            segundos--;
+                            if (segundos < 0) {
+                                clearInterval(timer);
+                                console.log("Tempo esgotado. Executando sendRequest().");
                                 sendRequest();
-                            }, 5000);
-                        } else {
-                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
-                            popUpNoResponse.click();
-                        }
-
-
+                            }
+                        }, 1000);
                         break;
 
-
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
@@ -528,6 +541,7 @@ function qualification() {
     };
     sendRequest();
 }
+
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
     //OBTER INFO DO LOCALSTORAGE
