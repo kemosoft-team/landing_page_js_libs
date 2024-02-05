@@ -849,26 +849,24 @@ function validateDocumento() {
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
     const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
-    const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
     if (
         type == "" ||
         number == "" ||
         issueDate == "" ||
         agency == "" ||
-        agencyState == "" ||
-        motherName == ""
+        agencyState == "" 
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
+    registrarDocumento(type, number, issueDate, agency, agencyState);
 }
 
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
-    const bankNo = selectedBankElement.value;  
+    const bankNo = selectedBankElement.value;
     const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
