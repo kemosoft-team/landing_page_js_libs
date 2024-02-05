@@ -318,14 +318,11 @@ function redirectLink() {
     }
 }
 function callback(urlCallBack) {
-    const callBack = 'https://' + urlCallBack;
     console.log(callBack);
 
-    const headers = {
-        'Content-Type': 'application/json',
-    };
-
-    axios.post(`${callBack}`, {}, { headers })
+    axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
+        "callbackUrl": urlCallBack
+    })
         .then((response) => {
             window.location.href = "https://wa.me/554840429340";
         })
@@ -333,7 +330,6 @@ function callback(urlCallBack) {
             console.log(error, "Erro no post n8n");
         });
 }
-
 
 function getOpportunity() {
 
