@@ -571,7 +571,7 @@ function qualification() {
                         }
 
                     //TEM OPORTUNIDADE
-                    case "tem-oportunidade":
+                    case "escolher-simulação":
                         if (pedirInfos.length > 0) {
                             URL_redirect = `/opportunity`;
                             window.location.href = URL_redirect;
@@ -579,6 +579,12 @@ function qualification() {
                             URL_redirect = `/success`;
                             window.location.href = URL_redirect;
                         }
+                        break;
+
+                    //JANELA MES ANIVERSÁRIO
+                    case "janela-bloqueio":
+                        URL_redirect = `/window`;
+                        window.location.href = URL_redirect;
                         break;
 
                     //NOOPPORTUNITY
@@ -867,7 +873,7 @@ function validateDocumento() {
 
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
-    const bankNo = selectedBankElement.value;  
+    const bankNo = selectedBankElement.value;
     const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
