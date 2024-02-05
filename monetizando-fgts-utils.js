@@ -317,8 +317,15 @@ function redirectLink() {
         showToast("Nenhum link de assinatura encontrado para oportunidades com ação 'confirmar'.");
     }
 }
-
-
+function callback(urlCallBack) {
+    axios.get(`${urlCallBack}`, {})
+        .then((response) => {
+            window.location.href = "https://wa.me/554840429340";
+        })
+        .catch(function (error) {
+            console.log(error, "Erro no post n8n");
+        });
+}
 
 function getOpportunity() {
 
@@ -381,7 +388,14 @@ function redirectToSignature() {
 
 function nextStepInfos() {
 
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlCallBack = obterParametroDaURL('callbackUrl');
+    const urlFederalId = obterParametroDaURL('federalId');
 
     axios
         .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
@@ -395,18 +409,22 @@ function nextStepInfos() {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/document`;
+                URL_redirect = `/documento?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/address`;
+                URL_redirect = `/endereco?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/account`;
+                URL_redirect = `/conta?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
                 window.location.href = URL_redirect;
             } else {
-                requalify();
+                if (urlCallBack) {
+                    callback(urlCallBack)
+                } else {
+                    qualification()
+                }
             }
 
         })
@@ -628,8 +646,9 @@ function qualification() {
 
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
+
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -666,9 +685,10 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agency, agencyState) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
+
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -685,7 +705,8 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
             "number": number,
             "issueDate": issueDate,
             "agency": agency,
-            "agencyState": agencyState
+            "agencyState": agencyState,
+            "mother": motherName
         }, {
             headers: {
                 'api-key': API_KEY
@@ -704,8 +725,8 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
 }
 
 function registrarConta(bankNo, branch, acctNo, acctType) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -738,7 +759,6 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 
 function validateForm() {
     const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
@@ -820,19 +840,21 @@ function validateDocumento() {
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
     const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+    const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
     if (
         type == "" ||
         number == "" ||
         issueDate == "" ||
         agency == "" ||
-        agencyState == ""
+        agencyState == "" ||
+        motherName == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
 
-    registrarDocumento(type, number, issueDate, agency, agencyState);
+    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
 }
 
 function validateConta() {
