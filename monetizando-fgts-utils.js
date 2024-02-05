@@ -574,7 +574,7 @@ function qualification() {
                             controlNoOpportunity = true;
                             setTimeout(function () {
                                 sendRequest();
-                            }, 3000);
+                            }, 5000);
                         } else {
                             URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
@@ -589,32 +589,27 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
-                        attemptWaiting++;
-                        console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting == 2) {
-                            const { pipelineSlug, federalId, leadId } = getItemStorage();
-                            axios.post(API_URL + `/card/${leadId}/requalify`, {}, {
-                                headers: {
-                                    'api-key': API_KEY
-                                }
-                            })
-                                .then((response) => {
-                                    sendRequest();
-                                })
-                                .catch(function (error) {
-                                    showToast(error.response.data.message);
-                                });
 
-                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 5)) {
-                            setTimeout(function () {
+                        let segundos = 20;
+
+                        const timeoutElement = document.getElementById("timeout");
+                        timeoutElement.style.display = "block";
+                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
+                        timeoutElement.style.fontSize = "25px";
+                        timeoutElement.style.textAlign = "center";
+                        timeoutElement.style.fontWeight = "700";
+
+
+                        const timer = setInterval(function () {
+                            console.log("Tempo restante: " + segundos + " segundos");
+                            timeoutElement.innerText = segundos;
+                            segundos--;
+                            if (segundos < 0) {
+                                clearInterval(timer);
+                                console.log("Tempo esgotado. Executando sendRequest().");
                                 sendRequest();
-                            }, 5000);
-                        } else {
-                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
-                            popUpNoResponse.click();
-                        }
-
-
+                            }
+                        }, 1000);
                         break;
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
