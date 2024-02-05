@@ -1,8 +1,6 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
-let API_KEY = "92bb024f-cb57-4be0-816c-47ff99f97536"
-
-
+let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
@@ -13,9 +11,7 @@ let federalId;
 let birth;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
-
 let controlNoOpportunity = false;
-
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -24,15 +20,12 @@ function showToast(text) {
         x.className = x.className.replace("show", `${text}`);
     }, 3000);
 }
-
 /* VALIDAR WHATSAPP */
 function validatePhone(phone) {
     const numericPhone = phone.replace(/\D/g, "");
-
     if (numericPhone.length !== 11) {
         return false;
     }
-
     const validDDDs = [
         "11",
         "12",
@@ -102,62 +95,49 @@ function validatePhone(phone) {
         "98",
         "99",
     ];
-
     const firstTwoDigits = numericPhone.substring(0, 2);
     if (!validDDDs.includes(firstTwoDigits)) {
         return false;
     }
-
     if (numericPhone[2] !== "9") {
         return false;
     }
-
     const firstDigit = numericPhone[0];
     if (numericPhone.split("").every((digit) => digit === firstDigit)) {
         return false;
     }
-
     return true;
 }
-
 /* VALIDAR CPF */
 function validateCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, "");
     if (cpf.length !== 11) return false;
     let sum = 0,
         remainder;
-
     for (let i = 0; i < 9; i++) sum += parseInt(cpf.charAt(i)) * (10 - i);
     remainder = 11 - (sum % 11);
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(9))) return false;
-
     sum = 0;
     for (let i = 0; i < 10; i++) sum += parseInt(cpf.charAt(i)) * (11 - i);
     remainder = 11 - (sum % 11);
     if (remainder === 10 || remainder === 11) remainder = 0;
     if (remainder !== parseInt(cpf.charAt(10))) return false;
-
     return true;
 }
-
 //VALIDAR DATA
 function isDateValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
     if (!datePattern.test(dateString)) {
         return false;
     }
-
     const [, day, month, year] = dateString.match(datePattern);
-
     const dayInt = parseInt(day, 10);
     const monthInt = parseInt(month, 10);
     const yearInt = parseInt(year, 10);
-
     if (yearInt < 1900 || yearInt > 2099) {
         return false;
     }
-
     const date = new Date(yearInt, monthInt - 1, dayInt);
     if (
         date.getDate() === dayInt &&
@@ -166,10 +146,8 @@ function isDateValid(dateString) {
     ) {
         return true;
     }
-
     return false;
 }
-
 function setItemStorage({
     pipelineSlug,
     federalId,
@@ -185,11 +163,9 @@ function setItemStorage({
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
 }
-
 function getItemStorage() {
     const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
-
     return {
         pipelineSlug: storedDataQualification.pipelineSlug,
         federalId: storedDataQualification.federalId,
@@ -197,11 +173,8 @@ function getItemStorage() {
         opportunity: storedDataQualification.opportunity
     };
 }
-
 function requalify() {
-
     const { pipelineSlug, federalId, leadId } = getItemStorage();
-
     axios
         .post(API_URL + `/card/${leadId}/requalify`, {}, {
             headers: {
@@ -216,7 +189,6 @@ function requalify() {
             showToast(error.response.data.message);
         });
 }
-
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -230,17 +202,11 @@ function getCEP(cep) {
         })
         .catch(error => console.error('Erro ao obter endereço:', error));
 }
-
-function showLoader() {
-    document.getElementById('loader').style.display = 'flex';
-}
-
 function setBanks(bankList) {
     const selects = document.querySelectorAll('[data-brz-label="Banco"]');
-
     selects.forEach(select => {
+        // Limpar opções existentes no select antes de adicionar novas
         select.innerHTML = "";
-
         bankList.forEach(bank => {
             const option = document.createElement('option');
             option.text = bank.name;
@@ -249,10 +215,8 @@ function setBanks(bankList) {
         });
     });
 }
-
 function getBanks() {
     const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
-
     axios.get(url)
         .then(response => {
             setBanks(response.data.banks);
@@ -279,47 +243,8 @@ function bankRedirect(banco) {
             console.log("Banco não reconhecido.");
     }
 }
-
-function redirectLink() {
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
-    const oportunidades = opportunity.oportunidades;
-
-    if (oportunidades.length > 0) {
-        const linkAssinatura = oportunidades[0].linkAssinatura;
-
-        window.open(linkAssinatura, "_blank");
-    } else {
-        showToast("Nenhum link foi encontrado.");
-    }
-
-}
-
-function redirectLink() {
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
-    const oportunidadesConfirmar = opportunity.filter(function (oportunidade) {
-        return oportunidade.acao === 'confirmar';
-    });
-
-    if (oportunidadesConfirmar.length > 0) {
-        const oportunidadeMaiorValor = oportunidadesConfirmar.reduce(function (max, oportunidade) {
-            return oportunidade.valor > max.valor ? oportunidade : max;
-        }, oportunidadesConfirmar[0]);
-
-
-        const linkAssinatura = oportunidadeMaiorValor.linkAssinatura;
-
-        window.open(linkAssinatura, "_blank");
-    } else {
-        showToast("Nenhum link de assinatura encontrado para oportunidades com ação 'confirmar'.");
-    }
-}
-
 function getOpportunity() {
-
     const { pipelineSlug, federalId, leadId } = getItemStorage();
-
     axios
         .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {}, {
             headers: {
@@ -327,7 +252,6 @@ function getOpportunity() {
             }
         })
         .then((response) => {
-
             const oportunidades = response.data.oportunidades;
             const id = response.data.oportunidades.id;
             const produto = response.data.oportunidades.produto;
@@ -335,17 +259,12 @@ function getOpportunity() {
             const etapa = response.data.oportunidades.etapa;
             const acao = response.data.oportunidades.acao;
             const linkAssinatura = response.data.oportunidades.linkAssinatura;
-
-
         })
         .catch(function (error) {
-
         });
 }
-
 function proposal() {
     const { pipelineSlug, federalId, leadId } = getItemStorage();
-
     axios
         .post(`${API_URL}/proposal/${federalId}`, {}, {
             headers: {
@@ -353,10 +272,8 @@ function proposal() {
             }
         })
         .then((response) => {
-
         })
         .catch(function (error) {
-
         });
 }
 
@@ -372,13 +289,27 @@ function redirectToSignature() {
         bankRedirect(banco);
     } else {
         console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -523,15 +521,28 @@ function qualification() {
+  
     }
 }
-
 function nextStepInfos() {
-
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
+    const { pipelineSlug, federalId, leadId } = getItemStorage();
     axios
         .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
             headers: {
@@ -389,38 +320,30 @@ function nextStepInfos() {
             /* PEDIR INFO */
             const pedirInfos = response.data.pedirInfos;
             console.log(pedirInfos)
-
             if (pedirInfos.includes("documento")) {
                 URL_redirect = `/document`;
                 window.location.href = URL_redirect;
-
             } else if (pedirInfos.includes("endereco")) {
                 URL_redirect = `/address`;
                 window.location.href = URL_redirect;
-
             } else if (pedirInfos.includes("conta")) {
                 URL_redirect = `/account`;
                 window.location.href = URL_redirect;
             } else {
                 requalify();
             }
-
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter a qualificação");
         });
 }
-
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
-
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
     const autorizedBanks = ["bmg", "eccor"];
-
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
     axios.post(API_URL + '/criar-contato', {
         name: name,
         phone: phone,
@@ -439,32 +362,28 @@ async function criar_contato_fgts() {
     })
         .then((response) => {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            console.log("Contato FGTS criado")
         })
         .catch(function (error) {
             showToast(error.response.data.message);
         });
 }
-
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
     var attemptWaiting = 0;
-
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
-
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     let pipelineSlug = obterParametroDaURL('pipeline_slug');
     let federalId = obterParametroDaURL('federalId');
-
     if (pipelineSlug && federalId) {
         const dataQualification = {
             pipelineSlug: pipelineSlug,
             federalId: federalId
         };
-
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
         console.log("Enviou para o Storage: ", pipelineSlug, federalId)
@@ -474,14 +393,11 @@ function qualification() {
             const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
-
             console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
         }
     }
-
-
     const sendRequest = () => {
         axios
             .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
@@ -498,15 +414,12 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
                 const banco = response.data.oportunidades.banco;
-
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
                     opportunity: oportunidades
                 });
-
-
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
                     case "resolver-situação":
@@ -522,7 +435,6 @@ function qualification() {
                             case "assinatura-pendente":
                                 bankRedirect(banco)
                         }
-
                     //TEM OPORTUNIDADE
                     case "tem-oportunidade":
                         if (pedirInfos.length > 0) {
@@ -533,7 +445,6 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
-
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -546,13 +457,11 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
-
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
-
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
                         attemptWaiting++;
@@ -582,6 +491,17 @@ function qualification() {
 
                         break;
 
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
@@ -608,21 +528,16 @@ function qualification() {
     };
     sendRequest();
 }
-
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
     //OBTER INFO DO LOCALSTORAGE
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
-
-
     axios
         .post(`${API_URL}/registrar-endereco`, {
             "federalId": federalId,
@@ -648,19 +563,15 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 function registrarDocumento(type, number, issueDate, agency, agencyState) {
     //OBTER INFO DO LOCALSTORAGE
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
-
     axios
         .post(`${API_URL}/registrar-documento`, {
             "federalId": federalId,
@@ -685,19 +596,15 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 function registrarConta(bankNo, branch, acctNo, acctType) {
     //OBTER INFO DO LOCALSTORAGE
     const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
-
     axios
         .post(`${API_URL}/registrar-conta`, {
             "federalId": federalId,
@@ -721,7 +628,6 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 //VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
@@ -730,18 +636,14 @@ function validatorQuestions() {
     const secondChoice = document
         .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
         .value.toLowerCase();
-
     if (firstChoice === "" || secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
     }
-
     workWithSignedWorkCard = firstChoice;
     withdrawalEnabled = secondChoice === "sim";
-
     criar_contato_fgts();
 }
-
 function validateForm() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
@@ -755,7 +657,6 @@ function validateForm() {
     const birthElement = document.querySelector(
         '[data-brz-label="Data de Nascimento"]'
     ).value;
-
     if (
         nameElement == "" ||
         phoneElement == "" ||
@@ -785,18 +686,15 @@ function validateForm() {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-
     //ABRA O POP UP DE QUESTIONARIO
     const questions = document.getElementById("questions");
     questions.click();
 }
-
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     const address = document.querySelector('[data-brz-label="Rua"]').value;
@@ -804,7 +702,6 @@ function validateEndereco() {
     const district = document.querySelector('[data-brz-label="Bairro"]').value;
     const city = document.querySelector('[data-brz-label="Cidade"]').value;
     const state = document.querySelector('[data-brz-label="UF"]').value;
-
     if (
         zipcode == "" ||
         address == "" ||
@@ -816,41 +713,32 @@ function validateEndereco() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-
     registrarEndereco(zipcode, address, addressNumber, district, city, state);
 }
-
 function validateDocumento() {
     const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
     const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
     const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
-
     if (
         type == "" ||
         number == "" ||
         issueDate == "" ||
         agency == "" ||
         agencyState == ""
-    ) if (!isDateValid(issueDate)) {
-        showToast("A data de nascimento informada não é válida!");
+    ) {
+        showToast("Por favor, preencha todos os campos.");
         return false;
-    } else {
-            showToast("Por favor, preencha todos os campos.");
-            return false;
-        }
-
+    }
     registrarDocumento(type, number, issueDate, agency, agencyState);
 }
-
 function validateConta() {
     const bank = document.querySelector('[data-brz-label="Banco"]').value;
     const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
-
     if (
         bank == "" ||
         acctType == "" ||
@@ -861,11 +749,8 @@ function validateConta() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-
     let acctNo = account + verifyDigit;
     let bankNo = bank.bank_no;
-
     console.log(bankNo, branch, acctNo, acctType);
-
     registrarConta(bankNo, branch, acctNo, acctType);
 }
