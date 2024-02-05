@@ -191,10 +191,10 @@ function getItemStorage() {
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
 
     return {
-        pipelineSlug: storedDataQualification.pipelineSlug,
-        federalId: storedDataQualification.federalId,
-        leadId: storedDataQualification.leadId,
-        opportunity: storedDataQualification.opportunity
+        pipelineSlug: storedDataQualification.pipelineSlug  || "",
+        federalId: storedDataQualification.federalId  || "",
+        leadId: storedDataQualification.leadId  || "",
+        opportunity: storedDataQualification.opportunity  || ""
     };
 }
 
