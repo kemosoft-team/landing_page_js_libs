@@ -322,7 +322,7 @@ function callback(urlCallBack) {
     const callBack = 'https://' + urlCallBack;
     console.log(callBack);
 
-    axios.get(`${callBack}`, {})
+    axios.post(`${callBack}`, {})
         .then((response) => {
             window.location.href = "https://wa.me/554840429340";
         })
