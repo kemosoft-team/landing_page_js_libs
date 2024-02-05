@@ -191,10 +191,10 @@ function getItemStorage() {
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
 
     return {
-        pipelineSlug: storedDataQualification.pipelineSlug  || "",
-        federalId: storedDataQualification.federalId  || "",
-        leadId: storedDataQualification.leadId  || "",
-        opportunity: storedDataQualification.opportunity  || ""
+        pipelineSlug: storedDataQualification.pipelineSlug || "",
+        federalId: storedDataQualification.federalId || "",
+        leadId: storedDataQualification.leadId || "",
+        opportunity: storedDataQualification.opportunity || ""
     };
 }
 
@@ -397,8 +397,17 @@ function nextStepInfos() {
     const urlCallBack = obterParametroDaURL('callbackUrl');
     const urlFederalId = obterParametroDaURL('federalId');
 
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
     axios
-        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+        .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
             headers: {
                 'api-key': API_KEY
             }
