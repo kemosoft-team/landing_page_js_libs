@@ -318,7 +318,7 @@ function redirectLink() {
     }
 }
 function callback(urlCallBack) {
-    console.log(urlCallBack);  
+    console.log(urlCallBack);
 
     axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
         "callbackUrl": urlCallBack
@@ -867,14 +867,15 @@ function validateDocumento() {
 }
 
 function validateConta() {
-    const bank = document.querySelector('[data-brz-label="Banco"]').value;
+    const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
+    const bankNo = selectedBankElement.value;  
     const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
 
     if (
-        bank == "" ||
+        bankNo == "" ||
         acctType == "" ||
         branch == "" ||
         account == "" ||
@@ -884,10 +885,8 @@ function validateConta() {
         return false;
     }
 
-    let acctNo = account + verifyDigit;
-    let bankNo = bank.bank_no;
+    console.log(bankNo, branch, account, verifyDigit, acctType);
 
-    console.log(bankNo, branch, acctNo, acctType);
-
-    registrarConta(bankNo, branch, acctNo, acctType);
+    registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
+
