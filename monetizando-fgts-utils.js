@@ -425,6 +425,15 @@ async function criar_contato_fgts() {
 
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
 
+    const button = document.querySelector(".btn-submit-fgts");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+
     axios.post(API_URL + '/criar-contato', {
         name: name,
         phone: phone,
@@ -445,6 +454,9 @@ async function criar_contato_fgts() {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
         })
         .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "ACEITAR E CONTINUAR";
             showToast(error.response.data.message);
         });
 }
@@ -726,45 +738,22 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
         });
 }
 
-//VALIDAÇÕES
-function validatorQuestions() {
-    const firstChoice = document
-        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
-        .value.toLowerCase();
-    const secondChoice = document
-        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
-        .value.toLowerCase();
-
-    if (firstChoice === "" || secondChoice === "") {
-        showToast("Por favor, responda todas as perguntas.");
-        return false;
-    }
-
-    workWithSignedWorkCard = firstChoice;
-    withdrawalEnabled = secondChoice === "sim";
-
-    criar_contato_fgts();
-}
 
 function validateForm() {
-    const nameElement = document.querySelector(
-        '[data-brz-label="Nome Completo"]'
-    ).value;
-    const phoneElement = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
-    ).value;
-    const federalIdElement = document.querySelector(
-        '[data-brz-label="CPF"]'
-    ).value;
-    const birthElement = document.querySelector(
-        '[data-brz-label="Data de Nascimento"]'
-    ).value;
+    const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
+    const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
+    const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
+    const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+    const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
+    const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
 
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == ""
+        birthElement == "" ||
+        firstChoice == "" ||
+        secondChoice == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -795,10 +784,10 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
+    workWithSignedWorkCard = firstChoice;
+    withdrawalEnabled = secondChoice === "sim";
 
-    //ABRA O POP UP DE QUESTIONARIO
-    const questions = document.getElementById("questions");
-    questions.click();
+    criar_contato_fgts();
 }
 
 function validateEndereco() {
