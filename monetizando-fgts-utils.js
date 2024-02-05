@@ -191,10 +191,10 @@ function getItemStorage() {
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
 
     return {
-        pipelineSlug: storedDataQualification.pipelineSlug || "",
-        federalId: storedDataQualification.federalId || "",
-        leadId: storedDataQualification.leadId || "",
-        opportunity: storedDataQualification.opportunity || ""
+        pipelineSlug: storedDataQualification.pipelineSlug,
+        federalId: storedDataQualification.federalId,
+        leadId: storedDataQualification.leadId,
+        opportunity: storedDataQualification.opportunity
     };
 }
 
@@ -217,7 +217,6 @@ function requalify() {
         });
 }
 
-
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -235,7 +234,6 @@ function getCEP(cep) {
 function showLoader() {
     document.getElementById('loader').style.display = 'flex';
 }
-
 
 function setBanks(bankList) {
     const selects = document.querySelectorAll('[data-brz-label="Banco"]');
@@ -317,20 +315,6 @@ function redirectLink() {
         showToast("Nenhum link de assinatura encontrado para oportunidades com ação 'confirmar'.");
     }
 }
-function callback(urlCallBack) {
-    console.log(urlCallBack);
-
-    axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
-        "callbackUrl": urlCallBack
-    })
-        .then((response) => {
-            window.location.href = "https://wa.me/554840429340";
-        })
-        .catch(function (error) {
-            console.log(error, "Erro no post n8n");
-        });
-}
-
 
 function getOpportunity() {
 
@@ -393,26 +377,10 @@ function redirectToSignature() {
 
 function nextStepInfos() {
 
-    function obterParametroDaURL(parametro) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(parametro);
-    }
-
-    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const urlCallBack = obterParametroDaURL('callbackUrl');
-    const urlFederalId = obterParametroDaURL('federalId');
-
-    let federal;
-
-    if (urlFederalId) {
-        federal = urlFederalId;
-    } else {
-        const { federalId } = getItemStorage();
-        federal = federalId;
-    }
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     axios
-        .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
+        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
             headers: {
                 'api-key': API_KEY
             }
@@ -423,22 +391,18 @@ function nextStepInfos() {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/document`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/address`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/account`;
                 window.location.href = URL_redirect;
             } else {
-                if (urlCallBack) {
-                    callback(urlCallBack)
-                } else {
-                    qualification()
-                }
+                requalify();
             }
 
         })
@@ -456,15 +420,6 @@ async function criar_contato_fgts() {
     const autorizedBanks = ["bmg", "eccor"];
 
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
-
-    const button = document.querySelector(".btn-submit-fgts");
-    const spinner = button.querySelector(".brz-form-spinner");
-    const span = button.querySelector(".brz-span.brz-text__editor");
-
-    button.setAttribute("disabled", true);
-    spinner.classList.remove("brz-invisible");
-    span.textContent = "";
-
 
     axios.post(API_URL + '/criar-contato', {
         name: name,
@@ -486,9 +441,6 @@ async function criar_contato_fgts() {
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
         })
         .catch(function (error) {
-            button.removeAttribute("disabled");
-            spinner.classList.add("brz-invisible");
-            span.textContent = "ACEITAR E CONTINUAR";
             showToast(error.response.data.message);
         });
 }
@@ -588,7 +540,7 @@ function qualification() {
                             controlNoOpportunity = true;
                             setTimeout(function () {
                                 sendRequest();
-                            }, 5000);
+                            }, 3000);
                         } else {
                             URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
@@ -603,27 +555,31 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
-
-                        let segundos = 20;
-
-                        const timeoutElement = document.getElementById("timeout");
-                        timeoutElement.style.display = "block";
-                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
-                        timeoutElement.style.fontSize = "25px";
-                        timeoutElement.style.textAlign = "center";
-                        timeoutElement.style.fontWeight = "700";
-
-
-                        const timer = setInterval(function () {
-                            console.log("Tempo restante: " + segundos + " segundos");
-                            timeoutElement.innerText = segundos;
-                            segundos--;
-                            if (segundos < 0) {
-                                clearInterval(timer);
-                                console.log("Tempo esgotado. Executando sendRequest().");
+                        attemptWaiting++;
+                        console.log("contator: ", attemptWaiting)
+                        if (attemptWaiting = 2) {
+                            const { pipelineSlug, federalId, leadId } = getItemStorage();
+                            axios.post(API_URL + `/card/${leadId}/requalify`, {}, {
+                                headers: {
+                                    'api-key': API_KEY
+                                }
+                            })
+                                .then((response) => {
+                                    sendRequest();
+                                })
+                                .catch(function (error) {
+                                    showToast(error.response.data.message);
+                                });
+                        } else if (attemptWaiting === 1 || (attemptWaiting > 2 && attemptWaiting < 4)) {
+                            setTimeout(function () {
                                 sendRequest();
-                            }
-                        }, 1000);
+                            }, 5000);
+                        } else {
+                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
+                            popUpNoResponse.click();
+                        }
+
+
                         break;
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
@@ -655,9 +611,8 @@ function qualification() {
 
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
-
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
-
+    //OBTER INFO DO LOCALSTORAGE
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -694,10 +649,9 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
-
-
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+function registrarDocumento(type, number, issueDate, agency, agencyState) {
+    //OBTER INFO DO LOCALSTORAGE
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -714,8 +668,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
             "number": number,
             "issueDate": issueDate,
             "agency": agency,
-            "agencyState": agencyState,
-            "mother": motherName
+            "agencyState": agencyState
         }, {
             headers: {
                 'api-key': API_KEY
@@ -734,8 +687,8 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
 }
 
 function registrarConta(bankNo, branch, acctNo, acctType) {
-
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    //OBTER INFO DO LOCALSTORAGE
+    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -769,21 +722,45 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
         });
 }
 
+//VALIDAÇÕES
+function validatorQuestions() {
+    const firstChoice = document
+        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
+        .value.toLowerCase();
+    const secondChoice = document
+        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
+        .value.toLowerCase();
+
+    if (firstChoice === "" || secondChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+    }
+
+    workWithSignedWorkCard = firstChoice;
+    withdrawalEnabled = secondChoice === "sim";
+
+    criar_contato_fgts();
+}
+
 function validateForm() {
-    const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
-    const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
-    const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
-    const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
-    const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
-    const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
+    const nameElement = document.querySelector(
+        '[data-brz-label="Nome Completo"]'
+    ).value;
+    const phoneElement = document.querySelector(
+        '[data-brz-label="WhatsApp"]'
+    ).value;
+    const federalIdElement = document.querySelector(
+        '[data-brz-label="CPF"]'
+    ).value;
+    const birthElement = document.querySelector(
+        '[data-brz-label="Data de Nascimento"]'
+    ).value;
 
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == "" ||
-        firstChoice == "" ||
-        secondChoice == ""
+        birthElement == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -814,10 +791,10 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-    workWithSignedWorkCard = firstChoice === "sim";
-    withdrawalEnabled = secondChoice === "sim";
 
-    criar_contato_fgts();
+    //ABRA O POP UP DE QUESTIONARIO
+    const questions = document.getElementById("questions");
+    questions.click();
 }
 
 function validateEndereco() {
@@ -855,25 +832,27 @@ function validateDocumento() {
         number == "" ||
         issueDate == "" ||
         agency == "" ||
-        agencyState == "" 
-    ) {
-        showToast("Por favor, preencha todos os campos.");
+        agencyState == ""
+    ) if (!isDateValid(issueDate)) {
+        showToast("A data de nascimento informada não é válida!");
         return false;
-    }
+    } else {
+            showToast("Por favor, preencha todos os campos.");
+            return false;
+        }
 
     registrarDocumento(type, number, issueDate, agency, agencyState);
 }
 
 function validateConta() {
-    const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
-    const bankNo = selectedBankElement.value;
+    const bank = document.querySelector('[data-brz-label="Banco"]').value;
     const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
 
     if (
-        bankNo == "" ||
+        bank == "" ||
         acctType == "" ||
         branch == "" ||
         account == "" ||
@@ -883,8 +862,10 @@ function validateConta() {
         return false;
     }
 
-    console.log(bankNo, branch, account, verifyDigit, acctType);
+    let acctNo = account + verifyDigit;
+    let bankNo = bank.bank_no;
 
-    registrarConta(bankNo, branch, account + verifyDigit, acctType);
+    console.log(bankNo, branch, acctNo, acctType);
+
+    registrarConta(bankNo, branch, acctNo, acctType);
 }
-
