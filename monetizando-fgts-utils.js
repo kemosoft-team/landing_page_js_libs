@@ -318,7 +318,11 @@ function redirectLink() {
     }
 }
 function callback(urlCallBack) {
-    axios.get(`${urlCallBack}`, {})
+
+    const callBack = 'https://' + urlCallBack;
+    console.log(callBack);
+
+    axios.get(`${callBack}`, {})
         .then((response) => {
             window.location.href = "https://wa.me/554840429340";
         })
@@ -418,15 +422,15 @@ function nextStepInfos() {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
+                URL_redirect = `/documento?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
+                URL_redirect = `/endereco?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${{ urlFederalId }}&callbackUrl=${{ urlCallBack }}`;
+                URL_redirect = `/conta?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
                 if (urlCallBack) {
