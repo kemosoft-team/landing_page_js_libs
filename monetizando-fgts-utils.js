@@ -318,11 +318,14 @@ function redirectLink() {
     }
 }
 function callback(urlCallBack) {
-
     const callBack = 'https://' + urlCallBack;
     console.log(callBack);
 
-    axios.post(`${callBack}`, {})
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+
+    axios.post(`${callBack}`, {}, { headers })
         .then((response) => {
             window.location.href = "https://wa.me/554840429340";
         })
@@ -330,6 +333,7 @@ function callback(urlCallBack) {
             console.log(error, "Erro no post n8n");
         });
 }
+
 
 function getOpportunity() {
 
