@@ -422,15 +422,15 @@ function nextStepInfos() {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/documento?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/endereco?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/conta?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
                 if (urlCallBack) {
@@ -495,7 +495,6 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-    var attemptWaiting = 0;
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -580,7 +579,13 @@ function qualification() {
                                 }
                                 break;
                         }
-                        break
+                    break
+
+                    //JANELA MES ANIVERSÁRIO
+                    case "aguardar-link-assinatura":
+                        URL_redirect = `/service`;
+                        window.location.href = URL_redirect;
+                        break;
 
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
@@ -626,7 +631,6 @@ function qualification() {
                             segundos--;
                             if (segundos < 0) {
                                 clearInterval(timer);
-                                console.log("Tempo esgotado. Executando sendRequest().");
                                 sendRequest();
                             }
                         }, 1000);
