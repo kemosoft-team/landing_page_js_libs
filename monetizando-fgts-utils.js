@@ -556,7 +556,7 @@ function qualification() {
 
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
-                    case "resolver-situação":
+                    case "resolver-situacao":
                         switch (situacao) {
                             case "habilitar-saque":
                                 URL_redirect = `/enable`;
