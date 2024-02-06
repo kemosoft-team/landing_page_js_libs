@@ -11,6 +11,7 @@ let name;
 let phone;
 let federalId;
 let birth;
+let email;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
 
@@ -460,6 +461,7 @@ async function criar_contato_fgts() {
         phone: phone,
         birthDate: birth,
         federalId: federalId_replaced,
+        email: email,
         autorizedBanks: autorizedBanks,
         pipelineSlug: pipeline_slug,
         origin: origin,
@@ -844,12 +846,16 @@ function validateForm() {
     const birthElement = document.querySelector(
         '[data-brz-label="Data de Nascimento"]'
     ).value;
+    const emailElement = document.querySelector(
+        '[data-brz-label="Email"]'
+    ).value;
 
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == ""
+        birthElement == "" ||
+        emailElement == "" 
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -880,6 +886,7 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
+    email  = emailElement
 
     //ABRA O POP UP DE QUESTIONARIO
     const questions = document.getElementById("questions");
