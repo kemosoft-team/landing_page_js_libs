@@ -582,7 +582,7 @@ function qualification() {
                                 }
                                 break;
                         }
-
+                        break
 
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
@@ -596,7 +596,7 @@ function qualification() {
                             controlNoOpportunity = true;
                             setTimeout(function () {
                                 sendRequest();
-                            }, 3000);
+                            }, 5000);
                         } else {
                             URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
