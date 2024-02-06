@@ -10,6 +10,7 @@ let referrer = document.referrer;
 let name;
 let phone;
 let federalId;
+let email;
 let birth;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
@@ -236,7 +237,6 @@ function showLoader() {
     document.getElementById('loader').style.display = 'flex';
 }
 
-
 function setBanks(bankList) {
     const selects = document.querySelectorAll('[data-brz-label="Banco"]');
 
@@ -330,7 +330,6 @@ function callback(urlCallBack) {
             console.log(error, "Erro no post n8n");
         });
 }
-
 function getOpportunity() {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
@@ -459,6 +458,7 @@ async function criar_contato_fgts() {
         name: name,
         phone: phone,
         birthDate: birth,
+        email: email,
         federalId: federalId_replaced,
         autorizedBanks: autorizedBanks,
         pipelineSlug: pipeline_slug,
@@ -819,6 +819,7 @@ function validateForm() {
     const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
     const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
     const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+    const emailElement = document.querySelector('[data-brz-label="Email"]').value;
     const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
     const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
 
@@ -827,6 +828,7 @@ function validateForm() {
         phoneElement == "" ||
         federalIdElement == "" ||
         birthElement == "" ||
+        emailElement == "" ||
         firstChoice == "" ||
         secondChoice == ""
     ) {
@@ -859,6 +861,7 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
+    email = emailElement;
     workWithSignedWorkCard = firstChoice === "sim";
     withdrawalEnabled = secondChoice === "sim";
 
