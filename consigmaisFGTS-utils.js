@@ -402,8 +402,17 @@ function nextStepInfos(federal) {
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlCallBack = obterParametroDaURL('callbackUrl');
 
+    let federalIdRequest;
+
+    if (!federal) {
+        const {federalId} = getItemStorage();
+        federalIdRequest = federalId;
+    } else {
+        federalIdRequest = federal;
+    }
+
     axios
-        .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
+        .get(`${API_URL}/proxima-etapa/fgts/${federalIdRequest}`, {
             headers: {
                 'api-key': API_KEY
             }
@@ -414,15 +423,15 @@ function nextStepInfos(federal) {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${federal}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${federal}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${federal}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
                 if (urlCallBack) {
@@ -855,7 +864,7 @@ function validateForm() {
         phoneElement == "" ||
         federalIdElement == "" ||
         birthElement == "" ||
-        emailElement == "" 
+        emailElement == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -886,7 +895,7 @@ function validateForm() {
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-    email  = emailElement
+    email = emailElement
 
     //ABRA O POP UP DE QUESTIONARIO
     const questions = document.getElementById("questions");
