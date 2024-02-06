@@ -214,7 +214,6 @@ function isBirthValid(dateString) {
     }
     return true;
 }
-
 function setItemStorage({
     pipelineSlug,
     federalId,
@@ -230,7 +229,6 @@ function setItemStorage({
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
 }
-
 function getItemStorage() {
     const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
@@ -242,7 +240,6 @@ function getItemStorage() {
         protocolo: storedDataQualification.protocolo
     };
 }
-
 function requalify(enrollment) {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
@@ -263,8 +260,6 @@ function requalify(enrollment) {
             showToast(error.response.data.message);
         });
 }
-
-
 // CRIAR CONTATO INSS
 function criar_contato_inss() {
     // CONFIG
@@ -305,7 +300,6 @@ function criar_contato_inss() {
             showToast(error.response.data.message);
         });
 }
-
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
@@ -351,8 +345,11 @@ function qualification() {
                 let URL_redirect;
                 const contexto = response.data.contexto;
                 const situacao = response.data.situacao;
-                const protocolo = response.data.protocolo;
+                const perfil = response.data.perfil;
                 const leadId = response.data.id;
+                const pedirInfos = response.data.pedirInfos;
+                const oportunidades = response.data.oportunidades;
+                const banco = response.data.oportunidades.banco;
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
@@ -413,11 +410,15 @@ function qualification() {
                                 URL_redirect = `/requirestreatment`;
                                 window.location.href = URL_redirect;
                                 break;
-
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
-                                URL_redirect = `/success?`;
-                                window.location.href = URL_redirect;
+                                if (pedirInfos.length > 0) {
+                                    URL_redirect = `/opportunity`;
+                                    window.location.href = URL_redirect;
+                                } else {
+                                    URL_redirect = `/success`;
+                                    window.location.href = URL_redirect;
+                                }
                                 break;
                         }
 
@@ -450,7 +451,60 @@ function qualification() {
     };
     sendRequest();
 }
+function nextStepInfos(federal) {
 
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlCallBack = obterParametroDaURL('callbackUrl');
+
+    let federalIdRequest;
+
+    if (!federal) {
+        const {federalId} = getItemStorage();
+        federalIdRequest = federalId;
+    } else {
+        federalIdRequest = federal;
+    }
+
+    axios
+        .get(`${API_URL}/proxima-etapa/fgts/${federalIdRequest}`, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            /* PEDIR INFO */
+            const pedirInfos = response.data.pedirInfos;
+            console.log(pedirInfos)
+
+            if (pedirInfos.includes("documento")) {
+                URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("endereco")) {
+                URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                window.location.href = URL_redirect;
+
+            } else if (pedirInfos.includes("conta")) {
+                URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                window.location.href = URL_redirect;
+            } else {
+                if (urlCallBack) {
+                    callback(urlCallBack)
+                } else {
+                    qualification()
+                }
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
 //REGISTRAR FORMULÁRIOS
 function registrarBenefit(enrollment) {
 
