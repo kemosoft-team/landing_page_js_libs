@@ -219,30 +219,32 @@ function isBirthValid(dateString) {
     }
     return true;
 }
+
 function setItemStorage({
     pipelineSlug,
     federalId,
     leadId,
-    protocolo
+    opportunity
 }) {
     var dataQualification = {
         pipelineSlug,
         federalId,
         leadId,
-        protocolo
+        opportunity
     };
     var objDataQualification = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", objDataQualification);
 }
+
 function getItemStorage() {
     const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
     const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
 
     return {
-        pipelineSlug: storedDataQualification.pipelineSlug,
-        federalId: storedDataQualification.federalId,
-        leadId: storedDataQualification.leadId,
-        protocolo: storedDataQualification.protocolo
+        pipelineSlug: storedDataQualification.pipelineSlug || "",
+        federalId: storedDataQualification.federalId || "",
+        leadId: storedDataQualification.leadId || "",
+        opportunity: storedDataQualification.opportunity || ""
     };
 }
 function requalify(enrollment) {
@@ -360,8 +362,9 @@ function qualification() {
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
-                    protocolo: protocolo
+                    opportunity: oportunidades
                 });
+
 
                 switch (contexto) {
                     //NOOPPORTUNITY
