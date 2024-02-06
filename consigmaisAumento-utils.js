@@ -398,15 +398,23 @@ function qualification() {
                     //ENROLLMENT INSS
                     case "resolver-situacao":
                         switch (situacao) {
+                            //INFORMAR MATRICULA
                             case "informar-matricula":
                                 URL_redirect = `/benefit`;
                                 window.location.href = URL_redirect;
                                 break;
+                            //INFORMAR MATRICULA NOVAMENTE
+                            case "informar-matricula-valida":
+                                URL_redirect = `/benefit?tp=valida`;
+                                window.location.href = URL_redirect;
+                                break;
+                            //SOLICITAR IN100
                             case "solicitar-in100":
                                 URL_redirect = `/requirestreatment`;
                                 window.location.href = URL_redirect;
                                 break;
-                            //OPPORTUNITY
+
+                            //TEM OPORTUNIDADE
                             case "escolher-simulacao":
                                 URL_redirect = `/success?`;
                                 window.location.href = URL_redirect;
@@ -789,7 +797,6 @@ function validatorPopUpBenefit() {
     close_benefit.click();
     representativeQuestions.click();
 }
-
 
 
 
