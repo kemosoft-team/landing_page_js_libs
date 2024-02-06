@@ -479,7 +479,7 @@ function nextStepInfos(federal) {
     }
 
     axios
-        .get(`${API_URL}/proxima-etapa/fgts/${federalIdRequest}`, {
+        .get(`${API_URL}/proxima-etapa/inss/${federalIdRequest}`, {
             headers: {
                 'api-key': API_KEY
             }
