@@ -580,6 +580,7 @@ function qualification() {
                                 }
                                 break;
                         }
+                        break
 
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
