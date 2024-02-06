@@ -413,6 +413,8 @@ function qualification() {
                                 break;
                         }
 
+                        break
+
 
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
