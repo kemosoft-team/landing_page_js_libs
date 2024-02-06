@@ -571,7 +571,7 @@ function qualification() {
                         }
 
                     //TEM OPORTUNIDADE
-                    case "escolher-simulação":
+                    case "escolher-simulacao":
                         if (pedirInfos.length > 0) {
                             URL_redirect = `/opportunity`;
                             window.location.href = URL_redirect;
