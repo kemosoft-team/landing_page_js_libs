@@ -568,18 +568,18 @@ function qualification() {
                                 break
                             case "assinatura-pendente":
                                 bankRedirect(banco)
+                                break
+                            //TEM OPORTUNIDADE
+                            case "escolher-simulacao":
+                                if (pedirInfos.length > 0) {
+                                    URL_redirect = `/opportunity`;
+                                    window.location.href = URL_redirect;
+                                } else {
+                                    URL_redirect = `/success`;
+                                    window.location.href = URL_redirect;
+                                }
+                                break;
                         }
-
-                    //TEM OPORTUNIDADE
-                    case "escolher-simulacao":
-                        if (pedirInfos.length > 0) {
-                            URL_redirect = `/opportunity`;
-                            window.location.href = URL_redirect;
-                        } else {
-                            URL_redirect = `/success`;
-                            window.location.href = URL_redirect;
-                        }
-                        break;
 
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
