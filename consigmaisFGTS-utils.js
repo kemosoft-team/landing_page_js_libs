@@ -391,8 +391,7 @@ function redirectToSignature() {
         console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
     }
 }
-
-function nextStepInfos() {
+function nextStepInfos(federal) {
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -401,16 +400,6 @@ function nextStepInfos() {
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlCallBack = obterParametroDaURL('callbackUrl');
-    const urlFederalId = obterParametroDaURL('federalId');
-
-    let federal;
-
-    if (urlFederalId) {
-        federal = urlFederalId;
-    } else {
-        const { federalId } = getItemStorage();
-        federal = federalId;
-    }
 
     axios
         .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
@@ -424,15 +413,15 @@ function nextStepInfos() {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/documento?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/endereco?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${urlFederalId}&callbackUrl=${urlCallBack}`;
+                URL_redirect = `/conta?federalId=${federal}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
                 if (urlCallBack) {
@@ -663,8 +652,24 @@ function qualification() {
 
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -677,7 +682,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     axios
         .post(`${API_URL}/registrar-endereco`, {
-            "federalId": federalId,
+            "federalId": federal,
             "address": address,
             "addressNumber": addressNumber,
             "district": district,
@@ -690,7 +695,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             }
         })
         .then((response) => {
-            nextStepInfos();
+            nextStepInfos(federal);
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -701,9 +706,25 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agency, agencyState) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
+
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -715,19 +736,20 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
 
     axios
         .post(`${API_URL}/registrar-documento`, {
-            "federalId": federalId,
+            "federalId": federal,
             "type": type,
             "number": number,
             "issueDate": issueDate,
             "agency": agency,
-            "agencyState": agencyState
+            "agencyState": agencyState,
+            "mother": motherName
         }, {
             headers: {
                 'api-key': API_KEY
             }
         })
         .then((response) => {
-            nextStepInfos()
+            nextStepInfos(federal)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -739,8 +761,23 @@ function registrarDocumento(type, number, issueDate, agency, agencyState) {
 }
 
 function registrarConta(bankNo, branch, acctNo, acctType) {
-    //OBTER INFO DO LOCALSTORAGE
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -752,7 +789,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
 
     axios
         .post(`${API_URL}/registrar-conta`, {
-            "federalId": federalId,
+            "federalId": federal,
             "bankNo": bankNo,
             "branch": branch,
             "acctNo": acctNo,
@@ -763,7 +800,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             }
         })
         .then((response) => {
-            nextStepInfos()
+            nextStepInfos(federal)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
