@@ -362,12 +362,6 @@ function qualification() {
                 });
 
                 switch (contexto) {
-                    //OPPORTUNITY
-                    case "escolher-simulacao":
-                        URL_redirect = `/success?`;
-                        window.location.href = URL_redirect;
-                        break;
-
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -407,27 +401,14 @@ function qualification() {
                             case "informar-matricula":
                                 URL_redirect = `/benefit`;
                                 window.location.href = URL_redirect;
-                                /* 
-                                                                var attemptBenefitStorage = localStorage.getItem('attemptBenefitStorage');
-                                                                if (attemptBenefitStorage === null) {
-                                                                    localStorage.setItem('attemptBenefitStorage', 1);
-                                                                    console.log(attemptBenefitStorage)
-                                                                } else {
-                                                                    attemptBenefitStorage++;
-                                                                    localStorage.setItem('attemptBenefitStorage', attemptBenefitStorage);
-                                                                    console.log(attemptBenefitStorage)
-                                                                }
-                                                                var attemptBenefit = localStorage.getItem('attemptBenefitStorage');
-                                                                if (attemptBenefit > 2) {
-                                                                    URL_redirect = `/qualifywhatsapp`;
-                                                                    window.location.href = URL_redirect;
-                                                                } else {
-                                                                    URL_redirect = `/benefit`;
-                                                                    window.location.href = URL_redirect;
-                                                                } */
                                 break;
                             case "solicitar-in100":
-                                URL_redirect = `/requirestreatment?`;
+                                URL_redirect = `/requirestreatment`;
+                                window.location.href = URL_redirect;
+                                break;
+                            //OPPORTUNITY
+                            case "escolher-simulacao":
+                                URL_redirect = `/success?`;
                                 window.location.href = URL_redirect;
                                 break;
                         }
@@ -463,7 +444,22 @@ function qualification() {
 //REGISTRAR FORMULÁRIOS
 function registrarBenefit(enrollment) {
 
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
     const button = document.querySelector(".brz-btn-submit.submit_benefit");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -475,7 +471,7 @@ function registrarBenefit(enrollment) {
 
     axios
         .post(API_URL + "/registrar-dados-empregaticios", {
-            federalId: federalId,
+            federalId: federal,
             enrollment: enrollment,
         }, {
             headers: {
@@ -493,7 +489,163 @@ function registrarBenefit(enrollment) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
+function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
 
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
+
+    const button = document.querySelector(".brz-btn-submit.submit_endereco");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+
+    axios
+        .post(`${API_URL}/registrar-endereco`, {
+            "federalId": federal,
+            "address": address,
+            "addressNumber": addressNumber,
+            "district": district,
+            "city": city,
+            "state": state,
+            "zipcode": zipcode
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            nextStepInfos(federal);
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
+        });
+}
+function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
+
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
+    const button = document.querySelector(".brz-btn-submit.submit_documento");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+    axios
+        .post(`${API_URL}/registrar-documento`, {
+            "federalId": federal,
+            "type": type,
+            "number": number,
+            "issueDate": issueDate,
+            "agency": agency,
+            "agencyState": agencyState,
+            "mother": motherName
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            nextStepInfos(federal)
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
+        });
+}
+function registrarConta(bankNo, branch, acctNo, acctType) {
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
+
+    const button = document.querySelector(".brz-btn-submit.submit_conta");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+    axios
+        .post(`${API_URL}/registrar-conta`, {
+            "federalId": federal,
+            "bankNo": bankNo,
+            "branch": branch,
+            "acctNo": acctNo,
+            "acctType": acctType
+        }, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            nextStepInfos(federal)
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "CONFIRMAR E CONTINUAR";
+            console.log(error.response.data.message);
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
+        });
+}
 //VALIDAR FORMULÁRIOS
 function validateFormInss() {
     const nameElement = document.querySelector(
@@ -615,7 +767,6 @@ function validateFormRepresentative() {
     //EXECUTAR A CRIAÇÃO DE CONTATO
     criar_contato_inss();
 }
-
 function validatorPopUpBenefit() {
     const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
     if (benefit != "" && benefit.length != 10) {
@@ -636,7 +787,6 @@ function validatorPopUpBenefit() {
     close_benefit.click();
     representativeQuestions.click();
 }
-
 
 
 
