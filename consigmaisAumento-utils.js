@@ -363,7 +363,7 @@ function qualification() {
 
                 switch (contexto) {
                     //OPPORTUNITY
-                    case "escolher-simulação":
+                    case "escolher-simulacao":
                         URL_redirect = `/success?`;
                         window.location.href = URL_redirect;
                         break;
