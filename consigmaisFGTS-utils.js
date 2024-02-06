@@ -447,7 +447,7 @@ async function criar_contato_fgts() {
 
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
 
-    const button = document.querySelector(".btn-submit-fgts");
+    const button = document.querySelector(".submit_questions");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
 
