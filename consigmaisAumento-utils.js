@@ -28,6 +28,11 @@ function showToast(text) {
         x.className = x.className.replace("show", `${text}`);
     }, 3000);
 }
+
+//MOSTRAR LOADER
+function showLoader() {
+    document.getElementById('loader').style.display = 'flex';
+}
 /* VALIDAR WHATSAPP */
 function validatePhone(phone) {
     const numericPhone = phone.replace(/\D/g, "");
@@ -367,13 +372,13 @@ function qualification() {
                                 sendRequest();
                             }, 3000);
                         } else {
-                            URL_redirect = `/noopportunity?`;
+                            URL_redirect = `/noopportunity`;
                             window.location.href = URL_redirect;
                         }
                         break;
                     //NOQUALIFIED
                     case "nao-qualificado":
-                        URL_redirect = `/noqualified?`;
+                        URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
 
@@ -464,7 +469,7 @@ function nextStepInfos(federal) {
     let federalIdRequest;
 
     if (!federal) {
-        const {federalId} = getItemStorage();
+        const { federalId } = getItemStorage();
         federalIdRequest = federalId;
     } else {
         federalIdRequest = federal;
