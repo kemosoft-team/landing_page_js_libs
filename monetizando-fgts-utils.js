@@ -390,7 +390,7 @@ function redirectToSignature() {
     }
 }
 
-function nextStepInfos() {
+function nextStepInfos(federal) {
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -399,16 +399,6 @@ function nextStepInfos() {
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlCallBack = obterParametroDaURL('callbackUrl');
-    const urlFederalId = obterParametroDaURL('federalId');
-
-    let federal;
-
-    if (urlFederalId) {
-        federal = urlFederalId;
-    } else {
-        const { federalId } = getItemStorage();
-        federal = federalId;
-    }
 
     axios
         .get(`${API_URL}/proxima-etapa/fgts/${federal}`, {
@@ -666,7 +656,22 @@ function qualification() {
 //REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
 
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
@@ -680,7 +685,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     axios
         .post(`${API_URL}/registrar-endereco`, {
-            "federalId": federalId,
+            "federalId": federal,
             "address": address,
             "addressNumber": addressNumber,
             "district": district,
@@ -693,7 +698,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             }
         })
         .then((response) => {
-            nextStepInfos();
+            nextStepInfos(federal);
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -707,7 +712,22 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
 
 
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -719,7 +739,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
 
     axios
         .post(`${API_URL}/registrar-documento`, {
-            "federalId": federalId,
+            "federalId": federal,
             "type": type,
             "number": number,
             "issueDate": issueDate,
@@ -732,7 +752,7 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
             }
         })
         .then((response) => {
-            nextStepInfos()
+            nextStepInfos(federal)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -745,7 +765,22 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
 
 function registrarConta(bankNo, branch, acctNo, acctType) {
 
-    const { pipelineSlug, federalId, leadId } = getItemStorage();
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlFederalId = obterParametroDaURL('federalId');
+
+    let federal;
+
+    if (urlFederalId) {
+        federal = urlFederalId;
+    } else {
+        const { federalId } = getItemStorage();
+        federal = federalId;
+    }
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -757,7 +792,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
 
     axios
         .post(`${API_URL}/registrar-conta`, {
-            "federalId": federalId,
+            "federalId": federal,
             "bankNo": bankNo,
             "branch": branch,
             "acctNo": acctNo,
@@ -768,7 +803,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             }
         })
         .then((response) => {
-            nextStepInfos()
+            nextStepInfos(federal)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -894,8 +929,6 @@ function validateConta() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-
-    console.log(bankNo, branch, account, verifyDigit, acctType);
 
     registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
