@@ -920,9 +920,11 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
 
-    registrarEndereco(zipcode, address, addressNumber, district, city, state);
+
 }
 
 function validateDocumento() {
@@ -931,24 +933,27 @@ function validateDocumento() {
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
     const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+    const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
     if (
         type == "" ||
         number == "" ||
         issueDate == "" ||
         agency == "" ||
-        agencyState == ""
-    ) if (!isDateValid(birthElement)) {
+        agencyState == "" ||
+        motherName == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    } else if (!isDateValid(birthElement)) {
         showToast("A data de nascimento informada não é válida!");
         return false;
     } else {
-            showToast("Por favor, preencha todos os campos.");
-            return false;
-        }
+        registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
+    }
 
-    registrarDocumento(type, number, issueDate, agency, agencyState);
+
 }
-
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
     const bankNo = selectedBankElement.value;
@@ -966,10 +971,7 @@ function validateConta() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
-
-    console.log(bankNo, branch, account, verifyDigit, acctType);
-
-    registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
-
