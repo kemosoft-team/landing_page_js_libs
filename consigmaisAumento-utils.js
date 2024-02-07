@@ -893,6 +893,7 @@ function validatorPopUpBenefit() {
     representativeQuestions.click();
 }
 
+
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     const address = document.querySelector('[data-brz-label="Rua"]').value;
@@ -936,7 +937,7 @@ function validateDocumento() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    } else if (!isDateValid(birthElement)) {
+    } else if (!isDateValid(issueDate)) {
         showToast("A data de nascimento informada não é válida!");
         return false;
     } else {
