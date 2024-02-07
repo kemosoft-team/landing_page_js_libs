@@ -267,6 +267,33 @@ function bankRedirect(banco) {
     }
 }
 
+function setBanks(bankList) {
+    const selects = document.querySelectorAll('[data-brz-label="Banco"]');
+
+    selects.forEach(select => {
+        select.innerHTML = "";
+
+        bankList.forEach(bank => {
+            const option = document.createElement('option');
+            option.text = bank.name;
+            option.value = bank.bank_no;
+            select.add(option);
+        });
+    });
+}
+
+function getBanks() {
+    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
+
+    axios.get(url)
+        .then(response => {
+            setBanks(response.data.banks);
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+}
+
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
