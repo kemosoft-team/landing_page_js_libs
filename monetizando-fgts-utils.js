@@ -877,6 +877,7 @@ function validateForm() {
     criar_contato_fgts();
 }
 
+
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     const address = document.querySelector('[data-brz-label="Rua"]').value;
@@ -895,9 +896,11 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
 
-    registrarEndereco(zipcode, address, addressNumber, district, city, state);
+
 }
 
 function validateDocumento() {
@@ -918,11 +921,15 @@ function validateDocumento() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else if (!isDateValid(issueDate)) {
+        showToast("A data de nascimento informada não é válida!");
+        return false;
+    } else {
+        registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
     }
 
-    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
-}
 
+}
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
     const bankNo = selectedBankElement.value;
@@ -940,8 +947,8 @@ function validateConta() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
-
-    registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
 
