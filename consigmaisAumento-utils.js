@@ -893,5 +893,73 @@ function validatorPopUpBenefit() {
     representativeQuestions.click();
 }
 
+function validateEndereco() {
+    const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
+    const address = document.querySelector('[data-brz-label="Rua"]').value;
+    const addressNumber = document.querySelector('[data-brz-label="Número"]').value;
+    const district = document.querySelector('[data-brz-label="Bairro"]').value;
+    const city = document.querySelector('[data-brz-label="Cidade"]').value;
+    const state = document.querySelector('[data-brz-label="UF"]').value;
+
+    if (
+        zipcode == "" ||
+        address == "" ||
+        addressNumber == "" ||
+        state == "" ||
+        district == "" ||
+        city == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    registrarEndereco(zipcode, address, addressNumber, district, city, state);
+}
+
+function validateDocumento() {
+    const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+    const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
+    const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
+    const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
+    const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+    const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
+
+    if (
+        type == "" ||
+        number == "" ||
+        issueDate == "" ||
+        agency == "" ||
+        agencyState == "" ||
+        motherName == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
+}
+
+function validateConta() {
+    const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
+    const bankNo = selectedBankElement.value;
+    const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
+    const branch = document.querySelector('[data-brz-label="Agência"]').value;
+    const account = document.querySelector('[data-brz-label="Conta"]').value;
+    const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
+
+    if (
+        bankNo == "" ||
+        acctType == "" ||
+        branch == "" ||
+        account == "" ||
+        verifyDigit == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+
+    registrarConta(bankNo, branch, account + verifyDigit, acctType);
+}
+
 
 
