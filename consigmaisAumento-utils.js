@@ -247,6 +247,26 @@ function getItemStorage() {
         opportunity: storedDataQualification.opportunity || ""
     };
 }
+
+function bankRedirect(banco) {
+    switch (banco) {
+        case "Eccor Open FGTS":
+            URL_redirect = `/signature?tp=wpp`;
+            window.location.href = URL_redirect;
+            break
+        case "facta":
+            URL_redirect = `/signature?tp=link`;
+            window.location.href = URL_redirect;
+            break
+        case "Banco BMG S.A.":
+            URL_redirect = `/signature?tp=sms`;
+            window.location.href = URL_redirect;
+            break
+        default:
+            console.log("Banco não reconhecido.");
+    }
+}
+
 function requalify(enrollment) {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
@@ -387,16 +407,25 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
-                        attemptWaiting++;
-                        console.log("contator: ", attemptWaiting)
-                        if (attemptWaiting < 4) {
-                            setTimeout(function () {
+                        let segundos = 20;
+
+                        const timeoutElement = document.getElementById("timeout");
+                        timeoutElement.style.display = "block";
+                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
+                        timeoutElement.style.fontSize = "25px";
+                        timeoutElement.style.textAlign = "center";
+                        timeoutElement.style.fontWeight = "700";
+
+
+                        const timer = setInterval(function () {
+                            console.log("Tempo restante: " + segundos + " segundos");
+                            timeoutElement.innerText = segundos;
+                            segundos--;
+                            if (segundos < 0) {
+                                clearInterval(timer);
                                 sendRequest();
-                            }, 4000);
-                        } else {
-                            var popUpNoResponse = document.querySelector("#popUpNoResponse");
-                            popUpNoResponse.click()
-                        }
+                            }
+                        }, 1000);
 
                         break;
 
@@ -428,6 +457,10 @@ function qualification() {
                                     window.location.href = URL_redirect;
                                 }
                                 break;
+                            //ASSINATURA PENDENTE
+                            case "assinatura-pendente":
+                                bankRedirect(banco)
+                                break
                         }
 
                         break
