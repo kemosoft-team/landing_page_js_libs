@@ -267,6 +267,20 @@ function bankRedirect(banco) {
     }
 }
 
+function getCEP(cep) {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            // Preenchendo os campos
+            document.querySelector('[data-brz-label="Rua"]').value = data.logradouro || '';
+            document.querySelector('[data-brz-label="Número"]').focus();
+            document.querySelector('[data-brz-label="Bairro"]').value = data.bairro || '';
+            document.querySelector('[data-brz-label="Cidade"]').value = data.localidade || '';
+            document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
+        })
+        .catch(error => console.error('Erro ao obter endereço:', error));
+}
+
 function requalify(enrollment) {
 
     const { pipelineSlug, federalId, leadId } = getItemStorage();
@@ -893,7 +907,6 @@ function validatorPopUpBenefit() {
     representativeQuestions.click();
 }
 
-
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     const address = document.querySelector('[data-brz-label="Rua"]').value;
@@ -967,5 +980,6 @@ function validateConta() {
         registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
 }
+
 
 
