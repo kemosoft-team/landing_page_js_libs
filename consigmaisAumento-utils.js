@@ -220,6 +220,20 @@ function isBirthValid(dateString) {
     return true;
 }
 
+function callback(urlCallBack) {
+    console.log(urlCallBack);
+
+    axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
+        "callbackUrl": urlCallBack
+    })
+        .then((response) => {
+            window.location.href = "https://wa.me/554840429340";
+        })
+        .catch(function (error) {
+            console.log(error, "Erro no post n8n");
+        });
+}
+
 function setItemStorage({
     pipelineSlug,
     federalId,
@@ -371,7 +385,6 @@ function criar_contato_inss() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-    var attemptWaiting = 0;
 
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
