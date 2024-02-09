@@ -831,7 +831,7 @@ function validateForm() {
     const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
     const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
     const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
-    const emailElement = document.querySelector('[data-brz-label="Email"]').value;
+    const emailElement = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
     const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
     const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
 
@@ -840,7 +840,6 @@ function validateForm() {
         phoneElement == "" ||
         federalIdElement == "" ||
         birthElement == "" ||
-        emailElement == "" ||
         firstChoice == "" ||
         secondChoice == ""
     ) {
