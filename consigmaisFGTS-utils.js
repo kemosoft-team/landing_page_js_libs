@@ -858,15 +858,14 @@ function validateForm() {
         '[data-brz-label="Data de Nascimento"]'
     ).value;
     const emailElement = document.querySelector(
-        '[data-brz-label="Email"]'
+        '[data-brz-label="Email (Opcional)"]'
     ).value;
 
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == "" ||
-        emailElement == ""
+        birthElement == "" 
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
