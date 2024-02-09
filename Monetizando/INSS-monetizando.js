@@ -125,6 +125,9 @@ function validatePhone(phone) {
 /* VALIDAR CPF */
 function validateCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, "");
+
+    // Verificar se todos os dígitos são iguais
+    if (/^(\d)\1{10}$/.test(cpf)) return false;
     if (cpf.length !== 11) return false;
     let sum = 0,
         remainder;
