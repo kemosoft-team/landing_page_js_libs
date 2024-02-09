@@ -880,7 +880,7 @@ function validateForm() {
         return false;
     }
     if (!validateCPF(federalIdElement)) {
-        showToast("O CPF do Beneficiário não é válido!");
+        showToast("O CPF não é válido!");
         return false;
     }
     if (!isDateValid(birthElement)) {
