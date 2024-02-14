@@ -664,6 +664,7 @@ function qualification() {
 }
 
 //REGISTRAR FORMULARIOS
+//REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
 
     function obterParametroDaURL(parametro) {
@@ -683,9 +684,6 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         federal = federalId;
     }
 
-    //REPLACE CEP
-    const zipcodeReplaced = zipcode.replace(/\D/g, '');
-
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -704,7 +702,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             "district": district,
             "city": city,
             "state": state,
-            "zipcode": zipcodeReplaced
+            "zipcode": zipcode
         }, {
             headers: {
                 'api-key': API_KEY
@@ -722,7 +720,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agencyState, motherName) {
+function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
 
 
     function obterParametroDaURL(parametro) {
@@ -756,6 +754,7 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
             "type": type,
             "number": number,
             "issueDate": issueDate,
+            "agency": agency,
             "agencyState": agencyState,
             "mother": motherName
         }, {
@@ -825,6 +824,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
+
 
 //VALIDAÇÕES
 function validatorQuestions() {
