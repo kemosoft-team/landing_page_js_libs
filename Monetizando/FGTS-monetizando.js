@@ -685,6 +685,9 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         federal = federalId;
     }
 
+    //REPLACE CEP
+    const zipcodeReplaced = zipcode.replace(/\D/g, '');
+
 
     const button = document.querySelector(".brz-btn-submit.submit_endereco");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -703,7 +706,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             "district": district,
             "city": city,
             "state": state,
-            "zipcode": zipcode
+            "zipcode": zipcodeReplaced
         }, {
             headers: {
                 'api-key': API_KEY
@@ -721,7 +724,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agency, agencyState, motherName) {
+function registrarDocumento(type, number, issueDate, agencyState, motherName) {
 
 
     function obterParametroDaURL(parametro) {
@@ -755,7 +758,6 @@ function registrarDocumento(type, number, issueDate, agency, agencyState, mother
             "type": type,
             "number": number,
             "issueDate": issueDate,
-            "agency": agency,
             "agencyState": agencyState,
             "mother": motherName
         }, {
@@ -897,16 +899,17 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
 
-    registrarEndereco(zipcode, address, addressNumber, district, city, state);
+
 }
 
 function validateDocumento() {
     const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
     const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
-    const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
     const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
@@ -914,24 +917,33 @@ function validateDocumento() {
         type == "" ||
         number == "" ||
         issueDate == "" ||
-        agency == "" ||
         agencyState == "" ||
         motherName == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else if (!isDateValid(issueDate)) {
+        showToast("A data de emissão informada não é válida!");
+        return false;
+    } else {
+        registrarDocumento(type, number, issueDate, agencyState, motherName);
     }
-
-    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
 }
 
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
     const bankNo = selectedBankElement.value;
-    const acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
+    let acctType = document.querySelector('[data-brz-label="Tipo de conta"]').value;
     const branch = document.querySelector('[data-brz-label="Agência"]').value;
     const account = document.querySelector('[data-brz-label="Conta"]').value;
     const verifyDigit = document.querySelector('[data-brz-label="Dígito"]').value;
+
+    // Adicionando a verificação para o tipo de conta
+    if (acctType.toLowerCase() === 'conta corrente') {
+        acctType = 'C';
+    } else if (acctType.toLowerCase() === 'poupança') {
+        acctType = 'P';
+    }
 
     if (
         bankNo == "" ||
@@ -942,8 +954,8 @@ function validateConta() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else {
+        registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
-
-    registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
 
