@@ -904,6 +904,58 @@ function validateForm() {
     const questions = document.getElementById("questions");
     questions.click();
 }
+function validateForm() {
+    const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
+    const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
+    const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
+    const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+    const emailElement = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
+    const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
+    const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
+
+    if (
+        nameElement == "" ||
+        phoneElement == "" ||
+        federalIdElement == "" ||
+        birthElement == "" ||
+        firstChoice == "" ||
+        secondChoice == ""
+    ) {
+        showToast("Por favor, preencha todos os campos.");
+        return false;
+    }
+    if (
+        nameElement.trim() === "" ||
+        !nameElement.includes(" ") ||
+        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
+    ) {
+        showToast("Por favor, digite seu nome completo");
+        return false;
+    }
+    if (!validateCPF(federalIdElement)) {
+        showToast("O CPF não é válido!");
+        return false;
+    }
+    if (!isDateValid(birthElement)) {
+        showToast("A data de nascimento informada não é válida!");
+        return false;
+    }
+    if (!validatePhone(phoneElement)) {
+        showToast("O número do Whatsapp informado não é válido!");
+        return false;
+    }
+
+    //SALVAR NAS VARIAVEIS GLOBAIS
+    name = nameElement;
+    phone = phoneElement;
+    federalId = federalIdElement;
+    birth = birthElement;
+    email = emailElement;
+    workWithSignedWorkCard = firstChoice === "sim";
+    withdrawalEnabled = secondChoice === "sim";
+
+    criar_contato_fgts();
+}
 
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
@@ -923,44 +975,33 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    } else {
-        registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
 
-
+    registrarEndereco(zipcode, address, addressNumber, district, city, state);
 }
 
 function validateDocumento() {
-    let type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+    const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
     const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
     const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
+    const agency = document.querySelector('[data-brz-label="Expeditor"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
     const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
-
-    // Adicionando a verificação para o tipo de conta
-    if (type.toLowerCase() === 'conta corrente') {
-        type = 'C';
-    } else if (type.toLowerCase() === 'poupança') {
-        type = 'P';
-    }
 
     if (
         type == "" ||
         number == "" ||
         issueDate == "" ||
+        agency == "" ||
         agencyState == "" ||
         motherName == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    } else if (!isDateValid(issueDate)) {
-        showToast("A data de emissão informada não é válida!");
-        return false;
-    } else {
-        registrarDocumento(type, number, issueDate, agencyState, motherName);
     }
-}
 
+    registrarDocumento(type, number, issueDate, agency, agencyState, motherName);
+}
 
 function validateConta() {
     const selectedBankElement = document.querySelector('[data-brz-label="Banco"]');
@@ -979,7 +1020,7 @@ function validateConta() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    } else {
-        registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
+
+    registrarConta(bankNo, branch, account + verifyDigit, acctType);
 }
