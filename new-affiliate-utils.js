@@ -71,12 +71,12 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
 //validar form
 function validateForm(){ 
 
-    var name = document.querySelector('[data-label="Nome ou Nome fantasia"]').value;
-    var phone = document.querySelector('[data-label="Whatsapp"]').value;
-    var birth = document.querySelector('[data-label="Data de Nascimento"]').value;
-    var email = document.querySelector('[data-label="Email"]').value;
-    var zipcode = document.querySelector('[data-label="CEP"]').value;
-    var federalId = document.querySelector('[data-label="CPF/CNPJ"]').value;
+    var name = document.querySelector('[data-brz-label="Nome ou Nome fantasia"]').value;
+    var phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
+    var birth = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+    var email = document.querySelector('[data-brz-label="Email"]').value;
+    var zipcode = document.querySelector('[data-brz-label="CEP"]').value;
+    var federalId = document.querySelector('[data-brz-label="CPF/CNPJ"]').value;
 
     if(federalId.length > 14){
 
