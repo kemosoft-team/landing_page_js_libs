@@ -144,6 +144,26 @@ function validateCPF(cpf) {
     return true;
 }
 
+/* VALIDAR SIGLA UF */
+const ufSiglas = [
+    "AC", "AL", "AP", "AM", "BA",
+    "CE", "DF", "ES", "GO", "MA",
+    "MT", "MS", "MG", "PA", "PB",
+    "PR", "PE", "PI", "RJ", "RN",
+    "RS", "RO", "RR", "SC", "SP",
+    "SE", "TO"
+];
+
+// Função validadora
+function validateUF(sigla) {
+    if (ufSiglas.includes(sigla.toUpperCase())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 //VALIDAR DATA
 function isDateValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
@@ -220,7 +240,6 @@ function requalify() {
         });
 }
 
-
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -265,6 +284,7 @@ function getBanks() {
             console.error('Error:', error.message);
         });
 }
+
 function bankRedirect(banco) {
     switch (banco) {
         case "Eccor Open FGTS":
@@ -407,7 +427,7 @@ function nextStepInfos(federal) {
     let federalIdRequest;
 
     if (!federal) {
-        const {federalId} = getItemStorage();
+        const { federalId } = getItemStorage();
         federalIdRequest = federalId;
     } else {
         federalIdRequest = federal;
@@ -664,7 +684,6 @@ function qualification() {
 }
 
 //REGISTRAR FORMULARIOS
-//REGISTRAR FORMULARIOS
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
 
     function obterParametroDaURL(parametro) {
@@ -868,7 +887,7 @@ function validateForm() {
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == "" 
+        birthElement == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -924,10 +943,12 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else if (!validateUF(state)) {
+        showToast("Por favor, informe um estado válido.");
+        return false;
     } else {
         registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
-
 
 }
 
@@ -983,4 +1004,3 @@ function validateConta() {
         registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
 }
-
