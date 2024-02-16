@@ -145,6 +145,26 @@ function validateCPF(cpf) {
     return true;
 }
 
+/* VALIDAR SIGLA UF */
+const ufSiglas = [
+    "AC", "AL", "AP", "AM", "BA",
+    "CE", "DF", "ES", "GO", "MA",
+    "MT", "MS", "MG", "PA", "PB",
+    "PR", "PE", "PI", "RJ", "RN",
+    "RS", "RO", "RR", "SC", "SP",
+    "SE", "TO"
+];
+
+// Função validadora
+function validateUF(sigla) {
+    if (ufSiglas.includes(sigla.toUpperCase())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 //VALIDAR DATA
 function isDateValid(dateString) {
     const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
@@ -899,10 +919,12 @@ function validateEndereco() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
+    } else if (!validateUF(state)) {
+        showToast("Por favor, informe um estado válido.");
+        return false;
     } else {
         registrarEndereco(zipcode, address, addressNumber, district, city, state);
     }
-
 
 }
 
@@ -924,6 +946,9 @@ function validateDocumento() {
         return false;
     } else if (!isDateValid(issueDate)) {
         showToast("A data de emissão informada não é válida!");
+        return false;
+    } else if (!validateUF(agencyState)) {
+        showToast("Por favor, informe um estado válido.");
         return false;
     } else {
         registrarDocumento(type, number, issueDate, agencyState, motherName);
@@ -958,4 +983,3 @@ function validateConta() {
         registrarConta(bankNo, branch, account + verifyDigit, acctType);
     }
 }
-
