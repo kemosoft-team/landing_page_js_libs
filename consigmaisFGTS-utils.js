@@ -971,6 +971,9 @@ function validateDocumento() {
     } else if (!isDateValid(issueDate)) {
         showToast("A data de emissão informada não é válida!");
         return false;
+    } else if (!validateUF(agencyState)) {
+        showToast("Por favor, informe um estado válido.");
+        return false;
     } else {
         registrarDocumento(type, number, issueDate, agencyState, motherName);
     }
