@@ -266,7 +266,6 @@ function qualification() {
                 const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
-                const banco = response.data.oportunidades.chaveBanco;
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
@@ -289,7 +288,7 @@ function qualification() {
                                 window.location.href = URL_redirect;
                                 break
                             case "assinatura-pendente":
-                                bankRedirect(banco)
+                                bankRedirect(oportunidades)
                                 break
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
