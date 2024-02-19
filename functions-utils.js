@@ -268,7 +268,7 @@ function getItemStorage() {
 
 function bankRedirect(banco) {
     switch (banco) {
-        case "Eccor Open FGTS":
+        case "eccor":
             URL_redirect = `/signature?tp=sms`;
             window.location.href = URL_redirect;
             break
@@ -276,7 +276,7 @@ function bankRedirect(banco) {
             URL_redirect = `/signature?tp=link`;
             window.location.href = URL_redirect;
             break
-        case "Banco BMG S.A.":
+        case "bmg":
             URL_redirect = `/signature?tp=sms`;
             window.location.href = URL_redirect;
             break
