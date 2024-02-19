@@ -124,7 +124,7 @@ function qualification() {
                 const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
-                const banco = response.data.oportunidades.banco;
+                const banco = response.data.oportunidades.chaveBanco;
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
