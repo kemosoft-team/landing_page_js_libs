@@ -49,18 +49,35 @@ function nextStepInfos(federal) {
             console.log(pedirInfos)
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
+                if (urlCallBack) {
+                    URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/documento?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
+                if (urlCallBack) {
+                    URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/endereco?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
+
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
+                if (urlCallBack) {
+                    URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/conta?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
+
             } else {
-                if (urlCallBack !== null && urlCallBack !== undefined) {
+                if (urlCallBack) {
                     callback(urlCallBack);
                 } else {
                     qualification();
