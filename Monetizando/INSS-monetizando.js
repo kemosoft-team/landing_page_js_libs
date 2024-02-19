@@ -33,77 +33,7 @@ function callback(urlCallBack) {
             console.log(error, "Erro no post n8n");
         });
 }
-function nextStepInfos(federal) {
 
-    function obterParametroDaURL(parametro) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(parametro);
-    }
-
-    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const urlCallBack = obterParametroDaURL('callbackUrl');
-
-    let federalIdRequest;
-
-    if (!federal) {
-        const { federalId } = getItemStorage();
-        federalIdRequest = federalId;
-    } else {
-        federalIdRequest = federal;
-    }
-
-    axios
-        .get(`${API_URL}/proxima-etapa/inss/${federalIdRequest}`, {
-            headers: {
-                'api-key': API_KEY
-            }
-        })
-        .then((response) => {
-            /* PEDIR INFO */
-            const pedirInfos = response.data.pedirInfos;
-            console.log(pedirInfos)
-
-            if (pedirInfos.includes("documento")) {
-                if (urlCallBack) {
-                    URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                    window.location.href = URL_redirect;
-                } else {
-                    URL_redirect = `/documento?federalId=${federalIdRequest}`;
-                    window.location.href = URL_redirect;
-                }
-
-            } else if (pedirInfos.includes("endereco")) {
-                if (urlCallBack) {
-                    URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                    window.location.href = URL_redirect;
-                } else {
-                    URL_redirect = `/endereco?federalId=${federalIdRequest}`;
-                    window.location.href = URL_redirect;
-                }
-
-
-            } else if (pedirInfos.includes("conta")) {
-                if (urlCallBack) {
-                    URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                    window.location.href = URL_redirect;
-                } else {
-                    URL_redirect = `/conta?federalId=${federalIdRequest}`;
-                    window.location.href = URL_redirect;
-                }
-
-            } else {
-                if (urlCallBack) {
-                    callback(urlCallBack);
-                } else {
-                    qualification();
-                }
-            }
-
-        })
-        .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
-        });
-}
 // CRIAR CONTATO INSS
 function criar_contato_inss() {
     // CONFIG
