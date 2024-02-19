@@ -265,25 +265,34 @@ function getItemStorage() {
 }
 
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
+function bankRedirect(oportunidades) {
+    const oportunidadeConfirmada = oportunidades.find(oportunidade => oportunidade.confirmada === true);
 
-function bankRedirect(banco) {
-    switch (banco) {
-        case "eccor":
-            URL_redirect = `/signature?tp=sms`;
-            window.location.href = URL_redirect;
-            break;
-        case "facta":
-            URL_redirect = `/signature?tp=link`;
-            window.location.href = URL_redirect;
-            break;
-        case "bmg":
-            URL_redirect = `/signature?tp=sms`;
-            window.location.href = URL_redirect;
-            break;
-        default:
-            console.log(`Banco não reconhecido: ${banco}`);
+    if (oportunidadeConfirmada) {
+        const banco = oportunidadeConfirmada.chaveBanco;
+
+        switch (banco) {
+            case "eccor":
+                URL_redirect = `/signature?tp=sms`;
+                window.location.href = URL_redirect;
+                break;
+            case "facta":
+                URL_redirect = `/signature?tp=link`;
+                window.location.href = URL_redirect;
+                break;
+            case "bmg":
+                URL_redirect = `/signature?tp=sms`;
+                window.location.href = URL_redirect;
+                break;
+            default:
+                console.log(`Banco não reconhecido: ${banco}`);
+        }
+    } else {
+        console.log("Nenhuma oportunidade confirmada encontrada");
     }
 }
+
+
 
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
