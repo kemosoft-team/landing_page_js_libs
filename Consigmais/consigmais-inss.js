@@ -240,61 +240,6 @@ function qualification() {
     sendRequest();
 }
 
-function nextStepInfos(federal) {
-
-    function obterParametroDaURL(parametro) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(parametro);
-    }
-
-    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const urlCallBack = obterParametroDaURL('callbackUrl');
-
-    let federalIdRequest;
-
-    if (!federal) {
-        const { federalId } = getItemStorage();
-        federalIdRequest = federalId;
-    } else {
-        federalIdRequest = federal;
-    }
-
-    axios
-        .get(`${API_URL}/proxima-etapa/inss/${federalIdRequest}`, {
-            headers: {
-                'api-key': API_KEY
-            }
-        })
-        .then((response) => {
-            /* PEDIR INFO */
-            const pedirInfos = response.data.pedirInfos;
-            console.log(pedirInfos)
-
-            if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
-
-            } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
-
-            } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
-                window.location.href = URL_redirect;
-            } else {
-                if (urlCallBack) {
-                    callback(urlCallBack)
-                } else {
-                    qualification()
-                }
-            }
-
-        })
-        .catch(function (error) {
-            console.log(error, "Não foi possível obter a qualificação");
-        });
-}
-
 //REGISTRAR FORMULÁRIOS
 function registrarBenefit(enrollment) {
 
