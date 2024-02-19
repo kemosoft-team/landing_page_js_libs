@@ -1,5 +1,4 @@
 /* FUNÇÕES DE VALIDAÇÃO */
-
 function validatePhone(phone) {
     const numericPhone = phone.replace(/\D/g, "");
 
@@ -219,9 +218,7 @@ function isBirthValid(dateString) {
     return true;
 }
 
-
 /* FUNÇÕES DE EXIBIÇÃO */
-
 function showToast(text) {
     var x = document.getElementById("snackbar");
     x.className = "show";
@@ -265,6 +262,80 @@ function getItemStorage() {
 }
 
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
+function nextStepInfos(federal, pipeline) {
+
+    function obterParametroDaURL(parametro) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(parametro);
+    }
+
+    // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
+    const urlCallBack = obterParametroDaURL('callbackUrl');
+
+    let federalIdRequest;
+    let pipelineRequest;
+
+    if (federal && pipeline) {
+        federalIdRequest = federal;
+        pipelineRequest = pipeline;
+    } else {
+        const { pipelineSlug, federalId } = getItemStorage();
+        federalIdRequest = federalId;
+        pipelineRequest = pipelineSlug;
+    }
+
+    axios
+        .get(`${API_URL}/proxima-etapa/${pipelineRequest}/${federalIdRequest}`, {
+            headers: {
+                'api-key': API_KEY
+            }
+        })
+        .then((response) => {
+            /* PEDIR INFO */
+            const pedirInfos = response.data.pedirInfos;
+            console.log(pedirInfos)
+
+            if (pedirInfos.includes("documento")) {
+                if (urlCallBack) {
+                    URL_redirect = `/documento?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}&pipeline=${pipelineRequest}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/documento?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
+
+            } else if (pedirInfos.includes("endereco")) {
+                if (urlCallBack) {
+                    URL_redirect = `/endereco?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}&pipeline=${pipelineRequest}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/endereco?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
+
+            } else if (pedirInfos.includes("conta")) {
+                if (urlCallBack) {
+                    URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}&pipeline=${pipelineRequest}`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/conta?federalId=${federalIdRequest}`;
+                    window.location.href = URL_redirect;
+                }
+
+            } else {
+                if (urlCallBack) {
+                    callback(urlCallBack);
+                } else {
+                    qualification();
+                }
+            }
+
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a qualificação");
+        });
+}
+
 function bankRedirect(oportunidades) {
     const oportunidadeConfirmada = oportunidades.find(oportunidade => oportunidade.confirmada === true);
 
@@ -292,8 +363,6 @@ function bankRedirect(oportunidades) {
     }
 }
 
-
-
 function getCEP(cep) {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -306,42 +375,6 @@ function getCEP(cep) {
             document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
         })
         .catch(error => console.error('Erro ao obter endereço:', error));
-}
-
-function redirectToSignature() {
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
-    const oportunidadeConfirmar = opportunity.find(function (oportunidade) {
-        return oportunidade.acao === 'confirmar';
-    });
-
-    if (oportunidadeConfirmar) {
-        const banco = oportunidadeConfirmar.banco;
-        bankRedirect(banco);
-    } else {
-        console.log("Nenhuma oportunidade com ação 'confirmar' encontrada no localStorage.");
-    }
-}
-
-function redirectLink() {
-    const { pipelineSlug, federalId, leadId, opportunity } = getItemStorage();
-
-    const oportunidadesConfirmar = opportunity.filter(function (oportunidade) {
-        return oportunidade.acao === 'confirmar';
-    });
-
-    if (oportunidadesConfirmar.length > 0) {
-        const oportunidadeMaiorValor = oportunidadesConfirmar.reduce(function (max, oportunidade) {
-            return oportunidade.valor > max.valor ? oportunidade : max;
-        }, oportunidadesConfirmar[0]);
-
-
-        const linkAssinatura = oportunidadeMaiorValor.linkAssinatura;
-
-        window.open(linkAssinatura, "_blank");
-    } else {
-        showToast("Nenhum link de assinatura encontrado para oportunidades com ação 'confirmar'.");
-    }
 }
 
 /* DADOS BANCÁRIOS */
@@ -792,33 +825,6 @@ function setBanksArray() {
     });
 }
 
-function setBanks(bankList) {
-    const selects = document.querySelectorAll('[data-brz-label="Banco"]');
-
-    selects.forEach(select => {
-        select.innerHTML = "";
-
-        bankList.forEach(bank => {
-            const option = document.createElement('option');
-            option.text = bank.name;
-            option.value = bank.bank_no;
-            select.add(option);
-        });
-    });
-}
-
-function getBanks() {
-    const url = 'https://api.retool.com/v1/workflows/811018a0-7cba-4b6c-bfb0-b540dda2a054/startTrigger?workflowApiKey=retool_wk_73e053bdf16f4f86a7275ed00aa38bd8';
-
-    axios.get(url)
-        .then(response => {
-            setBanks(response.data.banks);
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-        });
-}
-
 /* GESTÃO DE OPORTUNIDADES E QUALIFICAÇÃO */
 function requalify() {
 
@@ -861,7 +867,6 @@ function requalifyEnrollment(enrollment) {
 }
 
 /* REGISTRO E MANIPULAÇÃO DE DADOS */
-
 function registrarEndereco(zipcode, address, addressNumber, district, city, state) {
 
     function obterParametroDaURL(parametro) {
@@ -871,14 +876,18 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlFederalId = obterParametroDaURL('federalId');
+    const urlPipeline = obterParametroDaURL('pipeline');
 
     let federal;
+    let pipeline;
 
-    if (urlFederalId) {
+    if (urlFederalId && urlPipeline) {
         federal = urlFederalId;
+        pipeline = urlPipeline;
     } else {
-        const { federalId } = getItemStorage();
+        const { pipelineSlug, federalId } = getItemStorage();
         federal = federalId;
+        pipeline = pipelineSlug;
     }
 
     //REPLACE CEP
@@ -909,7 +918,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
             }
         })
         .then((response) => {
-            nextStepInfos(federal);
+            nextStepInfos(federal, pipeline)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -930,14 +939,18 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlFederalId = obterParametroDaURL('federalId');
+    const urlPipeline = obterParametroDaURL('pipeline');
 
     let federal;
+    let pipeline;
 
-    if (urlFederalId) {
+    if (urlFederalId && urlPipeline) {
         federal = urlFederalId;
+        pipeline = urlPipeline;
     } else {
-        const { federalId } = getItemStorage();
+        const { pipelineSlug, federalId } = getItemStorage();
         federal = federalId;
+        pipeline = pipelineSlug;
     }
 
     const button = document.querySelector(".brz-btn-submit.submit_documento");
@@ -962,7 +975,7 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
             }
         })
         .then((response) => {
-            nextStepInfos(federal)
+            nextStepInfos(federal, pipeline)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -982,14 +995,18 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     const urlFederalId = obterParametroDaURL('federalId');
+    const urlPipeline = obterParametroDaURL('pipeline');
 
     let federal;
+    let pipeline;
 
-    if (urlFederalId) {
+    if (urlFederalId && urlPipeline) {
         federal = urlFederalId;
+        pipeline = urlPipeline;
     } else {
-        const { federalId } = getItemStorage();
+        const { pipelineSlug, federalId } = getItemStorage();
         federal = federalId;
+        pipeline = pipelineSlug;
     }
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
@@ -1013,7 +1030,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             }
         })
         .then((response) => {
-            nextStepInfos(federal)
+            nextStepInfos(federal, pipeline)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
