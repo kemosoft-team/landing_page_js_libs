@@ -60,10 +60,10 @@ function nextStepInfos(federal) {
                 URL_redirect = `/conta?federalId=${federalIdRequest}&callbackUrl=${urlCallBack}`;
                 window.location.href = URL_redirect;
             } else {
-                if (urlCallBack) {
-                    callback(urlCallBack)
+                if (urlCallBack !== null && urlCallBack !== undefined) {
+                    callback(urlCallBack);
                 } else {
-                    qualification()
+                    qualification();
                 }
             }
 
