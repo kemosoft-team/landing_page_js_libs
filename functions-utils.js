@@ -271,17 +271,17 @@ function bankRedirect(banco) {
         case "eccor":
             URL_redirect = `/signature?tp=sms`;
             window.location.href = URL_redirect;
-            break
+            break;
         case "facta":
             URL_redirect = `/signature?tp=link`;
             window.location.href = URL_redirect;
-            break
+            break;
         case "bmg":
             URL_redirect = `/signature?tp=sms`;
             window.location.href = URL_redirect;
-            break
+            break;
         default:
-            console.log("Banco não reconhecido.");
+            console.log(`Banco não reconhecido: ${banco}`);
     }
 }
 
