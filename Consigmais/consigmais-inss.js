@@ -66,6 +66,12 @@ function criar_contato_inss() {
         }
     })
         .then((response) => {
+            var dataQuestions = {
+                hasTakenLoan: hasTakenLoan,
+                retiredOrPensioner: retiredOrPensioner
+            };
+            localStorage.setItem('dataQuestions', JSON.stringify(dataQuestions));
+
             window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
         })
         .catch(function (error) {
@@ -122,6 +128,9 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
 
+                var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
+                const retiredOrPensioner = dataQuestions.retiredOrPensioner;
+
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
@@ -136,7 +145,7 @@ function qualification() {
                         URL_redirect = `/noopportunity`;
                         window.location.href = URL_redirect;
                         break;
-                        
+
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
@@ -145,8 +154,14 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
-                        URL_redirect = `/requirestreatment`;
-                        window.location.href = URL_redirect;
+                        if (retiredOrPensioner) {
+                            URL_redirect = `/requirestreatment`;
+                            window.location.href = URL_redirect;
+                        } else {
+                            URL_redirect = `/noopportunity`;
+                            window.location.href = URL_redirect;
+                        }
+
                         break;
 
                     //ENROLLMENT INSS
@@ -406,4 +421,3 @@ function validatorPopUpBenefit() {
     close_benefit.click();
     representativeQuestions.click();
 }
-
