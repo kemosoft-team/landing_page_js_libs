@@ -16,9 +16,6 @@ let federalId_Representive_replaced;
 let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
-/* VARIAVEIS DE CONTROLE */
-let controlNoOpportunity = false;
-
 
 
 function callback(urlCallBack) {
@@ -136,16 +133,10 @@ function qualification() {
                 switch (contexto) {
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        if (!controlNoOpportunity) {
-                            controlNoOpportunity = true;
-                            setTimeout(function () {
-                                sendRequest();
-                            }, 3000);
-                        } else {
-                            URL_redirect = `/noopportunity`;
-                            window.location.href = URL_redirect;
-                        }
+                        URL_redirect = `/noopportunity`;
+                        window.location.href = URL_redirect;
                         break;
+                        
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
