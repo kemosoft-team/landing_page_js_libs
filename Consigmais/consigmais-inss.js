@@ -154,26 +154,8 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
-                        let segundos = 20;
-
-                        const timeoutElement = document.getElementById("timeout");
-                        timeoutElement.style.display = "block";
-                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
-                        timeoutElement.style.fontSize = "25px";
-                        timeoutElement.style.textAlign = "center";
-                        timeoutElement.style.fontWeight = "700";
-
-
-                        const timer = setInterval(function () {
-                            console.log("Tempo restante: " + segundos + " segundos");
-                            timeoutElement.innerText = segundos;
-                            segundos--;
-                            if (segundos < 0) {
-                                clearInterval(timer);
-                                sendRequest();
-                            }
-                        }, 1000);
-
+                        URL_redirect = `/requirestreatment`;
+                        window.location.href = URL_redirect;
                         break;
 
                     //ENROLLMENT INSS
