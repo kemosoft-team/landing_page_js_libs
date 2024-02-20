@@ -130,6 +130,7 @@ function qualification() {
 
                 var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
                 const retiredOrPensioner = dataQuestions.retiredOrPensioner;
+                console.log("Aposentado: ", retiredOrPensioner)
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
