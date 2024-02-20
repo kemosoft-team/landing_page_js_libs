@@ -16,9 +16,6 @@ let federalId_Representive_replaced;
 let retiredOrPensioner;
 let hasTakenLoan;
 let benefitAmountRange;
-/* VARIAVEIS DE CONTROLE */
-let controlNoOpportunity = false;
-
 
 function callback(urlCallBack) {
     console.log(urlCallBack);
@@ -134,16 +131,10 @@ function qualification() {
                 switch (contexto) {
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        if (!controlNoOpportunity) {
-                            controlNoOpportunity = true;
-                            setTimeout(function () {
-                                sendRequest();
-                            }, 3000);
-                        } else {
-                            URL_redirect = `/noopportunity`;
-                            window.location.href = URL_redirect;
-                        }
+                        URL_redirect = `/noopportunity`;
+                        window.location.href = URL_redirect;
                         break;
+                        
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
@@ -152,26 +143,8 @@ function qualification() {
 
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
-                        let segundos = 20;
-
-                        const timeoutElement = document.getElementById("timeout");
-                        timeoutElement.style.display = "block";
-                        timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
-                        timeoutElement.style.fontSize = "25px";
-                        timeoutElement.style.textAlign = "center";
-                        timeoutElement.style.fontWeight = "700";
-
-
-                        const timer = setInterval(function () {
-                            console.log("Tempo restante: " + segundos + " segundos");
-                            timeoutElement.innerText = segundos;
-                            segundos--;
-                            if (segundos < 0) {
-                                clearInterval(timer);
-                                sendRequest();
-                            }
-                        }, 1000);
-
+                        URL_redirect = `/requirestreatment`;
+                        window.location.href = URL_redirect;
                         break;
 
                     //ENROLLMENT INSS
@@ -182,16 +155,19 @@ function qualification() {
                                 URL_redirect = `/benefit`;
                                 window.location.href = URL_redirect;
                                 break;
+                                
                             //INFORMAR MATRICULA NOVAMENTE
                             case "informar-matricula-valida":
                                 URL_redirect = `/benefit?tp=valida`;
                                 window.location.href = URL_redirect;
                                 break;
+                                
                             //SOLICITAR IN100
                             case "solicitar-in100":
                                 URL_redirect = `/requirestreatment`;
                                 window.location.href = URL_redirect;
                                 break;
+                                
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
                                 if (pedirInfos.length > 0) {
