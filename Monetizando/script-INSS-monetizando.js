@@ -127,8 +127,14 @@ function qualification() {
                 const oportunidades = response.data.oportunidades;
 
                 var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
-                const retiredOrPensioner = dataQuestions.retiredOrPensioner;
-                console.log("Aposentado: ", retiredOrPensioner)
+                let retiredOrPensioner;
+                
+                if (dataQuestions){
+                    retiredOrPensioner = dataQuestions.retiredOrPensioner;
+                    console.log("Aposentado: ", retiredOrPensioner)
+                } else{
+                    console.log("Não há questions")
+                }
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
