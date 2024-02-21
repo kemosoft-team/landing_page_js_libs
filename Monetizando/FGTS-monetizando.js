@@ -40,7 +40,9 @@ async function criar_contato_fgts() {
     const pipeline_slug = "fgts"
     const autorizedBanks = ["bmg", "eccor"];
 
+    /* SANITIZADORES */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
+    const name_replaced = name.replace(/\s+/g, ' ');
 
     const button = document.querySelector(".btn-submit-fgts");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -52,7 +54,7 @@ async function criar_contato_fgts() {
 
 
     axios.post(API_URL + '/criar-contato', {
-        name: name,
+        name: name_replaced,
         phone: phone,
         birthDate: birth,
         email: email,
@@ -299,5 +301,4 @@ function qualification() {
     };
     sendRequest();
 }
-
 
