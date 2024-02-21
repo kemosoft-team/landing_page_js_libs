@@ -79,13 +79,9 @@ function validateForm() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    if (
-        nameElement.trim() === "" ||
-        !nameElement.includes(" ") ||
-        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
-    ) {
-        showToast("Por favor, digite seu nome completo");
-        return false;
+    if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
+    showToast("Por favor, digite seu nome completo");
+    return false;
     }
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF não é válido!");
@@ -121,6 +117,7 @@ async function criar_contato_fgts() {
     const autorizedBanks = ["bmg", "eccor"];
 
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
+    const name_replaced = name.replace(/\s+/g, ' ');
 
     const button = document.querySelector(".submit_questions");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -131,7 +128,7 @@ async function criar_contato_fgts() {
     span.textContent = "";
 
     axios.post(API_URL + '/criar-contato', {
-        name: name,
+        name: name_replaced,
         phone: phone,
         birthDate: birth,
         federalId: federalId_replaced,
