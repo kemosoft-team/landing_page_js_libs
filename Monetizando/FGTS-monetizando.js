@@ -100,13 +100,9 @@ function validateForm() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    if (
-        nameElement.trim() === "" ||
-        !nameElement.includes(" ") ||
-        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
-    ) {
-        showToast("Por favor, digite seu nome completo");
-        return false;
+    if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
+    showToast("Por favor, digite seu nome completo");
+    return false;
     }
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF não é válido!");
