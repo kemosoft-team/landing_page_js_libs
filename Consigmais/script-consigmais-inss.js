@@ -39,6 +39,8 @@ function criar_contato_inss() {
     const pipeline_slug = "inss";
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
+    const name_replaced = name.replace(/\s+/g, ' ');
+    
     if (federalId_Representive) {
         federalId_Representive_replaced = federalId_Representive.replace(
             /[^\d]/g,
@@ -47,7 +49,7 @@ function criar_contato_inss() {
     }
 
     axios.post(API_URL + "/criar-contato", {
-        name: name,
+        name: name_replaced,
         phone: phone,
         federalId: federalId_replaced,
         birthDate: birth,
@@ -315,13 +317,9 @@ function validateFormInss() {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    if (
-        nameElement.trim() === "" ||
-        !nameElement.includes(" ") ||
-        !/[a-zA-ZÀ-ÿ]/.test(nameElement.split(" ")[1])
-    ) {
-        showToast("Por favor, digite seu nome completo");
-        return false;
+    if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
+    showToast("Por favor, digite seu nome completo");
+    return false;
     }
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF do Beneficiário não é válido!");
