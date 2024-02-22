@@ -359,10 +359,10 @@ function getProximaEtapa(pipeline, federalId) {
 var inputElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
 var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
 
-if (inputElement1 && inputElement2) {
-    inputElement1.addEventListener("change", changeQuestionOne);
-    inputElement2.addEventListener("change", changeQuestionTwo);
-}
+
+inputElement1.addEventListener("change", changeQuestionOne);
+inputElement2.addEventListener("change", changeQuestionTwo);
+
 
 var forms2Element = document
     .getElementById("questions_fgts")
