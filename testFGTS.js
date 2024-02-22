@@ -44,16 +44,24 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
-    if (firstChoice === "" || secondChoice === "") {
+    if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+    }
+    if (firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais." && secondChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+
+    } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+        workWithSignedWorkCard = false;
+        withdrawalEnabled = false;
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
+
     } else {
         workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
-
         naoQualificar = !withdrawalEnabled;
-
-
         criar_contato_fgts();
     }
 }
@@ -153,16 +161,17 @@ async function criar_contato_fgts() {
         .then((response) => {
             console.log("Não qualificar: ", naoQualificar)
             console.log("Já trabalhou?: ", worked)
-            
+
             if (naoQualificar) {
                 getProximaEtapa(pipeline_slug, federalId_replaced)
                 window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            } else if (!worked) {
-                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            } else {
+            } else if (!naoQualificar) {
                 getProximaEtapa(pipeline_slug, federalId_replaced)
                 window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (!workWithSignedWorkCard) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             }
+
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -387,8 +396,6 @@ function changeQuestionOne() {
             divs[1].style.display = "block";
         }
 
-    } else if (selectedOption === "Não, nunca trabalhei com carteira assinada.") {
-        worked = false
     } else {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
 
