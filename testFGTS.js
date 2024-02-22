@@ -283,15 +283,8 @@ function qualification() {
 
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        if (!controlNoOpportunity) {
-                            controlNoOpportunity = true;
-                            setTimeout(function () {
-                                sendRequest();
-                            }, 5000);
-                        } else {
-                            URL_redirect = `/noopportunity`;
-                            window.location.href = URL_redirect;
-                        }
+                        URL_redirect = `/noopportunity`;
+                        window.location.href = URL_redirect;
                         break;
 
                     //NOQUALIFIED
@@ -393,7 +386,7 @@ if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
     textFooter.style.display = "none";
-    
+
 }
 
 
