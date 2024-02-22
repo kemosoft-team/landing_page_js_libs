@@ -412,12 +412,16 @@ function changeQuestionOne() {
 }
 
 function changeQuestionTwo() {
+    var textFooter = document.querySelector("#textFooter")
+
     var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
     if (selectedOption === "Sim, já está ativado.") {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
 
         if (divs.length >= 2) {
             divs[2].style.display = "block";
+            textFooter.style.display = "block";
+
         }
 
     } else {
@@ -425,6 +429,7 @@ function changeQuestionTwo() {
 
         if (divs.length >= 2) {
             divs[2].style.display = "none";
+            textFooter.style.display = "none";
         }
     }
 }
