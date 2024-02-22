@@ -162,16 +162,16 @@ async function criar_contato_fgts() {
             console.log("Não qualificar: ", naoQualificar)
             console.log("Já trabalhou?: ", worked)
 
-            if (naoQualificar) {
+            
+            if (!workWithSignedWorkCard) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (naoQualificar) {
                 getProximaEtapa(pipeline_slug, federalId_replaced)
                 window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             } else if (!naoQualificar) {
                 getProximaEtapa(pipeline_slug, federalId_replaced)
                 window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            } else if (!workWithSignedWorkCard) {
-                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             }
-
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
