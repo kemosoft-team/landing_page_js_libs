@@ -357,11 +357,11 @@ function getProximaEtapa(pipeline, federalId) {
 
 //GERENCIAMENTO DAS PERGUNTAS
 var inputElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
-inputElement1.setAttribute("onchange", "changeValue()");
+inputElement1.setAttribute("onchange", "changeQuestionOne()");
 var selectElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
 
 var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
-inputElement2.setAttribute("onchange", "changeValue()");
+inputElement2.setAttribute("onchange", "changeQuestionTwo()");
 var selectElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
 
 var forms2Element = document
