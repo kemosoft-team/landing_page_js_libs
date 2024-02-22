@@ -356,7 +356,7 @@ function getProximaEtapa(pipeline, federalId) {
 
 
 //GERENCIAMENTO DAS PERGUNTAS
-var inputElement1 = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]');
+var inputElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
 var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
 
 if (inputElement1 && inputElement2) {
