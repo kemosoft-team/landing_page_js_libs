@@ -15,6 +15,9 @@ let email;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
 
+let naoQualificar;
+let worked;
+
 let controlNoOpportunity = false;
 
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
@@ -32,25 +35,27 @@ function callback(urlCallBack) {
         });
 }
 
-
 //VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
-        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
+        .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
         .value.toLowerCase();
     const secondChoice = document
-        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
+        .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
     if (firstChoice === "" || secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+    } else {
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        withdrawalEnabled = secondChoice === "sim, já está ativado.";
+
+        naoQualificar = !withdrawalEnabled;
+
+
+        criar_contato_fgts();
     }
-
-    workWithSignedWorkCard = firstChoice === "sim";
-    withdrawalEnabled = secondChoice === "sim";
-
-    criar_contato_fgts();
 }
 
 function validateForm() {
@@ -80,8 +85,8 @@ function validateForm() {
         return false;
     }
     if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
-    showToast("Por favor, digite seu nome completo");
-    return false;
+        showToast("Por favor, digite seu nome completo");
+        return false;
     }
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF não é válido!");
@@ -139,14 +144,22 @@ async function criar_contato_fgts() {
         referrer: referrer,
         workWithSignedWorkCard: workWithSignedWorkCard,
         withdrawalEnabled: withdrawalEnabled,
+        naoQualificar: naoQualificar,
     }, {
         headers: {
             'api-key': API_KEY
         }
     })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            console.log("Contato FGTS criado")
+            if (naoQualificar) {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (!worked) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            }
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -178,7 +191,6 @@ function qualification() {
 
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
-        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
     } else {
         const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
         if (dataQualificationLocalStorage) {
@@ -321,5 +333,87 @@ function qualification() {
     };
     sendRequest();
 }
+
+//OBTER PRÓXIMA ETAPA
+function getProximaEtapa(pipeline, federalId) {
+    axios.get(`${API_URL}/proxima-etapa/${pipeline}/${federalId}`, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then((response) => {
+            const leadId = response.data.id;
+            setItemStorage({
+                pipelineSlug: pipeline,
+                federalId: federalId,
+                leadId: leadId,
+            });
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a próxima etapa");
+        });
+}
+
+
+//GERENCIAMENTO DAS PERGUNTAS
+var forms2Element = document
+    .getElementById("questions_fgts")
+    .querySelector(".brz-forms2");
+var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+if (divs.length >= 2) {
+    divs[1].style.display = "none";
+    divs[2].style.display = "none";
+}
+
+
+function changeQuestionOne() {
+    var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
+    if (selectedOption === "Sim, estou trabalhando com carteira assinada." || selectedOption === "Sim, já trabalhei assim antes, mas não estou mais.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "block";
+        }
+
+    } else if (selectedOption === "Não, nunca trabalhei com carteira assinada.") {
+        worked = false
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "none";
+        }
+    }
+}
+
+function changeQuestionTwo() {
+    var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
+    if (selectedOption === "Sim, já está ativado.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "block";
+        }
+
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "none";
+        }
+    }
+}
+
+var inputElement1 = document.querySelector(
+    '[data-brz-label="Já Trabalhou de Carteira Assinada?"]'
+);
+var inputElement2 = document.querySelector(
+    '[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]'
+);
+
+inputElement1.setAttribute("onchange", "changeQuestionOne()");
+inputElement2.setAttribute("onchange", "changeQuestionTwo()");
+
 
 
