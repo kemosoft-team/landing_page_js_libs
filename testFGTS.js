@@ -382,6 +382,8 @@ var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saqu
 inputElement2.setAttribute("onchange", "changeQuestionTwo()");
 var selectElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
 
+var textFooter = document.querySelector("#textFooter")
+
 var forms2Element = document
     .getElementById("questions_fgts")
     .querySelector(".brz-forms2");
@@ -390,6 +392,8 @@ var divs = forms2Element.querySelectorAll(".brz-forms2__item");
 if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
+    textFooter.style.display = "none";
+    
 }
 
 
@@ -412,7 +416,6 @@ function changeQuestionOne() {
 }
 
 function changeQuestionTwo() {
-    var textFooter = document.querySelector("#textFooter")
 
     var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
     if (selectedOption === "Sim, já está ativado.") {
