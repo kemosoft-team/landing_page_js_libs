@@ -1,6 +1,8 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
+
+
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
@@ -12,12 +14,16 @@ let birth;
 let email;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
-let controlNoOpportunity = false;
 
+let naoQualificar;
+let worked;
+
+let controlNoOpportunity = false;
 
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function callback(urlCallBack) {
     console.log(urlCallBack);
+
     axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
         "callbackUrl": urlCallBack
     })
@@ -29,22 +35,27 @@ function callback(urlCallBack) {
         });
 }
 
-
 //VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
-        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
+        .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
         .value.toLowerCase();
     const secondChoice = document
-        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
+        .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
+
     if (firstChoice === "" || secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+    } else {
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        withdrawalEnabled = secondChoice === "sim, já está ativado.";
+
+        naoQualificar = !withdrawalEnabled;
+
+
+        criar_contato_fgts();
     }
-    workWithSignedWorkCard = firstChoice === "sim";
-    withdrawalEnabled = secondChoice === "sim";
-    criar_contato_fgts();
 }
 
 function validateForm() {
@@ -102,9 +113,9 @@ function validateForm() {
     questions.click();
 }
 
-
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
+
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
@@ -133,14 +144,22 @@ async function criar_contato_fgts() {
         referrer: referrer,
         workWithSignedWorkCard: workWithSignedWorkCard,
         withdrawalEnabled: withdrawalEnabled,
+        naoQualificar: naoQualificar,
     }, {
         headers: {
             'api-key': API_KEY
         }
     })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            console.log("Contato FGTS criado")
+            if (naoQualificar) {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (!worked) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            }
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -149,36 +168,43 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
+
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
     var attemptWaiting = 0;
+
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
+
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     let pipelineSlug = obterParametroDaURL('pipeline_slug');
     let federalId = obterParametroDaURL('federalId');
+
     if (pipelineSlug && federalId) {
         const dataQualification = {
             pipelineSlug: pipelineSlug,
             federalId: federalId
         };
+
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
-        console.log("Enviou para o Storage: ", pipelineSlug, federalId)
     } else {
         const dataQualificationLocalStorage = localStorage.getItem('dataQualification');
         if (dataQualificationLocalStorage) {
             const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
+
             console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
         }
     }
+
+
     const sendRequest = () => {
         axios
             .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
@@ -194,12 +220,15 @@ function qualification() {
                 const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
+
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
                     opportunity: oportunidades
                 });
+
+
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
                     case "resolver-situacao":
@@ -227,11 +256,13 @@ function qualification() {
                                 break;
                         }
                         break
+
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
                         URL_redirect = `/window`;
                         window.location.href = URL_redirect;
                         break;
+
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -244,20 +275,26 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
+
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
+
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
+
                         let segundos = 20;
+
                         const timeoutElement = document.getElementById("timeout");
                         timeoutElement.style.display = "block";
                         timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
                         timeoutElement.style.fontSize = "25px";
                         timeoutElement.style.textAlign = "center";
                         timeoutElement.style.fontWeight = "700";
+
+
                         const timer = setInterval(function () {
                             console.log("Tempo restante: " + segundos + " segundos");
                             timeoutElement.innerText = segundos;
@@ -269,6 +306,7 @@ function qualification() {
                             }
                         }, 1000);
                         break;
+
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
@@ -294,4 +332,83 @@ function qualification() {
             });
     };
     sendRequest();
+}
+
+//OBTER PRÓXIMA ETAPA
+function getProximaEtapa(pipeline, federalId) {
+    axios.get(`${API_URL}/proxima-etapa/${pipeline}/${federalId}`, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then((response) => {
+            const leadId = response.data.id;
+            setItemStorage({
+                pipelineSlug: pipeline,
+                federalId: federalId,
+                leadId: leadId,
+            });
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a próxima etapa");
+        });
+}
+
+
+//GERENCIAMENTO DAS PERGUNTAS
+var inputElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
+inputElement1.setAttribute("onchange", "changeValue()");
+var selectElement1 = document.querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]');
+
+var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
+inputElement2.setAttribute("onchange", "changeValue()");
+var selectElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
+
+var forms2Element = document
+    .getElementById("questions_fgts")
+    .querySelector(".brz-forms2");
+var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+if (divs.length >= 2) {
+    divs[1].style.display = "none";
+    divs[2].style.display = "none";
+}
+
+
+function changeQuestionOne() {
+    var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
+    if (selectedOption === "Sim, estou trabalhando com carteira assinada." || selectedOption === "Sim, já trabalhei assim antes, mas não estou mais.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "block";
+        }
+
+    } else if (selectedOption === "Não, nunca trabalhei com carteira assinada.") {
+        worked = false
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "none";
+        }
+    }
+}
+
+function changeQuestionTwo() {
+    var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
+    if (selectedOption === "Sim, já está ativado.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "block";
+        }
+
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "none";
+        }
+    }
 }
