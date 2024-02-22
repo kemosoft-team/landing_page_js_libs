@@ -44,26 +44,29 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
     const thirdChoice = document
-        .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
-        .value.toLowerCase();
+        .querySelector('[data-brz-label="Quais dos bancos abaixo você já autorizou?"]')
+        .querySelectorAll('input[type="checkbox"]:checked');
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-    } if (firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais." && secondChoice === "") {
+    }
+
+    if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+    }
 
-    } if (secondChoice === "Sim, já está ativado." && thirdChoice === "") {
-        showToast("Por favor, responda todas as perguntas.");
+    if (secondChoice === "Sim, já está ativado." && thirdChoice.length === 0) {
+        showToast("Por favor, selecione pelo menos um banco autorizado.");
         return false;
+    }
 
-    } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
-
     } else {
         workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
@@ -71,6 +74,7 @@ function validatorQuestions() {
         criar_contato_fgts();
     }
 }
+
 
 function validateForm() {
     const nameElement = document.querySelector(
