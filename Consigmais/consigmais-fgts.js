@@ -356,6 +356,14 @@ function getProximaEtapa(pipeline, federalId) {
 
 
 //GERENCIAMENTO DAS PERGUNTAS
+var inputElement1 = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]');
+var inputElement2 = document.querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]');
+
+if (inputElement1 && inputElement2) {
+    inputElement1.addEventListener("change", changeQuestionOne);
+    inputElement2.addEventListener("change", changeQuestionTwo);
+}
+
 var forms2Element = document
     .getElementById("questions_fgts")
     .querySelector(".brz-forms2");
@@ -405,15 +413,7 @@ function changeQuestionTwo() {
     }
 }
 
-var inputElement1 = document.querySelector(
-    '[data-brz-label="Já Trabalhou de Carteira Assinada?"]'
-);
-var inputElement2 = document.querySelector(
-    '[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]'
-);
 
-inputElement1.setAttribute("onchange", "changeQuestionOne()");
-inputElement2.setAttribute("onchange", "changeQuestionTwo()");
 
 
 
