@@ -390,16 +390,11 @@ var forms2Element = document
     .querySelector(".brz-forms2");
 var divs = forms2Element.querySelectorAll(".brz-forms2__item");
 
-if (divs.length >= 2) {
-    divs[1].style.display = "none";
-    divs[2].style.display = "none";
-    textFooter.style.display = "none";
-    textBanksDiv.style.display = "none";
+/* CRIAR NOVO ELEMENTO */
+var textBanksDiv = document.createElement("div");
+textBanksDiv.className = "textBanks";
 
-    var textBanksDiv = document.createElement("div");
-    textBanksDiv.className = "textBanks";
-
-    textBanksDiv.innerHTML = `
+textBanksDiv.innerHTML = `
         <h6> <strong> Saque-Aniversário Já Está ativo?! </strong> Busque e Autorize os Bancos nosso Parceiros no Aplicativo do FGTS</h6>
         <ul>
             <li>UY3 Sociedade de Crédito Direto S.A</li>
@@ -409,7 +404,14 @@ if (divs.length >= 2) {
     `;
 
 
-    divs[1].insertAdjacentElement("afterend", textBanksDiv);
+divs[1].insertAdjacentElement("afterend", textBanksDiv);
+
+if (divs.length >= 2) {
+    divs[1].style.display = "none";
+    divs[2].style.display = "none";
+    textFooter.style.display = "none";
+    textBanksDiv.style.display = "none";
+
 
     textBanksDiv.style.padding = "10px";
     textBanksDiv.style.fontFamily = "'Poppins', sans-serif !important";
