@@ -394,7 +394,7 @@ if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
     textFooter.style.display = "none";
-    textBanksDiv.style.display = "none"
+    textBanksDiv.style.display = "none";
 
     var textBanksDiv = document.createElement("div");
     textBanksDiv.className = "textBanks";
@@ -464,7 +464,7 @@ function changeQuestionTwo() {
         if (divs.length >= 2) {
             divs[2].style.display = "block";
             textFooter.style.display = "block";
-            textBanksDiv.style.display = "block"
+            textBanksDiv.style.display = "block";
 
         }
 
@@ -474,7 +474,7 @@ function changeQuestionTwo() {
         if (divs.length >= 2) {
             divs[2].style.display = "none";
             textFooter.style.display = "none";
-            textBanksDiv.style.display = "none"
+            textBanksDiv.style.display = "none";
         }
     }
 }
