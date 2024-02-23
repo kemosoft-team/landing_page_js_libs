@@ -54,16 +54,14 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } if (!thirdChoice) {
+    } if (thirdChoice.style.display === 'none') {
         showToast("Por favor, verifique e marque a caixa acima.");
         return false;
-
     } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
-
     }
 
     workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
