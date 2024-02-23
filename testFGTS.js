@@ -45,21 +45,19 @@ function validatorQuestions() {
         .value.toLowerCase();
 
     const thirdChoice = document
-        .querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group-icon--check')
-        .style.display !== 'none';
+        .querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group-icon--check');
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-        
+
     } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (thirdChoice) {
+    } else if (thirdChoice.style.display !== 'none') {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-
     } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
