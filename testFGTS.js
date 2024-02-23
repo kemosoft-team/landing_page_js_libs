@@ -55,16 +55,17 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (firstChoice !== "Não, nunca trabalhei com carteira assinada." && estiloComputado.display === 'none') {
-        console.log(firstChoice)
-        showToast('Por favor, autorize os bancos e marque a caixa acima.');
-        return false;
-    }
-    else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
+
+    } else if (estiloComputado.display === 'none') {
+        console.log(firstChoice)
+        showToast('Por favor, autorize os bancos e marque a caixa acima.');
+        return false;
+        
     } else {
         workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
