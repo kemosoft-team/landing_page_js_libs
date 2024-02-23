@@ -44,8 +44,7 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
-    const thirdChoice = document
-        .querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group-icon--check');
+    const thirdChoice = document.querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group-icon--check');
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
@@ -55,7 +54,7 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (thirdChoice && thirdChoice.style.display !== 'none') {
+    } else if (thirdChoice.style.display === 'none') {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
@@ -64,7 +63,7 @@ function validatorQuestions() {
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
-        
+
     } else {
         workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
