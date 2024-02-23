@@ -55,7 +55,7 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (estiloComputado.display === 'none') {
+    } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && estiloComputado.display === 'none') {
         showToast('Por favor, autorize os bancos e marque a caixa acima.');
         return false;
 
