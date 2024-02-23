@@ -76,6 +76,7 @@ function validatorQuestions() {
 }
 
 
+
 function validateForm() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
