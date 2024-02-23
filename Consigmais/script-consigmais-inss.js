@@ -154,6 +154,10 @@ function qualification() {
                         URL_redirect = `/noopportunity`;
                         window.location.href = URL_redirect;
                         break;
+                    //AGUARDAR LINK-LINK-ASSINATURA
+                    case "aguardar-link-assinatura":
+                        bankRedirect(oportunidades, contexto)
+                        break;
 
                     //NOQUALIFIED
                     case "nao-qualificado":
@@ -203,7 +207,7 @@ function qualification() {
                                 break;
                             //ASSINATURA PENDENTE
                             case "assinatura-pendente":
-                                bankRedirect(oportunidades)
+                                bankRedirect(oportunidades, contexto)
                                 break
                         }
 
