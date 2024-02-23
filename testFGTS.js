@@ -394,23 +394,45 @@ if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
     textFooter.style.display = "none";
+    textBanksDiv.style.display = "none"
 
-    // Cria o elemento div com a classe textBanks
     var textBanksDiv = document.createElement("div");
     textBanksDiv.className = "textBanks";
 
-    // Adiciona o conteúdo HTML ao novo elemento
     textBanksDiv.innerHTML = `
-        <h6>Saque-Aniversário ativo? Autorize os Bancos Parceiros Abaixo</h6>
+        <h6> <strong> Saque-Aniversário Já Está ativo?! </strong> Busque e Autorize os Bancos nosso Parceiros no Aplicativo do FGTS</h6>
         <ul>
-            <li>Banco 1</li>
-            <li>Banco 2</li>
-            <li>Banco 3</li>
+            <li>UY3 Sociedade de Crédito Direto S.A</li>
+            <li>Banco BMG S.A</li>
+            <li>Facta Financeira S.A</li>
         </ul>
     `;
 
-    // Insere o novo elemento após o terceiro elemento do formulário
-    divs[2].insertAdjacentElement("afterend", textBanksDiv);
+
+    divs[1].insertAdjacentElement("afterend", textBanksDiv);
+
+    textBanksDiv.style.padding = "10px";
+    textBanksDiv.style.fontFamily = "'Poppins', sans-serif !important";
+
+    var h1Style = document.createElement("style");
+    h1Style.textContent = `
+    .textBanks h1 {
+        font-size: 16px;
+        color: #094e93;
+    }
+`;
+
+    document.head.appendChild(h1Style);
+
+    var liStyle = document.createElement("style");
+    liStyle.textContent = `
+    .textBanks ul li {
+        font-size: 15px;
+        color: #666666;
+    }
+`;
+
+    document.head.appendChild(liStyle);
 
 }
 
@@ -442,6 +464,7 @@ function changeQuestionTwo() {
         if (divs.length >= 2) {
             divs[2].style.display = "block";
             textFooter.style.display = "block";
+            textBanksDiv.style.display = "block"
 
         }
 
@@ -451,6 +474,7 @@ function changeQuestionTwo() {
         if (divs.length >= 2) {
             divs[2].style.display = "none";
             textFooter.style.display = "none";
+            textBanksDiv.style.display = "none"
         }
     }
 }
