@@ -213,7 +213,7 @@ function qualification() {
                                 window.location.href = URL_redirect;
                                 break
                             case "assinatura-pendente":
-                                bankRedirect(oportunidades)
+                                bankRedirect(oportunidades, contexto)
                                 break
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
@@ -231,6 +231,10 @@ function qualification() {
                     case "janela-bloqueio":
                         URL_redirect = `/window`;
                         window.location.href = URL_redirect;
+                        break;
+                    //AGUARDAR LINK-LINK-ASSINATURA
+                    case "aguardar-link-assinatura":
+                        bankRedirect(oportunidades, contexto)
                         break;
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
