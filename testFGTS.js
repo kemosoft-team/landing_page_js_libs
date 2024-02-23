@@ -45,7 +45,8 @@ function validatorQuestions() {
         .value.toLowerCase();
     const thirdChoice = document
         .querySelector('[data-brz-label="Quais dos bancos abaixo você já autorizou?"]')
-        .querySelectorAll('input[type="checkbox"]:checked');
+        .querySelectorAll('input[type="checkbox"]:checked').value;
+    const thirdChoiceValues = Array.from(thirdChoice).map(checkbox => checkbox.value);
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
@@ -57,7 +58,7 @@ function validatorQuestions() {
         return false;
     }
 
-    if (secondChoice === "Sim, já está ativado." && thirdChoice.length === 0) {
+    if (secondChoice === "Sim, já está ativado." && thirdChoiceValues.length === 0) {
         showToast("Por favor, selecione pelo menos um banco autorizado.");
         return false;
     }
