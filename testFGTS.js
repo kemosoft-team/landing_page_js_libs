@@ -45,6 +45,7 @@ function validatorQuestions() {
         .value.toLowerCase();
 
     var elemento = document.querySelector('.brz-control__check-group--check');
+    var estiloComputado = window.getComputedStyle(elemento);
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
@@ -54,16 +55,9 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (elemento) {
-        console.log("Elemento encontrado")
-        var estiloComputado = window.getComputedStyle(elemento);
-
-        if (estiloComputado.display === 'none') {
-            console.log('O elemento possui display: none.');
-        } else {
-            console.log('O elemento NÃO possui display: none.');
-        }
-        
+    } else if (estiloComputado.display === 'none') {
+        showToast('O elemento possui display: none.');
+        return false;
     } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
