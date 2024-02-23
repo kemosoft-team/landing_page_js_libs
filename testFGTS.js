@@ -56,6 +56,7 @@ function validatorQuestions() {
         return false;
 
     } else if (firstChoice !== "Não, nunca trabalhei com carteira assinada." && estiloComputado.display === 'none') {
+        console.log(firstChoice)
         showToast('Por favor, autorize os bancos e marque a caixa acima.');
         return false;
     }
