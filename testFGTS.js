@@ -55,11 +55,11 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if ( !firstChoice === "Não, nunca trabalhei com carteira assinada." && estiloComputado.display === 'none') {
+    } else if (firstChoice !== "Não, nunca trabalhei com carteira assinada." && estiloComputado.display === 'none') {
         showToast('Por favor, autorize os bancos e marque a caixa acima.');
         return false;
-
-    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    }
+    else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
