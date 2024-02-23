@@ -29,22 +29,43 @@ function callback(urlCallBack) {
         });
 }
 
-
 //VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
-        .querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]')
+        .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
         .value.toLowerCase();
     const secondChoice = document
-        .querySelector('[data-brz-label="Tem o Saque Habilitado?"]')
+        .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
-    if (firstChoice === "" || secondChoice === "") {
+
+    var elemento = document.querySelector('.brz-control__check-group--check');
+    var estiloComputado = window.getComputedStyle(elemento);
+
+    if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+
+    } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+
+    } else if (secondChoice === "sim, já está ativado." && estiloComputado.display === 'none') {
+        console.log(secondChoice)
+        showToast('Por favor, autorize os bancos e marque a caixa acima.');
+        return false;
+
+    } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
+        workWithSignedWorkCard = false;
+        withdrawalEnabled = false;
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
+
+    } else {
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        withdrawalEnabled = secondChoice === "sim, já está ativado.";
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
     }
-    workWithSignedWorkCard = firstChoice === "sim";
-    withdrawalEnabled = secondChoice === "sim";
-    criar_contato_fgts();
 }
 
 function validateForm() {
@@ -102,7 +123,6 @@ function validateForm() {
     questions.click();
 }
 
-
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //CONFIG
@@ -139,8 +159,15 @@ async function criar_contato_fgts() {
         }
     })
         .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-            console.log("Contato FGTS criado")
+            if (!workWithSignedWorkCard) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (naoQualificar) {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            } else if (!naoQualificar) {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+            }
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -227,18 +254,18 @@ function qualification() {
                                 break;
                         }
                         break
-                        
+
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
                         URL_redirect = `/window`;
                         window.location.href = URL_redirect;
                         break;
-                        
+
                     //AGUARDAR LINK-LINK-ASSINATURA
                     case "aguardar-link-assinatura":
                         bankRedirect(oportunidades, contexto)
                         break;
-                        
+
                     //EM ANALISE
                     case "em-analise":
                         URL_redirect = `/paymentstatus?tp=ea`;
@@ -256,7 +283,7 @@ function qualification() {
                         URL_redirect = `/paymentstatus?tp=pa`;
                         window.location.href = URL_redirect;
                         break;
-                        
+
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -319,4 +346,47 @@ function qualification() {
             });
     };
     sendRequest();
+}
+
+//GERENCIAMENTO DAS PERGUNTAS
+function changeQuestionOne() {
+    var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
+    if (selectedOption === "Sim, estou trabalhando com carteira assinada." || selectedOption === "Sim, já trabalhei assim antes, mas não estou mais.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "block";
+        }
+
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[1].style.display = "none";
+        }
+    }
+}
+
+function changeQuestionTwo() {
+
+    var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
+    if (selectedOption === "Sim, já está ativado.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "block";
+            textFooter.style.display = "block";
+            textBanksDiv.style.display = "block";
+
+        }
+
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+
+        if (divs.length >= 2) {
+            divs[2].style.display = "none";
+            textFooter.style.display = "none";
+            textBanksDiv.style.display = "none";
+        }
+    }
 }
