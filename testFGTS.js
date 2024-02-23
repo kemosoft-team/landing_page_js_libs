@@ -56,8 +56,9 @@ function validatorQuestions() {
         return false;
 
     } else if (estiloComputado.display === 'none') {
-        showToast('O elemento possui display: none.');
+        showToast('Por favor, autorize os bancos e marque a caixa acima.');
         return false;
+
     } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
