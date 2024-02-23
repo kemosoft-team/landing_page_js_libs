@@ -51,11 +51,11 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+    } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
@@ -67,7 +67,7 @@ function validatorQuestions() {
         return false;
         
     } else {
-        workWithSignedWorkCard = firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.";
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
