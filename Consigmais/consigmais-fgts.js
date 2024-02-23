@@ -159,17 +159,8 @@ async function criar_contato_fgts() {
         }
     })
         .then((response) => {
-
-            const dataQualification = {
-                pipelineSlug: pipeline_slug,
-                federalId: federalId_replaced
-            };
-
-            const dataQualificationJSON = JSON.stringify(dataQualification);
-            localStorage.setItem('dataQualification', dataQualificationJSON);
-
-
             if (!workWithSignedWorkCard) {
+                getProximaEtapa(pipeline_slug, federalId_replaced)
                 window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             } else if (naoQualificar) {
                 getProximaEtapa(pipeline_slug, federalId_replaced)
