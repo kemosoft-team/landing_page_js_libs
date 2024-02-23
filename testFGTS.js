@@ -72,8 +72,8 @@ function validatorQuestions() {
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
     }
-
 }
+
 
 function validateForm() {
     const nameElement = document.querySelector(
