@@ -378,7 +378,7 @@ var textBanksDiv = document.createElement("div");
 textBanksDiv.className = "textBanks";
 
 textBanksDiv.innerHTML = `
-    <h6> <strong> Saque-Aniversário Já Está ativo?! </strong> Busque e Autorize os Bancos nosso Parceiros no Aplicativo do FGTS</h6>
+    <h6>Busque e Autorize os nossos Bancos Parceiros no Aplicativo do FGTS</h6>
     <ul>
         <li>UY3 Sociedade de Crédito Direto S.A</li>
         <li>Banco BMG S.A</li>
@@ -392,6 +392,7 @@ if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
 
+    textFooter.style.display = "none";
     textBanksDiv.style.display = "none";
     textBanksDiv.style.padding = "10px";
     textBanksDiv.style.fontFamily = "'Poppins', sans-serif";
@@ -401,6 +402,8 @@ if (divs.length >= 2) {
         .textBanks h6 {
             font-size: 16px;
             color: #094e93;
+            padding: 0px 0px 5px 0px;
+            margin: 0;
         }
     `;
 
