@@ -159,6 +159,11 @@ function qualification() {
                         window.location.href = URL_redirect;
                         break;
 
+                    //AGUARDAR LINK-LINK-ASSINATURA
+                    case "aguardar-link-assinatura":
+                        bankRedirect(oportunidades, contexto)
+                        break;
+
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
                         if (retiredOrPensioner) {
@@ -204,7 +209,7 @@ function qualification() {
                                 break;
                             //ASSINATURA PENDENTE
                             case "assinatura-pendente":
-                                bankRedirect(oportunidades)
+                                bankRedirect(oportunidades, contexto)
                                 break
                         }
 
