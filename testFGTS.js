@@ -44,10 +44,8 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
-    const checkboxLabel = document.querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"]');
-    const checkboxInput = checkboxLabel.querySelector('.brz-control__check-group-icon--check');
-    const checkboxValue = checkboxInput.previousElementSibling.checked;
-    console.log(checkboxValue);
+    const thirdChoice = document.querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"]').value;
+    console.log(thirdChoice)
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
@@ -57,7 +55,7 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (window.getComputedStyle(checkboxInput).display === 'none') {
+    } else if (!thirdChoice) {
         showToast("Por favor, verifique e marque a caixa acima.");
         return false;
 
