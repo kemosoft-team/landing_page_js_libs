@@ -78,6 +78,8 @@ function validatorQuestions() {
 
 
 
+
+
 function validateForm() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
@@ -392,6 +394,23 @@ if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
     textFooter.style.display = "none";
+
+    // Cria o elemento div com a classe textBanks
+    var textBanksDiv = document.createElement("div");
+    textBanksDiv.className = "textBanks";
+
+    // Adiciona o conteúdo HTML ao novo elemento
+    textBanksDiv.innerHTML = `
+        <h6>Saque-Aniversário ativo? Autorize os Bancos Parceiros Abaixo</h6>
+        <ul>
+            <li>Banco 1</li>
+            <li>Banco 2</li>
+            <li>Banco 3</li>
+        </ul>
+    `;
+
+    // Insere o novo elemento após o terceiro elemento do formulário
+    divs[2].insertAdjacentElement("afterend", textBanksDiv);
 
 }
 
