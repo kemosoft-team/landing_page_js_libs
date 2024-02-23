@@ -67,7 +67,7 @@ function validatorQuestions() {
         return false;
         
     } else {
-        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        workWithSignedWorkCard = firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.";
         withdrawalEnabled = secondChoice === "sim, já está ativado.";
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
