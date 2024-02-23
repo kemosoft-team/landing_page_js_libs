@@ -54,9 +54,10 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } if (thirdChoice.style.display === 'none') {
+    } if (!thirdChoice) {
         showToast("Por favor, verifique e marque a caixa acima.");
         return false;
+
     } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
