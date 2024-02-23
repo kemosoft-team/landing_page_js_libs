@@ -44,12 +44,22 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
+    const thirdChoice = document
+        .querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group-icon--check')
+        .style.display !== 'none';
+
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+        
     } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+
+    } else if (thirdChoice) {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+
     } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
@@ -378,7 +388,7 @@ var textBanksDiv = document.createElement("div");
 textBanksDiv.className = "textBanks";
 
 textBanksDiv.innerHTML = `
-    <h6>Busque e Autorize os nossos Bancos Parceiros no Aplicativo do FGTS</h6>
+    <h6>Agora Busque e Autorize os nossos Bancos Parceiros no Aplicativo FGTS.</h6>
     <ul>
         <li>UY3 Sociedade de Crédito Direto S.A</li>
         <li>Banco BMG S.A</li>
