@@ -50,26 +50,27 @@ function validatorQuestions() {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+    } if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } else if (!thirdChoice) {
-        showToast("Por favor, responda todas as perguntas.");
+    } if (!thirdChoice) {
+        showToast("Por favor, verifique e marque a caixa acima.");
         return false;
 
-    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
 
-    } else {
-        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
-        withdrawalEnabled = secondChoice === "sim, já está ativado.";
-        naoQualificar = !withdrawalEnabled;
-        criar_contato_fgts();
     }
+
+    workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+    withdrawalEnabled = secondChoice === "sim, já está ativado.";
+    naoQualificar = !withdrawalEnabled;
+    criar_contato_fgts();
+
 }
 
 function validateForm() {
