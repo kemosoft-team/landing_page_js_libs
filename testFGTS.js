@@ -44,31 +44,34 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
-    const thirdChoice = document.querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"] .brz-control__check-group--check');
+    const checkboxLabel = document.querySelector('[data-brz-label="Confirmo que autorizei os bancos acima a consultarem meu saldo FGTS"]');
+    const checkboxInput = checkboxLabel.querySelector('.brz-control__check-group-icon--check');
+    const checkboxValue = checkboxInput.previousElementSibling.checked;
+    console.log(checkboxValue);
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+    } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
-    } if (!thirdChoice) {
+    } else if (window.getComputedStyle(checkboxInput).display === 'none') {
         showToast("Por favor, verifique e marque a caixa acima.");
         return false;
 
-    } if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
         criar_contato_fgts();
+    } else {
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        withdrawalEnabled = secondChoice === "sim, já está ativado.";
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
     }
-
-    workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
-    withdrawalEnabled = secondChoice === "sim, já está ativado.";
-    naoQualificar = !withdrawalEnabled;
-    criar_contato_fgts();
 
 }
 
