@@ -336,24 +336,42 @@ function nextStepInfos(federal, pipeline) {
         });
 }
 
-function bankRedirect(oportunidades) {
+function bankRedirect(oportunidades, contexto) {
     const oportunidadeConfirmada = oportunidades.find(oportunidade => oportunidade.confirmada === true);
+
+    console.log("Oportunidades: ", oportunidades);
+    console.log("Contexto: ", contexto);
 
     if (oportunidadeConfirmada) {
         const banco = oportunidadeConfirmada.chaveBanco;
 
         switch (banco) {
             case "eccor":
-                URL_redirect = `/signature?tp=sms`;
-                window.location.href = URL_redirect;
+                if (contexto === "aguardando-link-assinatura") {
+                    URL_redirect = `/signature?tp=wpp`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/pendingsignature?tp=wpp`;
+                    window.location.href = URL_redirect;
+                }
                 break;
             case "facta":
-                URL_redirect = `/signature?tp=link`;
-                window.location.href = URL_redirect;
+                if (contexto === "aguardando-link-assinatura") {
+                    URL_redirect = `/signature?tp=link`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/pendingsignature?tp=link`;
+                    window.location.href = URL_redirect;
+                }
                 break;
             case "bmg":
-                URL_redirect = `/signature?tp=sms`;
-                window.location.href = URL_redirect;
+                if (contexto === "aguardando-link-assinatura") {
+                    URL_redirect = `/signature?tp=sms`;
+                    window.location.href = URL_redirect;
+                } else {
+                    URL_redirect = `/pendingsignature?tp=sms`;
+                    window.location.href = URL_redirect;
+                }
                 break;
             default:
                 console.log(`Banco não reconhecido: ${banco}`);
