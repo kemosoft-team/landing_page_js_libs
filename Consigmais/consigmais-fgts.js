@@ -123,7 +123,7 @@ function validateForm() {
     questions.click();
 }
 
-//CRIAR CONTATO FGTS
+///CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //CONFIG
     const nextStep = "qualification"
@@ -159,6 +159,16 @@ async function criar_contato_fgts() {
         }
     })
         .then((response) => {
+
+            const dataQualification = {
+                pipelineSlug: pipeline_slug,
+                federalId: federalId_replaced
+            };
+
+            const dataQualificationJSON = JSON.stringify(dataQualification);
+            localStorage.setItem('dataQualification', dataQualificationJSON);
+
+
             if (!workWithSignedWorkCard) {
                 window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
             } else if (naoQualificar) {
@@ -176,6 +186,7 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
+
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
