@@ -123,7 +123,7 @@ function validateForm() {
     questions.click();
 }
 
-///CRIAR CONTATO FGTS
+//CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //CONFIG
     const nextStep = "qualification"
@@ -158,18 +158,24 @@ async function criar_contato_fgts() {
             'api-key': API_KEY
         }
     })
-        .then((response) => {
+
+        .then(async (response) => {
             if (!workWithSignedWorkCard) {
-                getProximaEtapa(pipeline_slug, federalId_replaced)
-                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+
+                if (leadId) {
+                    window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+                }
             } else if (naoQualificar) {
-                getProximaEtapa(pipeline_slug, federalId_replaced)
-                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             } else if (!naoQualificar) {
-                getProximaEtapa(pipeline_slug, federalId_replaced)
-                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             }
         })
+
+
         .catch(function (error) {
             button.removeAttribute("disabled");
             spinner.classList.add("brz-invisible");
