@@ -43,27 +43,14 @@ function validatorQuestions() {
     const secondChoice = document
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
-    const thirdChoice = document
-        .querySelector('[data-brz-label="Quais dos bancos abaixo você já autorizou?"]')
-        .querySelectorAll('input[type="checkbox"]:checked').value;
-    const thirdChoiceValues = Array.from(thirdChoice).map(checkbox => checkbox.value);
 
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-    }
-
-    if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+    } else if ((firstChoice === "Sim, estou trabalhando com carteira assinada." || firstChoice === "Sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-    }
-
-    if (secondChoice === "Sim, já está ativado." && thirdChoiceValues.length === 0) {
-        showToast("Por favor, selecione pelo menos um banco autorizado.");
-        return false;
-    }
-
-    if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
+    } else if (firstChoice === "Não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
         naoQualificar = !withdrawalEnabled;
@@ -75,10 +62,6 @@ function validatorQuestions() {
         criar_contato_fgts();
     }
 }
-
-
-
-
 
 function validateForm() {
     const nameElement = document.querySelector(
@@ -395,47 +378,43 @@ var textBanksDiv = document.createElement("div");
 textBanksDiv.className = "textBanks";
 
 textBanksDiv.innerHTML = `
-        <h6> <strong> Saque-Aniversário Já Está ativo?! </strong> Busque e Autorize os Bancos nosso Parceiros no Aplicativo do FGTS</h6>
-        <ul>
-            <li>UY3 Sociedade de Crédito Direto S.A</li>
-            <li>Banco BMG S.A</li>
-            <li>Facta Financeira S.A</li>
-        </ul>
-    `;
-
+    <h6> <strong> Saque-Aniversário Já Está ativo?! </strong> Busque e Autorize os Bancos nosso Parceiros no Aplicativo do FGTS</h6>
+    <ul>
+        <li>UY3 Sociedade de Crédito Direto S.A</li>
+        <li>Banco BMG S.A</li>
+        <li>Facta Financeira S.A</li>
+    </ul>
+`;
 
 divs[1].insertAdjacentElement("afterend", textBanksDiv);
 
 if (divs.length >= 2) {
     divs[1].style.display = "none";
     divs[2].style.display = "none";
-    textFooter.style.display = "none";
+
     textBanksDiv.style.display = "none";
-
-
     textBanksDiv.style.padding = "10px";
-    textBanksDiv.style.fontFamily = "'Poppins', sans-serif !important";
+    textBanksDiv.style.fontFamily = "'Poppins', sans-serif";
 
-    var h1Style = document.createElement("style");
-    h1Style.textContent = `
-    .textBanks h1 {
-        font-size: 16px;
-        color: #094e93;
-    }
-`;
+    var h6Style = document.createElement("style");
+    h6Style.textContent = `
+        .textBanks h6 {
+            font-size: 16px;
+            color: #094e93;
+        }
+    `;
 
-    document.head.appendChild(h1Style);
+    document.head.appendChild(h6Style);
 
     var liStyle = document.createElement("style");
     liStyle.textContent = `
-    .textBanks ul li {
-        font-size: 15px;
-        color: #666666;
-    }
-`;
+        .textBanks ul li {
+            font-size: 15px;
+            color: #666666;
+        }
+    `;
 
     document.head.appendChild(liStyle);
-
 }
 
 
