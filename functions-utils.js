@@ -395,6 +395,26 @@ function getCEP(cep) {
         .catch(error => console.error('Erro ao obter endereço:', error));
 }
 
+//OBTER PRÓXIMA ETAPA
+function getProximaEtapa(pipeline, federalId) {
+    axios.get(`${API_URL}/proxima-etapa/${pipeline}/${federalId}`, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then((response) => {
+            const leadId = response.data.id;
+            setItemStorage({
+                pipelineSlug: pipeline,
+                federalId: federalId,
+                leadId: leadId,
+            });
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a próxima etapa");
+        });
+}
+
 /* DADOS BANCÁRIOS */
 function setBanksArray() {
 
