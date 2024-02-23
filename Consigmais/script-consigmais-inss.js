@@ -154,9 +154,28 @@ function qualification() {
                         URL_redirect = `/noopportunity`;
                         window.location.href = URL_redirect;
                         break;
+                        
                     //AGUARDAR LINK-LINK-ASSINATURA
                     case "aguardar-link-assinatura":
                         bankRedirect(oportunidades, contexto)
+                        break;
+                        
+                     //EM ANALISE
+                    case "em-analise":
+                        URL_redirect = `/paymentstatus?tp=ea`;
+                        window.location.href = URL_redirect;
+                        break;
+
+                    //PAGO
+                    case "pago":
+                        URL_redirect = `/paymentstatus?tp=pg`;
+                        window.location.href = URL_redirect;
+                        break;
+
+                    //PAGO E EM ANALISE
+                    case "pago-&-analise":
+                        URL_redirect = `/paymentstatus?tp=pa`;
+                        window.location.href = URL_redirect;
                         break;
 
                     //NOQUALIFIED
