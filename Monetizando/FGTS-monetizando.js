@@ -205,7 +205,7 @@ function qualification() {
                                 window.location.href = URL_redirect;
                                 break
                             case "assinatura-pendente":
-                                bankRedirect(oportunidades)
+                                bankRedirect(oportunidades, contexto)
                                 break
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
@@ -221,9 +221,9 @@ function qualification() {
                         break
 
                     //
+                    //AGUARDAR LINK-LINK-ASSINATURA
                     case "aguardar-link-assinatura":
-                        URL_redirect = `/requirestreatment`;
-                        window.location.href = URL_redirect;
+                        bankRedirect(oportunidades, contexto)
                         break;
 
                     //JANELA MES ANIVERSÁRIO
