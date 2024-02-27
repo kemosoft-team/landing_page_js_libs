@@ -118,6 +118,10 @@ function validateForm() {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
     }
+    if (emailElement && !validateEmail(emailElement)) {
+        showToast("O e-mail informado não é válido!");
+        return false;
+    }
 
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
