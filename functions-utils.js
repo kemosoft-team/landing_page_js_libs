@@ -93,6 +93,11 @@ function validatePhone(phone) {
     return true;
 }
 
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 function validateCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, "");
     // Verificar se todos os dígitos são iguais
