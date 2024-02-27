@@ -392,7 +392,10 @@ function getCEP(cep) {
             document.querySelector('[data-brz-label="Cidade"]').value = data.localidade || '';
             document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
         })
-        .catch(error => console.error('Erro ao obter endereço:', error));
+         .catch(error => {
+            console.error('Erro ao obter endereço:', error);
+            showToast('Erro ao obter endereço. Verifique o CEP e tente novamente.');
+        });
 }
 
 // OBTER PRÓXIMA ETAPA
