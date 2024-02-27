@@ -387,6 +387,7 @@ function getCEP(cep) {
         .then(data => {
             if (data.erro) {
                 showToast('CEP não encontrado. Verifique e tente novamente.');
+                clearCEPField();
             } else {
                 // Preenche os campos se não houver erro
                 document.querySelector('[data-brz-label="Rua"]').value = data.logradouro || '';
