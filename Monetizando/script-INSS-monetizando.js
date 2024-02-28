@@ -351,12 +351,6 @@ function validateFormInss() {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
-    if (!isBirthValid(birthElement)) {
-        showToast(
-            "Ops! Você deve ter no máximo 76 anos para prosseguir com a simulação."
-        );
-        return false;
-    }
     if (!validatePhone(phoneElement)) {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
