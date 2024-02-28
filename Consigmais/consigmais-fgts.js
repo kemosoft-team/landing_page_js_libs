@@ -254,6 +254,10 @@ function qualification() {
                             case "assinatura-pendente":
                                 bankRedirect(oportunidades, contexto)
                                 break
+                            case "atualizar-registro-fgts":
+                                URL_redirect = `/requirestreatment`;
+                                window.location.href = URL_redirect;
+                                break
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
                                 if (pedirInfos.length > 0) {
