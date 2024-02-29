@@ -13,8 +13,6 @@ let email;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
 let controlNoOpportunity = false;
-
-
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function callback(urlCallBack) {
     console.log(urlCallBack);
@@ -28,7 +26,6 @@ function callback(urlCallBack) {
             console.log(error, "Erro no post n8n");
         });
 }
-
 //VALIDAÇÕES
 function validatorQuestions() {
     const firstChoice = document
@@ -37,18 +34,15 @@ function validatorQuestions() {
     const secondChoice = document
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
-    var elemento = document.querySelector('.brz-control__check-group--check');
-    var estiloComputado = window.getComputedStyle(elemento);
+
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
+        
     } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-    } else if (secondChoice === "sim, já está ativado." && estiloComputado.display === 'none') {
-        console.log(secondChoice)
-        showToast('Por favor, autorize os bancos e marque a caixa acima.');
-        return false;
+
     } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
         workWithSignedWorkCard = false;
         withdrawalEnabled = false;
@@ -78,7 +72,6 @@ function validateForm() {
     const emailElement = document.querySelector(
         '[data-brz-label="Email (Opcional)"]'
     ).value;
-
     if (
         nameElement == "" ||
         phoneElement == "" ||
@@ -108,37 +101,30 @@ function validateForm() {
         showToast("O e-mail informado não é válido!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
     email = emailElement
-
     //ABRA O POP UP DE QUESTIONARIO
     const questions = document.getElementById("questions");
     questions.click();
 }
-
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
     const autorizedBanks = ["bmg", "eccor"];
-
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
-
     const button = document.querySelector(".submit_questions");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
-
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
-
     axios.post(API_URL + '/criar-contato', {
         name: name_replaced,
         phone: phone,
@@ -156,30 +142,20 @@ async function criar_contato_fgts() {
             'api-key': API_KEY
         }
     })
-
         .then(async (response) => {
             if (!workWithSignedWorkCard) {
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-
                 if (leadId) {
                     window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
                 }
             } else if (naoQualificar) {
-                attemptsEnable++;
-                localStorage.setItem("attemptsEnable", attemptsEnable);
-                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             } else if (!naoQualificar) {
-                attemptsAuth++;
-                localStorage.setItem("attemptsAuth", attemptsAuth);
-                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             }
         })
-
-
         .catch(function (error) {
             button.removeAttribute("disabled");
             spinner.classList.add("brz-invisible");
@@ -187,14 +163,10 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
-
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-
-    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
-    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-    
+    var attemptWaiting = 0;
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -247,16 +219,10 @@ function qualification() {
                     case "resolver-situacao":
                         switch (situacao) {
                             case "habilitar-saque":
-                                attemptsEnable++;
-                                localStorage.setItem("attemptsEnable", attemptsEnable);
-                                
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
-                                attemptsAuth++;
-                                localStorage.setItem("attemptsAuth", attemptsAuth);
-                                
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
@@ -279,36 +245,30 @@ function qualification() {
                                 break;
                         }
                         break
-
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
                         URL_redirect = `/window`;
                         window.location.href = URL_redirect;
                         break;
-
                     //AGUARDAR LINK-LINK-ASSINATURA
                     case "aguardar-link-assinatura":
                         bankRedirect(oportunidades, contexto)
                         break;
-
                     //EM ANALISE
                     case "em-analise":
                         URL_redirect = `/paymentstatus?tp=ea`;
                         window.location.href = URL_redirect;
                         break;
-
                     //PAGO
                     case "pago":
                         URL_redirect = `/paymentstatus?tp=pg`;
                         window.location.href = URL_redirect;
                         break;
-
                     //PAGO E EM ANALISE
                     case "pago-&-analise":
                         URL_redirect = `/paymentstatus?tp=pa`;
                         window.location.href = URL_redirect;
                         break;
-
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -372,42 +332,32 @@ function qualification() {
     };
     sendRequest();
 }
-
 //GERENCIAMENTO DAS PERGUNTAS
 function changeQuestionOne() {
     var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
     if (selectedOption === "Sim, estou trabalhando com carteira assinada." || selectedOption === "Sim, já trabalhei assim antes, mas não estou mais.") {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
-
         if (divs.length >= 2) {
             divs[1].style.display = "block";
         }
-
     } else {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
-
         if (divs.length >= 2) {
             divs[1].style.display = "none";
         }
     }
 }
-
 function changeQuestionTwo() {
-
     var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
     if (selectedOption === "Sim, já está ativado.") {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
-
         if (divs.length >= 2) {
             divs[2].style.display = "block";
             textFooter.style.display = "block";
             textBanksDiv.style.display = "block";
-
         }
-
     } else {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
-
         if (divs.length >= 2) {
             divs[2].style.display = "none";
             textFooter.style.display = "none";
