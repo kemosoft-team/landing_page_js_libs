@@ -163,9 +163,15 @@ async function criar_contato_fgts() {
                     window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
                 }
             } else if (naoQualificar) {
+                attemptsEnable++;
+                localStorage.setItem("attemptsEnable", attemptsEnable);
+                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             } else if (!naoQualificar) {
+                attemptsAuth++;
+                localStorage.setItem("attemptsAuth", attemptsAuth);
+                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             }
@@ -183,7 +189,10 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-    var attemptWaiting = 0;
+
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -236,10 +245,16 @@ function qualification() {
                     case "resolver-situacao":
                         switch (situacao) {
                             case "habilitar-saque":
+                                attemptsEnable++;
+                                localStorage.setItem("attemptsEnable", attemptsEnable);
+                                
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
+                                attemptsAuth++;
+                                localStorage.setItem("attemptsAuth", attemptsAuth);
+                                
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
