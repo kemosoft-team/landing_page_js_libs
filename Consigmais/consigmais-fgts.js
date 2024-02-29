@@ -38,20 +38,12 @@ function validatorQuestions() {
         .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
         .value.toLowerCase();
 
-    var elemento = document.querySelector('.brz-control__check-group--check');
-    var estiloComputado = window.getComputedStyle(elemento);
-
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
     } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
-        return false;
-
-    } else if (secondChoice === "sim, já está ativado." && estiloComputado.display === 'none') {
-        console.log(secondChoice)
-        showToast('Por favor, autorize os bancos e marque a caixa acima.');
         return false;
 
     } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
