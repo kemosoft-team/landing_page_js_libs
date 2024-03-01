@@ -352,6 +352,11 @@ function validateFormInss() {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
+    if (!isBirthValid(birthElement)) {
+    var popUpBirth = document.querySelector("#popUpBirth");
+    popUpBirth.click();
+    return false;
+    }
     if (!validatePhone(phoneElement)) {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
