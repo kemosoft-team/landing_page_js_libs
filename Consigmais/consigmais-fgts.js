@@ -178,7 +178,10 @@ async function criar_contato_fgts() {
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
-    var attemptWaiting = 0;
+
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -231,10 +234,16 @@ function qualification() {
                     case "resolver-situacao":
                         switch (situacao) {
                             case "habilitar-saque":
+                                attemptsEnable++;
+                                localStorage.setItem("attemptsEnable", attemptsEnable);
+                                
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
+                                attemptsAuth++;
+                                localStorage.setItem("attemptsAuth", attemptsAuth);
+                                
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
