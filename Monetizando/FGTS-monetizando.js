@@ -10,101 +10,82 @@ let referrer = document.referrer;
 let name;
 let phone;
 let federalId;
-let email;
 let birth;
+let email;
 let workWithSignedWorkCard;
 let withdrawalEnabled;
-
 let controlNoOpportunity = false;
-
-
+/* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function callback(urlCallBack) {
     console.log(urlCallBack);
-
     axios.post(`https://api.retool.com/v1/workflows/e166680b-6824-49f8-9801-fdb55e7588d2/startTrigger?workflowApiKey=retool_wk_18c231a430cc43159f83b873c786b9c9`, {
         "callbackUrl": urlCallBack
     })
         .then((response) => {
-            window.location.href = "https://wa.me/554840429340";
+            window.location.href = "https://wa.me/558440420474";
         })
         .catch(function (error) {
             console.log(error, "Erro no post n8n");
         });
 }
+//VALIDAÇÕES
+function validatorQuestions() {
+    const firstChoice = document
+        .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
+        .value.toLowerCase();
+    const secondChoice = document
+        .querySelector('[data-brz-label="Você ativou o Saque-Aniversário no FGTS?"]')
+        .value.toLowerCase();
 
-//CRIAR CONTATO FGTS
-async function criar_contato_fgts() {
+    if (firstChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
+        
+    } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
+        showToast("Por favor, responda todas as perguntas.");
+        return false;
 
-    //CONFIG
-    const nextStep = "qualification"
-    const pipeline_slug = "fgts"
-    const autorizedBanks = ["bmg", "eccor"];
-
-    /* SANITIZADORES */
-    const federalId_replaced = federalId.replace(/[^\d]/g, "");
-    const name_replaced = name.replace(/\s+/g, ' ');
-
-    const button = document.querySelector(".btn-submit-fgts");
-    const spinner = button.querySelector(".brz-form-spinner");
-    const span = button.querySelector(".brz-span.brz-text__editor");
-
-    button.setAttribute("disabled", true);
-    spinner.classList.remove("brz-invisible");
-    span.textContent = "";
-
-
-    axios.post(API_URL + '/criar-contato', {
-        name: name_replaced,
-        phone: phone,
-        birthDate: birth,
-        email: email,
-        federalId: federalId_replaced,
-        autorizedBanks: autorizedBanks,
-        pipelineSlug: pipeline_slug,
-        origin: origin,
-        referrer: referrer,
-        workWithSignedWorkCard: workWithSignedWorkCard,
-        withdrawalEnabled: withdrawalEnabled,
-    }, {
-        headers: {
-            'api-key': API_KEY
-        }
-    })
-        .then((response) => {
-            window.location.href = nextStep + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced;
-        })
-        .catch(function (error) {
-            button.removeAttribute("disabled");
-            spinner.classList.add("brz-invisible");
-            span.textContent = "ACEITAR E CONTINUAR";
-            showToast(error.response.data.message);
-        });
+    } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
+        workWithSignedWorkCard = false;
+        withdrawalEnabled = false;
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
+    } else {
+        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        withdrawalEnabled = secondChoice === "sim, já está ativado.";
+        naoQualificar = !withdrawalEnabled;
+        criar_contato_fgts();
+    }
 }
 
-
 function validateForm() {
-    const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
-    const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
-    const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
-    const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
-    const emailElement = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
-    const firstChoice = document.querySelector('[data-brz-label="Já Trabalhou de Carteira Assinada?"]').value.toLowerCase();
-    const secondChoice = document.querySelector('[data-brz-label="Tem o Saque Habilitado?"]').value.toLowerCase();
-
+    const nameElement = document.querySelector(
+        '[data-brz-label="Nome Completo"]'
+    ).value;
+    const phoneElement = document.querySelector(
+        '[data-brz-label="WhatsApp"]'
+    ).value;
+    const federalIdElement = document.querySelector(
+        '[data-brz-label="CPF"]'
+    ).value;
+    const birthElement = document.querySelector(
+        '[data-brz-label="Data de Nascimento"]'
+    ).value;
+    const emailElement = document.querySelector(
+        '[data-brz-label="Email (Opcional)"]'
+    ).value;
     if (
         nameElement == "" ||
         phoneElement == "" ||
         federalIdElement == "" ||
-        birthElement == "" ||
-        firstChoice == "" ||
-        secondChoice == ""
+        birthElement == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
     if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
-    showToast("Por favor, digite seu nome completo");
-    return false;
+        showToast("Por favor, digite seu nome completo");
+        return false;
     }
     if (!validateCPF(federalIdElement)) {
         showToast("O CPF não é válido!");
@@ -122,39 +103,99 @@ function validateForm() {
         showToast("O e-mail informado não é válido!");
         return false;
     }
-
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-    email = emailElement;
-    workWithSignedWorkCard = firstChoice === "sim";
-    withdrawalEnabled = secondChoice === "sim";
-
-    criar_contato_fgts();
+    email = emailElement
+    //ABRA O POP UP DE QUESTIONARIO
+    const questions = document.getElementById("questions");
+    questions.click();
 }
-
-
+//CRIAR CONTATO FGTS
+async function criar_contato_fgts() {
+    //removerAtributos
+    removeAttributeStorage()
+    
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    
+    //CONFIG
+    const nextStep = "qualification"
+    const pipeline_slug = "fgts"
+    const autorizedBanks = ["bmg", "eccor"];
+    const federalId_replaced = federalId.replace(/[^\d]/g, "");
+    const name_replaced = name.replace(/\s+/g, ' ');
+    const button = document.querySelector(".submit_questions");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+    axios.post(API_URL + '/criar-contato', {
+        name: name_replaced,
+        phone: phone,
+        birthDate: birth,
+        federalId: federalId_replaced,
+        email: email,
+        autorizedBanks: autorizedBanks,
+        pipelineSlug: pipeline_slug,
+        origin: origin,
+        referrer: referrer,
+        workWithSignedWorkCard: workWithSignedWorkCard,
+        withdrawalEnabled: withdrawalEnabled,
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then(async (response) => {
+            if (!workWithSignedWorkCard) {
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+                if (leadId) {
+                    window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+                }
+            } else if (naoQualificar) {
+                attemptsEnable++;
+                localStorage.setItem("attemptsEnable", attemptsEnable);
+                
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+            } else if (!naoQualificar) {
+                attemptsAuth++;
+                localStorage.setItem("attemptsAuth", attemptsAuth);
+                
+                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+            }
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "ACEITAR E CONTINUAR";
+            showToast(error.response.data.message);
+        });
+}
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
 
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
     }
-
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
     let pipelineSlug = obterParametroDaURL('pipeline_slug');
     let federalId = obterParametroDaURL('federalId');
-
     if (pipelineSlug && federalId) {
         const dataQualification = {
             pipelineSlug: pipelineSlug,
             federalId: federalId
         };
-
         const dataQualificationJSON = JSON.stringify(dataQualification);
         localStorage.setItem('dataQualification', dataQualificationJSON);
         console.log("Enviou para o Storage: ", pipelineSlug, federalId)
@@ -164,14 +205,11 @@ function qualification() {
             const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
             pipelineSlug = storedDataQualification.pipelineSlug;
             federalId = storedDataQualification.federalId;
-
             console.log("Não tinha na URL: ", pipelineSlug, federalId);
         } else {
             console.log('Nenhum valor armazenado no localStorage para dataQualification');
         }
     }
-
-
     const sendRequest = () => {
         axios
             .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
@@ -187,24 +225,27 @@ function qualification() {
                 const leadId = response.data.id;
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
-
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
                     federalId: federalId,
                     leadId: leadId,
                     opportunity: oportunidades
                 });
-
-
                 switch (contexto) {
                     //REQUER AÇÃO DO CLIENTE
                     case "resolver-situacao":
                         switch (situacao) {
                             case "habilitar-saque":
+                                attemptsEnable++;
+                                localStorage.setItem("attemptsEnable", attemptsEnable);
+                                
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
+                                attemptsAuth++;
+                                localStorage.setItem("attemptsAuth", attemptsAuth);
+                                
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
@@ -224,40 +265,33 @@ function qualification() {
                                     URL_redirect = `/success`;
                                     window.location.href = URL_redirect;
                                 }
-                            break;
+                                break;
                         }
                         break
-
-                    
-                    //AGUARDAR LINK-LINK-ASSINATURA
-                    case "aguardar-link-assinatura":
-                        bankRedirect(oportunidades, contexto)
-                        break;
-
-                    //EM ANALISE
-                    case "em-analise":
-                        URL_redirect = `/paymentstatus?tp=ea`;
-                        window.location.href = URL_redirect;
-                        break;
-
-                    //PAGO
-                    case "pago":
-                        URL_redirect = `/paymentstatus?tp=pg`;
-                        window.location.href = URL_redirect;
-                        break;
-
-                    //PAGO E EM ANALISE
-                    case "pago-&-analise":
-                        URL_redirect = `/paymentstatus?tp=pa`;
-                        window.location.href = URL_redirect;
-                        break;
-
                     //JANELA MES ANIVERSÁRIO
                     case "janela-bloqueio":
                         URL_redirect = `/window`;
                         window.location.href = URL_redirect;
                         break;
-
+                    //AGUARDAR LINK-LINK-ASSINATURA
+                    case "aguardar-link-assinatura":
+                        bankRedirect(oportunidades, contexto)
+                        break;
+                    //EM ANALISE
+                    case "em-analise":
+                        URL_redirect = `/paymentstatus?tp=ea`;
+                        window.location.href = URL_redirect;
+                        break;
+                    //PAGO
+                    case "pago":
+                        URL_redirect = `/paymentstatus?tp=pg`;
+                        window.location.href = URL_redirect;
+                        break;
+                    //PAGO E EM ANALISE
+                    case "pago-&-analise":
+                        URL_redirect = `/paymentstatus?tp=pa`;
+                        window.location.href = URL_redirect;
+                        break;
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
                         if (!controlNoOpportunity) {
@@ -270,37 +304,31 @@ function qualification() {
                             window.location.href = URL_redirect;
                         }
                         break;
-
                     //NOQUALIFIED
                     case "nao-qualificado":
                         URL_redirect = `/noqualified`;
                         window.location.href = URL_redirect;
                         break;
-
                     //AGUARDANDO QUALIFICAÇÃO  (Estamos buscando uma oportunidade, aguarde a qualificação)
                     case "aguardando-qualificacao":
-
                         let segundos = 20;
-
                         const timeoutElement = document.getElementById("timeout");
                         timeoutElement.style.display = "block";
                         timeoutElement.style.fontFamily = "'Poppins', sans-serif !important";
                         timeoutElement.style.fontSize = "25px";
                         timeoutElement.style.textAlign = "center";
                         timeoutElement.style.fontWeight = "700";
-
-
                         const timer = setInterval(function () {
                             console.log("Tempo restante: " + segundos + " segundos");
                             timeoutElement.innerText = segundos;
                             segundos--;
                             if (segundos < 0) {
                                 clearInterval(timer);
+                                console.log("Tempo esgotado. Executando sendRequest().");
                                 sendRequest();
                             }
                         }, 1000);
                         break;
-
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
@@ -327,4 +355,36 @@ function qualification() {
     };
     sendRequest();
 }
-
+//GERENCIAMENTO DAS PERGUNTAS
+function changeQuestionOne() {
+    var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
+    if (selectedOption === "Sim, estou trabalhando com carteira assinada." || selectedOption === "Sim, já trabalhei assim antes, mas não estou mais.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+        if (divs.length >= 2) {
+            divs[1].style.display = "block";
+        }
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+        if (divs.length >= 2) {
+            divs[1].style.display = "none";
+        }
+    }
+}
+function changeQuestionTwo() {
+    var selectedOption = selectElement2.options[selectElement2.selectedIndex].value;
+    if (selectedOption === "Sim, já está ativado.") {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+        if (divs.length >= 2) {
+            divs[2].style.display = "block";
+            textFooter.style.display = "block";
+            textBanksDiv.style.display = "block";
+        }
+    } else {
+        var divs = forms2Element.querySelectorAll(".brz-forms2__item");
+        if (divs.length >= 2) {
+            divs[2].style.display = "none";
+            textFooter.style.display = "none";
+            textBanksDiv.style.display = "none";
+        }
+    }
+}
