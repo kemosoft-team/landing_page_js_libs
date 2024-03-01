@@ -165,6 +165,12 @@ function isDateValid(dateString) {
     return false;
 }
 
+//removerAtributos
+function removeAttributeStorage() {
+    localStorage.removeItem("attemptsEnable");
+    localStorage.removeItem("attemptsAuth");
+}
+
 function validarNumeroBeneficio(numeroBeneficio) {
     var regexBeneficio = /^[0-9]{10}$/;
     if (regexBeneficio.test(numeroBeneficio)) {
