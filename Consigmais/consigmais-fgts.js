@@ -113,6 +113,9 @@ function validateForm() {
 }
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+    
     //CONFIG
     const nextStep = "qualification"
     const pipeline_slug = "fgts"
@@ -149,9 +152,15 @@ async function criar_contato_fgts() {
                     window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
                 }
             } else if (naoQualificar) {
+                attemptsEnable++;
+                localStorage.setItem("attemptsEnable", attemptsEnable);
+                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             } else if (!naoQualificar) {
+                attemptsAuth++;
+                localStorage.setItem("attemptsAuth", attemptsAuth);
+                
                 const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
                 window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
             }
