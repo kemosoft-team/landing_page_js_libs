@@ -225,11 +225,6 @@ function qualification() {
                                     window.location.href = URL_redirect;
                                 }
                             break;
-                            //COM RESTRIÇÕES
-                            case "com-restricoes":
-                                URL_redirect = `/requirestreatment`;
-                                window.location.href = URL_redirect;
-                            break;
                         }
                         break
 
