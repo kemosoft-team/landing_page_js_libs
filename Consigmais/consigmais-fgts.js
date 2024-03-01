@@ -113,6 +113,9 @@ function validateForm() {
 }
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
+    //removerAtributos
+    removeAttributeStorage()
+    
     let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
     let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
     
