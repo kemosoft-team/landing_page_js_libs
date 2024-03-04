@@ -5,14 +5,19 @@ let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
 let referrer = document.referrer;
+
 let name;
 let phone;
 let federalId;
 let birth;
 let email;
-let workWithSignedWorkCard;
-let withdrawalEnabled;
+let leadId
+
+let jaTrabalhouCarteiraAssinada;
+let saqueAtivo;
+
 let controlNoOpportunity = false;
+
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function callback(urlCallBack) {
     console.log(urlCallBack);
@@ -27,7 +32,7 @@ function callback(urlCallBack) {
         });
 }
 //VALIDAÇÕES
-function validatorQuestions() {
+function validar_questions() {
     const firstChoice = document
         .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
         .value.toLowerCase();
@@ -38,25 +43,23 @@ function validatorQuestions() {
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-        
+
     } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
     } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
-        workWithSignedWorkCard = false;
-        withdrawalEnabled = false;
-        naoQualificar = !withdrawalEnabled;
-        criar_contato_fgts();
+        jaTrabalhouCarteiraAssinada = false;
+        saqueAtivo = false;
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
     } else {
-        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
-        withdrawalEnabled = secondChoice === "sim, já está ativado.";
-        naoQualificar = !withdrawalEnabled;
-        criar_contato_fgts();
+        jaTrabalhouCarteiraAssinada = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        saqueAtivo = secondChoice === "sim, já está ativado.";
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
     }
 }
 
-function validateForm() {
+function validar_contato_fgts() {
     const nameElement = document.querySelector(
         '[data-brz-label="Nome Completo"]'
     ).value;
@@ -107,30 +110,29 @@ function validateForm() {
     federalId = federalIdElement;
     birth = birthElement;
     email = emailElement
-    //ABRA O POP UP DE QUESTIONARIO
-    const questions = document.getElementById("questions");
-    questions.click();
+
+    criar_contato_fgts();
 }
+
 //CRIAR CONTATO FGTS
 async function criar_contato_fgts() {
-    //removerAtributos
-    removeAttributeStorage()
-    
-    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
-    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-    
+
     //CONFIG
-    const nextStep = "qualification"
     const pipeline_slug = "fgts"
-    const autorizedBanks = ["bmg", "eccor"];
+    const autorizedBanks = ["bmg", "eccor", "facta"];
+
+    /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
+
     const button = document.querySelector(".submit_questions");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
+
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
+
     axios.post(API_URL + '/criar-contato', {
         name: name_replaced,
         phone: phone,
@@ -141,32 +143,25 @@ async function criar_contato_fgts() {
         pipelineSlug: pipeline_slug,
         origin: origin,
         referrer: referrer,
-        workWithSignedWorkCard: workWithSignedWorkCard,
-        withdrawalEnabled: withdrawalEnabled,
+        naoQualificar: true,
     }, {
         headers: {
             'api-key': API_KEY
         }
     })
         .then(async (response) => {
-            if (!workWithSignedWorkCard) {
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                if (leadId) {
-                    window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-                }
-            } else if (naoQualificar) {
-                attemptsEnable++;
-                localStorage.setItem("attemptsEnable", attemptsEnable);
-                
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-            } else if (!naoQualificar) {
-                attemptsAuth++;
-                localStorage.setItem("attemptsAuth", attemptsAuth);
-                
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-            }
+            leadId = response.data.id;
+            console.log("Criar Contato: ", leadId)
+
+            setItemStorage({
+                pipelineSlug: pipeline_slug,
+                federalId: federalId_replaced,
+                leadId: leadId,
+            });
+
+            //ABRA O POP UP DE QUESTIONARIO
+            const questions = document.getElementById("questions");
+            questions.click();
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -175,13 +170,60 @@ async function criar_contato_fgts() {
             showToast(error.response.data.message);
         });
 }
+
+function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
+    //removerAtributos Attempts
+    removeAttributeStorage()
+
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
+
+    const button = document.querySelector(".brz-btn-submit.submit_questions");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+    axios.post(API_URL + `/${leadId}/perguntas`, {
+        jaTrabalhouCarteiraAssinada: jaTrabalhouCarteiraAssinada,
+        saqueAtivo: saqueAtivo
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+
+        .then(async (response) => {
+            if (!jaTrabalhouCarteiraAssinada) {
+                window.location.href = "noopportunity" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
+
+            } else if (!saqueAtivo) {
+                attemptsEnable++;
+                localStorage.setItem("attemptsEnable", attemptsEnable);
+                window.location.href = "enable" + "?" +  "federalId=" + federalId + "&" + "id=" + leadId;
+            } else if (saqueAtivo) {
+                attemptsAuth++;
+                localStorage.setItem("attemptsAuth", attemptsAuth);
+                window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
+            }
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "Simular Agora";
+            showToast(error.response.data.message);
+        });
+}
+
 //QUALIFICAÇÃO
 function qualification() {
     var attempt = 0;
 
     let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
     let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-    
+
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -236,14 +278,14 @@ function qualification() {
                             case "habilitar-saque":
                                 attemptsEnable++;
                                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                                
+
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
                                 attemptsAuth++;
                                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                                
+
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
