@@ -12,7 +12,7 @@ let birth;
 let enrollment;
 let name_Representive;
 let federalId_Representive;
-let federalId_Representive_replaced;
+
 let aposentadoOuPensionista;
 let jaContratouEmprestimo;
 let benefitAmountRange;
@@ -130,6 +130,8 @@ function criar_contato_inss() {
         .then((response) => {
             leadId = response.data.id;
             pipelineSlug = pipeline_slug;
+            federalId = federalId_replaced;
+            name = name_replaced;
             criar_questions()
         })
         .catch(function (error) {
@@ -254,6 +256,8 @@ function criar_contato_inss_representative() {
         }
     })
         .then((response) => {
+            name_Representive = name_Representive_replaced;
+            federalId_Representive = federalId_Representive_replaced;
             qualification();
         })
         .catch(function (error) {
