@@ -68,7 +68,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + `${leadId}/perguntas`, {
+    axios.post(API_URL + `/${leadId}/perguntas`, {
         jaTrabalhouCarteiraAssinada: jaTrabalhouCarteiraAssinada,
         saqueAtivo: saqueAtivo
     }, {
