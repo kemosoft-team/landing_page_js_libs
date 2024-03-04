@@ -125,7 +125,7 @@ async function criar_contato_fgts() {
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
 
-    const button = document.querySelector(".submit_questions");
+    const button = document.querySelector(".brz-btn-submit.submit_form");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
 
@@ -202,7 +202,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
             } else if (!saqueAtivo) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                window.location.href = "enable" + "?" +  "federalId=" + federalId + "&" + "id=" + leadId;
+                window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
             } else if (saqueAtivo) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
@@ -380,6 +380,7 @@ function qualification() {
     };
     sendRequest();
 }
+
 //GERENCIAMENTO DAS PERGUNTAS
 function changeQuestionOne() {
     var selectedOption = selectElement1.options[selectElement1.selectedIndex].value;
