@@ -78,18 +78,20 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
             'api-key': API_KEY
         }
     })
+
+
         .then(async (response) => {
             if (!jaTrabalhouCarteiraAssinada) {
-                window.location.href = "noopportunity"
-                /* window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId; */
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipelineSlug + "&" + "federalId=" + federalId + "&" + "id=" + leadId;
+
             } else if (!saqueAtivo) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                window.location.href = "enable" 
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipelineSlug + "&" + "federalId=" + federalId + "&" + "id=" + leadId;
             } else if (saqueAtivo) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                window.location.href = "authorize" 
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipelineSlug + "&" + "federalId=" + federalId + "&" + "id=" + leadId;
             }
         })
         .catch(function (error) {
