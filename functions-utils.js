@@ -1013,6 +1013,8 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
         pipeline = pipelineSlug;
     }
 
+    const motherName_replaced = motherName.replace(/\s+/g, ' ');
+
     const button = document.querySelector(".brz-btn-submit.submit_documento");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
@@ -1028,7 +1030,7 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
             "number": number,
             "issueDate": issueDate,
             "agencyState": agencyState,
-            "mother": motherName
+            "mother": motherName_replaced
         }, {
             headers: {
                 'api-key': API_KEY
