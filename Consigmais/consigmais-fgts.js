@@ -1,18 +1,17 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
 let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
+
 let step_URL = window.location.host;
 let URL_redirect = "";
 let origin = window.location.href;
 let referrer = document.referrer;
-let name;
-let phone;
-let federalId;
-let birth;
-let email;
-let workWithSignedWorkCard;
-let withdrawalEnabled;
 let controlNoOpportunity = false;
+
+let leadId;
+let federalId;
+let pipelineSlug;
+
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function callback(urlCallBack) {
     console.log(urlCallBack);
@@ -27,7 +26,10 @@ function callback(urlCallBack) {
         });
 }
 //VALIDAÇÕES
-function validatorQuestions() {
+function validar_questions() {
+    let jaTrabalhouCarteiraAssinada;
+    let saqueAtivo;
+
     const firstChoice = document
         .querySelector('[data-brz-label="Tem ou já teve um emprego com carteira assinada?"]')
         .value.toLowerCase();
@@ -38,99 +40,131 @@ function validatorQuestions() {
     if (firstChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
-        
+
     } else if ((firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.") && secondChoice === "") {
         showToast("Por favor, responda todas as perguntas.");
         return false;
 
     } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
-        workWithSignedWorkCard = false;
-        withdrawalEnabled = false;
-        naoQualificar = !withdrawalEnabled;
-        criar_contato_fgts();
+        jaTrabalhouCarteiraAssinada = false;
+        saqueAtivo = false;
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
+
     } else {
-        workWithSignedWorkCard = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
-        withdrawalEnabled = secondChoice === "sim, já está ativado.";
-        naoQualificar = !withdrawalEnabled;
-        criar_contato_fgts();
+        jaTrabalhouCarteiraAssinada = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
+        saqueAtivo = secondChoice === "sim, já está ativado.";
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
     }
 }
+function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
+    //removerAtributos Attempts
+    removeAttributeStorage()
+    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
+    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
 
-function validateForm() {
-    const nameElement = document.querySelector(
+    const button = document.querySelector(".brz-btn-submit.submit_questions");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
+    axios.post(API_URL + `/${leadId}/perguntas`, {
+        jaTrabalhouCarteiraAssinada: jaTrabalhouCarteiraAssinada,
+        saqueAtivo: saqueAtivo
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then(async (response) => {
+            if (!jaTrabalhouCarteiraAssinada) {
+                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+            } else if (!saqueAtivo) {
+                attemptsEnable++;
+                localStorage.setItem("attemptsEnable", attemptsEnable);
+                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+            } else if (saqueAtivo) {
+                attemptsAuth++;
+                localStorage.setItem("attemptsAuth", attemptsAuth);
+                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+            }
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "Simular Agora";
+            showToast(error.response.data.message);
+        });
+}
+function validar_contato_fgts() {
+    const name = document.querySelector(
         '[data-brz-label="Nome Completo"]'
     ).value;
-    const phoneElement = document.querySelector(
+    const phone = document.querySelector(
         '[data-brz-label="WhatsApp"]'
     ).value;
-    const federalIdElement = document.querySelector(
+    const federalId = document.querySelector(
         '[data-brz-label="CPF"]'
     ).value;
-    const birthElement = document.querySelector(
+    const birth = document.querySelector(
         '[data-brz-label="Data de Nascimento"]'
     ).value;
-    const emailElement = document.querySelector(
+    const email = document.querySelector(
         '[data-brz-label="Email (Opcional)"]'
     ).value;
     if (
-        nameElement == "" ||
-        phoneElement == "" ||
-        federalIdElement == "" ||
-        birthElement == ""
+        name == "" ||
+        phone == "" ||
+        federalId == "" ||
+        birth == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    if (!nameElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(nameElement)) {
+    if (!name.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(name)) {
         showToast("Por favor, digite seu nome completo");
         return false;
     }
-    if (!validateCPF(federalIdElement)) {
+    if (!validateCPF(federalId)) {
         showToast("O CPF não é válido!");
         return false;
     }
-    if (!isDateValid(birthElement)) {
+    if (!isDateValid(birth)) {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
-    if (!validatePhone(phoneElement)) {
+    if (!validatePhone(phone)) {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
     }
-    if (emailElement && !validateEmail(emailElement)) {
+    if (email && !validateEmail(email)) {
         showToast("O e-mail informado não é válido!");
         return false;
+    } else {
+        criar_contato_fgts(name, phone, federalId, birth, email);
     }
-    //SALVAR NAS VARIAVEIS GLOBAIS
-    name = nameElement;
-    phone = phoneElement;
-    federalId = federalIdElement;
-    birth = birthElement;
-    email = emailElement
-    //ABRA O POP UP DE QUESTIONARIO
-    const questions = document.getElementById("questions");
-    questions.click();
 }
 //CRIAR CONTATO FGTS
-async function criar_contato_fgts() {
-    //removerAtributos
-    removeAttributeStorage()
-    
-    let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
-    let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-    
+async function criar_contato_fgts(name, phone, federalId, birth, email) {
+
     //CONFIG
-    const nextStep = "qualification"
     const pipeline_slug = "fgts"
-    const autorizedBanks = ["bmg", "eccor"];
+    const autorizedBanks = ["bmg", "eccor", "facta"];
+
+    /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
-    const button = document.querySelector(".submit_questions");
+
+    const button = document.querySelector(".brz-btn-submit.submit_form");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
+
     button.setAttribute("disabled", true);
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
+
     axios.post(API_URL + '/criar-contato', {
         name: name_replaced,
         phone: phone,
@@ -141,37 +175,25 @@ async function criar_contato_fgts() {
         pipelineSlug: pipeline_slug,
         origin: origin,
         referrer: referrer,
-        workWithSignedWorkCard: workWithSignedWorkCard,
-        withdrawalEnabled: withdrawalEnabled,
+        naoQualificar: true,
     }, {
         headers: {
             'api-key': API_KEY
         }
     })
         .then(async (response) => {
-            if (!workWithSignedWorkCard) {
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                if (leadId) {
-                    window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-                }
-            } else if (naoQualificar) {
-                attemptsEnable++;
-                localStorage.setItem("attemptsEnable", attemptsEnable);
-                
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-            } else if (!naoQualificar) {
-                attemptsAuth++;
-                localStorage.setItem("attemptsAuth", attemptsAuth);
-                
-                const leadId = await getProximaEtapa(pipeline_slug, federalId_replaced);
-                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
-            }
+            leadId = response.data.id
+            federalId = federalId_replaced;
+            pipelineSlug = pipeline_slug;
+
+            //ABRA O POP UP DE QUESTIONARIO
+            const questions = document.getElementById("questions");
+            questions.click();
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
             spinner.classList.add("brz-invisible");
-            span.textContent = "ACEITAR E CONTINUAR";
+            span.textContent = "Simular Agora";
             showToast(error.response.data.message);
         });
 }
@@ -181,7 +203,7 @@ function qualification() {
 
     let attemptsEnable = localStorage.getItem("attemptsEnable") || 0;
     let attemptsAuth = localStorage.getItem("attemptsAuth") || 0;
-    
+
     function obterParametroDaURL(parametro) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(parametro);
@@ -236,14 +258,14 @@ function qualification() {
                             case "habilitar-saque":
                                 attemptsEnable++;
                                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                                
+
                                 URL_redirect = `/enable`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
                                 attemptsAuth++;
                                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                                
+
                                 URL_redirect = `/authorize`;
                                 window.location.href = URL_redirect;
                                 break
