@@ -132,6 +132,13 @@ function criar_contato_inss() {
             pipelineSlug = pipeline_slug;
             federalId = federalId_replaced;
             name = name_replaced;
+
+            setItemStorage({
+                pipelineSlug: pipeline_slug,
+                federalId: federalId_replaced,
+                leadId: leadId,
+            });
+            
             criar_questions()
         })
         .catch(function (error) {
