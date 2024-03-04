@@ -335,15 +335,8 @@ function qualification() {
                         break;
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        if (!controlNoOpportunity) {
-                            controlNoOpportunity = true;
-                            setTimeout(function () {
-                                sendRequest();
-                            }, 5000);
-                        } else {
-                            URL_redirect = `/noopportunity`;
-                            window.location.href = URL_redirect;
-                        }
+                        URL_redirect = `/noopportunity`;
+                        window.location.href = URL_redirect;
                         break;
                     //NOQUALIFIED
                     case "nao-qualificado":
