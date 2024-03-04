@@ -309,7 +309,7 @@ function qualification() {
                         break;
                     //AGUARDANDO QUALIFICAÇÃO
                     case "aguardando-qualificacao":
-                        URL_redirect = `/qualification?waiting=true`;
+                        URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}&waiting=true`;
                         window.location.href = URL_redirect;
                         break;
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
