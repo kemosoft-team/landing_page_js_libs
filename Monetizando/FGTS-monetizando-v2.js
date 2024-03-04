@@ -21,7 +21,7 @@ function callback(urlCallBack) {
         "callbackUrl": urlCallBack
     })
         .then((response) => {
-            window.location.href = "https://wa.me/558440420474";
+            window.location.href = "https://wa.me/554840429340";
         })
         .catch(function (error) {
             console.log(error, "Erro no post n8n");
