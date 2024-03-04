@@ -151,6 +151,7 @@ async function criar_contato_fgts() {
     })
         .then(async (response) => {
             leadId = response.data.id;
+            federalId = federalId_replaced;
             console.log("Criar Contato: ", leadId)
 
             setItemStorage({
