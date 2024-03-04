@@ -80,15 +80,16 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
     })
         .then(async (response) => {
             if (!jaTrabalhouCarteiraAssinada) {
-                window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+                window.location.href = "noopportunity"
+                /* window.location.href = "noopportunity" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId; */
             } else if (!saqueAtivo) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                window.location.href = "enable" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+                window.location.href = "enable" 
             } else if (saqueAtivo) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                window.location.href = "authorize" + "?" + "pipeline_slug=" + pipeline_slug + "&" + "federalId=" + federalId_replaced + "&" + "id=" + leadId;
+                window.location.href = "authorize" 
             }
         })
         .catch(function (error) {
