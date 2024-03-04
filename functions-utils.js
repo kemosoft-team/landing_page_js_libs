@@ -1150,6 +1150,9 @@ function validateDocumento() {
     } else if (!validateUF(agencyState)) {
         showToast("Por favor, informe um estado válido.");
         return false;
+    }  else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
+        showToast("Por favor, digite o nome da sua mãe completo");
+        return false;
     } else {
         registrarDocumento(type, number, issueDate, agencyState, motherName);
     }
