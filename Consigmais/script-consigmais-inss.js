@@ -187,6 +187,15 @@ function validar_PopUpBenefit() {
 }
 
 function criar_PopUpEnrollment(enrollment) {
+
+    const button = document.querySelector(".brz-btn-submit.submit_benefit");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
     axios.post(API_URL + "/registrar-dados-empregaticios", {
         federalId: federalId,
         enrollment: enrollment,
@@ -203,6 +212,9 @@ function criar_PopUpEnrollment(enrollment) {
             representativeQuestions.click();
         })
         .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "Confirmar e Continuar";
             showToast(error.response.data.message);
         });
 }
@@ -235,9 +247,18 @@ function validar_contato_inss_representative() {
 
 function criar_contato_inss_representative() {
 
+
     /* REPLACE */
     const name_Representive_replaced = name_Representive.replace(/\s+/g, ' ');
     const federalId_Representive_replaced = federalId_Representive.replace(/[^\d]/g, "");
+
+    const button = document.querySelector(".brz-btn-submit.submit_form_representative");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
 
 
     axios.post(API_URL + "/criar-contato", {
@@ -261,6 +282,9 @@ function criar_contato_inss_representative() {
             qualification();
         })
         .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "Confirmar e Continuar";
             showToast(error.response.data.message);
         });
 }
