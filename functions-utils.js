@@ -896,9 +896,9 @@ function requalify() {
             }
         })
         .then((response) => {
-            /* qualification() */
-            let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
-            window.location.href = URL_redirect;
+            qualification()
+           /*  let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
+            window.location.href = URL_redirect; */
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -918,9 +918,9 @@ function requalifyEnrollment(enrollment) {
             }
         })
         .then((response) => {
-            /* qualification() */
-            let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
-            window.location.href = URL_redirect;
+            qualification()
+            /* let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
+            window.location.href = URL_redirect; */
         })
         .catch(function (error) {
             showToast(error.response.data.message);
