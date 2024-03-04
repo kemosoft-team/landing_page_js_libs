@@ -14,7 +14,7 @@ let email;
 let leadId
 
 let jaTrabalhouCarteiraAssinada;
-let saqueAtivo;
+let saqueHabilitado;
 
 let controlNoOpportunity = false;
 
@@ -50,12 +50,12 @@ function validar_questions() {
 
     } else if (firstChoice === "não, nunca trabalhei com carteira assinada.") {
         jaTrabalhouCarteiraAssinada = false;
-        saqueAtivo = false;
-        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
+        saqueHabilitado = false;
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado);
     } else {
         jaTrabalhouCarteiraAssinada = firstChoice === "sim, estou trabalhando com carteira assinada." || firstChoice === "sim, já trabalhei assim antes, mas não estou mais.";
-        saqueAtivo = secondChoice === "sim, já está ativado.";
-        criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo);
+        saqueHabilitado = secondChoice === "sim, já está ativado.";
+        criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado);
     }
 }
 
@@ -172,7 +172,7 @@ async function criar_contato_fgts() {
         });
 }
 
-function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
+function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
     //removerAtributos Attempts
     removeAttributeStorage()
 
@@ -189,7 +189,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
 
     axios.post(API_URL + `/${leadId}/perguntas`, {
         jaTrabalhouCarteiraAssinada: jaTrabalhouCarteiraAssinada,
-        saqueAtivo: saqueAtivo
+        saqueHabilitado: saqueHabilitado
     }, {
         headers: {
             'api-key': API_KEY
@@ -200,11 +200,11 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueAtivo) {
             if (!jaTrabalhouCarteiraAssinada) {
                 window.location.href = "noopportunity" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
 
-            } else if (!saqueAtivo) {
+            } else if (!saqueHabilitado) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
                 window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
-            } else if (saqueAtivo) {
+            } else if (saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
                 window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
