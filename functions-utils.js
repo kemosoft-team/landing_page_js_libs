@@ -430,7 +430,9 @@ function getProximaEtapa(pipeline, federalId) {
     }
   })
     .then((response) => {
-      const leadId = response.data.id;
+    const leadId = response.data.id;
+    const contexto = response.data.contexto;
+        
       setItemStorage({
         pipelineSlug: pipeline,
         federalId: federalId,
