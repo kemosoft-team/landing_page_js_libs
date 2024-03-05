@@ -436,7 +436,7 @@ function getProximaEtapa(pipeline, federalId) {
         federalId: federalId,
         leadId: leadId,
       });
-      return leadId; 
+      return { leadId, contexto };
     })
     .catch(function (error) {
       console.log(error, "Não foi possível obter a próxima etapa");
