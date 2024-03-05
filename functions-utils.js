@@ -93,10 +93,18 @@ function validatePhone(phone) {
     return true;
 }
 
-function validateEmail(email) {
+/* function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+} */
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const atSymbolCount = (email.match(/@/g) || []).length; // Conta o número de símbolos "@"
+
+    return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
+
 
 function validateCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, "");
