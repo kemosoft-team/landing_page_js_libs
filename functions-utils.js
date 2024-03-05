@@ -1000,7 +1000,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, issueDate, agencyState, motherName) {
+function registrarDocumento(type, number, agencyState, motherName) {
 
 
     function obterParametroDaURL(parametro) {
@@ -1039,7 +1039,6 @@ function registrarDocumento(type, number, issueDate, agencyState, motherName) {
             "federalId": federal,
             "type": type,
             "number": number,
-            "issueDate": issueDate,
             "agencyState": agencyState,
             "mother": motherName_replaced
         }, {
@@ -1144,30 +1143,25 @@ function validateEndereco() {
 function validateDocumento() {
     const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
     const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
-    const issueDate = document.querySelector('[data-brz-label="Data de Emissão"]').value;
     const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
     const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
 
     if (
         type == "" ||
         number == "" ||
-        issueDate == "" ||
         agencyState == "" ||
         motherName == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    } else if (!isDateValid(issueDate)) {
-        showToast("A data de emissão informada não é válida!");
-        return false;
-    } else if (!validateUF(agencyState)) {
+    }  else if (!validateUF(agencyState)) {
         showToast("Por favor, informe um estado válido.");
         return false;
     }  else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
         showToast("Por favor, digite o nome da sua mãe completo");
         return false;
     } else {
-        registrarDocumento(type, number, issueDate, agencyState, motherName);
+        registrarDocumento(type, number, agencyState, motherName);
     }
 }
 
