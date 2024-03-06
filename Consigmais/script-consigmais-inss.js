@@ -195,7 +195,6 @@ function validar_PopUpBenefit() {
 }
 
 function criar_PopUpEnrollment(enrollment) {
-
     const button = document.querySelector(".brz-btn-submit.submit_benefit");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
@@ -204,28 +203,45 @@ function criar_PopUpEnrollment(enrollment) {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + "/registrar-dados-empregaticios", {
-        federalId: federalId,
-        enrollment: enrollment,
-    }, {
-        headers: {
-            'api-key': API_KEY
+    axios
+      .post(
+        API_URL + "/registrar-dados-empregaticios",
+        {
+          federalId: federalId,
+          enrollment: enrollment,
+        },
+        {
+          headers: {
+            "api-key": API_KEY,
+          },
         }
-    })
-        .then((response) => {
-            //ABRI POP UP QUESTIONARIOS
-            const close_benefit = document.getElementById("close_benefit");
-            close_benefit.click();
-            const representativeQuestions = document.getElementById("question_representative");
-            representativeQuestions.click();
-        })
-        .catch(function (error) {
-            button.removeAttribute("disabled");
-            spinner.classList.add("brz-invisible");
-            span.textContent = "Confirmar e Continuar";
-            showToast(error.response.data.message);
-        });
-}
+      )
+      .then((response) => {
+        if (menorIdade === true) {
+          // ABRIR FORMULÁRIO REPRESENTANTE
+          const close_benefit = document.getElementById("close_benefit");
+          close_benefit.click();
+          const formRepresentative = document.getElementById(
+            "form_representative"
+          );
+          formRepresentative.click();
+        } else {
+          // ABRIR QUESTÕES REPRESENTANTE
+          const close_benefit = document.getElementById("close_benefit");
+          close_benefit.click();
+          const representativeQuestions = document.getElementById(
+            "question_representative"
+          );
+          representativeQuestions.click();
+        }
+      })
+      .catch(function (error) {
+        button.removeAttribute("disabled");
+        spinner.classList.add("brz-invisible");
+        span.textContent = "Confirmar e Continuar";
+        showToast(error.response.data.message);
+      });
+  }
 
 function validar_contato_inss_representative() {
     const name_RepresentiveElement = document.querySelector('[data-brz-label="Nome do Representante"]').value;
