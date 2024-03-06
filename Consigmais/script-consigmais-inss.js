@@ -161,6 +161,9 @@ function criar_questions() {
     })
 
         .then(async (response) => {
+            console.log(aposentadoOuPensionista);
+            console.log(jaContratouEmprestimo);
+            
             //ABRA O POP UP DE INFO BENEFIT
             const benefit = document.getElementById("benefit");
             benefit.click();
