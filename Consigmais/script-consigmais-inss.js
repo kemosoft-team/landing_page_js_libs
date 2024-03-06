@@ -18,6 +18,7 @@ let jaContratouEmprestimo;
 let benefitAmountRange;
 let leadId;
 let pipelineSlug;
+let menorIdade = false;
 
 
 function callback(urlCallBack) {
