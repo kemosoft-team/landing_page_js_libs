@@ -218,14 +218,14 @@ function criar_PopUpEnrollment(enrollment) {
       )
       .then((response) => {
         if (menorIdade === true) {
+          console.log("Menor idade true")
           // ABRIR FORMULÁRIO REPRESENTANTE
           const close_benefit = document.getElementById("close_benefit");
           close_benefit.click();
-          const formRepresentative = document.getElementById(
-            "form_representative"
-          );
+          const formRepresentative = document.getElementById("form_representative");
           formRepresentative.click();
         } else {
+          console.log("Menor idade false")
           // ABRIR QUESTÕES REPRESENTANTE
           const close_benefit = document.getElementById("close_benefit");
           close_benefit.click();
