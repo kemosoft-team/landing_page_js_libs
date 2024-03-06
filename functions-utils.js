@@ -230,10 +230,8 @@ function isBirthValid(dateString) {
         "representative_false"
     );
     if (maxBirthYear - yearInt < 18) {
-        representativeFalseButton.style.display = "none";
-    } else {
-        representativeFalseButton.style.display = "block";
-    }
+        let menorIdade = true;
+    } 
     return true;
 }
 
