@@ -315,7 +315,7 @@ function criar_contato_inss_representative() {
         .then((response) => {
             name_Representive = name_Representive_replaced;
             federalId_Representive = federalId_Representive_replaced;
-            qualification();
+            requalify();
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
