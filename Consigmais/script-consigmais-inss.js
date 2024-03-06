@@ -171,7 +171,7 @@ function criar_questions() {
 }
 
 function validar_PopUpBenefit() {
-    const benefit = document.querySelector('[data-brz-label="Número do Benefício/Matrícula (Opcional)"]').value;
+    const benefit = document.querySelector('[data-brz-label="Número do benefício (Opcional)"]').value;
     if (benefit && benefit.length != 10) {
         showToast("O número do benefício deve conter 10 caracteres.");
         return false;
