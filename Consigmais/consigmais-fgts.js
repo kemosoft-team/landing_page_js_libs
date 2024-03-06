@@ -159,6 +159,9 @@ async function criar_contato_fgts() {
                 federalId: federalId_replaced,
                 leadId: leadId,
             });
+            
+            const customId = federalId_replaced;
+            window.clarity("identify", customId);
 
             //ABRA O POP UP DE QUESTIONARIO
             const questions = document.getElementById("questions");
