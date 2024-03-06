@@ -231,6 +231,9 @@ function isBirthValid(dateString) {
     if (maxBirthYear - yearInt < 18) {
         menorIdade = true;
         console.log(menorIdade);
+    } else{
+        menorIdade = false;
+        console.log(menorIdade);
     }
 
     return true; 
