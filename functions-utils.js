@@ -223,17 +223,19 @@ function isBirthValid(dateString) {
     const yearInt = parseInt(year, 10);
     const currentDate = new Date();
     const maxBirthYear = currentDate.getFullYear();
+
     if (maxBirthYear - yearInt > 76) {
         return false;
     }
-    var representativeFalseButton = document.getElementById(
-        "representative_false"
-    );
+
     if (maxBirthYear - yearInt < 18) {
-        let menorIdade = true;
-    } 
-    return true;
+        menorIdade = true;
+        console.log(menorIdade);
+    }
+
+    return true; 
 }
+
 
 /* FUNÇÕES DE EXIBIÇÃO */
 function showToast(text) {
