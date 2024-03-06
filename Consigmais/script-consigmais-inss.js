@@ -380,12 +380,12 @@ function qualification() {
                 var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
                 let aposentadoOuPensionista;
 
-                if (dataQuestions) {
+                /* if (dataQuestions) {
                     aposentadoOuPensionista = dataQuestions.aposentadoOuPensionista;
                     console.log("Aposentado: ", aposentadoOuPensionista)
                 } else {
                     console.log("Não há questions")
-                }
+                } */
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
