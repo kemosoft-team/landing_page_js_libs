@@ -377,10 +377,10 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
 
-                var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
+                /*var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
                 let aposentadoOuPensionista;
 
-                /* if (dataQuestions) {
+                 if (dataQuestions) {
                     aposentadoOuPensionista = dataQuestions.aposentadoOuPensionista;
                     console.log("Aposentado: ", aposentadoOuPensionista)
                 } else {
