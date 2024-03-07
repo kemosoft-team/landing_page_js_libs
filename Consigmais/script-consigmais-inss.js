@@ -139,6 +139,10 @@ function criar_contato_inss() {
                 federalId: federalId_replaced,
                 leadId: leadId,
             });
+
+            //ENVIAR CUSTOM ID CLARITY
+            const customId = federalId_replaced;
+            window.clarity("identify", customId);
             
             criar_questions()
         })
