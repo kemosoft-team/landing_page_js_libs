@@ -399,13 +399,11 @@ function changeQuestionTwo() {
     if (selectedOption === "Sim, já está ativado.") {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
         if (divs.length >= 2) {
-            divs[2].style.display = "block";
             textBanksDiv.style.display = "block";
         }
     } else {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
         if (divs.length >= 2) {
-            divs[2].style.display = "none";
             textBanksDiv.style.display = "none";
         }
     }
