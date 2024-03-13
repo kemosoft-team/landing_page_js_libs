@@ -400,14 +400,12 @@ function changeQuestionTwo() {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
         if (divs.length >= 2) {
             divs[2].style.display = "block";
-            textFooter.style.display = "block";
             textBanksDiv.style.display = "block";
         }
     } else {
         var divs = forms2Element.querySelectorAll(".brz-forms2__item");
         if (divs.length >= 2) {
             divs[2].style.display = "none";
-            textFooter.style.display = "none";
             textBanksDiv.style.display = "none";
         }
     }
