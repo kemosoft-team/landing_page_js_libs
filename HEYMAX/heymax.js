@@ -1,6 +1,6 @@
 let base_URL = "https://api.sheetmonkey.io/form/xqotGSzd3yZio9HFudvvCk";
 let base_URL_API = "https://app.heymax.io/partner-api";
-let api_key = config.api_key;
+let api_key = "asd98wef";
 
 //EXIBIR NO TOAST
 function showToast(text) {
@@ -12,6 +12,7 @@ function showToast(text) {
   }, 3000);
 }
 
+//VALIDAÇÕES
 function validatePhone(phone) {
   const numericPhone = phone.replace(/\D/g, "");
 
@@ -106,7 +107,16 @@ function validatePhone(phone) {
   return true;
 }
 
-function validatorForm_popup() {
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const atSymbolCount = (email.match(/@/g) || []).length;
+
+  return emailRegex.test(email.trim()) && atSymbolCount === 1;
+}
+
+
+//VALIDAÇÕES FORMULARIO
+function validateForm_popup() {
   const identifier = "popup";
   const name = document.querySelector('[data-brz-label="Nome"]').value;
   const whatsapp = document.querySelector(
@@ -125,7 +135,7 @@ function validatorForm_popup() {
   criarContato(name, whatsapp, identifier);
 }
 
-function validatorForm_form() {
+function validateForm_form() {
   const identifier = "form";
   const name = document.querySelector('[data-brz-label="Nome:"]').value;
   const whatsapp = document.querySelector(
@@ -145,7 +155,30 @@ function validatorForm_form() {
   }
 }
 
-function criarContato(name, whatsapp, identifier) {
+function validateForm_criar_heymax() {
+  const name = document.querySelector('[data-brz-label="Nome"]').value;
+  const email = document.querySelector('[data-brz-label="Email"]').value;
+  const password = document.querySelector('[data-brz-label="Senha"]').value;
+  const team_name = document.querySelector('[data-brz-label="Nome da Empresa"]').value;
+
+  if (name == "" || email == "" || password == "" || team_name == "") {
+    showToast("Por favor, preencha todos os campos!");
+    return false;
+  } else if (password.length < 6) {
+    showToast("A senha deve ter no mínimo 6 caracteres!");
+    return false;
+  } else if (!validateEmail(email)) {
+    showToast("Por favor, insira um endereço de e-mail válido!");
+    return false;
+  } else {
+    console.log(name)
+    console.log(email)
+    console.log(password)
+    console.log(team_name)
+  }
+}
+
+function criar_contato(name, whatsapp, identifier) {
   axios
     .get(`${base_URL}`, {
       name: name,
@@ -166,7 +199,27 @@ function criarContato(name, whatsapp, identifier) {
     });
 }
 
-
-
-
-
+function cria_contato_heymax(name, email, password, team_name) {
+  axios
+    .post(
+      base_URL,
+      {
+        name: name,
+        email: email,
+        password: password,
+        team_name: team_name
+      },
+      {
+        headers: {
+          'api-key': api_key,
+        }
+      }
+    )
+    .then(() => {
+      document.querySelector("#close_formulario").click();
+      document.querySelector("#checkout").click();
+    })
+    .catch(function (error) {
+      console.error("Não foi possível criar o contato", error);
+    });
+}
