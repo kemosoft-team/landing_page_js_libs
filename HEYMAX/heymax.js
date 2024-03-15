@@ -2,6 +2,8 @@ let base_URL = "https://api.sheetmonkey.io/form/xqotGSzd3yZio9HFudvvCk";
 let base_URL_API = "https://app.heymax.io/partner-api";
 let api_key = "asd98wef";
 
+let planoEscolhido;
+
 //EXIBIR NO TOAST
 function showToast(text) {
   var x = document.getElementById("snackbar");
@@ -114,7 +116,6 @@ function validateEmail(email) {
   return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
 
-
 //VALIDAÇÕES FORMULARIO
 function validateForm_popup() {
   const identifier = "popup";
@@ -216,17 +217,45 @@ function cria_contato_heymax(name, email, password, team_name) {
         }
       }
     )
-    .then(() => {
-      document.querySelector("#close_formulario").click();
-      document.querySelector("#checkout").click();
+    .then((response) => {
+      let URL_redirect;
+      const workspace_id = response.data.id; 
+
+      switch (planoEscolhido) {
+        case "max_essential":
+          URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
+          window.location.href = URL_redirect
+          break
+        case "max_pro":
+          URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
+          window.location.href = URL_redirect
+          break
+        case "max_exclusive":
+          URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
+          window.location.href = URL_redirect
+          break
+      }
     })
     .catch(function (error) {
       console.error("Não foi possível criar o contato", error);
+      showToast(error)
     });
 }
 
+function verificarPagamento() {
+  document.querySelector("#waiting").style.display = "block";
+  document.querySelector("#error").style.display = "block";
 
-
-
-
-
+  axios
+    .post(webhook, {},
+      {
+        workspace_id: workspace_id,
+      }
+    )
+    .then(() => {
+      document.querySelector("#sucessed").style.display = "block";
+    })
+    .catch(function (error) {
+      document.querySelector("#error").style.display = "block";
+    });
+}
