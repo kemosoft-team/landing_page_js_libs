@@ -202,21 +202,20 @@ function criar_contato(name, whatsapp, identifier) {
 }
 
 function cria_contato_heymax(name, email, password, team_name) {
-  axios
-    .post(
-      base_URL_API,
-      {
-        name: name,
-        email: email,
-        password: password,
-        team_name: team_name
-      },
-      {
-        headers: {
-          'api-key': api_key,
-        }
+  axios.post(
+    base_URL_API,
+    {
+      name: name,
+      email: email,
+      password: password,
+      team_name: team_name
+    },
+    {
+      headers: {
+        'api-key': api_key,
       }
-    )
+    }
+  )
     .then((response) => {
       let URL_redirect;
       const workspace_id = response.data.id;
