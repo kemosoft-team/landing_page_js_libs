@@ -1,5 +1,5 @@
 let base_URL = "https://api.sheetmonkey.io/form/xqotGSzd3yZio9HFudvvCk";
-let base_URL_API = "https://app.heymax.io/partner-api";
+let base_URL_API = "https://app.heymax.io/api";
 let api_key = "mXr4cUrMGKBLQeDrPdyA0OuizXAJ7quscryqLWeZGvDEqLY84spDVSuxFouQ";
 
 let planoEscolhido;
