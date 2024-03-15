@@ -1,5 +1,5 @@
 let base_URL = "https://api.sheetmonkey.io/form/xqotGSzd3yZio9HFudvvCk";
-let base_URL_API = "https://app.heymax.io/api";
+let base_URL_API = "https://app.heymax.io/partner-api";
 let api_key = "mXr4cUrMGKBLQeDrPdyA0OuizXAJ7quscryqLWeZGvDEqLY84spDVSuxFouQ";
 
 let planoEscolhido;
@@ -202,8 +202,7 @@ function criar_contato(name, whatsapp, identifier) {
 }
 
 function cria_contato_heymax(name, email, password, team_name) {
-  axios.post(
-    base_URL_API,
+  axios.post(base_URL_API + '/partner/workspace/create',
     {
       name: name,
       email: email,
