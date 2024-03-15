@@ -222,15 +222,15 @@ function cria_contato_heymax(name, email, password, team_name) {
       const workspace_id = response.data.id; 
 
       switch (planoEscolhido) {
-        case "max_essential":
+        case "Max Essential":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
-        case "max_pro":
+        case "Max Pro":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
-        case "max_exclusive":
+        case "Max Exclusive":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
