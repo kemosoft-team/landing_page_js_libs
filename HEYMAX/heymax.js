@@ -165,7 +165,7 @@ function validateForm_criar_heymax() {
   if (name == "" || email == "" || password == "" || team_name == "") {
     showToast("Por favor, preencha todos os campos!");
     return false;
-  } else if (password.length < 6) {
+  } else if (password.length < 8) {
     showToast("A senha deve ter no mínimo 6 caracteres!");
     return false;
   } else if (!validateEmail(email)) {
