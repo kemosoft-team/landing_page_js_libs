@@ -175,6 +175,7 @@ function validateForm_criar_heymax() {
     console.log(email)
     console.log(password)
     console.log(team_name)
+    cria_contato_heymax(name, email, password, team_name)
   }
 }
 
@@ -223,3 +224,9 @@ function cria_contato_heymax(name, email, password, team_name) {
       console.error("Não foi possível criar o contato", error);
     });
 }
+
+
+
+
+
+
