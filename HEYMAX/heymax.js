@@ -212,6 +212,7 @@ function cria_contato_heymax(name, email, password, team_name) {
     {
       headers: {
         'Authorization': `Bearer ${api_key}`,
+        'Content-Type': "application/json"
       }
     }
   )
