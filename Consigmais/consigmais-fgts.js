@@ -119,7 +119,7 @@ async function criar_contato_fgts() {
 
     //CONFIG
     const pipeline_slug = "fgts"
-    const autorizedBanks = ["bmg", "eccor", "facta", "novo-saque"];
+    const autorizedBanks = ["bmg", "eccor", "facta", "novo-saque", "c6", "pan"];
 
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
