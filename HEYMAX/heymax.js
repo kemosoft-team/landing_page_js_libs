@@ -133,7 +133,7 @@ function validateForm_popup() {
     return false;
   }
 
-  criarContato(name, whatsapp, identifier);
+  criar_contato(name, whatsapp, identifier);
 }
 
 function validateForm_form() {
@@ -152,7 +152,7 @@ function validateForm_form() {
     showToast("Insira um Whatsapp válido!");
     return false;
   } else {
-    criarContato(name, whatsapp);
+    criar_contato(name, whatsapp, identifier)
   }
 }
 
@@ -189,10 +189,10 @@ function criar_contato(name, whatsapp, identifier) {
     .then(() => {
       switch (identifier) {
         case "popup":
-          window.location.href = "www.google.com";
+          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20uma%20demonstra%C3%A7%C3%A3o%20do%20Hey!max.";
           break;
         case "form":
-          window.location.href = "www.instagram.com";
+          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20um%20especialista%20do%20Hey!max.";
           break;
       }
     })
@@ -221,15 +221,15 @@ function cria_contato_heymax(name, email, password, team_name) {
       const workspace_id = response.data.id;
 
       switch (planoEscolhido) {
-        case "max_essential":
+        case "Max Essential":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
-        case "max_pro":
+        case "Max Pro":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
-        case "max_exclusive":
+        case "Max Exclusive":
           URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
           window.location.href = URL_redirect
           break
@@ -240,4 +240,3 @@ function cria_contato_heymax(name, email, password, team_name) {
       showToast(error)
     });
 }
-
