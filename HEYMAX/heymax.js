@@ -188,10 +188,10 @@ function criar_contato(name, whatsapp, identifier) {
     .then(() => {
       switch (identifier) {
         case "popup":
-          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20uma%20demonstra%C3%A7%C3%A3o%20do%20Hey!max.";
+          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20uma%20demonstra%C3%A7%C3%A3o%20do%20Hey!Max.";
           break;
         case "form":
-          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20um%20especialista%20do%20Hey!max.";
+          window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20façar%20com%20um%20especialista%20do%20Hey!Max.";
           break;
       }
     })
