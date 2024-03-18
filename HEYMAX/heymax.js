@@ -1,6 +1,5 @@
 let base_URL = "https://api.sheetmonkey.io/form/xqotGSzd3yZio9HFudvvCk";
-let base_URL_API = "https://app.heymax.io/api";
-let api_key = "mXr4cUrMGKBLQeDrPdyA0OuizXAJ7quscryqLWeZGvDEqLY84spDVSuxFouQ";
+let base_URL_API = "https://n8n-01-webhook.kemosoft.com.br/webhook/criar-contato-heymax";
 
 let planoEscolhido;
 
@@ -202,19 +201,13 @@ function criar_contato(name, whatsapp, identifier) {
 }
 
 function cria_contato_heymax(name, email, password, team_name) {
-  axios.post(base_URL_API + '/partner/workspace/create',
+  axios.post(base_URL_API,
     {
       name: name,
       email: email,
       password: password,
       team_name: team_name
     },
-    {
-      headers: {
-        'Authorization': `Bearer ${api_key}`,
-        'Content-Type': "application/json"
-      }
-    }
   )
     .then((response) => {
       let URL_redirect;
