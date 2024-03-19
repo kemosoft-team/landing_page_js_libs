@@ -181,7 +181,7 @@ function validateForm_criar_heymax() {
 
 function criar_contato(name, whatsapp, identifier) {
   axios
-    .get(`${base_URL}`, {
+    .post(`${base_URL}`, {
       name: name,
       phone: whatsapp,
     })
