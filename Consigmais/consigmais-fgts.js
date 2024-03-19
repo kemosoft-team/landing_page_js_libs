@@ -96,7 +96,7 @@ function validar_contato_fgts() {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
-    if (isUnderage(birthElement)) {
+    if (!isUnderage(birthElement)) {
         showToast("A data de nascimento informada não é válida!!");
         return false;
     }
