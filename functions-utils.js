@@ -161,17 +161,28 @@ function isDateValid(dateString) {
         return false;
     }
 
-    const date = new Date(yearInt, monthInt - 1, dayInt);
-    if (
-        date.getDate() === dayInt &&
-        date.getMonth() === monthInt - 1 &&
-        date.getFullYear() === yearInt
-    ) {
+    const inputDate = new Date(yearInt, monthInt - 1, dayInt);
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    if (yearInt > currentYear || (yearInt === currentYear && monthInt > currentMonth)) {
         return true;
     }
 
     return false;
 }
+
+function isUnderage(dateOfBirth) {
+    const birthDate = new Date(dateOfBirth);
+    const currentDate = new Date();
+    
+    const differenceInMs = currentDate - birthDate;
+    const age = Math.floor(differenceInMs / (1000 * 60 * 60 * 24 * 365.25));
+
+    return age < 18;
+}
+
 
 //removerAtributos
 function removeAttributeStorage() {
