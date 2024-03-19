@@ -171,12 +171,17 @@ function isDateValid(dateString) {
     }
 
 function isUnderage(birthDate) {
-    var birthDateObj = new Date(birthDate);
+    var parts = birthDate.split('/');
+    var day = parseInt(parts[0], 10);
+    var month = parseInt(parts[1], 10) - 1; 
+    var year = parseInt(parts[2], 10);
+
+    var birthDateObj = new Date(year, month, day);
     var currentDate = new Date();
     var timeDiff = currentDate.getTime() - birthDateObj.getTime();
     var age = Math.floor(timeDiff / (1000 * 3600 * 24 * 365.25));
-    console.log("Idade exec:", birthDate)
-    console.log("Idade:", age)
+    console.log("Data de Nascimento Objeto:", birthDateObj);
+    console.log("Idade:", age);
     if (age < 18) {
         return false;
     } else {
