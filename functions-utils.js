@@ -175,6 +175,8 @@ function isUnderage(birthDate) {
     var currentDate = new Date();
     var timeDiff = currentDate.getTime() - birthDateObj.getTime();
     var age = Math.floor(timeDiff / (1000 * 3600 * 24 * 365.25));
+    console.log("Idade exec:", birthDate)
+    console.log("Idade:", age)
     if (age < 18) {
         return false;
     } else {
