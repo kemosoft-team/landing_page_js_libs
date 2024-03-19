@@ -381,15 +381,6 @@ function qualification() {
                 const pedirInfos = response.data.pedirInfos;
                 const oportunidades = response.data.oportunidades;
 
-                /*var dataQuestions = JSON.parse(localStorage.getItem('dataQuestions'));
-                let aposentadoOuPensionista;
-
-                 if (dataQuestions) {
-                    aposentadoOuPensionista = dataQuestions.aposentadoOuPensionista;
-                    console.log("Aposentado: ", aposentadoOuPensionista)
-                } else {
-                    console.log("Não há questions")
-                } */
 
                 setItemStorage({
                     pipelineSlug: pipelineSlug,
@@ -402,7 +393,7 @@ function qualification() {
                 switch (contexto) {
                     //NOOPPORTUNITY
                     case "sem-oportunidade":
-                        URL_redirect = `/noopportunity`;
+                        URL_redirect = `/noopportunity?federalId=${federalId}`;
                         window.location.href = URL_redirect;
                         break;
 
@@ -431,17 +422,17 @@ function qualification() {
 
                     //NOQUALIFIED
                     case "nao-qualificado":
-                        URL_redirect = `/noqualified`;
+                        URL_redirect = `/noqualified?federalId=${federalId}`;
                         window.location.href = URL_redirect;
                         break;
 
                     //AGUARDANDO QUALIFICAÇÃO 
                     case "aguardando-qualificacao":
                         if (aposentadoOuPensionista) {
-                            URL_redirect = `/requirestreatment`;
+                            URL_redirect = `/requirestreatment?federalId=${federalId}`;
                             window.location.href = URL_redirect;
                         } else {
-                            URL_redirect = `/noopportunity`;
+                            URL_redirect = `/noopportunity?federalId=${federalId}`;
                             window.location.href = URL_redirect;
                         }
 
@@ -452,7 +443,7 @@ function qualification() {
                         switch (situacao) {
                             //INFORMAR MATRICULA
                             case "informar-matricula":
-                                URL_redirect = `/benefit`;
+                                URL_redirect = `/benefit?federalId=${federalId}`;
                                 window.location.href = URL_redirect;
                                 break;
                             //INFORMAR MATRICULA NOVAMENTE
@@ -462,16 +453,16 @@ function qualification() {
                                 break;
                             //SOLICITAR IN100
                             case "solicitar-in100":
-                                URL_redirect = `/requirestreatment`;
+                                URL_redirect = `/requirestreatment?federalId=${federalId}`;
                                 window.location.href = URL_redirect;
                                 break;
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
                                 if (pedirInfos.length > 0) {
-                                    URL_redirect = `/opportunity`;
+                                    URL_redirect = `/opportunity?federalId=${federalId}`;
                                     window.location.href = URL_redirect;
                                 } else {
-                                    URL_redirect = `/success`;
+                                    URL_redirect = `/success?federalId=${federalId}`;
                                     window.location.href = URL_redirect;
                                 }
                                 break;
@@ -581,7 +572,6 @@ function registrarBenefit(enrollment) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 
 
 
