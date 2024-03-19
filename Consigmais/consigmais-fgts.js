@@ -96,10 +96,6 @@ function validar_contato_fgts() {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
-    if (isUnderage(birthElement)) {
-        showToast("A data de nascimento informada não é válida!");
-        return false;
-    }
     if (!validatePhone(phoneElement)) {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
