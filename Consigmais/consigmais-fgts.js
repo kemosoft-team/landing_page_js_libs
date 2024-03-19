@@ -92,7 +92,7 @@ function validar_contato_fgts() {
         showToast("O CPF não é válido!");
         return false;
     }
-    if (!isDateValid(birthElement)) {
+    if (isDateValid(birthElement)) {
         showToast("A data de nascimento informada não é válida!");
         return false;
     }
