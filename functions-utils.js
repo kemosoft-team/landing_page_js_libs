@@ -170,14 +170,16 @@ function isDateValid(dateString) {
         return false;
     }
 
-function isUnderage(dateOfBirth) {
-    const birthDate = new Date(dateOfBirth);
-    const currentDate = new Date();
-    
-    const differenceInMs = currentDate - birthDate;
-    const age = Math.floor(differenceInMs / (1000 * 60 * 60 * 24 * 365.25));
-
-    return age < 18;
+function isUnderage(birthDate) {
+    var birthDateObj = new Date(birthDate);
+    var currentDate = new Date();
+    var timeDiff = currentDate.getTime() - birthDateObj.getTime();
+    var age = Math.floor(timeDiff / (1000 * 3600 * 24 * 365.25));
+    if (age < 18) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 
