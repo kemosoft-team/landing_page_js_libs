@@ -146,32 +146,29 @@ function validateUF(sigla) {
 }
 
 function isDateValid(dateString) {
-    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if (!datePattern.test(dateString)) {
+        const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+        if (!datePattern.test(dateString)) {
+            return false;
+        }
+        const [, day, month, year] = dateString.match(datePattern);
+        const dayInt = parseInt(day, 10);
+        const monthInt = parseInt(month, 10);
+        const yearInt = parseInt(year, 10);
+        if (yearInt < 1900 || yearInt > 2099) {
+            return false;
+        }
+
+        const date = new Date(yearInt, monthInt - 1, dayInt);
+        if (
+            date.getDate() === dayInt &&
+            date.getMonth() === monthInt - 1 &&
+            date.getFullYear() === yearInt
+        ) {
+            return true;
+        }
+
         return false;
     }
-
-    const [, day, month, year] = dateString.match(datePattern);
-
-    const dayInt = parseInt(day, 10);
-    const monthInt = parseInt(month, 10);
-    const yearInt = parseInt(year, 10);
-
-    if (yearInt < 1900 || yearInt > 2099) {
-        return false;
-    }
-
-    const inputDate = new Date(yearInt, monthInt - 1, dayInt);
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
-
-    if (yearInt > currentYear || (yearInt === currentYear && monthInt > currentMonth)) {
-        return true;
-    }
-
-    return false;
-}
 
 function isUnderage(dateOfBirth) {
     const birthDate = new Date(dateOfBirth);
