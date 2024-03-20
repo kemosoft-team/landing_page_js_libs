@@ -128,7 +128,7 @@ async function criar_contato_fgts() {
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
-    const email_replaced = email.replace(" ", "");
+    const email_replaced = email.replace(/\s/g, "");
 
     const button = document.querySelector(".brz-btn-submit.submit_form");
     const spinner = button.querySelector(".brz-form-spinner");
