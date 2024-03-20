@@ -128,6 +128,7 @@ async function criar_contato_fgts() {
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
+    const email_replaced = email.replace(" ", "");
 
     const button = document.querySelector(".brz-btn-submit.submit_form");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -142,7 +143,7 @@ async function criar_contato_fgts() {
         phone: phone,
         birthDate: birth,
         federalId: federalId_replaced,
-        email: email,
+        email: email_replaced,
         autorizedBanks: autorizedBanks,
         pipelineSlug: pipeline_slug,
         origin: origin,
