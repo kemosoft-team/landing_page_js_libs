@@ -281,6 +281,11 @@ function validar_contato_inss_representative() {
             "Os CPFs do beneficiário e do representante devem ser diferentes!"
         );
         return false;
+    } if (name == name_RepresentiveElement){
+         showToast(
+            "O nome do beneficiário e do representante devem ser diferentes!"
+        );
+        return false;
     }
 
     name_Representive = name_RepresentiveElement;
