@@ -99,10 +99,11 @@ function validatePhone(phone) {
 } */
 
 function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/i;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br|io|net|org|gov)$/i;
     const atSymbolCount = (email.match(/@/g) || []).length; 
     return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
+
 
 
 function validateCPF(cpf) {
