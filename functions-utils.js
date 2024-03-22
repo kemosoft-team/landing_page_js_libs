@@ -99,9 +99,8 @@ function validatePhone(phone) {
 } */
 
 function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const atSymbolCount = (email.match(/@/g) || []).length; // Conta o número de símbolos "@"
-
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/i;
+    const atSymbolCount = (email.match(/@/g) || []).length; 
     return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
 
