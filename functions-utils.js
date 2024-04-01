@@ -252,6 +252,22 @@ function isBirthValid(dateString) {
     return true; 
 }
 
+function isBirthValidFGTS(dateString) {
+    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (!datePattern.test(dateString)) {
+        return false;
+    }
+    const [, , , year] = dateString.match(datePattern);
+    const yearInt = parseInt(year, 10);
+    const currentDate = new Date();
+    const maxBirthYear = currentDate.getFullYear();
+
+    if (maxBirthYear - yearInt > 75) {
+        return false;
+    }
+    return true; 
+}
+
 
 /* FUNÇÕES DE EXIBIÇÃO */
 function showToast(text) {
