@@ -92,7 +92,7 @@ function validar_contato_fgts() {
         showToast("O CPF não é válido!");
         return false;
     }
-    if (!isBirthValidFGTS(dateString)){
+    if (!isBirthValidFGTS(birthElement)){
         var popUpBirth = document.querySelector("#popUpBirth");
         popUpBirth.click();
         return false;
