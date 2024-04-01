@@ -211,7 +211,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
 
         .then(async (response) => {
             if (!jaTrabalhouCarteiraAssinada) {
-                window.location.href = "noopportunity" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
+                window.location.href = "noopportunityfgts" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
 
             } else if (!saqueHabilitado) {
                 attemptsEnable++;
