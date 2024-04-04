@@ -96,14 +96,26 @@ function validatePhone(phone) {
 /* function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-} */
+} 
 
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br|io|net|org|gov)$/i;
     const atSymbolCount = (email.match(/@/g) || []).length; 
     return emailRegex.test(email.trim()) && atSymbolCount === 1;
-}
+}*/
 
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br|io|net|org|gov)$/i;
+    const atSymbolCount = (email.match(/@/g) || []).length;
+    
+    // Validar o nome de usuário
+    const username = email.split("@")[0];
+    const usernameRegex = /^[a-zA-Z0-9._-]+$/; 
+    const isUsernameValid = usernameRegex.test(username);
+    const containsSpecialChars = /[^\w.-]/.test(username); 
+
+    return emailRegex.test(email.trim()) && atSymbolCount === 1 && isUsernameValid && !containsSpecialChars;
+}
 
 
 function validateCPF(cpf) {
