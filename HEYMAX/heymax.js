@@ -144,7 +144,7 @@ function validateForm_form() {
 
   if (name == "" || whatsapp == "") {
     showToast(
-      "Por favor, preencha o campo com o seu nome que deseja ser chamado!"
+      "Por favor, preencha todos os campos!"
     );
     return false;
   } else if (!validatePhone(whatsapp)) {
