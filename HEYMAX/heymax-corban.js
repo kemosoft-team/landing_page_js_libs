@@ -129,7 +129,6 @@ function iniciarConfig() {
 
 const btnCloseQrCode = document.querySelector("#closeWaitingCorban");
 
-// Define a função closeQrCode antes de usá-la
 function closeQrCode() {
     cancelRequestAttempts = false;
 }
