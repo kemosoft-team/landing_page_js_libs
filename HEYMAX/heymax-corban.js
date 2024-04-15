@@ -133,6 +133,8 @@ function closeQrCode() {
 
 const btnCloseQrCode = document.querySelector("#closeWaitingCorban");
 
-btnCloseQrCode.addEventListener("click", closeQrCode);
+btnCloseQrCode.addEventListener("click", function(){
+    closeQrCode();
+});
 
 
