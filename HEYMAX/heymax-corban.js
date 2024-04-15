@@ -126,15 +126,9 @@ function iniciarConfig() {
     console.log("Iniciando Config")
 }
 
-
-const btnCloseQrCode = document.querySelector("#closeWaitingCorban");
-
 function closeQrCode() {
     cancelRequestAttempts = false;
 }
 
-btnCloseQrCode.addEventListener("click", function(){
-    closeQrCode();
-});
 
 
