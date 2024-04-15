@@ -108,6 +108,41 @@ function validatePhone(phone) {
   return true;
 }
 
+function validarCNPJ(cnpj) {
+    if(cnpj.length != 14 || !/\d{14}/.test(cnpj)) {
+        return false;
+    }
+
+    var pesos = [5,4,3,2,9,8,7,6,5,4,3,2];
+    var soma = 0;
+
+    for(var i = 0; i < 12; i++) {
+        soma += parseInt(cnpj.charAt(i)) * pesos[i];
+    }
+
+    var digito1 = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    if(parseInt(cnpj.charAt(12)) != digito1) {
+        return false;
+    }
+
+    soma = 0;
+    pesos.unshift(6);
+
+    for(var i = 0; i < 13; i++) {
+        soma += parseInt(cnpj.charAt(i)) * pesos[i];
+    }
+
+    var digito2 = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    if(parseInt(cnpj.charAt(13)) != digito2) {
+        return false;
+    }
+
+    return true;
+}
+
+
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const atSymbolCount = (email.match(/@/g) || []).length;
