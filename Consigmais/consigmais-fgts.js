@@ -216,7 +216,8 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
             } else if (!saqueHabilitado) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
+                qualification()
+                /* window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
             } else if (saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
