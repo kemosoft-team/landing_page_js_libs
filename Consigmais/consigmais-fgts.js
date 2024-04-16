@@ -293,7 +293,7 @@ function qualification() {
                                 attemptsEnable++;
                                 localStorage.setItem("attemptsEnable", attemptsEnable);
 
-                                URL_redirect = `/enable`;
+                                URL_redirect = `/enable?federalId=${federalId}&id=${leadId}`;
                                 window.location.href = URL_redirect;
                                 break;
                             case "autorizar-banco":
