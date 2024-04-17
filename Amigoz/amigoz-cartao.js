@@ -30,15 +30,10 @@ function callback(urlCallBack) {
 }
 
 function validar_contato() {
-    const nameElement = document.querySelector(
-        '[data-brz-label="Nome"]'
-    ).value;
-    const phoneElement = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
-    ).value;
-    const federalIdElement = document.querySelector(
-        '[data-brz-label="CPF"]'
-    ).value;
+    const nameElement = document.querySelector('[data-brz-label="Nome"]').value;
+    const phoneElement = document.querySelector('[data-brz-label="WhatsApp"]').value;
+    const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
+
     if (
         nameElement == "" ||
         phoneElement == "" ||
@@ -69,9 +64,26 @@ function validar_contato() {
     criar_contato()
 }
 
+
+function identifierSlug() {
+
+    const path = window.location.pathname;
+    switch (path) {
+        case "Pref. Juazeiro do Norte/CE":
+            return "pref-jn"
+        case "Pref. Rio de Janeiro/RJ":
+            return "pref-rj"
+        case "Pref. Caxias/MA":
+            return "pref-ca"
+        case "gov-pi":
+            return "gov-pi"
+    }
+}
+
+
 function criar_contato() {
     // CONFIG
-    const pipeline_slug = "gov-pi";
+    const pipeline_slug = identifierSlug();
 
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
@@ -296,7 +308,6 @@ function qualification() {
                                 /* ATENÇÃO NESSA PARTE */
                                 document.querySelector("#btn-close-waiting").click();
                                 document.querySelector("#btn-benefit").click();
-
                                 break;
                             //INFORMAR MATRICULA NOVAMENTE
                             case "informar-matricula-valida":
@@ -310,13 +321,8 @@ function qualification() {
                                 break;
                             //TEM OPORTUNIDADE
                             case "escolher-simulacao":
-                                if (pedirInfos.length > 0) {
-                                    URL_redirect = `/opportunity?federalId=${federalId}`;
-                                    window.location.href = URL_redirect;
-                                } else {
-                                    URL_redirect = `/success?federalId=${federalId}`;
-                                    window.location.href = URL_redirect;
-                                }
+                                URL_redirect = `/opportunity?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
                                 break;
                             //ASSINATURA PENDENTE
                             case "assinatura-pendente":
