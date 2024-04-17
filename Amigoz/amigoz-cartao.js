@@ -71,7 +71,7 @@ function validar_contato() {
 
 function criar_contato() {
     // CONFIG
-    const pipeline_slug = "inss";
+    const pipeline_slug = "gov-pi";
 
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
@@ -155,7 +155,7 @@ function validar_popUp_benefit() {
 
 function criar_popUp_benefit() {
     // CONFIG
-    const pipeline_slug = "inss";
+    const pipeline_slug = "gov-pi";
 
     const button = document.querySelector(".brz-btn-submit.submit_popUp_benefit");
     const spinner = button.querySelector(".brz-form-spinner");
