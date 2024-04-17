@@ -136,7 +136,7 @@ function qualification() {
 
             switch (contexto) {
                 //NOQUALIFIED
-                case "nao-qualificado":
+                case "encerrado":
                     URL_redirect = `/noqualified`;
                     window.location.href = URL_redirect;
                     break;
