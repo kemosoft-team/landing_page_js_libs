@@ -22,7 +22,7 @@ function callback(urlCallBack) {
         "callbackUrl": urlCallBack
     })
         .then((response) => {
-            window.location.href = "https://wa.me/558440429946";
+            window.location.href = "https://wa.me/{{whatsapp}}";
         })
         .catch(function (error) {
             console.log(error, "Erro no post n8n");
@@ -68,13 +68,12 @@ function validar_contato() {
 function identifierSlug() {
 
     const path = window.location.pathname;
-    console.log("Esse é o path: ", path)
     switch (path) {
-        case "Pref. Juazeiro do Norte/CE":
+        case "pref-jn":
             return "pref-jn"
-        case "Pref. Rio de Janeiro/RJ":
+        case "pref-rj":
             return "pref-rj"
-        case "Pref. Caxias/MA":
+        case "/pref-ca":
             return "pref-ca"
         case "/gov-pi":
             return "gov-pi"
@@ -84,7 +83,7 @@ function identifierSlug() {
 
 function criar_contato() {
     // CONFIG
-    const pipeline_slug = identifierSlug();
+    const pipeline_slug = identifierSlug(window.location.pathname);
 
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
