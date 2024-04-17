@@ -68,6 +68,7 @@ function validar_contato() {
 function identifierSlug() {
 
     const path = window.location.pathname;
+    console.log("Esse é o path: ", path)
     switch (path) {
         case "Pref. Juazeiro do Norte/CE":
             return "pref-jn"
@@ -75,7 +76,7 @@ function identifierSlug() {
             return "pref-rj"
         case "Pref. Caxias/MA":
             return "pref-ca"
-        case "gov-pi":
+        case "/gov-pi":
             return "gov-pi"
     }
 }
