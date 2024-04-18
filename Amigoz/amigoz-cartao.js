@@ -52,9 +52,9 @@ function identifierSlug() {
 
     const path = window.location.pathname;
     switch (path) {
-        case "pref-jn":
+        case "/pref-jn":
             return "pref-jn"
-        case "pref-rj":
+        case "/pref-rj":
             return "pref-rj"
         case "/pref-ca":
             return "pref-ca"
