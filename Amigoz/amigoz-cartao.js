@@ -9,6 +9,7 @@ let name;
 let phone;
 let federalId;
 let pipelineSlug;
+let attempt = 0; 
 
 
 function validar_contato() {
@@ -108,7 +109,7 @@ function criar_contato() {
             window.clarity("identify", customId);
 
             document.querySelector("#btn-waiting").click();
-            qualification()
+            qualification(pipeline_slug, federalId_replaced)
 
         })
         .catch(function (error) {
@@ -119,13 +120,9 @@ function criar_contato() {
         });
 }
 
-
-//QUALIFICAÇÃO
-function qualification() {
-    var attempt = 0;
-
+function qualification(pipe, federal) {
     axios
-        .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+        .get(`${API_URL}/proxima-etapa/${pipe}/${federal}`, {
             headers: {
                 'api-key': API_KEY
             }
@@ -133,15 +130,14 @@ function qualification() {
         .then((response) => {
             let URL_redirect;
             const contexto = response.data.contexto;
+            console.log("Contexto: ",contexto);
 
             switch (contexto) {
-                //NOQUALIFIED
                 case "encerrado":
                     URL_redirect = `/noqualified`;
                     window.location.href = URL_redirect;
                     break;
 
-                //QUALIFICADO OU QUALQUER OUTRO STATUS NÃO LISTADO
                 default:
                     URL_redirect = `/success`;
                     window.location.href = URL_redirect;
@@ -152,9 +148,9 @@ function qualification() {
             console.log(error, "Não foi possível obter a qualificação");
             attempt++;
             if (attempt < 3) {
-                sendRequest();
+                qualification(); 
             } else {
-                URL_redirect = `/offline`;
+                const URL_redirect = `/offline`;
                 window.location.href = URL_redirect;
             }
         });
