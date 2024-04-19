@@ -4,7 +4,8 @@ let base_URL_API = "https://n8n-01-webhook.kemosoft.com.br/webhook/criar-contato
 let API_URL = "";
 
 let planoEscolhido;
-let urlCompleta;
+
+
 
 //EXIBIR NO TOAST
 function showToast(text) {
@@ -499,8 +500,12 @@ function callback(urlCallBack) {
 /* REDIRECIONAMENTO E INTEGRAÇÕES EXTERNAS */
 function nextStepInfos(urlFederalId, urlcallbackUrl) {
 
-    if (urlFederalId && urlcallbackUrl) {
+    let urlCompleta;
+    let federal;
 
+    if (urlFederalId && urlcallbackUrl) {
+        urlCompleta = urlcallbackUrl;
+        federal = urlcallbackUrl;
     } else {
         function obterParametroDaURL(parametro) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -511,20 +516,16 @@ function nextStepInfos(urlFederalId, urlcallbackUrl) {
         const id = obterParametroDaURL('id');
         const federalId = obterParametroDaURL('cpf');
 
+        urlCompleta = `${urlCallBack}${id}`;
+        federal = federalId
 
-        if (urlCallBack.includes(id)) {
-            urlCompleta = urlCallBack
-        } else {
-            urlCompleta = `${urlCallBack}${id}`;
-        }
     }
 
+    console.log("URL: ", urlCompleta)
+    console.log("CPF: ", federal)
 
 
-
-
-
-    axios.get(`${API_URL}/proxima-etapa/heymax-corban/${federalId}`, {
+    axios.get(`${API_URL}/proxima-etapa/heymax-corban/${federal}`, {
         headers: {
             'api-key': API_KEY
         }
@@ -533,15 +534,15 @@ function nextStepInfos(urlFederalId, urlcallbackUrl) {
             const pedirInfos = response.data.pedirInfos;
 
             if (pedirInfos.includes("documento")) {
-                URL_redirect = `/documento?cpf=${federalId}&callbackUrl=${urlCompleta}`;
+                URL_redirect = `/documento?cpf=${federal}&callbackUrl=${urlCompleta}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("endereco")) {
-                URL_redirect = `/endereco?cpf=${federalId}&callbackUrl=${urlCompleta}`;
+                URL_redirect = `/endereco?cpf=${federal}&callbackUrl=${urlCompleta}`;
                 window.location.href = URL_redirect;
 
             } else if (pedirInfos.includes("conta")) {
-                URL_redirect = `/conta?cpf=${federalId}&callbackUrl=${urlCompleta}`;
+                URL_redirect = `/conta?cpf=${federal}&callbackUrl=${urlCompleta}`;
                 window.location.href = URL_redirect;
             } else {
                 callback(urlCompleta);
@@ -857,7 +858,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
     axios
         .post(`${API_URL}/registrar-endereco`, {
-            "federalId": federal,
+            "federalId": urlFederalId,
             "address": address,
             "addressNumber": addressNumber,
             "district": district,
@@ -889,21 +890,10 @@ function registrarDocumento(type, number, agencyState, motherName) {
         return urlParams.get(parametro);
     }
 
+
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const urlFederalId = obterParametroDaURL('federalId');
-    const urlPipeline = obterParametroDaURL('pipeline');
-
-    let federal;
-    let pipeline;
-
-    if (urlFederalId && urlPipeline) {
-        federal = urlFederalId;
-        pipeline = urlPipeline;
-    } else {
-        const { pipelineSlug, federalId } = getItemStorage();
-        federal = federalId;
-        pipeline = pipelineSlug;
-    }
+    const urlFederalId = obterParametroDaURL('cpf');
+    const urlcallbackUrl = obterParametroDaURL('callbackUrl');
 
     const motherName_replaced = motherName.replace(/\s+/g, ' ');
 
@@ -917,7 +907,7 @@ function registrarDocumento(type, number, agencyState, motherName) {
 
     axios
         .post(`${API_URL}/registrar-documento`, {
-            "federalId": federal,
+            "federalId": urlFederalId,
             "type": type,
             "number": number,
             "agencyState": agencyState,
@@ -928,7 +918,7 @@ function registrarDocumento(type, number, agencyState, motherName) {
             }
         })
         .then((response) => {
-            nextStepInfos(federal, pipeline)
+            nextStepInfos(urlFederalId, urlcallbackUrl)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -947,20 +937,8 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     }
 
     // VERIFICAR SE OS PARÂMETROS ESTÃO NA URL
-    const urlFederalId = obterParametroDaURL('federalId');
-    const urlPipeline = obterParametroDaURL('pipeline');
-
-    let federal;
-    let pipeline;
-
-    if (urlFederalId && urlPipeline) {
-        federal = urlFederalId;
-        pipeline = urlPipeline;
-    } else {
-        const { pipelineSlug, federalId } = getItemStorage();
-        federal = federalId;
-        pipeline = pipelineSlug;
-    }
+    const urlFederalId = obterParametroDaURL('cpf');
+    const urlcallbackUrl = obterParametroDaURL('callbackUrl');
 
     const button = document.querySelector(".brz-btn-submit.submit_conta");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -972,7 +950,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
 
     axios
         .post(`${API_URL}/registrar-conta`, {
-            "federalId": federal,
+            "federalId": urlFederalId,
             "bankNo": bankNo,
             "branch": branch,
             "acctNo": acctNo,
@@ -983,7 +961,7 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
             }
         })
         .then((response) => {
-            nextStepInfos(federal, pipeline)
+            nextStepInfos(urlFederalId, urlcallbackUrl)
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
