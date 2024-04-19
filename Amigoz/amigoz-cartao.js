@@ -109,8 +109,11 @@ function criar_contato() {
             window.clarity("identify", customId);
 
             document.querySelector("#btn-waiting").click();
-            qualification(pipeline_slug, federalId_replaced)
 
+            setTimeout(function() {
+                qualification(pipeline_slug, federalId_replaced);
+            }, 3000);
+            
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
