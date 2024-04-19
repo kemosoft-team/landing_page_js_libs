@@ -168,9 +168,9 @@ function criar_questions() {
             console.log(aposentadoOuPensionista);
             console.log(jaContratouEmprestimo);
             
-            //ABRA O POP UP DE REPRESENTANTE
-            const formRepresentative = document.getElementById("form_representative");
-            formRepresentative.click();
+            // ABRIR QUESTÕES REPRESENTANTE
+            const representativeQuestions = document.getElementById("question_representative");
+            representativeQuestions.click();
         })
         .catch(function (error) {
             showToast(error.response.data.message);
