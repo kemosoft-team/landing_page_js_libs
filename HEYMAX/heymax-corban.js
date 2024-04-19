@@ -1,11 +1,4 @@
-let base_URL = "https://api.sheetmonkey.io/form/keboAXgkeWL77ZR39TKRLb";
-let base_URL_API = "https://n8n-01-webhook.kemosoft.com.br/webhook/criar-contato-heymax";
-
-let API_URL = "";
-
-let planoEscolhido;
-
-
+let BASE_URL = "API URL";
 
 //EXIBIR NO TOAST
 function showToast(text) {
@@ -711,122 +704,115 @@ function validateEmail(email) {
     return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
 
-//VALIDAÇÕES FORMULARIO
-function validateForm_popup() {
-    const identifier = "popup";
-    const name = document.querySelector('[data-brz-label="Nome"]').value;
-    const whatsapp = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
-    ).value;
-
-    if (name == "" || whatsapp == "") {
-        showToast("Por favor, preencha todos os campos!");
-        return false;
-    }
-    if (!validatePhone(whatsapp)) {
-        showToast("Insira um Whatsapp válido!");
-        return false;
-    }
-
-    criar_contato(name, whatsapp, identifier);
-}
-
-function validateForm_form() {
-    const identifier = "form";
-    const name = document.querySelector('[data-brz-label="Nome:"]').value;
-    const whatsapp = document.querySelector(
-        '[data-brz-label="WhatsApp:"]'
-    ).value;
-
-    if (name == "" || whatsapp == "") {
-        showToast(
-            "Por favor, preencha todos os campos!"
-        );
-        return false;
-    } else if (!validatePhone(whatsapp)) {
-        showToast("Insira um Whatsapp válido!");
-        return false;
-    } else {
-        criar_contato(name, whatsapp, identifier)
-    }
-}
-
 function validateForm_criar_heymax() {
-    const name = document.querySelector('[data-brz-label="Nome"]').value;
+    const name = document.querySelector('[data-brz-label="Nome Completo"]').value;
+    const phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
     const email = document.querySelector('[data-brz-label="Email"]').value;
-    const password = document.querySelector('[data-brz-label="Senha"]').value;
+    const cnpj = document.querySelector('[data-brz-label="CNPJ"]').value;
     const team_name = document.querySelector('[data-brz-label="Nome da Empresa"]').value;
+    const office = document.querySelector('[data-brz-label="Cargo"]').value;
+    const numOperators = document.querySelector('[data-brz-label="Qnt. Operadores"]').value;
 
-    if (name == "" || email == "" || password == "" || team_name == "") {
+    if (name == "" || phone == "" || email == "" || cnpj == "" || team_name == "" || office == "" || numOperators == "") {
         showToast("Por favor, preencha todos os campos!");
         return false;
-    } else if (password.length < 6) {
-        showToast("A senha deve ter no mínimo 6 caracteres!");
+    } else if (password.length < 8) {
+        showToast("A senha deve ter no mínimo 8 caracteres!");
+        return false;
+    } else if (!validatePhone(phone)) {
+        showToast("Por favor, insira um WhatsApp válido!");
         return false;
     } else if (!validateEmail(email)) {
         showToast("Por favor, insira um endereço de e-mail válido!");
         return false;
+    } else if (!validarCNPJ(cnpj)) {
+        showToast("Por favor, insira um CNPJ válido!");
+        return false;
     } else {
-        console.log(name)
-        console.log(email)
-        console.log(password)
-        console.log(team_name)
-        cria_contato_heymax(name, email, password, team_name)
+        cria_contato_heymax(name, phone, email, cnpj, team_name, office, numOperators)
     }
 }
 
-function criar_contato(name, whatsapp, identifier) {
+function cria_contato_heymax(name, phone, email, cnpj, company_name, office, numOperators) {
     axios
-        .post(`${base_URL}`, {
+        .post(`${BASE_URL}`, {
             name: name,
-            phone: whatsapp,
+            phone: phone,
+            email: email,
+            cnpj: cnpj,
+            company_name: company_name,
+            office: office,
+            numOperators: numOperators,
         })
-        .then(() => {
-            switch (identifier) {
-                case "popup":
-                    window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20uma%20demonstra%C3%A7%C3%A3o%20do%20Hey!Max.";
+        .then((response) => {
+            const status = response.data.status;
+            const instanceName = response.data.instanceName;
+
+            switch (status) {
+                case "novo-usuario":
+                    document.querySelector("#btnVideo").click();
                     break;
-                case "form":
-                    window.location.href = "https://api.whatsapp.com/send?phone=558440421006&text=Ol%C3%A1,%20gostaria%20de%20façar%20com%20um%20especialista%20do%20Hey!Max.";
+                case 'ler-qrcode':
+                    document.querySelector("#btnQrcode").click();
+                    getQrcode(instanceName)
                     break;
+                default:
+                    window.location.href = "http://www.login.heymax.com";
             }
         })
         .catch(function (error) {
-            console.log(error, "Não foi possível criar o contato");
+            console.error("Erro ao criar o contato:", error);
         });
 }
 
-function cria_contato_heymax(name, email, password, team_name) {
-    axios.post(base_URL_API,
-        {
-            name: name,
-            email: email,
-            password: password,
-            team_name: team_name
-        },
-    )
+function getQrcode() {
+    axios
+        .get(`${BASE_URL}`, {
+            headers: {
+                'apikey': APIKEY
+            }
+        })
         .then((response) => {
-            let URL_redirect;
-            const workspace_id = response.data.id;
+            document.querySelector("#waitingQrcode").style.display = "none";
+            var qrCodeElement = document.querySelector('#qrCode');
+            document.querySelector('#qrcode-container').style.display = "flex";
+            qrCodeElement.innerHTML = response.qrCode;
+            setTimeout(() => {
+                verifyStatusInstance(instanceName)
+            }, 10000);
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter o qrCode");
+        });
+}
 
-            switch (planoEscolhido) {
-                case "Max Essential":
-                    URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
-                    window.location.href = URL_redirect
-                    break
-                case "Max Pro":
-                    URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
-                    window.location.href = URL_redirect
-                    break
-                case "Max Exclusive":
-                    URL_redirect = `https://buy.stripe.com/28o8y419T2my7M4cMM?prefilled_email=${email}&client_reference_id=${workspace_id}`
-                    window.location.href = URL_redirect
-                    break
+function verifyStatusInstance(instanceName) {
+    axios
+        .get(`${BASE_URL}/instance/connectionState/${instanceName}`, {}, {
+            headers: {
+                'apikey': APIKEY
+            }
+        })
+        .then((response) => {
+            const status = response.instance.state;
+            cancelRequestAttempts == false
+            if (status === "open") {
+                document.querySelector("#closeWaitingCorban").click()
+                document.querySelector("#btnConfig").click()
+                iniciarConfig()
+            } else if (status === "connecting") {
+                if (cancelRequestAttempts == false) {
+                    setTimeout(() => {
+                        this.verifyStatusInstance(instance)
+                        this.controlAttempts++;
+                    }, 10000);
+                } else {
+                    this.toastMessage('warning', 'Erro', 'Erro ao Tentar Conectar a sua Instância!');
+                }
             }
         })
         .catch(function (error) {
-            console.error("Não foi possível criar o contato", error);
-            showToast(error)
+            console.log(error, "Não foi possível criar a Instancia");
         });
 }
 
