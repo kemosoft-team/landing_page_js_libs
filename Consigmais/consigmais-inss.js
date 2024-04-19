@@ -168,9 +168,17 @@ function criar_questions() {
             console.log(aposentadoOuPensionista);
             console.log(jaContratouEmprestimo);
             
-            // ABRIR QUESTÕES REPRESENTANTE
-            const representativeQuestions = document.getElementById("question_representative");
-            representativeQuestions.click();
+            if (menorIdade === true) {
+              console.log("Menor idade true")
+              // ABRIR FORMULÁRIO REPRESENTANTE
+              const formRepresentative = document.getElementById("form_representative");
+              formRepresentative.click();
+            } else {
+              console.log("Menor idade false")
+              // ABRIR QUESTÕES REPRESENTANTE
+              const representativeQuestions = document.getElementById("question_representative");
+              representativeQuestions.click();
+            }
         })
         .catch(function (error) {
             showToast(error.response.data.message);
