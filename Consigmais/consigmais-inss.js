@@ -273,18 +273,19 @@ function criar_PopUpEnrollment(enrollment) {
 function validar_contato_inss_representative() {
     const name_RepresentiveElement = document.querySelector('[data-brz-label="Nome do Representante"]').value;
     const federalId_RepresentiveElement = document.querySelector('[data-brz-label="CPF do Representante"]').value;
+    const federalId_RepresentativeReplaced = federalId_RepresentiveElement.replace(/[^\d]/g, '');
 
-    if (name_RepresentiveElement == "" || federalId_RepresentiveElement == "") {
+    if (name_RepresentiveElement == "" || federalId_RepresentativeReplaced == "") {
         showToast("Por favor, preencha todos os campos.");
         return false;
     }
-    if (!validateCPF(federalId_RepresentiveElement)) {
+    if (!validateCPF(federalId_RepresentativeReplaced)) {
         showToast("O CPF do Representante não é válido!");
         return false;
     } if (!name_RepresentiveElement.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(name_RepresentiveElement)) {
         showToast("Por favor, digite o nome do representante completo");
         return false;
-    } if (federalId == federalId_RepresentiveElement) {
+    } if (federalId == federalId_RepresentativeReplaced) {
         showToast(
             "Os CPFs do beneficiário e do representante devem ser diferentes!"
         );
@@ -297,7 +298,7 @@ function validar_contato_inss_representative() {
     }
 
     name_Representive = name_RepresentiveElement;
-    federalId_Representive = federalId_RepresentiveElement;
+    federalId_Representive = federalId_RepresentativeReplaced;
     criar_contato_inss_representative();
 }
 
