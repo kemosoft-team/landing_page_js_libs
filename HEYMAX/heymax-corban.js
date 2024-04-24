@@ -721,6 +721,14 @@ function validateForm_email() {
 }
 
 function verifyFormEmail(email) {
+    const button = document.querySelector(".brz-btn-submit.submitEmail");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
     axios
         .post(`${BASE_URL}/criar-contato`, {
             email: email,
@@ -745,6 +753,9 @@ function verifyFormEmail(email) {
         })
         .catch(function (error) {
             console.error("Erro ao verificar email", error);
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "ACEITAR E CONTINUAR";
         });
 }
 
@@ -778,6 +789,15 @@ function validateForm_criar_heymax() {
 }
 
 function cria_contato_heymax(name, phone, email, cnpj, company_name, office, numOperators) {
+
+    const button = document.querySelector(".brz-btn-submit.submitFormCorban");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+
     axios
         .post(`${BASE_URL}/criar-contato`, {
             name: name,
@@ -799,6 +819,9 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
         })
         .catch(function (error) {
             console.error("Erro ao criar o contato:", error);
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "ACEITAR E CONTINUAR";
         });
 }
 
