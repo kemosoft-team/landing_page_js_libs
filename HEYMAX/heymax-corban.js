@@ -1,5 +1,7 @@
 let BASE_URL = "API URL";
 
+let instanceName;
+
 //EXIBIR NO TOAST
 function showToast(text) {
     var x = document.getElementById("snackbar");
@@ -704,6 +706,48 @@ function validateEmail(email) {
     return emailRegex.test(email.trim()) && atSymbolCount === 1;
 }
 
+function validateForm_email() {
+    const formEmail = document.querySelector('[data-brz-label="Informe seu email"]').value;
+
+    if (formEmail == "") {
+        showToast("Por favor, preencha todos os campos!");
+        return false;
+    } else if (!validateEmail(formEmail)) {
+        showToast("Por favor, insira um endereço de e-mail válido!");
+        return false;
+    } else {
+        verifyFormEmail(formEmail)
+    }
+}
+
+function verifyFormEmail(email) {
+    axios
+        .post(`${BASE_URL}/criar-contato`, {
+            email: email,
+        })
+        .then((response) => {
+            const status = response.data.status;
+            const instanceName = response.data.instanceName;
+
+            switch (status) {
+                case "novo-usuario":
+                    document.querySelector("#closeFormEmail").click()
+                    document.querySelector("#btnForm").click()
+                    break;
+                case 'ler-qrcode':
+                    document.querySelector("#closeFormEmail").click()
+                    document.querySelector("#btnQrcode").click()
+                    getQrcode(instanceName);
+                    break;
+                default:
+                    window.location.href = "http://www.login.heymax.com";
+            }
+        })
+        .catch(function (error) {
+            console.error("Erro ao verificar email", error);
+        });
+}
+
 function validateForm_criar_heymax() {
     const name = document.querySelector('[data-brz-label="Nome Completo"]').value;
     const phone = document.querySelector('[data-brz-label="WhatsApp"]').value;
@@ -735,7 +779,7 @@ function validateForm_criar_heymax() {
 
 function cria_contato_heymax(name, phone, email, cnpj, company_name, office, numOperators) {
     axios
-        .post(`${BASE_URL}`, {
+        .post(`${BASE_URL}/criar-contato`, {
             name: name,
             phone: phone,
             email: email,
@@ -745,29 +789,67 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
             numOperators: numOperators,
         })
         .then((response) => {
-            const status = response.data.status;
-            const instanceName = response.data.instanceName;
+            const dataUser = response;
 
-            switch (status) {
-                case "novo-usuario":
-                    document.querySelector("#btnVideo").click();
-                    break;
-                case 'ler-qrcode':
-                    document.querySelector("#btnQrcode").click();
-                    getQrcode(instanceName)
-                    break;
-                default:
-                    window.location.href = "http://www.login.heymax.com";
-            }
+            document.querySelector("#closeFormCorban").click();
+            document.querySelector("#btnVideo").click();
+            iniciarConfig(dataUser)
+            counter()
+
         })
         .catch(function (error) {
             console.error("Erro ao criar o contato:", error);
         });
 }
 
-function getQrcode() {
+function iniciarConfig(dataUser) {
+
+    const email = dataUser.email;
+    const password = dataUser.password;
+    const instanceName = dataUser.instanceName;
+    const instanceApiKey = dataUser.instanceApiKey;
+    const company_name = dataUser.company_name;
+    const businessApiKey = dataUser.businessApiKey;
+    const businessId = dataUser.businessId;
+
+    axios.post(`https://heymax.io/Account-Config`, {
+        "login": {
+            "email": email,
+            "senha": password
+        },
+        "data": {
+            "driver": "Evolution",
+            "phone": company_name,
+            "domain": "http://evolution.kemosoft.com.br",
+            "client_id": instanceName,
+            "instance_id": instanceApiKey,
+            "api_key": businessApiKey,
+            "businessId": businessId
+        }
+    },
+    )
+        .then(() => {
+            console.log("Configurações Iniciadas!")
+        })
+        .catch(function (error) {
+            console.error("Erro ao iniciar as configurações", error);
+        });
+}
+
+function counter() {
+    var seconds = 10;
+    var timer = setInterval(function () {
+        seconds--;
+        if (seconds < 0) {
+            clearInterval(timer);
+            document.querySelector("#btnLerQrcode").style.display = "block";
+        }
+    }, 1000);
+}
+
+function getQrcode(instanceName) {
     axios
-        .get(`${BASE_URL}`, {
+        .get(`${BASE_URL}/`, {
             headers: {
                 'apikey': APIKEY
             }
@@ -783,6 +865,16 @@ function getQrcode() {
         })
         .catch(function (error) {
             console.log(error, "Não foi possível obter o qrCode");
+        });
+}
+
+function getCNPJ(cnpj) {
+    axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`)
+        .then((response) => {
+            console.log(response)
+        })
+        .catch(function (error) {
+            console.error("Erro ao verificar CNPJ:", error);
         });
 }
 
