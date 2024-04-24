@@ -1,4 +1,4 @@
-let BASE_URL = "https://ms-corban-starter-az.kemosoft.com.br";
+let BASE_URL = " https://ms-corban-starter-az.kemosoft.com.br/api#/";
 
 let instanceName;
 
@@ -730,12 +730,17 @@ function verifyFormEmail(email) {
     span.textContent = "";
 
     axios
-        .get(`${BASE_URL}/status`, {
+        .post(`${BASE_URL}/status`, {
             email: email,
         })
         .then((response) => {
             const status = response.data.status;
             const instanceName = response.data.instanceName;
+
+            if (instanceName) {
+                const data = { email, instanceName };
+                localStorage.setItem("data", JSON.stringify(data));
+            }
 
             switch (status) {
                 case "novo-usuario":
@@ -745,7 +750,7 @@ function verifyFormEmail(email) {
                 case 'ler-qrcode':
                     document.querySelector("#closeFormEmail").click()
                     document.querySelector("#btnQrcode").click()
-                    getQrcode(instanceName);
+                    getQrcode(instanceName, email)
                     break;
                 case "login":
                     document.querySelector("#closeFormEmail").click()
@@ -813,13 +818,18 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
             numOperators: numOperators,
         })
         .then((response) => {
-            const dataUser = response;
+            const email = response.email;
+            const password = response.password;
+            const instanceApikey = response.instanceApikey;
+            const instanceName = response.instanceName
+
+            const data = { email, instanceName };
+            localStorage.setItem("data", JSON.stringify(data));
 
             document.querySelector("#closeFormCorban").click();
             document.querySelector("#btnVideo").click();
-            iniciarConfig(dataUser)
+            iniciarPrimConfig(email, password, instanceApikey)
             counter()
-
         })
         .catch(function (error) {
             console.error("Erro ao criar o contato:", error);
@@ -829,42 +839,8 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
         });
 }
 
-function iniciarConfig(dataUser) {
-
-    const email = dataUser.email;
-    const password = dataUser.password;
-    const instanceName = dataUser.instanceName;
-    const instanceApiKey = dataUser.instanceApiKey;
-    const company_name = dataUser.company_name;
-    const businessApiKey = dataUser.businessApiKey;
-    const businessId = dataUser.businessId;
-
-    axios.post(`https://heymax.io/Account-Config`, {
-        "login": {
-            "email": email,
-            "senha": password
-        },
-        "data": {
-            "driver": "Evolution",
-            "phone": company_name,
-            "domain": "http://evolution.kemosoft.com.br",
-            "client_id": instanceName,
-            "instance_id": instanceApiKey,
-            "api_key": businessApiKey,
-            "businessId": businessId
-        }
-    },
-    )
-        .then(() => {
-            console.log("Configurações Iniciadas!")
-        })
-        .catch(function (error) {
-            console.error("Erro ao iniciar as configurações", error);
-        });
-}
-
 function counter() {
-    var seconds = 10;
+    var seconds = 60;
     var timer = setInterval(function () {
         seconds--;
         if (seconds < 0) {
@@ -874,13 +850,52 @@ function counter() {
     }, 1000);
 }
 
-function getQrcode(instanceName) {
-    axios
-        .get(`${BASE_URL}/qrcode`, {
-            headers: {
-                'apikey': APIKEY
-            }
+
+function iniciarPrimConfig(email, password, instanceApikey) {
+    axios.post(`{endpointConfig01}`, {
+        "email": email,
+        "senha": password,
+        "instance_id": instanceApikey,
+    })
+        .then(() => {
+            console.log("Configurações 01 Iniciadas!")
         })
+        .catch(function (error) {
+            console.error("Erro ao iniciar a configuração 01", error);
+        });
+}
+
+function iniciarSegConfig(dataUser) {
+
+    const email = dataUser.email;
+    const password = dataUser.password;
+    const instanceName = dataUser.instanceName;
+    const instance_apikey = dataUser.instance_apikey;
+    const company_name = dataUser.company_name;
+    const business_apikey = dataUser.business_apikey;
+    const business_id = dataUser.business_id;
+
+    axios.post(`{endpointConfig02}`, {
+        "email": email,
+        "senha": password,
+        "instanceName": instanceName,
+        "instance_apikey": instance_apikey,
+        "company_name": company_name,
+        "business_apikey": business_apikey,
+        "business_id": business_id
+    })
+        .then(() => {
+            console.log("Configurações 02 Iniciadas!")
+        })
+        .catch(function (error) {
+            console.error("Erro ao iniciar a configuração 02", error);
+        });
+}
+
+function getQrcode(instanceName, email) {
+
+    axios
+        .get(`${BASE_URL}/qrcode/${instanceName}`, {})
         .then((response) => {
             document.querySelector("#waitingQrcode").style.display = "none";
             document.querySelector('#qrcode-container').style.display = "flex";
@@ -888,13 +903,12 @@ function getQrcode(instanceName) {
             var qrCodeElement = document.querySelector('#qrCode');
             qrCodeElement.innerHTML = '';
 
-            // Criar uma nova imagem
             var qrCodeImage = new Image();
             qrCodeImage.src = 'data:image/png;base64,' + response.qrCode;
             qrCodeElement.appendChild(qrCodeImage);
 
             setTimeout(() => {
-                verifyStatusInstance(instanceName);
+                verifyStatusInstance(email);
             }, 10000);
         })
 
@@ -913,16 +927,20 @@ function getCNPJ(cnpj) {
         });
 }
 
-function verifyStatusInstance(instanceName) {
+function verifyStatusInstance(email) {
     axios
-        .get(`${BASE_URL}/status`, {
-            instanceName: instanceName
+        .post(`${BASE_URL}/status`, {
+            email: email
         })
         .then((response) => {
 
             const status = response.data.status;
 
             if (status === "login") {
+
+                const dataUser = localStorage.getItem("dataUser")
+                iniciarConfig(dataUser)
+
                 document.querySelector("#closeWaitingCorban").click()
                 document.querySelector("#btnLogin").click()
             } else {
