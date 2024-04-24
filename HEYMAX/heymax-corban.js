@@ -1,4 +1,4 @@
-let BASE_URL = "API URL";
+let BASE_URL = "ms-corban-starter-az.kemosoft.com.br";
 
 let instanceName;
 
@@ -730,7 +730,7 @@ function verifyFormEmail(email) {
     span.textContent = "";
 
     axios
-        .post(`${BASE_URL}/criar-contato`, {
+        .post(`${BASE_URL}/status`, {
             email: email,
         })
         .then((response) => {
@@ -799,7 +799,7 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
     span.textContent = "";
 
     axios
-        .post(`${BASE_URL}/criar-contato`, {
+        .post(`${BASE_URL}/start`, {
             name: name,
             phone: phone,
             email: email,
@@ -872,20 +872,28 @@ function counter() {
 
 function getQrcode(instanceName) {
     axios
-        .get(`${BASE_URL}/`, {
+        .get(`${BASE_URL}/qrcode`, {
             headers: {
                 'apikey': APIKEY
             }
         })
         .then((response) => {
             document.querySelector("#waitingQrcode").style.display = "none";
-            var qrCodeElement = document.querySelector('#qrCode');
             document.querySelector('#qrcode-container').style.display = "flex";
-            qrCodeElement.innerHTML = response.qrCode;
+
+            var qrCodeElement = document.querySelector('#qrCode');
+            qrCodeElement.innerHTML = '';
+
+            // Criar uma nova imagem
+            var qrCodeImage = new Image();
+            qrCodeImage.src = 'data:image/png;base64,' + response.qrCode;
+            qrCodeElement.appendChild(qrCodeImage);
+
             setTimeout(() => {
-                verifyStatusInstance(instanceName)
+                verifyStatusInstance(instanceName);
             }, 10000);
         })
+
         .catch(function (error) {
             console.log(error, "Não foi possível obter o qrCode");
         });
@@ -903,31 +911,24 @@ function getCNPJ(cnpj) {
 
 function verifyStatusInstance(instanceName) {
     axios
-        .get(`${BASE_URL}/instance/connectionState/${instanceName}`, {}, {
-            headers: {
-                'apikey': APIKEY
-            }
+        .get(`${BASE_URL}/status`, {
+            instanceName: instanceName
         })
         .then((response) => {
-            const status = response.instance.state;
-            cancelRequestAttempts == false
-            if (status === "open") {
-                document.querySelector("#closeWaitingCorban").click()
-                document.querySelector("#btnConfig").click()
-                iniciarConfig()
-            } else if (status === "connecting") {
-                if (cancelRequestAttempts == false) {
-                    setTimeout(() => {
-                        this.verifyStatusInstance(instance)
-                        this.controlAttempts++;
-                    }, 10000);
-                } else {
-                    this.toastMessage('warning', 'Erro', 'Erro ao Tentar Conectar a sua Instância!');
-                }
+
+            const status = response.data.status;
+
+            if (status === "login") {
+                window.location.href = "http://www.login.heymax.com";
+            } else {
+                setTimeout(() => {
+                    verifyStatusInstance(instanceName)
+                    console.log("chamou verificando status")
+                }, 7000);
             }
         })
         .catch(function (error) {
-            console.log(error, "Não foi possível criar a Instancia");
+            console.log(error, "Não foi possível verificar o status da instancia");
         });
 }
 
