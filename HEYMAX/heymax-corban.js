@@ -747,9 +747,12 @@ function verifyFormEmail(email) {
                     document.querySelector("#btnQrcode").click()
                     getQrcode(instanceName);
                     break;
-                default:
+                case "login":
                     document.querySelector("#closeFormEmail").click()
                     document.querySelector("#btnLogin").click()
+                    break;
+                default:
+                    console.error("Status não reconhecido:", status);
             }
         })
         .catch(function (error) {
