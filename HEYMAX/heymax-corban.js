@@ -730,7 +730,7 @@ function verifyFormEmail(email) {
     span.textContent = "";
 
     axios
-        .post(`${BASE_URL}/status`, {
+        .get(`${BASE_URL}/status`, {
             email: email,
         })
         .then((response) => {
