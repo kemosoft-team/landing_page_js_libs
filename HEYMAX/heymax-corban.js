@@ -748,7 +748,8 @@ function verifyFormEmail(email) {
                     getQrcode(instanceName);
                     break;
                 default:
-                    window.location.href = "http://www.login.heymax.com";
+                    document.querySelector("#closeFormEmail").click()
+                    document.querySelector("#btnLogin").click()
             }
         })
         .catch(function (error) {
@@ -919,7 +920,8 @@ function verifyStatusInstance(instanceName) {
             const status = response.data.status;
 
             if (status === "login") {
-                window.location.href = "http://www.login.heymax.com";
+                document.querySelector("#closeWaitingCorban").click()
+                document.querySelector("#btnLogin").click()
             } else {
                 setTimeout(() => {
                     verifyStatusInstance(instanceName)
