@@ -1,4 +1,4 @@
-let BASE_URL = "ms-corban-starter-az.kemosoft.com.br";
+let BASE_URL = "https://ms-corban-starter-az.kemosoft.com.br";
 
 let instanceName;
 
