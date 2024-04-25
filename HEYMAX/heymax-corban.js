@@ -840,7 +840,7 @@ function cria_contato_heymax(name, phone, email, cnpj, company_name, office, num
 }
 
 function counter() {
-    var seconds = 60;
+    var seconds = 10;
     var timer = setInterval(function () {
         seconds--;
         if (seconds < 0) {
@@ -849,7 +849,6 @@ function counter() {
         }
     }, 1000);
 }
-
 
 function iniciarPrimConfig(email, password, instanceApikey) {
     axios.post(`{endpointConfig01}`, {
@@ -865,27 +864,19 @@ function iniciarPrimConfig(email, password, instanceApikey) {
         });
 }
 
-function iniciarSegConfig(dataUser) {
-
-    const email = dataUser.email;
-    const password = dataUser.password;
-    const instanceName = dataUser.instanceName;
-    const instance_apikey = dataUser.instance_apikey;
-    const company_name = dataUser.company_name;
-    const business_apikey = dataUser.business_apikey;
-    const business_id = dataUser.business_id;
-
+function iniciarSegConfig(email, password, instanceName, instanceName, instanceApikey, companyName, businessApikey, businessId) {
     axios.post(`{endpointConfig02}`, {
         "email": email,
         "senha": password,
         "instanceName": instanceName,
-        "instance_apikey": instance_apikey,
-        "company_name": company_name,
-        "business_apikey": business_apikey,
-        "business_id": business_id
+        "instance_apikey": instanceApikey,
+        "company_name": companyName,
+        "business_apikey": businessApikey,
+        "business_id": businessId
     })
         .then(() => {
-            console.log("Configurações 02 Iniciadas!")
+            document.querySelector("#closeWaitingCorban").click();
+            document.querySelector("#btnLogin").click();
         })
         .catch(function (error) {
             console.error("Erro ao iniciar a configuração 02", error);
@@ -929,20 +920,27 @@ function getCNPJ(cnpj) {
 
 function verifyStatusInstance(email) {
     axios
-        .post(`${BASE_URL}/status`, {
+        .post(`${BASE_URL}/statusQrcode`, {
             email: email
         })
         .then((response) => {
+            const status = response.status;
 
-            const status = response.data.status;
 
             if (status === "login") {
+                const email = response.email;
+                const password = response.password;
+                const instanceName = response.instanceName;
+                const instanceApikey = response.instanceApikey;
+                const companyName = response.companyName;
+                const businessApikey = response.businessApikey;
+                const businessId = response.businessId;
 
-                const dataUser = localStorage.getItem("dataUser")
-                iniciarConfig(dataUser)
 
                 document.querySelector("#closeWaitingCorban").click()
-                document.querySelector("#btnLogin").click()
+                document.querySelector("#btnConfig").click()
+                iniciarSegConfig(email, password, instanceName, instanceName, instanceApikey, companyName, businessApikey, businessId);
+                console.log("Configurações 02 Iniciadas!")
             } else {
                 setTimeout(() => {
                     verifyStatusInstance(instanceName)
