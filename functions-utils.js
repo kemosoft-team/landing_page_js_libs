@@ -107,12 +107,12 @@ function validateEmail(email) {
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br|io|net|org|gov)$/i;
     const atSymbolCount = (email.match(/@/g) || []).length;
-    
+
     // Validar o nome de usuário
     const username = email.split("@")[0];
-    const usernameRegex = /^[a-zA-Z0-9._-]+$/; 
+    const usernameRegex = /^[a-zA-Z0-9._-]+$/;
     const isUsernameValid = usernameRegex.test(username);
-    const containsSpecialChars = /[^\w.-]/.test(username); 
+    const containsSpecialChars = /[^\w.-]/.test(username);
 
     return emailRegex.test(email.trim()) && atSymbolCount === 1 && isUsernameValid && !containsSpecialChars;
 }
@@ -158,34 +158,34 @@ function validateUF(sigla) {
 }
 
 function isDateValid(dateString) {
-        const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-        if (!datePattern.test(dateString)) {
-            return false;
-        }
-        const [, day, month, year] = dateString.match(datePattern);
-        const dayInt = parseInt(day, 10);
-        const monthInt = parseInt(month, 10);
-        const yearInt = parseInt(year, 10);
-        if (yearInt < 1900 || yearInt > 2099) {
-            return false;
-        }
-
-        const date = new Date(yearInt, monthInt - 1, dayInt);
-        if (
-            date.getDate() === dayInt &&
-            date.getMonth() === monthInt - 1 &&
-            date.getFullYear() === yearInt
-        ) {
-            return true;
-        }
-
+    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (!datePattern.test(dateString)) {
         return false;
     }
+    const [, day, month, year] = dateString.match(datePattern);
+    const dayInt = parseInt(day, 10);
+    const monthInt = parseInt(month, 10);
+    const yearInt = parseInt(year, 10);
+    if (yearInt < 1900 || yearInt > 2099) {
+        return false;
+    }
+
+    const date = new Date(yearInt, monthInt - 1, dayInt);
+    if (
+        date.getDate() === dayInt &&
+        date.getMonth() === monthInt - 1 &&
+        date.getFullYear() === yearInt
+    ) {
+        return true;
+    }
+
+    return false;
+}
 
 function isUnderage(birthDate) {
     var parts = birthDate.split('/');
     var day = parseInt(parts[0], 10);
-    var month = parseInt(parts[1], 10) - 1; 
+    var month = parseInt(parts[1], 10) - 1;
     var year = parseInt(parts[2], 10);
 
     var birthDateObj = new Date(year, month, day);
@@ -257,11 +257,11 @@ function isBirthValid(dateString) {
 
     if (maxBirthYear - yearInt < 18) {
         menorIdade = true;
-    } else{
+    } else {
         menorIdade = false;
     }
 
-    return true; 
+    return true;
 }
 
 function isBirthValidFGTS(dateString) {
@@ -277,7 +277,7 @@ function isBirthValidFGTS(dateString) {
     if (maxBirthYear - yearInt > 75) {
         return false;
     }
-    return true; 
+    return true;
 }
 
 
@@ -348,7 +348,7 @@ function nextStepInfos(federal, pipeline) {
     }
 
     axios
-        .get(`${API_URL}/proxima-etapa/${pipelineRequest}/${federalIdRequest}`, {
+        .get(`${API_URL}/v1/proxima-etapa/${pipelineRequest}/${federalIdRequest}`, {
             headers: {
                 'api-key': API_KEY
             }
@@ -460,7 +460,7 @@ function getCEP(cep) {
                 document.querySelector('[data-brz-label="UF"]').value = data.uf || '';
             }
         })
-         .catch(error => {
+        .catch(error => {
             console.error('Erro ao obter endereço:', error);
             showToast('Erro ao obter endereço. Verifique o CEP e tente novamente.');
         });
@@ -468,26 +468,26 @@ function getCEP(cep) {
 
 // OBTER PRÓXIMA ETAPA
 function getProximaEtapa(pipeline, federalId) {
-  return axios.get(`${API_URL}/proxima-etapa/${pipeline}/${federalId}`, {
-    headers: {
-      'api-key': API_KEY
-    }
-  })
-    .then((response) => {
-    const leadId = response.data.id;
-    const contexto = response.data.contexto;
-        
-      setItemStorage({
-        pipelineSlug: pipeline,
-        federalId: federalId,
-        leadId: leadId,
-      });
-      return { leadId, contexto };
+    return axios.get(`${API_URL}/v1/proxima-etapa/${pipeline}/${federalId}`, {
+        headers: {
+            'api-key': API_KEY
+        }
     })
-    .catch(function (error) {
-      console.log(error, "Não foi possível obter a próxima etapa");
-      throw error; // Propague o erro para que possa ser tratado externamente, se necessário
-    });
+        .then((response) => {
+            const leadId = response.data.id;
+            const contexto = response.data.contexto;
+
+            setItemStorage({
+                pipelineSlug: pipeline,
+                federalId: federalId,
+                leadId: leadId,
+            });
+            return { leadId, contexto };
+        })
+        .catch(function (error) {
+            console.log(error, "Não foi possível obter a próxima etapa");
+            throw error; // Propague o erro para que possa ser tratado externamente, se necessário
+        });
 }
 
 /* DADOS BANCÁRIOS */
@@ -944,15 +944,15 @@ function requalify() {
     const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     axios
-        .post(API_URL + `/card/${leadId}/requalify`, {}, {
+        .post(API_URL + `/v1/lead/${leadId}/requalify`, {}, {
             headers: {
                 'api-key': API_KEY
             }
         })
         .then((response) => {
             qualification()
-           /*  let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
-            window.location.href = URL_redirect; */
+            /*  let URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}`
+             window.location.href = URL_redirect; */
         })
         .catch(function (error) {
             showToast(error.response.data.message);
@@ -964,7 +964,7 @@ function requalifyEnrollment(enrollment) {
     const { pipelineSlug, federalId, leadId } = getItemStorage();
 
     axios
-        .post(API_URL + `/card/${leadId}/requalify`, {
+        .post(API_URL + `/v1/lead/${leadId}/requalify`, {
             enrollment: enrollment,
         }, {
             headers: {
@@ -1019,14 +1019,14 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
 
 
     axios
-        .post(`${API_URL}/registrar-endereco`, {
-            "federalId": federal,
-            "address": address,
-            "addressNumber": addressNumber,
-            "district": district,
-            "city": city,
-            "state": state,
-            "zipcode": zipcodeReplaced
+        .post(`${API_URL}/v2/registrar-endereco`, {
+            "cpf": federal,
+            "endereco": address,
+            "numero": addressNumber,
+            "bairro": district,
+            "cidade": city,
+            "uf": state,
+            "cep": zipcodeReplaced
         }, {
             headers: {
                 'api-key': API_KEY
@@ -1079,12 +1079,12 @@ function registrarDocumento(type, number, agencyState, motherName) {
     span.textContent = "";
 
     axios
-        .post(`${API_URL}/registrar-documento`, {
-            "federalId": federal,
-            "type": type,
-            "number": number,
-            "agencyState": agencyState,
-            "mother": motherName_replaced
+        .post(`${API_URL}/v2/registrar-documento`, {
+            "cpf": federal,
+            "tipo": type,
+            "numero": number,
+            "ufAgencia": agencyState,
+            "nomeMae": motherName_replaced
         }, {
             headers: {
                 'api-key': API_KEY
@@ -1134,12 +1134,12 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
     span.textContent = "";
 
     axios
-        .post(`${API_URL}/registrar-conta`, {
-            "federalId": federal,
-            "bankNo": bankNo,
-            "branch": branch,
-            "acctNo": acctNo,
-            "acctType": acctType
+        .post(`${API_URL}/v2/registrar-conta`, {
+            "cpf": federal,
+            "codigoBanco": bankNo,
+            "agencia": branch,
+            "conta": acctNo,
+            "tipoConta": acctType
         }, {
             headers: {
                 'api-key': API_KEY
@@ -1198,10 +1198,10 @@ function validateDocumento() {
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
-    }  else if (!validateUF(agencyState)) {
+    } else if (!validateUF(agencyState)) {
         showToast("Por favor, informe um estado válido.");
         return false;
-    }  else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
+    } else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
         showToast("Por favor, digite o nome da sua mãe completo");
         return false;
     } else {
