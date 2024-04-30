@@ -1,5 +1,5 @@
 //API url
-let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc"
 let step_URL = window.location.host;
 let URL_redirect = "";
@@ -92,7 +92,7 @@ function validar_contato_fgts() {
         showToast("O CPF não é válido!");
         return false;
     }
-    if (!isBirthValidFGTS(birthElement)){
+    if (!isBirthValidFGTS(birthElement)) {
         var popUpBirth = document.querySelector("#popUpBirth");
         popUpBirth.click();
         return false;
@@ -143,16 +143,16 @@ async function criar_contato_fgts() {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + '/criar-contato', {
-        name: name_replaced,
-        phone: phone,
-        birthDate: birth,
-        federalId: federalId_replaced,
+    axios.post(API_URL + '/v2/criar-contato', {
+        nome: name_replaced,
+        telefone: phone,
+        dataNascimento: birth,
+        cpf: federalId_replaced,
         email: email_replaced,
-        autorizedBanks: autorizedBanks,
-        pipelineSlug: pipeline_slug,
-        origin: origin,
-        referrer: referrer,
+        bancosAutorizados: autorizedBanks,
+        funil: pipeline_slug,
+        urlOrigem: origin,
+        urlReferencia: referrer,
         naoQualificar: true,
     }, {
         headers: {
@@ -169,7 +169,7 @@ async function criar_contato_fgts() {
                 federalId: federalId_replaced,
                 leadId: leadId,
             });
-            
+
             const customId = federalId_replaced;
             window.clarity("identify", customId);
 
@@ -200,7 +200,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + `/${leadId}/perguntas`, {
+    axios.post(API_URL + `/v1/lead/${leadId}/perguntas`, {
         jaTrabalhouCarteiraAssinada: jaTrabalhouCarteiraAssinada,
         saqueHabilitado: saqueHabilitado
     }, {
@@ -267,7 +267,7 @@ function qualification() {
     }
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+            .get(`${API_URL}/v1/proxima-etapa/${pipelineSlug}/${federalId}`, {
                 headers: {
                     'api-key': API_KEY
                 }
@@ -419,4 +419,3 @@ function changeQuestionTwo() {
         }
     }
 }
-
