@@ -1,5 +1,5 @@
 //API url
-let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc";
 
 let origin = window.location.href;
@@ -115,14 +115,14 @@ function criar_contato_inss() {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + "/criar-contato", {
-        name: name_replaced,
-        phone: phone,
-        federalId: federalId_replaced,
-        birthDate: birth,
-        pipelineSlug: pipeline_slug,
-        origin: origin,
-        referrer: referrer,
+    axios.post(API_URL + "/v2/criar-contato", {
+        nome: name_replaced,
+        telefone: phone,
+        cpf: federalId_replaced,
+        dataNascimento: birth,
+        funil: pipeline_slug,
+        urlOrigem: origin,
+        urlReferencia: referrer,
     }, {
         headers: {
             'api-key': API_KEY
@@ -143,7 +143,7 @@ function criar_contato_inss() {
             //ENVIAR CUSTOM ID CLARITY
             const customId = federalId_replaced;
             window.clarity("identify", customId);
-            
+
             criar_questions()
         })
         .catch(function (error) {
@@ -155,7 +155,7 @@ function criar_contato_inss() {
 }
 
 function criar_questions() {
-    axios.post(API_URL + `/${leadId}/perguntas`, {
+    axios.post(API_URL + `/v1/lead/${leadId}/perguntas`, {
         aposentadoOuPensionista: aposentadoOuPensionista,
         jaContratouEmprestimo: jaContratouEmprestimo
     }, {
@@ -167,17 +167,17 @@ function criar_questions() {
         .then(async (response) => {
             console.log(aposentadoOuPensionista);
             console.log(jaContratouEmprestimo);
-            
+
             if (menorIdade === true) {
-              console.log("Menor idade true")
-              // ABRIR FORMULÁRIO REPRESENTANTE
-              const formRepresentative = document.getElementById("form_representative");
-              formRepresentative.click();
+                console.log("Menor idade true")
+                // ABRIR FORMULÁRIO REPRESENTANTE
+                const formRepresentative = document.getElementById("form_representative");
+                formRepresentative.click();
             } else {
-              console.log("Menor idade false")
-              // ABRIR QUESTÕES REPRESENTANTE
-              const representativeQuestions = document.getElementById("question_representative");
-              representativeQuestions.click();
+                console.log("Menor idade false")
+                // ABRIR QUESTÕES REPRESENTANTE
+                const representativeQuestions = document.getElementById("question_representative");
+                representativeQuestions.click();
             }
         })
         .catch(function (error) {
@@ -197,22 +197,22 @@ function validar_PopUpBenefit() {
         showToast("O número do benefício informado é inválido!! Revise a informação!");
         return false;
     } else if (!benefit) {
-         if (menorIdade === true) {
-          console.log("Menor idade true")
-          // ABRIR FORMULÁRIO REPRESENTANTE
-          const close_benefit = document.getElementById("close_benefit");
-          close_benefit.click();
-          const formRepresentative = document.getElementById("form_representative");
-          formRepresentative.click();
+        if (menorIdade === true) {
+            console.log("Menor idade true")
+            // ABRIR FORMULÁRIO REPRESENTANTE
+            const close_benefit = document.getElementById("close_benefit");
+            close_benefit.click();
+            const formRepresentative = document.getElementById("form_representative");
+            formRepresentative.click();
         } else {
-          console.log("Menor idade false")
-          // ABRIR QUESTÕES REPRESENTANTE
-          const close_benefit = document.getElementById("close_benefit");
-          close_benefit.click();
-          const representativeQuestions = document.getElementById(
-            "question_representative"
-          );
-          representativeQuestions.click();
+            console.log("Menor idade false")
+            // ABRIR QUESTÕES REPRESENTANTE
+            const close_benefit = document.getElementById("close_benefit");
+            close_benefit.click();
+            const representativeQuestions = document.getElementById(
+                "question_representative"
+            );
+            representativeQuestions.click();
         }
     } else {
         //SALVAR NAS VARIAVEIS GLOBAIS
@@ -231,44 +231,44 @@ function criar_PopUpEnrollment(enrollment) {
     span.textContent = "";
 
     axios
-      .post(
-        API_URL + "/registrar-dados-empregaticios",
-        {
-          federalId: federalId,
-          enrollment: enrollment,
-        },
-        {
-          headers: {
-            "api-key": API_KEY,
-          },
-        }
-      )
-      .then((response) => {
-        if (menorIdade === true) {
-          console.log("Menor idade true")
-          // ABRIR FORMULÁRIO REPRESENTANTE
-          const close_benefit = document.getElementById("close_benefit");
-          close_benefit.click();
-          const formRepresentative = document.getElementById("form_representative");
-          formRepresentative.click();
-        } else {
-          console.log("Menor idade false")
-          // ABRIR QUESTÕES REPRESENTANTE
-          const close_benefit = document.getElementById("close_benefit");
-          close_benefit.click();
-          const representativeQuestions = document.getElementById(
-            "question_representative"
-          );
-          representativeQuestions.click();
-        }
-      })
-      .catch(function (error) {
-        button.removeAttribute("disabled");
-        spinner.classList.add("brz-invisible");
-        span.textContent = "Confirmar e Continuar";
-        showToast(error.response.data.message);
-      });
-  }
+        .post(
+            API_URL + "/v2/registrar-dados-empregaticios",
+            {
+                cpf: federalId,
+                matricula: enrollment,
+            },
+            {
+                headers: {
+                    "api-key": API_KEY,
+                },
+            }
+        )
+        .then((response) => {
+            if (menorIdade === true) {
+                console.log("Menor idade true")
+                // ABRIR FORMULÁRIO REPRESENTANTE
+                const close_benefit = document.getElementById("close_benefit");
+                close_benefit.click();
+                const formRepresentative = document.getElementById("form_representative");
+                formRepresentative.click();
+            } else {
+                console.log("Menor idade false")
+                // ABRIR QUESTÕES REPRESENTANTE
+                const close_benefit = document.getElementById("close_benefit");
+                close_benefit.click();
+                const representativeQuestions = document.getElementById(
+                    "question_representative"
+                );
+                representativeQuestions.click();
+            }
+        })
+        .catch(function (error) {
+            button.removeAttribute("disabled");
+            spinner.classList.add("brz-invisible");
+            span.textContent = "Confirmar e Continuar";
+            showToast(error.response.data.message);
+        });
+}
 
 function validar_contato_inss_representative() {
     const name_RepresentiveElement = document.querySelector('[data-brz-label="Nome do Representante"]').value;
@@ -290,8 +290,8 @@ function validar_contato_inss_representative() {
             "Os CPFs do beneficiário e do representante devem ser diferentes!"
         );
         return false;
-    } if (name == name_RepresentiveElement){
-         showToast(
+    } if (name == name_RepresentiveElement) {
+        showToast(
             "O nome do beneficiário e do representante devem ser diferentes!"
         );
         return false;
@@ -318,16 +318,16 @@ function criar_contato_inss_representative() {
     span.textContent = "";
 
 
-    axios.post(API_URL + "/criar-contato", {
-        name: name,
-        phone: phone,
-        federalId: federalId,
-        birthDate: birth,
-        representativeName: name_Representive_replaced,
-        representativeFederalId: federalId_Representive_replaced,
-        pipelineSlug: pipelineSlug,
-        origin: origin,
-        referrer: referrer,
+    axios.post(API_URL + "/v2/criar-contato", {
+        nome: name,
+        telefone: phone,
+        cpf: federalId,
+        dataNascimento: birth,
+        nomeRepresentante: name_Representive_replaced,
+        cpfRepresentante: federalId_Representive_replaced,
+        funil: pipelineSlug,
+        urlOrigem: origin,
+        urlReferencia: referrer,
     }, {
         headers: {
             'api-key': API_KEY
@@ -381,7 +381,7 @@ function qualification() {
 
     const sendRequest = () => {
         axios
-            .get(`${API_URL}/proxima-etapa/${pipelineSlug}/${federalId}`, {
+            .get(`${API_URL}/v1/proxima-etapa/${pipelineSlug}/${federalId}`, {
                 headers: {
                     'api-key': API_KEY
                 }
@@ -567,9 +567,9 @@ function registrarBenefit(enrollment) {
     span.textContent = "";
 
     axios
-        .post(API_URL + "/registrar-dados-empregaticios", {
-            federalId: federal,
-            enrollment: enrollment,
+        .post(API_URL + "/v2/registrar-dados-empregaticios", {
+            cpf: federal,
+            matricula: enrollment,
         }, {
             headers: {
                 'api-key': API_KEY
@@ -586,7 +586,6 @@ function registrarBenefit(enrollment) {
             showToast("Parece que houve um problema! Por Favor, tente novamente!")
         });
 }
-
 
 
 
