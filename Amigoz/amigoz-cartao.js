@@ -9,7 +9,7 @@ let name;
 let phone;
 let federalId;
 let pipelineSlug;
-let attempt = 0; 
+let attempt = 0;
 
 
 function validar_contato() {
@@ -110,10 +110,10 @@ function criar_contato() {
 
             document.querySelector("#btn-waiting").click();
 
-            setTimeout(function() {
+            setTimeout(function () {
                 qualification(pipeline_slug, federalId_replaced);
             }, 3000);
-            
+
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -133,11 +133,16 @@ function qualification(pipe, federal) {
         .then((response) => {
             let URL_redirect;
             const contexto = response.data.contexto;
-            console.log("Contexto: ",contexto);
+            console.log("Contexto: ", contexto);
 
             switch (contexto) {
                 case "encerrado":
                     URL_redirect = `/noqualified`;
+                    window.location.href = URL_redirect;
+                    break;
+
+                case "aguardando-qualificacao":
+                    URL_redirect = `/nooportunity`;
                     window.location.href = URL_redirect;
                     break;
 
@@ -151,7 +156,7 @@ function qualification(pipe, federal) {
             console.log(error, "Não foi possível obter a qualificação");
             attempt++;
             if (attempt < 3) {
-                qualification(); 
+                qualification();
             } else {
                 const URL_redirect = `/offline`;
                 window.location.href = URL_redirect;
