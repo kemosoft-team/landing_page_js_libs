@@ -81,12 +81,12 @@ function criar_contato() {
     span.textContent = "";
 
     axios.post(API_URL + "/v2/criar-contato", {
-        name: name_replaced,
-        phone: phone,
-        federalId: federalId_replaced,
-        pipelineSlug: pipeline_slug,
-        origin: origin,
-        referrer: referrer,
+        nome: name_replaced,
+        telefone: phone,
+        cpf: federalId_replaced,
+        funil: pipeline_slug,
+        urlOrigem: origin,
+        urlReferencia: referrer,
     }, {
         headers: {
             'api-key': API_KEY
