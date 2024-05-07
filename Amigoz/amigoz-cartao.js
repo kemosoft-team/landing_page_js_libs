@@ -1,5 +1,5 @@
 //API url
-let API_URL = "https://ms-crm-az.kemosoft.com.br/v1";
+let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "905c1698-33ce-4a98-a3cc-5a98efc733dd";
 
 let origin = window.location.href;
@@ -80,7 +80,7 @@ function criar_contato() {
     spinner.classList.remove("brz-invisible");
     span.textContent = "";
 
-    axios.post(API_URL + "/criar-contato", {
+    axios.post(API_URL + "/v2/criar-contato", {
         name: name_replaced,
         phone: phone,
         federalId: federalId_replaced,
@@ -125,7 +125,7 @@ function criar_contato() {
 
 function qualification(pipe, federal) {
     axios
-        .get(`${API_URL}/proxima-etapa/${pipe}/${federal}`, {
+        .get(`${API_URL}/v1/proxima-etapa/${pipe}/${federal}`, {
             headers: {
                 'api-key': API_KEY
             }
