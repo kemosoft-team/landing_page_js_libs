@@ -452,6 +452,21 @@ function qualification() {
 
                         break;
 
+                    case "encerrado":
+                    case "reiniciando-atendimento":
+                        switch (situacao) {
+                            case "nao-qualificado":
+                                URL_redirect = `/noqualified?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "oportunidade-futura":
+                                URL_redirect = `/futureOpportunity?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
+                                break;
+                        }
+                        break;
+
+
                     //ENROLLMENT INSS
                     case "resolver-situacao":
                         switch (situacao) {
