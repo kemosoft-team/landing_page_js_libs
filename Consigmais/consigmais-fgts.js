@@ -362,6 +362,24 @@ function qualification() {
                         URL_redirect = `/qualification?pipeline_slug=${pipelineSlug}&federalId=${federalId}&waiting=true`;
                         window.location.href = URL_redirect;
                         break;
+                    //ENCERRADO - REINICIANDO ATENDIMENTO
+                    case "encerrado":
+                    case "reiniciando-atendimento":
+                        switch (situacao) {
+                            case "nao-qualificado":
+                                URL_redirect = `/noqualified?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "oportunidade-futura":
+                                URL_redirect = `/futureOpportunity?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
+                                break;
+                            case "sem-credito":
+                                URL_redirect = `/noBalance?federalId=${federalId}`;
+                                window.location.href = URL_redirect;
+                                break;
+                        }
+                        break;
                     //INDISPONIVEL OU QUALQUER OUTRO STATUS NÃO LISTADO
                     default:
                         console.log("indisponivel ou não listado");
