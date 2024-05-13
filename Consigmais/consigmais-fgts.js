@@ -153,7 +153,6 @@ async function criar_contato_fgts() {
         funil: pipeline_slug,
         urlOrigem: origin,
         urlReferencia: referrer,
-        naoQualificar: true,
     }, {
         headers: {
             'api-key': API_KEY
@@ -216,12 +215,14 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
             } else if (!saqueHabilitado) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                requalify()
+                qualification()
+                /* requalify() */
                 /* window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
             } else if (saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
+                qualification()
+               /*  window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
             }
         })
         .catch(function (error) {
