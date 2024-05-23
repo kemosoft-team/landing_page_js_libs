@@ -81,8 +81,6 @@ function validateForm(){
             showToast("Por favor, preencha todos os campos.");
             return false;
           }
-
-    }
   
     registerAffiliate(name, federalId, zipcode, phone, email);
   }
