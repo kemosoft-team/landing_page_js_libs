@@ -75,7 +75,7 @@ function validateForm(){
     var phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
     var email = document.querySelector('[data-brz-label="Email"]').value;
     var zipcode = document.querySelector('[data-brz-label="CEP"]').value;
-    var federalId = document.querySelector('[data-brz-label="CPF/CNPJ"]').value;
+    var federalId = document.querySelector('[data-brz-label="CNPJ"]').value;
 
         if (name == "" || phone == "" || federalId =="" || zipcode == "") {
             showToast("Por favor, preencha todos os campos.");
