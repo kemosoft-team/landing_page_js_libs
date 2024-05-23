@@ -7,7 +7,7 @@ function showToast(text) {
   }
 
 //registerAffiliate
-async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
+async function registerAffiliate(name, federalId, zipcode, phone, email){
 
     var url_params = window.location.href;
     var url = new URL(url_params);
@@ -27,7 +27,7 @@ async function registerAffiliate(name, birth, federalId, zipcode, phone, email){
   
     axios.post('https://api.consigmais.com.br/signup/affiliate/register', {
       "name": name,
-      "birth": birth,
+      "birth": null,
       "federalId": federalId,
       "mainEmail": email,
       "zipcode": zipcode.replace(/[^\w\s]/gi, '').replace(/\s/g, ''),
@@ -73,28 +73,18 @@ function validateForm(){
 
     var name = document.querySelector('[data-brz-label="Nome ou Nome fantasia"]').value;
     var phone = document.querySelector('[data-brz-label="Whatsapp"]').value;
-    var birth = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
     var email = document.querySelector('[data-brz-label="Email"]').value;
     var zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     var federalId = document.querySelector('[data-brz-label="CPF/CNPJ"]').value;
-
-    if(federalId.length > 14){
 
         if (name == "" || phone == "" || federalId =="" || zipcode == "") {
             showToast("Por favor, preencha todos os campos.");
             return false;
           }
 
-    }else{
-
-        if (name == "" || phone == "" || birth == "" || federalId =="" || zipcode == "") {
-            showToast("Por favor, preencha todos os campos.");
-            return false;
-          }
-
     }
   
-    registerAffiliate(name, birth, federalId, zipcode, phone, email);
+    registerAffiliate(name, federalId, zipcode, phone, email);
   }
 
   if(window.location.pathname == '/novo-afiliado' || window.location.pathname == '/novo-afiliado-homeofficeconfianca'){
