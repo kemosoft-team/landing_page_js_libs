@@ -1,0 +1,240 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --primary-opacity-80: rgba(var(--primary), 0.2);
+  --background-container: #ffffff;
+  --title: #000000;
+  --subtitle: #323f4b;
+  --font-family: "Poppins", sans-serif;
+}
+
+.background-modal {
+  display: none;
+  position: absolute;
+  background: #000000c0;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  display: none;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  max-width: 770px;
+  height: 100%;
+  width: 100%;
+  background: #ffffff;
+}
+
+.modal.questions-form-2 .form {
+  height: calc(100% - 16%);
+}
+
+header {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 23px 20px 23px 20px;
+}
+
+header.questions {
+  height: 16%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 23px 20px 23px 20px;
+}
+
+header .title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: #000000;
+}
+
+header .title h1 {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 60px;
+}
+
+.form {
+  height: calc(100% - 100px);
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form .input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form .input-wrapper .inputs {
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  position: relative;
+}
+
+.form .input-wrapper .inputs label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form .input-wrapper .inputs input {
+  height: 50px;
+  border-radius: 8px;
+  padding: 0 16px 0 16px;
+  background: #f6f6f6;
+  color: #000;
+  border: 1px solid #e8e8e8;
+}
+
+.form .input-wrapper .inputs input::placeholder {
+  color: #bdbdbd;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.form .input-wrapper .inputs .validation {
+  position: absolute;
+  top: 40px;
+  right: 7px;
+  display: none;
+}
+
+.form .input-wrapper .inputs input:invalid {
+  border: 1px solid #ff0000;
+}
+
+.form .input-wrapper .inputs .error {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #ff0000;
+}
+
+.input-wrapper input {
+  background: #fafafc;
+  border-radius: 8px;
+  border: 1px solid #e6e6f0;
+  height: 5.6rem;
+  width: 100%;
+}
+
+.input-wrapper.questions {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.input-wrapper.questions label {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+/* questions step loader */
+.step-loarder {
+  margin-top: 20px;
+  border-radius: 8px;
+  border: 1px solid black;
+  height: 16px;
+  width: 100%;
+  padding: 4px 5px;
+}
+
+.step-loarder .step-progress-bar {
+  background: var(--button-bg);
+  height: 100%;
+  border-radius: 8px;
+}
+
+/* button submit */
+.button-submit {
+  width: 100%;
+  min-height: 56px;
+  background: var(--button-bg);
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--button-color);
+  font-family: "Staatliches", sans-serif;
+  cursor: pointer;
+}
+
+.button-submit:hover {
+  background: var(--button-bg);
+  filter: brightness(1.2);
+  box-shadow: 0px 1px 15px 1px #dfc5c5;
+}
+
+.btn-questions {
+  background: #ffffff;
+  height: 52px;
+  border: 0.5px solid #323f4b;
+  border-radius: 100px;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #323f4b;
+}
+
+.btn-questions.selected {
+  background: var(--button-bg);
+  color: var(--button-color);
+}
+
+.btn-questions:hover {
+  background-color: var(--button-bg-brightness);
+  color: var(--button-bg);
+  cursor: pointer;
+  border: 0.5px solid var(--button-bg);
+}
+
+/* desktop */
+@media (max-width: 400px) {
+  header.questions {
+    height: 20%;
+  }
+
+  .modal.questions-form-2 .form {
+    background: red;
+    height: calc(100% - 20%);
+  }
+}
+
+/* desktop */
+@media (min-width: 900px) {
+  .modal {
+    height: 85%;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  header.questions {
+    height: 20%;
+  }
+}
