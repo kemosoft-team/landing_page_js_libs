@@ -28,12 +28,6 @@
   z-index: 1000;
 }
 
-#form-container {
-  background-color: red;
-  width: 100%;
-  height: 100%;
-}
-
 .modal {
   display: none;
   align-items: center;
@@ -250,7 +244,6 @@ header .title h1 {
   }
 
   .modal.questions-form-2 .form {
-    background: red;
     height: calc(100% - 20%);
   }
 }
@@ -259,11 +252,41 @@ header .title h1 {
 @media (min-width: 900px) {
   .modal {
     height: 85%;
+    width: 50%;
     border-radius: 12px;
     padding: 20px;
+    overflow: auto;
+  }
+
+  /* formulario inicial */
+  .initial-form .input-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 16px;
+  }
+
+  .initial-form .input-wrapper .inputs:nth-child(1) {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+  .initial-form .input-wrapper .inputs:nth-child(2) {
+    grid-area: 2 / 1 / 3 / 3;
+  }
+  .initial-form .input-wrapper .inputs:nth-child(3) {
+    grid-area: 3 / 1 / 4 / 2;
+  }
+  .initial-form .input-wrapper .inputs:nth-child(4) {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+  .initial-form .input-wrapper .inputs:nth-child(5) {
+    grid-area: 4 / 1 / 5 / 3;
   }
 
   header.questions {
-    height: 20%;
+    height: 25%;
+  }
+
+  .form .input-wrapper .inputs .error {
+    font-size: 10px;
   }
 }
