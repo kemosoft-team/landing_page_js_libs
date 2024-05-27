@@ -25,7 +25,6 @@ function loadFormContent() {
     const body = document.querySelector('body');
     body.innerHTML += `
     <div class="background-modal" style="display: none">
-    <div id="form-container">
     <!-- FORMULÁRIO INICIAL -->
     <div style="display: none" class="modal initial-form">
       <header>
@@ -168,10 +167,7 @@ function loadFormContent() {
         <span class="loader" style="display: none"></span>
         <span class="text">Concluir e Simular</span>
         </button>
-
-
       </form>
-    </div>
     </div>
   </div>
     `;
@@ -555,7 +551,7 @@ function validateBirth(input) {
 
     if (!birthRegex.test(birth)) {
         displayValidationSVG(validationDiv, false);
-        birthError.textContent = "Digite uma data de nascimento válida (DD/MM/AAAA).";
+        birthError.textContent = "Digite uma data de nascimento (DD/MM/AAAA).";
         return false;
     }
 
