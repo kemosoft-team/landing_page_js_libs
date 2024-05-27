@@ -22,8 +22,10 @@ function toggleLoader(button, show, text) {
 
 /* Carregar conteúdo dinâmico */
 function loadFormContent() {
-    const formContainer = document.getElementById('form-container');
-    formContainer.innerHTML = `
+    const body = document.querySelector('body');
+    body.innerHTML += `
+    <div class="background-modal" style="display: none">
+    <div id="form-container">
     <!-- FORMULÁRIO INICIAL -->
     <div style="display: none" class="modal initial-form">
       <header>
@@ -170,6 +172,8 @@ function loadFormContent() {
 
       </form>
     </div>
+    </div>
+  </div>
     `;
 
     /* ABRIR E FECHAR MODAL */
