@@ -189,7 +189,13 @@ function loadFormContent() {
     document.querySelectorAll(".close-modal").forEach(function (button) {
         button.addEventListener("click", function () {
             var modal = document.querySelector(".background-modal");
+            var formInitial = document.querySelector(".initial-form");
+            var quest1 = document.querySelector(".questions-form-1");
+            var quest2 = document.querySelector(".questions-form-2");
             modal.style.display = "none";
+            formInitial.style.display = "none";
+            quest1.style.display = "none";
+            quest2.style.display = "none";
         });
     });
 
