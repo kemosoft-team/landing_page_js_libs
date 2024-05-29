@@ -140,6 +140,9 @@ function criar_contato_inss() {
                 leadId: leadId,
             });
 
+             //mautic
+            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug});
+
             //ENVIAR CUSTOM ID CLARITY
             const customId = federalId_replaced;
             window.clarity("identify", customId);
