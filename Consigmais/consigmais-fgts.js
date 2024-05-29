@@ -173,7 +173,7 @@ async function criar_contato_fgts() {
             window.clarity("identify", customId);
 
             //mautic
-            mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone });
+            mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone, funil: pipeline_slug});
 
             //ABRA O POP UP DE QUESTIONARIO
             const questions = document.getElementById("questions");
