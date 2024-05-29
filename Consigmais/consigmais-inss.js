@@ -141,7 +141,8 @@ function criar_contato_inss() {
             });
 
              //mautic
-            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug});
+            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced});
+
 
             //ENVIAR CUSTOM ID CLARITY
             const customId = federalId_replaced;
