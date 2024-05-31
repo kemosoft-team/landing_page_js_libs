@@ -60,6 +60,8 @@ function identifierSlug() {
             return "pref-ca"
         case "/gov-pi":
             return "gov-pi"
+        case "/pref-maringa":
+            return "pref-maringa"
     }
 }
 
