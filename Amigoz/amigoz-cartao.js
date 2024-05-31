@@ -61,6 +61,8 @@ function identifierSlug() {
         case "/gov-pi":
             return "gov-pi"
         case "/pref-maringa":
+            return "maringa-pr"
+        case "/pref-jaboatao":
             return "pref-maringa"
     }
 }
