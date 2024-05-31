@@ -63,7 +63,9 @@ function identifierSlug() {
         case "/pref-maringa":
             return "maringa-pr"
         case "/pref-jaboatao":
-            return "pref-maringa"
+            return "jaboatao-pe"
+        case "/pref-jaboatao":
+            return "juazeiro-ce"
     }
 }
 
