@@ -143,17 +143,17 @@ function qualification(pipe, federal) {
 
             switch (contexto) {
                 case "encerrado":
-                    URL_redirect = `/noqualified`;
+                    URL_redirect = `/noqualified?tp=${pipe}`;
                     window.location.href = URL_redirect;
                     break;
 
                 case "aguardando-qualificacao":
-                    URL_redirect = `/nooportunity`;
+                    URL_redirect = `/nooportunity?tp=${pipe}`;
                     window.location.href = URL_redirect;
                     break;
 
                 default:
-                    URL_redirect = `/success`;
+                    URL_redirect = `/success?tp=${pipe}`;
                     window.location.href = URL_redirect;
                     break;
             }
