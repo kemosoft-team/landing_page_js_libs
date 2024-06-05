@@ -248,10 +248,11 @@ function loadFormContent() {
 }
 
 /* Configuração dinâmica do formulário */
-function configureForm(API_KEY, colors, journeyId) {
+function configureForm(API_KEY, colors, journeyId, config) {
     base_URL = "baseurl";
     configureForm.apikey = API_KEY;
     configureForm.journeyId = journeyId;
+    configureForm.config = config;
 
     const style = document.createElement('style');
     style.innerHTML = `
