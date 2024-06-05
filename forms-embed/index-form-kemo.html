@@ -13,9 +13,14 @@
       buttonColor: "#ffffff",
       buttonBgBrightness: "#d5e6fb",
     };
+    
     const journeyId = "2";
+    
+    const config = {
+      mautic: false,
+    };
 
-    configureForm(API_KEY, buttonsColors, journeyId);
+    configureForm(API_KEY, buttonsColors, journeyId, config);
     loadFormContent();
 
     document
