@@ -396,6 +396,14 @@ function criar_contato_fgts(fullName, federalId, phone, birth, email) {
             localLeadId = response.data.id;
             localFederalId = federalId_replaced;
 
+            if (configureForm.config.mautic){
+                //mautic
+                mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced});
+                console.log("mautic true")
+            } else {
+                console.log("mautic false")
+            }
+
             //ABRA O POP UP DE QUESTIONARIO
             showNextQuestion(1)
             toggleLoader(button, false, text);
