@@ -110,6 +110,9 @@ function criar_contato() {
                 leadId: leadId,
             });
 
+            //MAUTIC
+            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname});
+
             //ENVIAR CUSTOM ID CLARITY
             const customId = federalId_replaced;
             window.clarity("identify", customId);
@@ -164,7 +167,7 @@ function qualification(pipe, federal) {
             if (attempt < 3) {
                 qualification();
             } else {
-                const URL_redirect = `/offline`;
+                const URL_redirect = `/offline?tp=${pipe}`;
                 window.location.href = URL_redirect;
             }
         });
