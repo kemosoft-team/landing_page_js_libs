@@ -1,11 +1,5 @@
-<div>
-  <link
-    rel="stylesheet"
-    href="https://lp-js-libs.s3.sa-east-1.amazonaws.com/forms-embed/assets/style-form-kemo.css"
-  />
-
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="assets/script-form-kemo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://lp-js-libs.s3.sa-east-1.amazonaws.com/forms-embed/assets/script-form-kemo.js"></script>
   <script>
     const API_KEY = "1b32ad3b-799b-4e2a-adc3-1855d7e9262c";
     const buttonsColors = {
@@ -13,11 +7,11 @@
       buttonColor: "#ffffff",
       buttonBgBrightness: "#d5e6fb",
     };
-    
     const journeyId = "2";
-    
-    const config = {
-      mautic: false,
+
+	const config = {
+      	mautic: false,
+      	//para utilizar o mautic é necessario adicionar o script na sua página.
     };
 
     configureForm(API_KEY, buttonsColors, journeyId, config);
@@ -30,5 +24,4 @@
         modal.style.display = "flex";
         document.querySelector(".initial-form").style.display = "flex";
       });
-  </script>
-</div>
+  </script>	
