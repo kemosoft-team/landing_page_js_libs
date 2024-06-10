@@ -1044,7 +1044,7 @@ function registrarEndereco(zipcode, address, addressNumber, district, city, stat
         });
 }
 
-function registrarDocumento(type, number, agencyState, motherName) {
+function registrarDocumento(type, number, agencyState, motherName, emailElement, birthElement) {
 
 
     function obterParametroDaURL(parametro) {
@@ -1091,7 +1091,11 @@ function registrarDocumento(type, number, agencyState, motherName) {
             }
         })
         .then((response) => {
-            nextStepInfos(federal, pipeline)
+            if (emailElement && birthElement) {
+                registrarDadosbasicos(emailElement, birthElement, federal, pipeline)
+            } else {
+                nextStepInfos(federal, pipeline)
+            }
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
@@ -1157,6 +1161,25 @@ function registrarConta(bankNo, branch, acctNo, acctType) {
         });
 }
 
+function registrarDadosbasicos(emailElement, birthElement, federal, pipeline) {
+    axios.patch(`${API_URL}/v1/dados-basicos`, {
+        "cpf": federal,
+        "email": emailElement,
+        "dataNascimento": birthElement,
+    }, {
+        headers: {
+            'api-key': API_KEY
+        }
+    })
+        .then(() => {
+            nextStepInfos(federal, pipeline)
+        })
+        .catch(function (error) {
+            showToast("Parece que houve um problema! Por Favor, tente novamente!")
+        });
+}
+
+
 function validateEndereco() {
     const zipcode = document.querySelector('[data-brz-label="CEP"]').value;
     const address = document.querySelector('[data-brz-label="Rua"]').value;
@@ -1184,29 +1207,66 @@ function validateEndereco() {
 
 }
 
-function validateDocumento() {
-    const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
-    const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
-    const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
-    const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
+function validateDocumento(pipeline) {
 
-    if (
-        type == "" ||
-        number == "" ||
-        agencyState == "" ||
-        motherName == ""
-    ) {
-        showToast("Por favor, preencha todos os campos.");
-        return false;
-    } else if (!validateUF(agencyState)) {
-        showToast("Por favor, informe um estado válido.");
-        return false;
-    } else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
-        showToast("Por favor, digite o nome da sua mãe completo");
-        return false;
+    if (pipeline == "fgts") {
+        const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
+        const emailElement = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
+
+
+        const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+        const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
+        const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+        const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
+
+        if (
+            type == "" ||
+            number == "" ||
+            agencyState == "" ||
+            motherName == "" ||
+            birthElement == "" ||
+            emailElement == ""
+        ) {
+            showToast("Por favor, preencha todos os campos.");
+            return false;
+        } else if (!validateUF(agencyState)) {
+            showToast("Por favor, informe um estado válido.");
+            return false;
+        } else if (!isDateValid(birthElement)) {
+            showToast("A data de nascimento informada não é válida!");
+            return false;
+        } else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
+            showToast("Por favor, digite o nome da sua mãe completo");
+            return false;
+        } else {
+            registrarDocumento(type, number, agencyState, motherName, birthElement, emailElement);
+        }
     } else {
-        registrarDocumento(type, number, agencyState, motherName);
+        const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
+        const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
+        const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
+        const motherName = document.querySelector('[data-brz-label="Nome da sua Mãe"]').value;
+
+        if (
+            type == "" ||
+            number == "" ||
+            agencyState == "" ||
+            motherName == ""
+        ) {
+            showToast("Por favor, preencha todos os campos.");
+            return false;
+        } else if (!validateUF(agencyState)) {
+            showToast("Por favor, informe um estado válido.");
+            return false;
+        } else if (!motherName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(motherName)) {
+            showToast("Por favor, digite o nome da sua mãe completo");
+            return false;
+        } else {
+            registrarDocumento(type, number, agencyState, motherName);
+        }
     }
+
+
 }
 
 function validateConta() {
