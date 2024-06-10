@@ -1210,6 +1210,7 @@ function validateEndereco() {
 function validateDocumento(pipeline) {
 
     if (pipeline == "fgts") {
+        console.log("dados básicos");
         const birthElement = document.querySelector('[data-brz-label="Data de Nascimento"]').value;
         const emailElement = document.querySelector('[data-brz-label="Email (Opcional)"]').value;
 
@@ -1242,6 +1243,7 @@ function validateDocumento(pipeline) {
             registrarDocumento(type, number, agencyState, motherName, emailElement, birthElement);
         }
     } else {
+        console.log("não dados básicos");
         const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
         const number = document.querySelector('[data-brz-label="Número do Documento"]').value;
         const agencyState = document.querySelector('[data-brz-label="UF Expeditor"]').value;
