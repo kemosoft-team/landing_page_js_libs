@@ -9,8 +9,6 @@ let referrer = document.referrer;
 let name;
 let phone;
 let federalId;
-let birth;
-let email;
 let leadId
 
 let jaTrabalhouCarteiraAssinada;
@@ -69,17 +67,11 @@ function validar_contato_fgts() {
     const federalIdElement = document.querySelector(
         '[data-brz-label="CPF"]'
     ).value;
-    const birthElement = document.querySelector(
-        '[data-brz-label="Data de Nascimento"]'
-    ).value;
-    const emailElement = document.querySelector(
-        '[data-brz-label="Email (Opcional)"]'
-    ).value;
+
     if (
         nameElement == "" ||
         phoneElement == "" ||
-        federalIdElement == "" ||
-        birthElement == ""
+        federalIdElement == "" 
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
@@ -117,8 +109,6 @@ function validar_contato_fgts() {
     name = nameElement;
     phone = phoneElement;
     federalId = federalIdElement;
-    birth = birthElement;
-    email = emailElement
 
     criar_contato_fgts();
 }
@@ -133,7 +123,6 @@ async function criar_contato_fgts() {
     /* REPLACE */
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = name.replace(/\s+/g, ' ');
-    const email_replaced = email.replace(/\s/g, "");
 
     const button = document.querySelector(".brz-btn-submit.submit_form");
     const spinner = button.querySelector(".brz-form-spinner");
@@ -146,9 +135,7 @@ async function criar_contato_fgts() {
     axios.post(API_URL + '/v2/criar-contato', {
         nome: name_replaced,
         telefone: phone,
-        dataNascimento: birth,
         cpf: federalId_replaced,
-        email: email_replaced,
         bancosAutorizados: autorizedBanks,
         funil: pipeline_slug,
         urlOrigem: origin,
@@ -161,7 +148,6 @@ async function criar_contato_fgts() {
         .then(async (response) => {
             leadId = response.data.id;
             federalId = federalId_replaced;
-            console.log("Criar Contato: ", leadId)
 
             setItemStorage({
                 pipelineSlug: pipeline_slug,
@@ -173,7 +159,7 @@ async function criar_contato_fgts() {
             window.clarity("identify", customId);
 
             //mautic
-            mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname});
+            mt('send', 'pageview', {firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname});
 
             //ABRA O POP UP DE QUESTIONARIO
             const questions = document.getElementById("questions");
