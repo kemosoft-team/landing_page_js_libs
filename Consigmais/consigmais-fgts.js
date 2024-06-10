@@ -59,13 +59,13 @@ function validar_questions() {
 
 function validar_contato_fgts() {
     const nameElement = document.querySelector(
-        '[data-brz-label="Nome Completo"]'
+        '[data-brz-placeholder="Nome Completo"]'
     ).value;
     const phoneElement = document.querySelector(
-        '[data-brz-label="WhatsApp"]'
+        '[data-brz-placeholder="WhatsApp"]'
     ).value;
     const federalIdElement = document.querySelector(
-        '[data-brz-label="CPF"]'
+        '[data-brz-placeholder="CPF"]'
     ).value;
 
     if (
