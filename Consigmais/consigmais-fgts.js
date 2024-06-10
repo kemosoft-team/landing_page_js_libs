@@ -172,7 +172,8 @@ async function criar_contato_fgts() {
             const customId = federalId_replaced;
             window.clarity("identify", customId);
 
-            mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone });
+            //mautic
+            mt('send', 'pageview', { email: email_replaced, firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname});
 
             //ABRA O POP UP DE QUESTIONARIO
             const questions = document.getElementById("questions");
@@ -224,7 +225,7 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
                 qualification()
-                /*  window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
+               /*  window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
             }
         })
         .catch(function (error) {
