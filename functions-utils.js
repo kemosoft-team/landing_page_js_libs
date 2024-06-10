@@ -1239,7 +1239,7 @@ function validateDocumento(pipeline) {
             showToast("Por favor, digite o nome da sua mãe completo");
             return false;
         } else {
-            registrarDocumento(type, number, agencyState, motherName, birthElement, emailElement);
+            registrarDocumento(type, number, agencyState, motherName, emailElement, birthElement);
         }
     } else {
         const type = document.querySelector('[data-brz-label="Tipo de Documento"]').value;
