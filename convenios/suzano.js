@@ -63,7 +63,8 @@ async function criar_contato(name, federalId, phone, enrollment) {
         }
     })
         .then(async (response) => {
-            window.location.href = "www.google.com"
+            let urlRedirect = "https://api.whatsapp.com/send?phone=558440429964&text=Ol%C3%A1,%20gostaria%20de%20concluir%20minha%20solicita%C3%A7%C3%A3o."
+            window.location.href = urlRedirect;
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
