@@ -10,8 +10,7 @@ function validar_contato() {
     if (
         nameElement == "" ||
         phoneElement == "" ||
-        federalIdElement == "" ||
-        enrollmentElement == ""
+        federalIdElement == ""
     ) {
         showToast("Por favor, preencha todos os campos.");
         return false;
