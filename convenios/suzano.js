@@ -63,7 +63,7 @@ async function criar_contato(name, federalId, phone, enrollment) {
         }
     })
         .then(async (response) => {
-            let urlRedirect = "https://api.whatsapp.com/send?phone=558440429964&text=Ol%C3%A1,%20gostaria%20de%20concluir%20minha%20solicita%C3%A7%C3%A3o."
+            let urlRedirect = "https://api.whatsapp.com/send?phone=558440429964&text=Ol%C3%A1,%20vim%20pelo%20site%20da%20Vemcard%20Suzano%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
             window.location.href = urlRedirect;
         })
         .catch(function (error) {
