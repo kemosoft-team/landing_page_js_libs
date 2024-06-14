@@ -28,7 +28,7 @@ function validar_contato() {
         return false;
     }
 
-    criar_contato_fgts(nameElement, federalIdElement, phoneElement, enrollmentElement);
+    criar_contato(nameElement, federalIdElement, phoneElement, enrollmentElement);
 }
 //CRIAR CONTATO FGTS
 async function criar_contato(name, federalId, phone, enrollment) {
