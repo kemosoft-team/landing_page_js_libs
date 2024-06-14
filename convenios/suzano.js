@@ -1,5 +1,5 @@
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
-let API_KEY = "#"
+let API_KEY = "1234"
 let origin = window.location.href;
 let referrer = document.referrer;
 
