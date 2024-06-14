@@ -1,17 +1,6 @@
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "#"
 
-/* FUNÇÕES DE EXIBIÇÃO */
-function showToast(text) {
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    document.getElementById("snackbar").innerHTML = text;
-    setTimeout(function () {
-        x.className = x.className.replace("show", `${text}`);
-    }, 3000);
-}
-
-
 function validar_contato() {
     const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
     const federalIdElement = document.querySelector('[data-brz-label="CPF"]').value;
