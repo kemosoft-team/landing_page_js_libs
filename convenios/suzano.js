@@ -1,5 +1,7 @@
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "#"
+let origin = window.location.href;
+let referrer = document.referrer;
 
 function validar_contato() {
     const nameElement = document.querySelector('[data-brz-label="Nome Completo"]').value;
