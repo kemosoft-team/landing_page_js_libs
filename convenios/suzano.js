@@ -63,7 +63,7 @@ async function criar_contato(name, federalId, phone, enrollment) {
         }
     })
         .then(async (response) => {
-            let urlRedirect = "https://l.faz.vc/wppp"
+            let urlRedirect = "https://l.faz.vc/wpp"
             window.location.href = urlRedirect;
         })
         .catch(function (error) {
