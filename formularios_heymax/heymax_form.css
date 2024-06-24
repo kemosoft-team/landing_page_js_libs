@@ -1,0 +1,23 @@
+.btnClose {
+  position: fixed;
+  top: 50px;
+  right: 50px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btnClose svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+}
+
+@media (min-width: 900px) {
+  .btnClose svg {
+    width: 24px;
+    height: 24px;
+    stroke: #2c3e50;
+  }
+}
