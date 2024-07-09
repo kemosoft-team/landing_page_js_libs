@@ -1,4 +1,4 @@
-.btnClose {
+	.btnClose {
   position: fixed;
   top: 50px;
   right: 50px;
@@ -11,13 +11,35 @@
 .btnClose svg {
   width: 24px;
   height: 24px;
-  stroke: #fff;
+  stroke: #2c3e50;
 }
 
 @media (min-width: 900px) {
+	.btnClose {
+  	top: 50px;
+  	right: 25px;
+	}
+	
   .btnClose svg {
     width: 24px;
     height: 24px;
     stroke: #2c3e50;
   }
 }
+
+.background-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}	
+	
+	.modal-open{
+		 overflow: hidden;
+	}
