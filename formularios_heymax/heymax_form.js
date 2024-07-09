@@ -53,6 +53,12 @@ function insertModalHTML(journeyId) {
   btnClose.addEventListener("click", () => {
     const modal = document.querySelector(".background-modal");
     modal.style.display = "none";
+
+     document.body.classList.remove("modal-open"); // Remove classe para habilitar scroll
+
+      // Permitir scroll
+      document.body.removeEventListener('touchmove', preventDefault);
+      document.body.removeEventListener('mousewheel', preventDefault);
   });
 }
 
