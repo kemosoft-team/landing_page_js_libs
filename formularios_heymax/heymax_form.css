@@ -16,8 +16,9 @@
 
 @media (min-width: 900px) {
 	.btnClose {
+	background: red;
   	top: 50px;
-  	right: 25px;
+  	right: 10px;
 	}
 	
   .btnClose svg {
