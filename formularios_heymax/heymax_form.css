@@ -1,4 +1,4 @@
-	.btnClose {
+.btnClose {
   position: fixed;
   top: 50px;
   right: 50px;
@@ -15,11 +15,11 @@
 }
 
 @media (min-width: 900px) {
-	.btnClose {
-	background: red;
-  	top: 50px;
-  	right: 10px;
-	}
+   .btnClose {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+}
 	
   .btnClose svg {
     width: 24px;
