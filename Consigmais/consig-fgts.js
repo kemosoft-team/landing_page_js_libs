@@ -123,6 +123,7 @@ async function criar_contato_fgts() {
         funil: pipeline_slug,
         urlOrigem: origin,
         urlReferencia: referrer,
+        naoQualificar: true,
     }, {
         headers: {
             'api-key': API_KEY
