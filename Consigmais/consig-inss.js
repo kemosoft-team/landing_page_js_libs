@@ -123,6 +123,7 @@ function criar_contato_inss() {
         funil: pipeline_slug,
         urlOrigem: origin,
         urlReferencia: referrer,
+        naoQualificar: true,
     }, {
         headers: {
             'api-key': API_KEY
