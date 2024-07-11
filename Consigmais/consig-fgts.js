@@ -189,14 +189,14 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
             } else if (!saqueHabilitado) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
-                qualification()
-                /* requalify() */
-                /* window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
+                /* qualification() */
+                requalify()
+                window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
             } else if (saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
-                qualification()
-               /*  window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
+                /* qualification() */
+                window.location.href = "authorize" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
             }
         })
         .catch(function (error) {
