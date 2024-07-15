@@ -190,8 +190,8 @@ function criar_questions(jaTrabalhouCarteiraAssinada, saqueHabilitado) {
                 attemptsEnable++;
                 localStorage.setItem("attemptsEnable", attemptsEnable);
                 /* qualification() */
+                /*   window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId; */
                 requalify()
-                window.location.href = "enable" + "?" + "federalId=" + federalId + "&" + "id=" + leadId;
             } else if (saqueHabilitado) {
                 attemptsAuth++;
                 localStorage.setItem("attemptsAuth", attemptsAuth);
