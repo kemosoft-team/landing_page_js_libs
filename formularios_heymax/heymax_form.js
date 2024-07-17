@@ -1,5 +1,5 @@
 // Função para inserir o modal no DOM
-function insertModalHTML(journeyId) {
+function insertModalHTML(journeyId, urlParams) {
   const modalHTML = `
     <div
       class="background-modal"
@@ -24,7 +24,7 @@ function insertModalHTML(journeyId) {
           width: 100%;
         "
       >
-        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}" width="100%" height="100%" frameborder="0"></iframe>
+        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}&${urlParams}" width="100%" height="100%" frameborder="0"></iframe>
 
         <div class="btnClose">
           <svg
