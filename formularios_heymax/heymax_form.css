@@ -15,12 +15,11 @@
 }
 
 @media (min-width: 900px) {
-   .btnClose {
-  position: fixed;
-  top: 50px;
-  right: 50px;
-}
-	
+  .btnClose {
+    top: 50px;
+    right: 50px;
+  }
+
   .btnClose svg {
     width: 24px;
     height: 24px;
@@ -37,10 +36,11 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.75);
   z-index: 9999999;
+  display: flex;
   align-items: center;
   justify-content: center;
-}	
-	
-	.modal-open{
-		 overflow: hidden;
-	}
+}
+
+.modal-open {
+  overflow: hidden;
+}
