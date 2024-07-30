@@ -2,19 +2,7 @@
 function insertModalHTML(journeyId, urlParams) {
   const modalHTML = `
     <div
-      class="background-modal"
-      style="
-        display: none;
-        position: absolute;
-        background: #000000c0;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-      "
-    >
+      class="background-modal">
       <div
         style="
           display: flex;
