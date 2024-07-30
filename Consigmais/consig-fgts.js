@@ -140,11 +140,11 @@ async function criar_contato_fgts() {
                 leadId: leadId,
             });
 
-            const customId = federalId_replaced;
-            window.clarity("identify", customId);
+          /*   const customId = federalId_replaced;
+            window.clarity("identify", customId); */
 
-            //mautic
-            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname});
+           /*  //mautic
+            mt('send', 'pageview', { firstname: name_replaced, phone: phone, funil: pipeline_slug, cpf: federalId_replaced, pageTitle: window.location.pathname}); */
 
             //ABRA O POP UP DE QUESTIONARIO
             const questions = document.getElementById("questions");
