@@ -1,5 +1,9 @@
 // Função para inserir o modal no DOM
 function insertModalHTML(journeyId, urlParams) {
+   if (document.referrer) {
+    sessionStorage.setItem('urlReferrer', document.referrer);
+  }
+  
   const modalHTML = `
     <div
       class="background-modal">
