@@ -2,7 +2,9 @@
 function insertModalHTML(journeyId, urlParams) {
    if (document.referrer) {
     sessionStorage.setItem('urlReferrer', document.referrer);
-  }
+  }else {
+   console.log("sem referrer")
+   }
   
   const modalHTML = `
     <div
