@@ -1,12 +1,8 @@
 // Função para inserir o modal no DOM
 function insertModalHTML(journeyId, urlParams) {
-   if (document.referrer) {
-    sessionStorage.setItem('urlReferrer', document.referrer);
-         console.log("com referrer: ", document.referrer)
-  }else {
-   console.log("sem referrer")
-   }
-  
+   
+  let urlReferrer = document.referrer
+   
   const modalHTML = `
     <div
       class="background-modal">
@@ -19,7 +15,7 @@ function insertModalHTML(journeyId, urlParams) {
           width: 100%;
         "
       >
-        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}&${urlParams}&bvid=Cd14282577sg" width="100%" height="100%" frameborder="0"></iframe>
+        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}&${urlParams}&bvid=Cd14282577sg&urlReferrer=${urlReferrer}" width="100%" height="100%" frameborder="0"></iframe>
 
         <div class="btnClose">
           <svg
