@@ -341,7 +341,9 @@ function criar_contato_inss_representative() {
         .then((response) => {
             name_Representive = name_Representive_replaced;
             federalId_Representive = federalId_Representive_replaced;
-            requalify();
+
+            window.open("https://wa.me/558482001436?text=Ol%C3%A1%2C%20gostaria%20de%20concluir%20minha%20solicita%C3%A7%C3%A3o!", "_blank");
+            /* requalify(); */
         })
         .catch(function (error) {
             button.removeAttribute("disabled");
