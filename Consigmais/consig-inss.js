@@ -210,7 +210,8 @@ function criar_PopUpEnrollment(enrollment) {
       }
     )
     .then((response) => {
-      requalifyEnrollment(enrollment);
+      requalify();
+      showLoader();
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
@@ -590,7 +591,7 @@ function registrarBenefit(enrollment) {
       }
     )
     .then((response) => {
-      requalify();
+      requalifyEnrollment(enrollment);
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
