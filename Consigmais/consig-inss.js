@@ -66,7 +66,6 @@ function validar_contato_inss() {
     phoneElement == "" ||
     federalIdElement == "" ||
     birthElement == "" ||
-    enrollment == "" ||
     firstChoice == "" ||
     secondChoice == ""
   ) {
