@@ -51,23 +51,11 @@ function validar_contato_inss() {
   const birthElement = document.querySelector(
     '[data-brz-label="Data de Nascimento do Beneficiário"]'
   ).value;
-  const enrollment = document.querySelector(
-    '[data-brz-label="Número do Benefício/Matrícula (opcional)"]'
-  ).value;
-  const firstChoice = document
-    .querySelector('[data-brz-label="É aposentado ou pensionista do INSS?"]')
-    .value.toLowerCase();
-  const secondChoice = document
-    .querySelector('[data-brz-label="Já contratou empréstimo consignado?"]')
-    .value.toLowerCase();
-
   if (
     nameElement == "" ||
     phoneElement == "" ||
     federalIdElement == "" ||
-    birthElement == "" ||
-    firstChoice == "" ||
-    secondChoice == ""
+    birthElement == ""
   ) {
     showToast("Por favor, preencha todos os campos.");
     return false;
@@ -90,27 +78,12 @@ function validar_contato_inss() {
   } else if (!validatePhone(phoneElement)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
-  } else if (enrollment && enrollment.length != 10) {
-    showToast("O número do benefício deve conter 10 caracteres.");
-    return false;
-  } else if (enrollment && !validarNumeroBeneficio(enrollment)) {
-    showToast(
-      "O número do benefício informado é inválido! Revise a informação!"
-    );
-    return false;
-  } else if (enrollment && !validateMod11Digit(enrollment, 1, 9, true)) {
-    showToast(
-      "O número do benefício informado é inválido!! Revise a informação!"
-    );
-    return false;
   } else {
     //SALVAR NAS VARIAVEIS GLOBAIS
     name = nameElement;
     phone = phoneElement;
     federalId = federalIdElement;
     birth = birthElement;
-    aposentadoOuPensionista = firstChoice === "sim";
-    jaContratouEmprestimo = secondChoice === "sim";
 
     //CRIAR CONTATO
     criar_contato_inss();
@@ -141,7 +114,6 @@ function criar_contato_inss() {
         telefone: phone,
         cpf: federalId_replaced,
         dataNascimento: birth,
-        matricula: enrollment,
         funil: pipeline_slug,
         urlOrigem: origin,
         urlReferencia: referrer,
@@ -165,19 +137,23 @@ function criar_contato_inss() {
         leadId: leadId,
       });
 
-      //mautic
-      /*       mt("send", "pageview", {
-        firstname: name_replaced,
-        phone: phone,
-        funil: pipeline_slug,
-        cpf: federalId_replaced,
-      }); */
-
       //ENVIAR CUSTOM ID CLARITY
       const customId = federalId_replaced;
       window.clarity("identify", customId);
 
-      criar_questions();
+      if (menorIdade === true) {
+        // ABRIR FORMULÁRIO REPRESENTANTE
+        const formRepresentative = document.getElementById(
+          "form_representative"
+        );
+        formRepresentative.click();
+      } else {
+        // ABRIR QUESTÕES REPRESENTANTE
+        const representativeQuestions = document.getElementById(
+          "question_representative"
+        );
+        representativeQuestions.click();
+      }
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
@@ -187,50 +163,11 @@ function criar_contato_inss() {
     });
 }
 
-function criar_questions() {
-  axios
-    .post(
-      API_URL + `/v1/lead/${leadId}/perguntas`,
-      {
-        aposentadoOuPensionista: aposentadoOuPensionista,
-        jaContratouEmprestimo: jaContratouEmprestimo,
-      },
-      {
-        headers: {
-          "api-key": API_KEY,
-        },
-      }
-    )
-
-    .then(async (response) => {
-      console.log(aposentadoOuPensionista);
-      console.log(jaContratouEmprestimo);
-
-      if (menorIdade === true) {
-        console.log("Menor idade true");
-        // ABRIR FORMULÁRIO REPRESENTANTE
-        const formRepresentative = document.getElementById(
-          "form_representative"
-        );
-        formRepresentative.click();
-      } else {
-        console.log("Menor idade false");
-        // ABRIR QUESTÕES REPRESENTANTE
-        const representativeQuestions = document.getElementById(
-          "question_representative"
-        );
-        representativeQuestions.click();
-      }
-    })
-    .catch(function (error) {
-      showToast(error.response.data.message);
-    });
-}
-
 function validar_PopUpBenefit() {
   const benefit = document.querySelector(
-    '[data-brz-label="Número do benefício (Opcional)"]'
+    '[data-brz-label="Número do Benefício/Matrícula"]'
   ).value;
+
   if (benefit && benefit.length != 10) {
     showToast("O número do benefício deve conter 10 caracteres.");
     return false;
@@ -244,26 +181,7 @@ function validar_PopUpBenefit() {
       "O número do benefício informado é inválido!! Revise a informação!"
     );
     return false;
-  } else if (!benefit) {
-    if (menorIdade === true) {
-      console.log("Menor idade true");
-      // ABRIR FORMULÁRIO REPRESENTANTE
-      const close_benefit = document.getElementById("close_benefit");
-      close_benefit.click();
-      const formRepresentative = document.getElementById("form_representative");
-      formRepresentative.click();
-    } else {
-      console.log("Menor idade false");
-      // ABRIR QUESTÕES REPRESENTANTE
-      const close_benefit = document.getElementById("close_benefit");
-      close_benefit.click();
-      const representativeQuestions = document.getElementById(
-        "question_representative"
-      );
-      representativeQuestions.click();
-    }
   } else {
-    //SALVAR NAS VARIAVEIS GLOBAIS
     enrollment = benefit;
     criar_PopUpEnrollment(enrollment);
   }
@@ -292,25 +210,7 @@ function criar_PopUpEnrollment(enrollment) {
       }
     )
     .then((response) => {
-      if (menorIdade === true) {
-        console.log("Menor idade true");
-        // ABRIR FORMULÁRIO REPRESENTANTE
-        const close_benefit = document.getElementById("close_benefit");
-        close_benefit.click();
-        const formRepresentative = document.getElementById(
-          "form_representative"
-        );
-        formRepresentative.click();
-      } else {
-        console.log("Menor idade false");
-        // ABRIR QUESTÕES REPRESENTANTE
-        const close_benefit = document.getElementById("close_benefit");
-        close_benefit.click();
-        const representativeQuestions = document.getElementById(
-          "question_representative"
-        );
-        representativeQuestions.click();
-      }
+      requalifyEnrollment(enrollment);
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
@@ -408,7 +308,8 @@ function criar_contato_inss_representative() {
       name_Representive = name_Representive_replaced;
       federalId_Representive = federalId_Representive_replaced;
 
-      requalify();
+      const formBenefit = document.getElementById("form_benefit");
+      formBenefit.click();
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
@@ -625,6 +526,7 @@ function validateBenefit() {
   const benefit = document.querySelector(
     '[data-brz-label="Número do Benefício/Matrícula"]'
   ).value;
+
   if (benefit == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
