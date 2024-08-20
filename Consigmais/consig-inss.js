@@ -421,6 +421,7 @@ function criar_contato_inss_representative() {
 
 //QUALIFICAÇÃO
 function qualification() {
+  const attemptsBenefit = localStorage.getItem("attemptsBenefit") || 0;
   var attempt = 0;
 
   function obterParametroDaURL(parametro) {
@@ -542,13 +543,34 @@ function qualification() {
             switch (situacao) {
               //INFORMAR MATRICULA
               case "informar-matricula":
-                URL_redirect = `/benefit?federalId=${federalId}`;
-                window.location.href = URL_redirect;
+                if (attemptsBenefit < 3) {
+                  URL_redirect = `/benefit?federalId=${federalId}`;
+                  window.location.href = URL_redirect;
+
+                  attemptsBenefit++;
+                  localStorage.setItem("attemptsBenefit", attemptsBenefit);
+                } else {
+                  window.open(
+                    "https://wa.me/558482001436?text=Ol%C3%A1%2C%20gostaria%20de%20concluir%20minha%20solicita%C3%A7%C3%A3o!",
+                    "_blank"
+                  );
+                }
                 break;
               //INFORMAR MATRICULA NOVAMENTE
               case "informar-matricula-valida":
-                URL_redirect = `/benefit?tp=valida`;
-                window.location.href = URL_redirect;
+                if (attemptsBenefit < 3) {
+                  URL_redirect = `/benefit?tp=valida`;
+                  window.location.href = URL_redirect;
+
+                  attemptsBenefit++;
+                  localStorage.setItem("attemptsBenefit", attemptsBenefit);
+                } else {
+                  window.open(
+                    "https://wa.me/558482001436?text=Ol%C3%A1%2C%20gostaria%20de%20concluir%20minha%20solicita%C3%A7%C3%A3o!",
+                    "_blank"
+                  );
+                }
+
                 break;
               //SOLICITAR IN100
               case "solicitar-in100":
