@@ -168,7 +168,10 @@ function validar_PopUpBenefit() {
     '[data-brz-label="Número do Benefício/Matrícula"]'
   ).value;
 
-  if (benefit && benefit.length != 10) {
+  if (benefit == ""){
+    showToast("Por favor, digite o número do benefício!");
+    return false;
+  } else if (benefit && benefit.length != 10) {
     showToast("O número do benefício deve conter 10 caracteres.");
     return false;
   } else if (benefit && !validarNumeroBeneficio(benefit)) {
