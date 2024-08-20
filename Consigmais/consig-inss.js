@@ -590,7 +590,7 @@ function registrarBenefit(enrollment) {
       }
     )
     .then((response) => {
-      requalifyEnrollment(enrollment);
+      requalify();
     })
     .catch(function (error) {
       button.removeAttribute("disabled");
