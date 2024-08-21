@@ -20,6 +20,10 @@ let leadId;
 let pipelineSlug;
 let menorIdade = false;
 
+function redirectWhatsapp() {
+  window.location.href = "https://api.whatsapp.com/send?phone=558482001436";
+}
+
 function callback(urlCallBack) {
   console.log(urlCallBack);
 
