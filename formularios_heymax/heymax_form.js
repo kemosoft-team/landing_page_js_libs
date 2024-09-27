@@ -15,7 +15,7 @@ function insertModalHTML(journeyId, urlParams) {
           width: 100%;
         "
       >
-        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}&${urlParams}&bvid=Cd14282577sg&urlReferrer=${urlReferrer}" width="100%" height="100%" frameborder="0"></iframe>
+        <iframe src="https://simule.faz.vc/formFGTS?id=${journeyId}&${urlParams}&urlReferrer=${urlReferrer}" width="100%" height="100%" frameborder="0"></iframe>
 
         <div class="btnClose">
           <svg
