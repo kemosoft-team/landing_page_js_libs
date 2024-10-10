@@ -4,7 +4,7 @@ var federalId = document.querySelector('[data-brz-label="CPF"]'),
     agency = document.querySelector('[data-brz-label="Agência"]'),
     dig = document.querySelector('[data-brz-label="Dígito"]'),
     account = document.querySelector('[data-brz-label="Conta"]'),
-    federalIdB = document.querySelector('[data-brz-label="CNPJ"]'),
+    federalIdB = document.querySelector('[data-brz-label="CPF/CNPJ"]'),
     cep = document.querySelector('[data-brz-label="CEP"]');
 
 
