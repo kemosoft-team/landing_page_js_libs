@@ -195,39 +195,33 @@ function getItemStorage() {
 }
 
 function validateContact() {
-  const fullName = document
-    .querySelector('input[data-brz-label="Nome completo"]')
-    .value.trim();
-  const federalId = document
-    .querySelector('input[data-brz-label="CPF"]')
-    .value.trim();
-  const birth = document
-    .querySelector('input[data-brz-label="Data de Nascimento"]')
-    .value.trim();
-  const whatsapp = document
-    .querySelector('input[data-brz-label="WhatsApp"]')
-    .value.trim();
+  const fullNameInput = document.querySelector('input[data-brz-label="Nome completo"]');
+  const federalIdInput = document.querySelector('input[data-brz-label="CPF"]');
+  const birthInput = document.querySelector('input[data-brz-label="Data de Nascimento"]');
+  const whatsappInput = document.querySelector('input[data-brz-label="WhatsApp"]');
 
-  console.log("data: ", fullName, federalId, birth, whatsapp);
+  const fullName = fullNameInput.value.trim();
+  const federalId = federalIdInput.value.trim();
+  const birth = birthInput.value.trim();
+  const whatsapp = whatsappInput.value.trim();
 
-  if (!fullName || !isValidFullName(fullName)) {
-    showToast(
-      "Por favor, insira seu nome completo (nome e sobrenome) com pelo menos uma letra após o espaço."
-    );
-    return false;
-  } else if (!validateCPF(federalId)) {
-    showToast("CPF inválido. Verifique e tente novamente.");
-    return false;
-  } else if (!isDateValid(birth)) {
-    showToast("Data de nascimento inválida.");
-    return false;
-  } else if (!validatePhone(whatsapp)) {
-    showToast("Número de WhatsApp inválido. Certifique-se e tente novamente!");
-    return false;
-  } else {
-    createContact(normalizeFullName(fullName), federalId, birth, whatsapp);
+  const validations = [
+    { check: () => !fullName || !isValidFullName(fullName), message: "Por favor, insira seu nome completo (nome e sobrenome) com pelo menos uma letra após o espaço." },
+    { check: () => !validateCPF(federalId), message: "CPF inválido. Verifique e tente novamente." },
+    { check: () => !isDateValid(birth), message: "Data de nascimento inválida." },
+    { check: () => !validatePhone(whatsapp), message: "Número de WhatsApp inválido. Certifique-se e tente novamente!" }
+  ];
+
+  for (const validation of validations) {
+    if (validation.check()) {
+      showToast(validation.message);
+      return false; // Para não limpar os campos
+    }
   }
+
+  createContact(normalizeFullName(fullName), federalId, birth, whatsapp);
 }
+
 
 async function createContact(fullName, federalId, birth, whatsapp) {
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
