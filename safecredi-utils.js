@@ -11,6 +11,17 @@ function showToast(text) {
   }, 3000);
 }
 
+function isValidFullName(name) {
+  const nameParts = name.split(" ");
+  if (nameParts.length < 2) return false;
+
+  return nameParts.every((part) => part.length > 0);
+}
+
+function normalizeFullName(name) {
+  return name.replace(/\s+/g, " ").trim();
+}
+
 function validatePhone(phone) {
   const numericPhone = phone.replace(/\D/g, "");
 
@@ -199,8 +210,10 @@ function validateContact() {
 
   console.log("data: ", fullName, federalId, birth, whatsapp);
 
-  if (!fullName) {
-    showToast("Por favor, insira seu nome completo.");
+  if (!fullName || !isValidFullName(fullName)) {
+    showToast(
+      "Por favor, insira seu nome completo (nome e sobrenome) com pelo menos uma letra após o espaço."
+    );
     return false;
   } else if (!validateCPF(federalId)) {
     showToast("CPF inválido. Verifique e tente novamente.");
@@ -209,12 +222,10 @@ function validateContact() {
     showToast("Data de nascimento inválida.");
     return false;
   } else if (!validatePhone(whatsapp)) {
-    showToast(
-      "Número de WhatsApp inválido. Certifique-se e tente novamente!"
-    );
+    showToast("Número de WhatsApp inválido. Certifique-se e tente novamente!");
     return false;
   } else {
-    createContact(fullName, federalId, birth, whatsapp);
+    createContact(normalizeFullName(fullName), federalId, birth, whatsapp);
   }
 }
 
