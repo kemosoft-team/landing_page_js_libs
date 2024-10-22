@@ -145,25 +145,33 @@ function isDateValid(dateString) {
   }
 
   const [, day, month, year] = dateString.match(datePattern);
-
   const dayInt = parseInt(day, 10);
   const monthInt = parseInt(month, 10);
   const yearInt = parseInt(year, 10);
 
-  if (yearInt < 1900 || yearInt > 2099) {
+  if (yearInt < 1900 || yearInt > 2030) {
     return false;
   }
 
   const date = new Date(yearInt, monthInt - 1, dayInt);
+
   if (
-    date.getDate() === dayInt &&
-    date.getMonth() === monthInt - 1 &&
-    date.getFullYear() === yearInt
+    date.getDate() !== dayInt ||
+    date.getMonth() !== monthInt - 1 ||
+    date.getFullYear() !== yearInt
   ) {
-    return true;
+    return false;
   }
 
-  return false;
+  const today = new Date();
+  const age = today.getFullYear() - yearInt;
+
+  const hasHadBirthdayThisYear =
+    today.getMonth() > monthInt - 1 ||
+    (today.getMonth() === monthInt - 1 && today.getDate() >= dayInt);
+
+  const finalAge = hasHadBirthdayThisYear ? age : age - 1;
+  return finalAge >= 18 && finalAge <= 75;
 }
 
 function redirectToWhatsApp(phone, message) {
@@ -233,7 +241,7 @@ function validateContact() {
   for (const validation of validations) {
     if (validation.check()) {
       showToast(validation.message);
-      return false; 
+      return false;
     }
   }
 
