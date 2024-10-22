@@ -288,7 +288,7 @@ async function createContact(fullName, federalId, birth, whatsapp) {
     .catch(function (error) {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
-      span.textContent = "ACEITAR E CONTINUAR";
+      span.textContent = "SIMULAR AGORA";
       showToast(error.response.data.message);
     });
 }
