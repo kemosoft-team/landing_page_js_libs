@@ -195,10 +195,16 @@ function getItemStorage() {
 }
 
 function validateContact() {
-  const fullNameInput = document.querySelector('input[data-brz-label="Nome completo"]');
+  const fullNameInput = document.querySelector(
+    'input[data-brz-label="Nome completo"]'
+  );
   const federalIdInput = document.querySelector('input[data-brz-label="CPF"]');
-  const birthInput = document.querySelector('input[data-brz-label="Data de Nascimento"]');
-  const whatsappInput = document.querySelector('input[data-brz-label="WhatsApp"]');
+  const birthInput = document.querySelector(
+    'input[data-brz-label="Data de Nascimento"]'
+  );
+  const whatsappInput = document.querySelector(
+    'input[data-brz-label="WhatsApp"]'
+  );
 
   const fullName = fullNameInput.value.trim();
   const federalId = federalIdInput.value.trim();
@@ -206,22 +212,33 @@ function validateContact() {
   const whatsapp = whatsappInput.value.trim();
 
   const validations = [
-    { check: () => !fullName || !isValidFullName(fullName), message: "Por favor, insira seu nome completo (nome e sobrenome) com pelo menos uma letra após o espaço." },
-    { check: () => !validateCPF(federalId), message: "CPF inválido. Verifique e tente novamente." },
-    { check: () => !isDateValid(birth), message: "Data de nascimento inválida." },
-    { check: () => !validatePhone(whatsapp), message: "Número de WhatsApp inválido. Certifique-se e tente novamente!" }
+    {
+      check: () => !fullName || !isValidFullName(fullName),
+      message: "Por favor, insira seu nome completo.",
+    },
+    {
+      check: () => !validateCPF(federalId),
+      message: "CPF inválido. Verifique e tente novamente.",
+    },
+    {
+      check: () => !isDateValid(birth),
+      message: "Data de nascimento inválida.",
+    },
+    {
+      check: () => !validatePhone(whatsapp),
+      message: "Número de WhatsApp inválido. Certifique-se e tente novamente!",
+    },
   ];
 
   for (const validation of validations) {
     if (validation.check()) {
       showToast(validation.message);
-      return false; // Para não limpar os campos
+      return false; 
     }
   }
 
   createContact(normalizeFullName(fullName), federalId, birth, whatsapp);
 }
-
 
 async function createContact(fullName, federalId, birth, whatsapp) {
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
@@ -256,7 +273,7 @@ async function createContact(fullName, federalId, birth, whatsapp) {
     .then((response) => {
       setItemStorage(fullName, federalId);
 
-      const phone = "+5599999999999";
+      const phone = "+558440421006";
       const message = "Olá! Gostaria de concluir a minha simulação!";
       redirectToWhatsApp(phone, message);
     })
