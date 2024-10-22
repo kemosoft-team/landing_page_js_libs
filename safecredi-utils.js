@@ -1,6 +1,6 @@
 //API url
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
-let API_KEY = "";
+let API_KEY = "d2595887-d17c-4099-a7f4-6fb1bc5419a5";
 
 function showToast(text) {
   var x = document.getElementById("snackbar");
