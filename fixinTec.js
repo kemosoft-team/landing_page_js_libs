@@ -20,25 +20,6 @@ function normalizeFullName(name) {
   return name.replace(/\s+/g, " ").trim();
 }
 
-function validatePhone(phone) {
-  const numericPhone = phone.replace(/\D/g, "");
-  if (numericPhone.length !== 11) return false;
-
-  const validDDDs = [
-    /* Lista de DDDs válidos... */
-  ];
-  const firstTwoDigits = numericPhone.substring(0, 2);
-  if (!validDDDs.includes(firstTwoDigits)) return false;
-
-  if (numericPhone[2] !== "9") return false;
-
-  const firstDigit = numericPhone[0];
-  if (numericPhone.split("").every((digit) => digit === firstDigit))
-    return false;
-
-  return true;
-}
-
 function validateEmail(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
@@ -92,10 +73,6 @@ function validateContact() {
     {
       check: () => !isValidFullName(fullName),
       message: "Por favor, insira um nome completo válido.",
-    },
-    {
-      check: () => !validatePhone(whatsapp),
-      message: "Número de WhatsApp inválido. Certifique-se e tente novamente!",
     },
     {
       check: () => !validateEmail(email),
