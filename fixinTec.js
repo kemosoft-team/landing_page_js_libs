@@ -64,25 +64,29 @@ async function getUserIP() {
 }
 
 function validateContact() {
-  const fullNameInput = document.querySelector(
-    'input[data-brz-label="Nome completo"]'
-  );
+  const fullNameInput = document.querySelector('input[data-brz-label="Nome"]');
   const whatsappInput = document.querySelector(
     'input[data-brz-label="WhatsApp"]'
   );
-  const emailInput = document.querySelector('input[data-brz-label="Email"]');
+  const emailInput = document.querySelector('input[data-brz-type="Email"]');
+
+  // Captura o valor renderizado para "Tipo do Serviço"
   const tipoServicoInput = document.querySelector(
-    'input[data-brz-label="Tipo de Serviço"]'
+    "#select2-gnpLz98n616K_56b1a469c591730c47ec-container"
   );
+  const tipoServico = tipoServicoInput
+    ? tipoServicoInput.textContent.trim()
+    : "";
+
+  // Captura o valor renderizado para "Etapa da obra"
   const etapaObraInput = document.querySelector(
-    'input[data-brz-label="Etapa da Obra"]'
+    "#select2-iKYUW2eh_Dkc_2fc0a4f7ff863333d32c-container"
   );
+  const etapaObra = etapaObraInput ? etapaObraInput.textContent.trim() : "";
 
   const fullName = fullNameInput.value.trim();
   const whatsapp = whatsappInput.value.trim();
   const email = emailInput.value.trim();
-  const tipoServico = tipoServicoInput.value.trim();
-  const etapaObra = etapaObraInput.value.trim();
 
   const validations = [
     { check: () => !fullName, message: "Por favor, insira seu nome completo." },
@@ -162,7 +166,7 @@ async function createContact(
       referrer: document.referrer,
     })
     .then((response) => {
-      const phone = "+5584981365810"; 
+      const phone = "+5584981365810";
       const message =
         "Olá, vim pelo site e gostaria de falar com um especialista sobre Automações!";
       redirectToWhatsApp(phone, message);
