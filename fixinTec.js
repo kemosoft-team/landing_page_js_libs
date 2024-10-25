@@ -86,41 +86,42 @@ function validateContact() {
 }
 
 async function createContact(fullName, whatsapp, email, tipoServico, etapaObra) {
-  // Obter parâmetros da URL
-  const urlParams = getURLParams();
-
-  const button = document.querySelector(".submit");
-  const spinner = button.querySelector(".brz-form-spinner");
-  const span = button.querySelector(".brz-span.brz-text__editor");
-
-  button.setAttribute("disabled", true);
-  spinner.classList.remove("brz-invisible");
-  span.textContent = "";
-
-  const userIP = await getUserIP();
-
-  axios
-    .post(API_URL, {
-      nome: fullName,
-      telefone: whatsapp,
-      email: email,
-      tipoServico: tipoServico,
-      etapaObra: etapaObra,
-      client: urlParams,
-      ip: userIP,
-      userAgent: navigator.userAgent,
-      referrer: document.referrer,
-    })
-    .then((response) => {
-      const phone = "+5584981365810";
-      const message =
-        "Olá, vim pelo site e gostaria de falar com um especialista sobre Automações!";
-      redirectToWhatsApp(phone, message);
-    })
-    .catch((error) => {
-      button.removeAttribute("disabled");
-      spinner.classList.add("brz-invisible");
-      showToast("Ocorreu um erro. Tente novamente.");
-      console.error("Erro ao criar contato:", error);
-    });
-}
+    // Obter parâmetros da URL
+    const urlParams = getURLParams();
+  
+    // Obter informações adicionais
+    const userIP = await getUserIP();
+    urlParams.ip = userIP;
+    urlParams.userAgent = navigator.userAgent;
+    urlParams.referrer = document.referrer;
+  
+    const button = document.querySelector(".submit");
+    const spinner = button.querySelector(".brz-form-spinner");
+    const span = button.querySelector(".brz-span.brz-text__editor");
+  
+    button.setAttribute("disabled", true);
+    spinner.classList.remove("brz-invisible");
+    span.textContent = "";
+  
+    axios
+      .post(API_URL, {
+        nome: fullName,
+        telefone: whatsapp,
+        email: email,
+        tipoServico: tipoServico,
+        etapaObra: etapaObra,
+        client: JSON.stringify(urlParams), // Transformando client em JSON string com informações adicionais
+      })
+      .then((response) => {
+        const phone = "+5584981365810";
+        const message =
+          "Olá, vim pelo site e gostaria de falar com um especialista sobre Automações!";
+        redirectToWhatsApp(phone, message);
+      })
+      .catch((error) => {
+        button.removeAttribute("disabled");
+        spinner.classList.add("brz-invisible");
+        showToast("Ocorreu um erro. Tente novamente.");
+        console.error("Erro ao criar contato:", error);
+      });
+  }
