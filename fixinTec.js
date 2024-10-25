@@ -1,4 +1,4 @@
-// Nova URL da API
+// URL da API
 let API_URL = "https://n8n-01-webhook.kemosoft.com.br/webhook/fixin";
 
 function showToast(text) {
@@ -44,6 +44,16 @@ async function getUserIP() {
   }
 }
 
+// Função para obter os parâmetros da URL
+function getURLParams() {
+  const params = {};
+  const urlParams = new URLSearchParams(window.location.search);
+  urlParams.forEach((value, key) => {
+    params[key] = value;
+  });
+  return params;
+}
+
 function validateContact() {
   const fullNameInput = document.querySelector('[data-brz-label="Nome"]').value;
   const whatsappInput = document.querySelector('[data-brz-label="WhatsApp"]').value;
@@ -51,33 +61,18 @@ function validateContact() {
   const tipoServico = document.querySelector('[data-brz-label="Tipo do Serviço"]').value;
   const etapaObra = document.querySelector('[data-brz-label="Etapa da obra"]').value;
 
-  const fullName = fullNameInput
-  const whatsapp = whatsappInput
-  const email = emailInput
+  const fullName = normalizeFullName(fullNameInput);
+  const whatsapp = whatsappInput;
+  const email = emailInput;
 
   const validations = [
     { check: () => !fullName, message: "Por favor, insira seu nome completo." },
-    {
-      check: () => !whatsapp,
-      message: "Por favor, insira seu número de WhatsApp.",
-    },
+    { check: () => !whatsapp, message: "Por favor, insira seu número de WhatsApp." },
     { check: () => !email, message: "Por favor, insira seu email." },
-    {
-      check: () => !tipoServico,
-      message: "Por favor, selecione um tipo de serviço.",
-    },
-    {
-      check: () => !etapaObra,
-      message: "Por favor, selecione a etapa da obra.",
-    },
-    {
-      check: () => !isValidFullName(fullName),
-      message: "Por favor, insira um nome completo válido.",
-    },
-    {
-      check: () => !validateEmail(email),
-      message: "Email inválido. Por favor, insira um email válido.",
-    },
+    { check: () => !tipoServico, message: "Por favor, selecione um tipo de serviço." },
+    { check: () => !etapaObra, message: "Por favor, selecione a etapa da obra." },
+    { check: () => !isValidFullName(fullName), message: "Por favor, insira um nome completo válido." },
+    { check: () => !validateEmail(email), message: "Email inválido. Por favor, insira um email válido." },
   ];
 
   for (const validation of validations) {
@@ -87,22 +82,10 @@ function validateContact() {
     }
   }
 
-  createContact(
-    normalizeFullName(fullName),
-    whatsapp,
-    email,
-    tipoServico,
-    etapaObra
-  );
+  createContact(fullName, whatsapp, email, tipoServico, etapaObra);
 }
 
-async function createContact(
-  fullName,
-  whatsapp,
-  email,
-  tipoServico,
-  etapaObra
-) {
+async function createContact(fullName, whatsapp, email, tipoServico, etapaObra) {
   // Obter parâmetros da URL
   const urlParams = getURLParams();
 
