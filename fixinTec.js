@@ -64,29 +64,15 @@ async function getUserIP() {
 }
 
 function validateContact() {
-  const fullNameInput = document.querySelector('input[data-brz-label="Nome"]');
-  const whatsappInput = document.querySelector(
-    'input[data-brz-label="WhatsApp"]'
-  );
-  const emailInput = document.querySelector('input[data-brz-type="Email"]');
+  const fullNameInput = document.querySelector('[data-brz-label="Nome"]').value;
+  const whatsappInput = document.querySelector('[data-brz-label="WhatsApp"]').value;
+  const emailInput = document.querySelector('[data-brz-type="Email"]').value;
+  const tipoServico = document.querySelector('[data-brz-label="Tipo do Serviço"]').value;
+  const etapaObra = document.querySelector('[data-brz-label="Etapa da obra"]').value;
 
-  // Captura o valor renderizado para "Tipo do Serviço"
-  const tipoServicoInput = document.querySelector(
-    "#select2-gnpLz98n616K_56b1a469c591730c47ec-container"
-  );
-  const tipoServico = tipoServicoInput
-    ? tipoServicoInput.textContent.trim()
-    : "";
-
-  // Captura o valor renderizado para "Etapa da obra"
-  const etapaObraInput = document.querySelector(
-    "#select2-iKYUW2eh_Dkc_2fc0a4f7ff863333d32c-container"
-  );
-  const etapaObra = etapaObraInput ? etapaObraInput.textContent.trim() : "";
-
-  const fullName = fullNameInput.value.trim();
-  const whatsapp = whatsappInput.value.trim();
-  const email = emailInput.value.trim();
+  const fullName = fullNameInput
+  const whatsapp = whatsappInput
+  const email = emailInput
 
   const validations = [
     { check: () => !fullName, message: "Por favor, insira seu nome completo." },
