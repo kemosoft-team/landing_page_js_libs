@@ -56,10 +56,16 @@ function getURLParams() {
 
 function validateContact() {
   const fullNameInput = document.querySelector('[data-brz-label="Nome"]').value;
-  const whatsappInput = document.querySelector('[data-brz-label="WhatsApp"]').value;
+  const whatsappInput = document.querySelector(
+    '[data-brz-label="WhatsApp"]'
+  ).value;
   const emailInput = document.querySelector('[data-brz-type="Email"]').value;
-  const tipoServico = document.querySelector('[data-brz-label="Tipo do Serviço"]').value;
-  const etapaObra = document.querySelector('[data-brz-label="Etapa da obra"]').value;
+  const tipoServico = document.querySelector(
+    '[data-brz-label="Tipo do Serviço"]'
+  ).value;
+  const etapaObra = document.querySelector(
+    '[data-brz-label="Etapa da obra"]'
+  ).value;
 
   const fullName = normalizeFullName(fullNameInput);
   const whatsapp = whatsappInput;
@@ -67,12 +73,27 @@ function validateContact() {
 
   const validations = [
     { check: () => !fullName, message: "Por favor, insira seu nome completo." },
-    { check: () => !whatsapp, message: "Por favor, insira seu número de WhatsApp." },
+    {
+      check: () => !whatsapp,
+      message: "Por favor, insira seu número de WhatsApp.",
+    },
     { check: () => !email, message: "Por favor, insira seu email." },
-    { check: () => !tipoServico, message: "Por favor, selecione um tipo de serviço." },
-    { check: () => !etapaObra, message: "Por favor, selecione a etapa da obra." },
-    { check: () => !isValidFullName(fullName), message: "Por favor, insira um nome completo válido." },
-    { check: () => !validateEmail(email), message: "Email inválido. Por favor, insira um email válido." },
+    {
+      check: () => !tipoServico,
+      message: "Por favor, selecione um tipo de serviço.",
+    },
+    {
+      check: () => !etapaObra,
+      message: "Por favor, selecione a etapa da obra.",
+    },
+    {
+      check: () => !isValidFullName(fullName),
+      message: "Por favor, insira um nome completo válido.",
+    },
+    {
+      check: () => !validateEmail(email),
+      message: "Email inválido. Por favor, insira um email válido.",
+    },
   ];
 
   for (const validation of validations) {
@@ -85,43 +106,49 @@ function validateContact() {
   createContact(fullName, whatsapp, email, tipoServico, etapaObra);
 }
 
-async function createContact(fullName, whatsapp, email, tipoServico, etapaObra) {
-    // Obter parâmetros da URL
-    const urlParams = getURLParams();
-  
-    // Obter informações adicionais
-    const userIP = await getUserIP();
-    urlParams.ip = userIP;
-    urlParams.userAgent = navigator.userAgent;
-    urlParams.referrer = document.referrer;
-  
-    const button = document.querySelector(".submit");
-    const spinner = button.querySelector(".brz-form-spinner");
-    const span = button.querySelector(".brz-span.brz-text__editor");
-  
-    button.setAttribute("disabled", true);
-    spinner.classList.remove("brz-invisible");
-    span.textContent = "";
-  
-    axios
-      .post(API_URL, {
-        nome: fullName,
-        telefone: whatsapp,
-        email: email,
-        tipoServico: tipoServico,
-        etapaObra: etapaObra,
-        client: JSON.stringify(urlParams), // Transformando client em JSON string com informações adicionais
-      })
-      .then((response) => {
-        const phone = "+5584981365810";
-        const message =
-          "Olá, vim pelo site e gostaria de falar com um especialista sobre Automações!";
-        redirectToWhatsApp(phone, message);
-      })
-      .catch((error) => {
-        button.removeAttribute("disabled");
-        spinner.classList.add("brz-invisible");
-        showToast("Ocorreu um erro. Tente novamente.");
-        console.error("Erro ao criar contato:", error);
-      });
-  }
+async function createContact(
+  fullName,
+  whatsapp,
+  email,
+  tipoServico,
+  etapaObra
+) {
+  // Obter parâmetros da URL
+  const urlParams = getURLParams();
+
+  // Obter informações adicionais
+  const userIP = await getUserIP();
+  urlParams.ip = userIP;
+  urlParams.userAgent = navigator.userAgent;
+  urlParams.referrer = document.referrer;
+
+  const button = document.querySelector(".submit");
+  const spinner = button.querySelector(".brz-form-spinner");
+  const span = button.querySelector(".brz-span.brz-text__editor");
+
+  button.setAttribute("disabled", true);
+  spinner.classList.remove("brz-invisible");
+  span.textContent = "";
+
+  axios
+    .post(API_URL, {
+      nome: fullName,
+      telefone: whatsapp,
+      email: email,
+      tipoServico: tipoServico,
+      etapaObra: etapaObra,
+      client: urlParams, 
+    })
+    .then((response) => {
+      const phone = "+5584981365810";
+      const message =
+        "Olá, vim pelo site e gostaria de falar com um especialista sobre Automações!";
+      redirectToWhatsApp(phone, message);
+    })
+    .catch((error) => {
+      button.removeAttribute("disabled");
+      spinner.classList.add("brz-invisible");
+      showToast("Ocorreu um erro. Tente novamente.");
+      console.error("Erro ao criar contato:", error);
+    });
+}
