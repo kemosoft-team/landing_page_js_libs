@@ -150,7 +150,7 @@ function validateContact() {
     '[data-brz-label="Nome completo"]'
   ).value;
   const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
-  const federalId = document.querySelector('[data-brz-type="CPF"]').value;
+  const federalId = document.querySelector('[data-brz-label="CPF"]').value;
 
   if (fullName == "" || whatsapp == "" || federalId == "") {
     showToast("Por favor, preencha todos os campos.");
