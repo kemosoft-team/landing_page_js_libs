@@ -206,8 +206,8 @@ function criar_contato(fullName, whatsapp, federalId) {
       }
     )
     .then((response) => {
-      const phone = "+55";
-      const message = "Olá, #";
+      const phone = "+558440421006";
+      const message = "Olá! Gostaria de saber mais sobre a antecipação salarial.";
       redirectToWhatsApp(phone, message);
     })
     .catch((error) => {
