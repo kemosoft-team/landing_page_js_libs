@@ -180,7 +180,7 @@ function criar_contato(fullName, whatsapp, federalId) {
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
   const name_replaced = fullName.replace(/\s+/g, " ");
 
-  const button = document.querySelector(".submit");
+  const button = document.querySelector(".submit-gov-ce");
   const spinner = button.querySelector(".brz-form-spinner");
   const span = button.querySelector(".brz-span.brz-text__editor");
 
