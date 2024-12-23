@@ -169,13 +169,6 @@ function validateContact() {
     return false;
   }
 
-  for (const validation of validations) {
-    if (validation.check()) {
-      showToast(validation.message);
-      return false;
-    }
-  }
-
   criar_contato(fullName, whatsapp, federalId);
 }
 
