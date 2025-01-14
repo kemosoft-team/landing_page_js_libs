@@ -174,7 +174,7 @@ function validateContact() {
 
 function criar_contato(fullName, whatsapp, federalId) {
   //CONFIG
-  const pipeline_slug = "gov-ce";
+  const pipeline_slug = "crefisa";
 
   /* REPLACE */
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
