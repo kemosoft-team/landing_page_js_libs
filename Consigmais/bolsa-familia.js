@@ -207,7 +207,7 @@ function criar_contato(fullName, whatsapp, federalId) {
       }
     )
     .then((response) => {
-      const phone = "+558440421006";
+      const phone = "+554198704123";
       const message = "Olá! Gostaria de fazer uma simulação!";
       redirectToWhatsApp(phone, message);
     })
