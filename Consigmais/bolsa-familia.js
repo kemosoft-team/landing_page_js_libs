@@ -138,7 +138,10 @@ function validatePhone(phone) {
 }
 
 /* scripts */
-function redirectToWhatsApp(phone, message) {
+function redirectToWhatsApp() {
+  const phone = "+554198704123";
+  const message = "Olá! Gostaria de fazer uma simulação!";
+
   const numericPhone = phone.replace(/\D/g, "");
   const encodedMessage = encodeURIComponent(message);
   const whatsappURL = `https://api.whatsapp.com/send?phone=${numericPhone}&text=${encodedMessage}`;
@@ -172,7 +175,23 @@ function validateContact() {
   criar_contato(fullName, whatsapp, federalId);
 }
 
-function criar_contato(fullName, whatsapp, federalId) {
+async function verify_proxima_etapa(pipeline_slug, federalId) {
+  return axios
+    .get(`${API_URL}/v1/proxima-etapa/${pipeline_slug}/${federalId}`, {
+      headers: {
+        "api-key": API_KEY,
+      },
+    })
+    .then((response) => {
+      return response.data.etapaFunil === "inexistente";
+    })
+    .catch((error) => {
+      console.error("Erro ao verificar a próxima etapa:", error);
+      return false;
+    });
+}
+
+async function criar_contato(fullName, whatsapp, federalId) {
   //CONFIG
   const pipeline_slug = "crefisa";
 
@@ -187,6 +206,13 @@ function criar_contato(fullName, whatsapp, federalId) {
   button.setAttribute("disabled", true);
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
+
+  const isNovoLead = await verify_proxima_etapa(pipeline_slug, federalId_replaced);
+
+  if (!isNovoLead) {
+    redirectToWhatsApp();
+    return;
+  }
 
   axios
     .post(
@@ -203,13 +229,12 @@ function criar_contato(fullName, whatsapp, federalId) {
       {
         headers: {
           "api-key": API_KEY,
+          "x-source": "lp",
         },
       }
     )
     .then((response) => {
-      const phone = "+554198704123";
-      const message = "Olá! Gostaria de fazer uma simulação!";
-      redirectToWhatsApp(phone, message);
+      redirectToWhatsApp();
     })
     .catch((error) => {
       button.removeAttribute("disabled");
