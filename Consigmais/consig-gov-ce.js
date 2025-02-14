@@ -198,7 +198,7 @@ function criar_contato(fullName, whatsapp, federalId) {
         funil: pipeline_slug,
         urlOrigem: window.location.href,
         urlReferencia: document.referrer,
-        naoQualificar: false,
+        naoQualificar: true,
       },
       {
         headers: {
