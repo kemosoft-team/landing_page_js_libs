@@ -145,7 +145,7 @@ function redirectToWhatsApp(phone, message) {
   window.location.href = whatsappURL;
 }
 
-function validateContact() {
+async function validateContact() {
   const fullName = document.querySelector(
     '[data-brz-label="Nome completo"]'
   ).value;
@@ -169,10 +169,10 @@ function validateContact() {
     return false;
   }
 
-  criar_contato(fullName, whatsapp, federalId);
+  await criar_contato(fullName, whatsapp, federalId);
 }
 
-function criar_contato(fullName, whatsapp, federalId) {
+async function criar_contato(fullName, whatsapp, federalId) {
   //CONFIG
   const pipeline_slug = "gov-ce";
 
@@ -188,8 +188,8 @@ function criar_contato(fullName, whatsapp, federalId) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
-  axios
-    .post(
+  try {
+    const response = await axios.post(
       API_URL + "/v2/criar-contato",
       {
         nome: name_replaced,
@@ -206,16 +206,16 @@ function criar_contato(fullName, whatsapp, federalId) {
           "x-source": "lp",
         },
       }
-    )
-    .then((response) => {
-      const phone = "+558440421006";
-      const message = "Olá! Gostaria de fazer uma simulação!";
-      redirectToWhatsApp(phone, message);
-    })
-    .catch((error) => {
-      button.removeAttribute("disabled");
-      spinner.classList.add("brz-invisible");
-      showToast("Ocorreu um erro. Tente novamente.");
-      console.error("Erro ao criar contato:", error);
-    });
+    );
+
+    const phone = "+558440421006";
+    const message = "Olá! Gostaria de fazer uma simulação!";
+    redirectToWhatsApp(phone, message);
+  } catch (error) {
+    button.removeAttribute("disabled");
+    spinner.classList.add("brz-invisible");
+    showToast("Ocorreu um erro. Tente novamente.");
+    console.error("Erro ao criar contato:", error);
+  }
 }
+
