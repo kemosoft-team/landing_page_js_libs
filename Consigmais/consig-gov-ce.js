@@ -183,9 +183,12 @@ async function criar_contato(fullName, whatsapp, federalId) {
   const button = document.querySelector(".submit-gov-ce");
   const spinner = button.querySelector(".brz-form-spinner");
   const span = button.querySelector(".brz-span.brz-text__editor");
+  const icon = document.querySelector('svg.brz-icon-svg');
+
 
   button.setAttribute("disabled", true);
   spinner.classList.remove("brz-invisible");
+  icon.style.display = 'none'; // remove icon de check
   span.textContent = "";
 
   try {
@@ -214,6 +217,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
   } catch (error) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
+    icon.style.display = ''; // remove icon de check
     showToast("Ocorreu um erro. Tente novamente.");
     console.error("Erro ao criar contato:", error);
   }
