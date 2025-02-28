@@ -155,6 +155,18 @@ async function validateContact() {
     '[data-brz-label="Selecione seu cônvenio"]'
   ).value;
 
+  let funil;
+
+  if (covenant === "Governo do Ceará") {
+    funil = "gov-ce";
+  } else if (covenant === "Governo do Rio Grande do Norte") {
+    funil = "gov-rn";
+  } else if (covenant === "Prefeitura de Cabo Frio/RJ") {
+    funil = "cabo-frio-rj";
+  } else {
+    funil = undefined;
+  }
+
   if (fullName == "" || whatsapp == "" || federalId == "" || covenant == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
@@ -172,7 +184,7 @@ async function validateContact() {
     return false;
   }
 
-  await criar_contato(fullName, whatsapp, federalId, covenant);
+  await criar_contato(fullName, whatsapp, federalId, funil);
 }
 
 async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
