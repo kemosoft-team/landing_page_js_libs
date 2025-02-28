@@ -172,7 +172,7 @@ async function validateContact() {
     return false;
   }
 
-  await criar_contato(fullName, whatsapp, federalId);
+  await criar_contato(fullName, whatsapp, federalId, covenant);
 }
 
 async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
