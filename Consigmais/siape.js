@@ -195,7 +195,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
     nome: name_replaced,
     telefone: whatsapp,
     cpf: federalId_replaced,
-    funil: pipeline_slug,
+    funil: 'teste',
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
     naoQualificar: false,
@@ -235,18 +235,13 @@ async function criar_contato(fullName, whatsapp, federalId) {
 async function logError(endpoint, payload, error_message, slug) {
   try {
     await axios.post(
-      "https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1/error_logs", 
+      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error", 
       {
         endpoint,
         payload,
         error_message,
         slug
       },
-      {
-        headers: {
-          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndGxocXF1amtkamZpamFibm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMjEwMDUsImV4cCI6MjA1OTc5NzAwNX0.bgS66g-Up_-d_nndzpuljof3VWbUQBmKrzQHCSnslmI",
-        }
-      }
     );
   } catch (e) {
     console.warn("Erro ao registrar o log de erro:", e);
