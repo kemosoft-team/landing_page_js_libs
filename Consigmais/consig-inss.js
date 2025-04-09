@@ -110,26 +110,26 @@ function criar_contato_inss() {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
+  const endpoint = "/v2/criar-contato";
+
+  const payload = {
+    nome: name_replaced,
+    telefone: phone,
+    cpf: federalId_replaced,
+    dataNascimento: birth,
+    funil: pipeline_slug,
+    urlOrigem: origin,
+    urlReferencia: referrer,
+    naoQualificar: true,
+  };
+
   axios
-    .post(
-      API_URL + "/v2/criar-contato",
-      {
-        nome: name_replaced,
-        telefone: phone,
-        cpf: federalId_replaced,
-        dataNascimento: birth,
-        funil: pipeline_slug,
-        urlOrigem: origin,
-        urlReferencia: referrer,
-        naoQualificar: true,
+    .post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
+        "x-source": "lp",
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-          "x-source": "lp",
-        },
-      }
-    )
+    })
     .then((response) => {
       leadId = response.data.id;
       pipelineSlug = pipeline_slug;
@@ -142,38 +142,43 @@ function criar_contato_inss() {
         leadId: leadId,
       });
 
-      //ENVIAR CUSTOM ID CLARITY
+      // ENVIAR CUSTOM ID CLARITY
       const customId = federalId_replaced;
       window.clarity("identify", customId);
 
       if (menorIdade === true) {
         // ABRIR FORMULÁRIO REPRESENTANTE
-        const formRepresentative = document.getElementById(
-          "form_representative"
-        );
+        const formRepresentative = document.getElementById("form_representative");
         formRepresentative.click();
       } else {
         // ABRIR QUESTÕES REPRESENTANTE
-        const representativeQuestions = document.getElementById(
-          "question_representative"
-        );
+        const representativeQuestions = document.getElementById("question_representative");
         representativeQuestions.click();
       }
     })
-    .catch(function (error) {
+    .catch(async function (error) {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
       span.textContent = "ACEITAR E CONTINUAR";
-      showToast(error.response.data.message);
+      showToast(error.response?.data?.message || "Ocorreu um erro. Tente novamente.");
+      console.error("Erro ao criar contato INSS:", error);
+
+      await logError(
+        endpoint,
+        payload,
+        error?.message || "Erro desconhecido",
+        pipeline_slug
+      );
     });
 }
+
 
 function validar_PopUpBenefit() {
   const benefit = document.querySelector(
     '[data-brz-label="Número do Benefício/Matrícula"]'
   ).value;
 
-  if (benefit == ""){
+  if (benefit == "") {
     showToast("Por favor, digite o número do benefício!");
     return false;
   } else if (benefit && benefit.length != 10) {
@@ -204,30 +209,39 @@ function criar_PopUpEnrollment(enrollment) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
+  const endpoint = "/v2/registrar-dados-empregaticios";
+
+  const payload = {
+    cpf: federalId,
+    matricula: enrollment,
+  };
+
   axios
-    .post(
-      API_URL + "/v2/registrar-dados-empregaticios",
-      {
-        cpf: federalId,
-        matricula: enrollment,
+    .post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-        },
-      }
-    )
+    })
     .then((response) => {
       requalify();
       showLoader();
     })
-    .catch(function (error) {
+    .catch(async function (error) {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
       span.textContent = "Confirmar e Continuar";
       showToast(error.response.data.message);
+      console.error("Erro ao registrar dados empregatícios:", error);
+
+      await logError(
+        endpoint,
+        payload,
+        error?.message || "Erro desconhecido",
+        "inss"
+      );
     });
 }
+
 
 function validar_contato_inss_representative() {
   const name_RepresentiveElement = document.querySelector(
@@ -278,14 +292,9 @@ function validar_contato_inss_representative() {
 function criar_contato_inss_representative() {
   /* REPLACE */
   const name_Representive_replaced = name_Representive.replace(/\s+/g, " ");
-  const federalId_Representive_replaced = federalId_Representive.replace(
-    /[^\d]/g,
-    ""
-  );
+  const federalId_Representive_replaced = federalId_Representive.replace(/[^\d]/g, "");
 
-  const button = document.querySelector(
-    ".brz-btn-submit.submit_form_representative"
-  );
+  const button = document.querySelector(".brz-btn-submit.submit_form_representative");
   const spinner = button.querySelector(".brz-form-spinner");
   const span = button.querySelector(".brz-span.brz-text__editor");
 
@@ -293,26 +302,26 @@ function criar_contato_inss_representative() {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
+  const endpoint = "/v2/criar-contato";
+
+  const payload = {
+    nome: name,
+    telefone: phone,
+    cpf: federalId,
+    dataNascimento: birth,
+    nomeRepresentante: name_Representive_replaced,
+    cpfRepresentante: federalId_Representive_replaced,
+    funil: pipelineSlug,
+    urlOrigem: origin,
+    urlReferencia: referrer,
+  };
+
   axios
-    .post(
-      API_URL + "/v2/criar-contato",
-      {
-        nome: name,
-        telefone: phone,
-        cpf: federalId,
-        dataNascimento: birth,
-        nomeRepresentante: name_Representive_replaced,
-        cpfRepresentante: federalId_Representive_replaced,
-        funil: pipelineSlug,
-        urlOrigem: origin,
-        urlReferencia: referrer,
+    .post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-        },
-      }
-    )
+    })
     .then((response) => {
       name_Representive = name_Representive_replaced;
       federalId_Representive = federalId_Representive_replaced;
@@ -320,13 +329,22 @@ function criar_contato_inss_representative() {
       const formBenefit = document.getElementById("form_benefit");
       formBenefit.click();
     })
-    .catch(function (error) {
+    .catch(async function (error) {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
       span.textContent = "Confirmar e Continuar";
       showToast(error.response.data.message);
+      console.error("Erro ao criar contato do representante:", error);
+
+      await logError(
+        endpoint,
+        payload,
+        error?.message || "Erro desconhecido",
+        "inss"
+      );
     });
 }
+
 
 //QUALIFICAÇÃO
 function qualification() {
@@ -351,8 +369,7 @@ function qualification() {
     const dataQualificationJSON = JSON.stringify(dataQualification);
     localStorage.setItem("dataQualification", dataQualificationJSON);
   } else {
-    const dataQualificationLocalStorage =
-      localStorage.getItem("dataQualification");
+    const dataQualificationLocalStorage = localStorage.getItem("dataQualification");
     if (dataQualificationLocalStorage) {
       const storedDataQualification = JSON.parse(dataQualificationLocalStorage);
       pipelineSlug = storedDataQualification.pipelineSlug;
@@ -363,8 +380,10 @@ function qualification() {
   }
 
   const sendRequest = () => {
+    const endpoint = `/v1/proxima-etapa/${pipelineSlug}/${federalId}`;
+
     axios
-      .get(`${API_URL}/v1/proxima-etapa/${pipelineSlug}/${federalId}`, {
+      .get(API_URL + endpoint, {
         headers: {
           "api-key": API_KEY,
         },
@@ -511,25 +530,40 @@ function qualification() {
             if (attempt < 3) {
               sendRequest();
             } else {
+              logError(
+                `/v1/proxima-etapa/${pipelineSlug}/${federalId}`,
+                { pipelineSlug, federalId },
+                error?.message || "Erro desconhecido",
+                "inss"
+              );
+
               URL_redirect = `/offline`;
               window.location.href = URL_redirect;
             }
             break;
         }
       })
-      .catch(function (error) {
+      .catch(async function (error) {
         console.log(error, "Não foi possível obter a qualificação");
         attempt++;
         if (attempt < 3) {
           sendRequest();
         } else {
+          await logError(
+            `/v1/proxima-etapa/${pipelineSlug}/${federalId}`,
+            { pipelineSlug, federalId },
+            error?.message || "Erro desconhecido",
+            "inss"
+          );
           URL_redirect = `/offline`;
           window.location.href = URL_redirect;
         }
       });
   };
+
   sendRequest();
 }
+
 
 function validateBenefit() {
   const benefit = document.querySelector(
@@ -585,27 +619,50 @@ function registrarBenefit(enrollment) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
+  const endpoint = "/v2/registrar-dados-empregaticios";
+  const payload = {
+    cpf: federal,
+    matricula: enrollment,
+  };
+
   axios
-    .post(
-      API_URL + "/v2/registrar-dados-empregaticios",
-      {
-        cpf: federal,
-        matricula: enrollment,
+    .post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-        },
-      }
-    )
+    })
     .then((response) => {
       requalifyEnrollment(enrollment);
     })
-    .catch(function (error) {
+    .catch(async function (error) {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
       span.textContent = "CONFIRMAR E CONTINUAR";
       console.log(error.response.data.message);
       showToast("Parece que houve um problema! Por Favor, tente novamente!");
+
+      await logError(
+        endpoint,
+        payload,
+        error?.message || "Erro desconhecido",
+        "inss"
+      );
     });
+}
+
+
+async function logError(endpoint, payload, error_message, slug) {
+  try {
+    await axios.post(
+      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error",
+      {
+        endpoint,
+        payload,
+        error_message,
+        slug
+      },
+    );
+  } catch (e) {
+    console.warn("Erro ao registrar o log de erro:", e);
+  }
 }
