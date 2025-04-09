@@ -234,12 +234,20 @@ async function criar_contato(fullName, whatsapp, federalId) {
 
 async function logError(endpoint, payload, error_message, slug) {
   try {
-    await axios.post("https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1", {
-      endpoint,
-      payload,
-      error_message,
-      slug,
-    });
+    await axios.post(
+      "https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1/error_logs", 
+      {
+        endpoint,
+        payload,
+        error_message,
+        slug
+      },
+      {
+        headers: {
+          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndGxocXF1amtkamZpamFibm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMjEwMDUsImV4cCI6MjA1OTc5NzAwNX0.bgS66g-Up_-d_nndzpuljof3VWbUQBmKrzQHCSnslmI",
+        }
+      }
+    );
   } catch (e) {
     console.warn("Erro ao registrar o log de erro:", e);
   }
