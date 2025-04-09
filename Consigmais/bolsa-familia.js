@@ -176,26 +176,36 @@ function validateContact() {
 }
 
 async function verify_proxima_etapa(pipeline_slug, federalId) {
-  return axios
-    .get(`${API_URL}/v1/proxima-etapa/${pipeline_slug}/${federalId}`, {
+  const endpoint = `/v1/proxima-etapa/${pipeline_slug}/${federalId}`;
+  const payload = { pipeline_slug, federalId };
+
+  try {
+    const response = await axios.get(API_URL + endpoint, {
       headers: {
         "api-key": API_KEY,
       },
-    })
-    .then((response) => {
-      return response.data.etapaFunil === "inexistente";
-    })
-    .catch((error) => {
-      console.error("Erro ao verificar a próxima etapa:", error);
-      return false;
     });
+    return response.data.etapaFunil === "inexistente";
+  } catch (error) {
+    console.error("Erro ao verificar a próxima etapa:", error);
+
+    await logError(
+      endpoint,
+      payload,
+      error?.message || "Erro desconhecido",
+      pipeline_slug  
+    );
+
+    return false;
+  }
 }
 
+
 async function criar_contato(fullName, whatsapp, federalId) {
-  //CONFIG
+  // CONFIG
   const pipeline_slug = "crefisa";
 
-  /* REPLACE */
+  // REPLACE
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
   const name_replaced = fullName.replace(/\s+/g, " ");
 
@@ -214,32 +224,67 @@ async function criar_contato(fullName, whatsapp, federalId) {
     return;
   }
 
+  const payload = {
+    nome: name_replaced,
+    telefone: whatsapp,
+    cpf: federalId_replaced,
+    funil: pipeline_slug,
+    urlOrigem: window.location.href,
+    urlReferencia: document.referrer,
+    naoQualificar: true,
+  };
+
+  const endpoint = "/v2/criar-contato";
+
   axios
-    .post(
-      API_URL + "/v2/criar-contato",
-      {
-        nome: name_replaced,
-        telefone: whatsapp,
-        cpf: federalId_replaced,
-        funil: pipeline_slug,
-        urlOrigem: window.location.href,
-        urlReferencia: document.referrer,
-        naoQualificar: true,
+    .post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
+        "x-source": "lp",
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-          "x-source": "lp",
-        },
-      }
-    )
-    .then((response) => {
-      redirectToWhatsApp();
     })
-    .catch((error) => {
+    .then((response) => {
+      dataLayer.push({
+        event: 'cadastro_bolsa_familia'
+      });
+      
+      redirectToWhatsApp();
+    
+    })
+    .catch(async (error) => {
       button.removeAttribute("disabled");
       spinner.classList.add("brz-invisible");
       showToast("Ocorreu um erro. Tente novamente.");
       console.error("Erro ao criar contato:", error);
+
+      await logError(
+        endpoint,
+        payload,
+        error?.message || "Erro desconhecido",
+        pipeline_slug
+      );
     });
 }
+
+
+async function logError(endpoint, payload, error_message, slug) {
+  try {
+    await axios.post(
+      "https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1/error_logs",
+      {
+        endpoint,
+        payload,
+        error_message,
+        slug
+      },
+      {
+        headers: {
+          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndGxocXF1amtkamZpamFibm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMjEwMDUsImV4cCI6MjA1OTc5NzAwNX0.bgS66g-Up_-d_nndzpuljof3VWbUQBmKrzQHCSnslmI",
+        }
+      }
+    );
+  } catch (e) {
+    console.warn("Erro ao registrar o log de erro:", e);
+  }
+}
+
