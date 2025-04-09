@@ -188,10 +188,10 @@ async function validateContact() {
 }
 
 async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
-  //CONFIG
+  // CONFIG
   const pipeline_slug = pipeSlug;
 
-  /* REPLACE */
+  // REPLACE
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
   const name_replaced = fullName.replace(/\s+/g, " ");
 
@@ -205,25 +205,25 @@ async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
   icon.style.display = "none"; // remove icon de check
   span.textContent = "";
 
+  const payload = {
+    nome: name_replaced,
+    telefone: whatsapp,
+    cpf: federalId_replaced,
+    funil: pipeline_slug,
+    urlOrigem: window.location.href,
+    urlReferencia: document.referrer,
+    naoQualificar: true,
+  };
+
+  const endpoint = "/v2/criar-contato";
+
   try {
-    const response = await axios.post(
-      API_URL + "/v2/criar-contato",
-      {
-        nome: name_replaced,
-        telefone: whatsapp,
-        cpf: federalId_replaced,
-        funil: pipeline_slug,
-        urlOrigem: window.location.href,
-        urlReferencia: document.referrer,
-        naoQualificar: true,
+    const response = await axios.post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
+        "x-source": "lp",
       },
-      {
-        headers: {
-          "api-key": API_KEY,
-          "x-source": "lp",
-        },
-      }
-    );
+    });
 
     const phone = "+558440421006";
     const message = "Olá! Gostaria de fazer uma simulação!";
@@ -231,8 +231,38 @@ async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
   } catch (error) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
-    icon.style.display = ""; // remove icon de check
+    icon.style.display = ""; // mostra novamente o ícone
     showToast("Ocorreu um erro. Tente novamente.");
     console.error("Erro ao criar contato:", error);
+
+    await logError(
+      endpoint,
+      payload,
+      error?.message || "Erro desconhecido",
+      pipeline_slug
+    );
+  }
+}
+
+
+
+async function logError(endpoint, payload, error_message, slug) {
+  try {
+    await axios.post(
+      "https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1/error_logs", 
+      {
+        endpoint,
+        payload,
+        error_message,
+        slug
+      },
+      {
+        headers: {
+          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndGxocXF1amtkamZpamFibm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMjEwMDUsImV4cCI6MjA1OTc5NzAwNX0.bgS66g-Up_-d_nndzpuljof3VWbUQBmKrzQHCSnslmI",
+        }
+      }
+    );
+  } catch (e) {
+    console.warn("Erro ao registrar o log de erro:", e);
   }
 }
