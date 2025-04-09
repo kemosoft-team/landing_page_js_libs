@@ -195,7 +195,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
     nome: name_replaced,
     telefone: whatsapp,
     cpf: federalId_replaced,
-    funil: "asd",
+    funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
     naoQualificar: false,
