@@ -173,10 +173,10 @@ async function validateContact() {
 }
 
 async function criar_contato(fullName, whatsapp, federalId) {
-  //CONFIG
+  // CONFIG
   const pipeline_slug = "siape";
 
-  /* REPLACE */
+  // REPLACE
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
   const name_replaced = fullName.replace(/\s+/g, " ");
 
@@ -185,24 +185,26 @@ async function criar_contato(fullName, whatsapp, federalId) {
   const span = button.querySelector(".brz-span.brz-text__editor");
   const icon = document.querySelector('svg.brz-icon-svg');
 
-
   button.setAttribute("disabled", true);
   spinner.classList.remove("brz-invisible");
-  icon.style.display = 'none'; // remove icon de check
+  icon.style.display = 'none';
   span.textContent = "";
+
+  const endpoint = "/v2/criar-contato"
+  const payload = {
+    nome: name_replaced,
+    telefone: whatsapp,
+    cpf: federalId_replaced,
+    funil: "asd",
+    urlOrigem: window.location.href,
+    urlReferencia: document.referrer,
+    naoQualificar: false,
+  };
 
   try {
     const response = await axios.post(
-      API_URL + "/v2/criar-contato",
-      {
-        nome: name_replaced,
-        telefone: whatsapp,
-        cpf: federalId_replaced,
-        funil: pipeline_slug,
-        urlOrigem: window.location.href,
-        urlReferencia: document.referrer,
-        naoQualificar: true,
-      },
+      API_URL + endpoint,
+      payload,
       {
         headers: {
           "api-key": API_KEY,
@@ -217,9 +219,28 @@ async function criar_contato(fullName, whatsapp, federalId) {
   } catch (error) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
-    icon.style.display = ''; // remove icon de check
+    icon.style.display = '';
     showToast("Ocorreu um erro. Tente novamente.");
     console.error("Erro ao criar contato:", error);
+
+    await logError(
+      endpoint,
+      payload,
+      error?.message || "Erro desconhecido",
+      pipeline_slug
+    );
   }
 }
 
+async function logError(endpoint, payload, error_message, slug) {
+  try {
+    await axios.post("https://igtlhqqujkdjfijabnnq.supabase.co/rest/v1", {
+      endpoint,
+      payload,
+      error_message,
+      slug,
+    });
+  } catch (e) {
+    console.warn("Erro ao registrar o log de erro:", e);
+  }
+}
