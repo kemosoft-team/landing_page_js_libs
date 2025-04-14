@@ -1,6 +1,6 @@
 // URL da API
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
-let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc";
+let API_KEY = "be49a365-5eda-4136-817e-3e12f7bbec6d";
 
 function showToast(text) {
   var x = document.getElementById("snackbar");
@@ -159,6 +159,8 @@ async function validateContact() {
 
   if (covenant === "Governo do Ceará") {
     funil = "gov-ce";
+  } else if (covenant === "Governo do Piauí") {
+    funil = "gov-pi";
   } else if (covenant === "Governo do Rio Grande do Norte") {
     funil = "gov-rn";
   } else if (covenant === "Prefeitura de Cabo Frio/RJ") {
@@ -225,7 +227,7 @@ async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
       },
     });
 
-    const phone = "+558440421006";
+    const phone = "+551152415694";
     const message = "Olá! Gostaria de fazer uma simulação!";
     redirectToWhatsApp(phone, message);
   } catch (error) {
@@ -249,7 +251,7 @@ async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
 async function logError(endpoint, payload, error_message, slug) {
   try {
     await axios.post(
-      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error", 
+      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error",
       {
         endpoint,
         payload,
