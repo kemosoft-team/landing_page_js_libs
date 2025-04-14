@@ -213,7 +213,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
       }
     );
 
-    const phone = "+55";
+    const phone = "+558440429531";
     const message = "Olá! Gostaria de fazer uma simulação!";
     redirectToWhatsApp(phone, message);
   } catch (error) {
