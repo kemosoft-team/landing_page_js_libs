@@ -234,7 +234,7 @@ async function criar_contato(fullName, whatsapp, federalId, pipeSlug) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
     icon.style.display = ""; // mostra novamente o ícone
-    showToast("Ocorreu um erro. Tente novamente.");
+    showToast(error?.response?.data?.message || "Ocorreu um erro. Tente novamente.");
     console.error("Erro ao criar contato:", error);
 
     await logError(
