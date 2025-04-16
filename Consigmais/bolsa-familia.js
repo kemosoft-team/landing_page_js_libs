@@ -139,7 +139,7 @@ function validatePhone(phone) {
 
 /* scripts */
 function redirectToWhatsApp() {
-  const phone = "+554198704123";
+  const phone = "+558440429528";
   const message = "Olá! Gostaria de fazer uma simulação!";
 
   const numericPhone = phone.replace(/\D/g, "");
