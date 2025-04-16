@@ -220,7 +220,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
     icon.style.display = '';
-    showToast(error.message);
+    showToast(response.message);
     console.error("Erro ao criar contato:", error);
 
     await logError(
