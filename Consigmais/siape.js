@@ -173,7 +173,7 @@ function validateBirth(dateString) {
     age--;
   }
 
-  return age >= 21 && age < 69;
+  return age >= 21 && age <= 74;
 }
 
 async function getClientIPHeader() {
