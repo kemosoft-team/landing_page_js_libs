@@ -137,6 +137,45 @@ function validatePhone(phone) {
   return true;
 }
 
+function validateBirth(dateString) {
+  const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+  if (!datePattern.test(dateString)) {
+    return false;
+  }
+
+  const [, day, month, year] = dateString.match(datePattern);
+  const dayInt = parseInt(day, 10);
+  const monthInt = parseInt(month, 10);
+  const yearInt = parseInt(year, 10);
+
+  if (yearInt < 1900 || yearInt > 2099) {
+    return false;
+  }
+
+  const date = new Date(yearInt, monthInt - 1, dayInt);
+  const isValidDate =
+    date.getDate() === dayInt &&
+    date.getMonth() === monthInt - 1 &&
+    date.getFullYear() === yearInt;
+
+  if (!isValidDate) {
+    return false;
+  }
+
+  // Verifica idade
+  const today = new Date();
+  let age = today.getFullYear() - yearInt;
+  const monthDiff = today.getMonth() - (monthInt - 1);
+  const dayDiff = today.getDate() - dayInt;
+
+  // Ajusta se ainda não fez aniversário este ano
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age--;
+  }
+
+  return age >= 21 && age < 69;
+}
+
 async function getClientIPHeader() {
   const res = await fetch("https://api.ipify.org?format=json");
   const { ip } = await res.json();
@@ -185,28 +224,34 @@ async function validateContact() {
   ).value;
   const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
   const federalId = document.querySelector('[data-brz-label="CPF"]').value;
+  const birth = document.querySelector(
+    '[data-brz-label="Data de Nascimento"]'
+  ).value;
 
-  if (fullName == "" || whatsapp == "" || federalId == "") {
+  if (fullName == "" || whatsapp == "" || federalId == "" || birth == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  }
-  if (!fullName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)) {
+  } else if (
+    !fullName.trim() ||
+    !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)
+  ) {
     showToast("Por favor, digite seu nome completo");
     return false;
-  }
-  if (!validateCPF(federalId)) {
+  } else if (!validateCPF(federalId)) {
     showToast("O CPF não é válido!");
     return false;
-  }
-  if (!validatePhone(whatsapp)) {
+  } else if (!validatePhone(whatsapp)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
+  } else if (!validateBirth(birth)) {
+    showToast("A data de nascimento informada não é válida!");
+    return false;
+  } else {
+    await criar_contato(fullName, whatsapp, federalId, birth);
   }
-
-  await criar_contato(fullName, whatsapp, federalId);
 }
 
-async function criar_contato(fullName, whatsapp, federalId) {
+async function criar_contato(fullName, whatsapp, federalId, birth) {
   // CONFIG
   const pipeline_slug = "siape";
 
@@ -228,6 +273,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
   const payload = {
     nome: name_replaced,
     telefone: whatsapp,
+    dataNascimento: birth,
     cpf: federalId_replaced,
     funil: pipeline_slug,
     urlOrigem: window.location.href,
