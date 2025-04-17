@@ -137,6 +137,40 @@ function validatePhone(phone) {
   return true;
 }
 
+async function getClientIPHeader() {
+  const res = await fetch("https://api.ipify.org?format=json");
+  const { ip } = await res.json();
+  return ip;
+}
+
+async function requalifyMode(leadId) {
+  const endpoint = `/v1/lead/${leadId}/requalify`;
+  const payload = {
+    mode: "all-banks",
+  };
+
+  try {
+    const response = await axios.post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
+        "x-source": "lp",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Erro ao qualificar:",
+      error?.response?.data || error.message
+    );
+    await logError(
+      endpoint,
+      payload,
+      error?.response?.data?.message || error?.message || "Erro desconhecido",
+      "siape"
+    );
+  }
+}
+
 /* scripts */
 function redirectToWhatsApp(phone, message) {
   const numericPhone = phone.replace(/\D/g, "");
@@ -183,14 +217,14 @@ async function criar_contato(fullName, whatsapp, federalId) {
   const button = document.querySelector(".submit-form");
   const spinner = button.querySelector(".brz-form-spinner");
   const span = button.querySelector(".brz-span.brz-text__editor");
-  const icon = document.querySelector('svg.brz-icon-svg');
+  const icon = document.querySelector("svg.brz-icon-svg");
 
   button.setAttribute("disabled", true);
   spinner.classList.remove("brz-invisible");
-  icon.style.display = 'none';
+  icon.style.display = "none";
   span.textContent = "";
 
-  const endpoint = "/v2/criar-contato"
+  const endpoint = "/v2/criar-contato";
   const payload = {
     nome: name_replaced,
     telefone: whatsapp,
@@ -202,16 +236,15 @@ async function criar_contato(fullName, whatsapp, federalId) {
   };
 
   try {
-    const response = await axios.post(
-      API_URL + endpoint,
-      payload,
-      {
-        headers: {
-          "api-key": API_KEY,
-          "x-source": "lp",
-        },
-      }
-    );
+    const response = await axios.post(API_URL + endpoint, payload, {
+      headers: {
+        "api-key": API_KEY,
+        "x-source": "lp",
+        "X-Client-IP": await getClientIPHeader(),
+      },
+    });
+
+    await requalifyMode(response.data.id);
 
     const phone = "+558440429531";
     const message = "Olá! Gostaria de ver minha simulação!";
@@ -219,8 +252,10 @@ async function criar_contato(fullName, whatsapp, federalId) {
   } catch (error) {
     button.removeAttribute("disabled");
     spinner.classList.add("brz-invisible");
-    icon.style.display = '';
-    showToast(error?.response?.data?.message || "Ocorreu um erro. Tente novamente.");
+    icon.style.display = "";
+    showToast(
+      error?.response?.data?.message || "Ocorreu um erro. Tente novamente."
+    );
     console.error("Erro ao criar contato:", error);
 
     await logError(
@@ -235,13 +270,13 @@ async function criar_contato(fullName, whatsapp, federalId) {
 async function logError(endpoint, payload, error_message, slug) {
   try {
     await axios.post(
-      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error", 
+      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error",
       {
         endpoint,
         payload,
         error_message,
-        slug
-      },
+        slug,
+      }
     );
   } catch (e) {
     console.warn("Erro ao registrar o log de erro:", e);
