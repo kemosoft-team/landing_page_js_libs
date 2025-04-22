@@ -250,6 +250,32 @@ async function validateContact() {
     await criar_contato(fullName, whatsapp, federalId, birth);
   }
 }
+async function getNextStep(cpf) {
+  const endpoint = `/v1/proxima-etapa/siape/${cpf}`;
+
+  try {
+    const response = await axios.get(API_URL + endpoint, {
+      headers: {
+        "api-key": API_KEY,
+        accept: "application/json",
+        "x-source": "lp",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Erro ao obter próxima etapa:",
+      error?.response?.data || error.message
+    );
+    await logError(
+      endpoint,
+      { cpf },
+      error?.response?.data?.message || error?.message || "Erro desconhecido",
+      "siape"
+    );
+    return null;
+  }
+}
 
 async function criar_contato(fullName, whatsapp, federalId, birth) {
   // CONFIG
@@ -278,7 +304,7 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
     funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
-    naoQualificar: true,
+    naoQualificar: false,
   };
 
   try {
@@ -292,8 +318,20 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
 
     await requalifyMode(response.data.id);
 
-    const phone = "+558440429531";
+    const nextStep = await getNextStep(federalId_replaced);
+
+    let phone = "+558440429531";
     const message = "Olá! Gostaria de ver minha simulação!";
+
+    if (
+      nextStep &&
+      nextStep.oportunidades &&
+      nextStep.oportunidades.length === 1 &&
+      nextStep.oportunidades[0].chaveBanco === "presenca"
+    ) {
+      phone = "551140404267";
+    }
+
     redirectToWhatsApp(phone, message);
   } catch (error) {
     button.removeAttribute("disabled");
