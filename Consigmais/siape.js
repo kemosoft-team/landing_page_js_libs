@@ -316,7 +316,7 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
       },
     });
 
-    await requalifyMode(response.data.id);
+    //await requalifyMode(response.data.id);
 
     const nextStep = await getNextStep(federalId_replaced);
 
