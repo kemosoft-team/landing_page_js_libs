@@ -325,9 +325,9 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
 
     if (
       nextStep &&
-      nextStep.oportunidades &&
-      nextStep.oportunidades.length === 1 &&
-      nextStep.oportunidades[0].chaveBanco === "presenca"
+      nextStep.bancosSimulados &&
+      nextStep.bancosSimulados.length === 1 &&
+      nextStep.bancosSimulados[0].chaveBanco === "presenca"
     ) {
       phone = "551140404267";
     }
