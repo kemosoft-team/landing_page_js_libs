@@ -248,7 +248,15 @@ async function criar_contato(fullName, whatsapp, federalId) {
         event: 'cadastro_bolsa_familia'
       });
       
-      redirectToWhatsApp();
+      //redirectToWhatsApp();
+
+      const btnRedirect = document.querySelector('#btnRedirect');
+        if (btnRedirect) {
+        btnRedirect.click();
+      } else {
+        console.warn('Botão com id #btnRedirect não encontrado');
+      }
+
     
     })
     .catch(async (error) => {
