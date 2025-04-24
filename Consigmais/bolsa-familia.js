@@ -139,13 +139,22 @@ function validatePhone(phone) {
 
 /* scripts */
 function redirectToWhatsApp() {
+
   const phone = "+558440429528";
   const message = "Olá! Gostaria de fazer uma simulação!";
 
   const numericPhone = phone.replace(/\D/g, "");
   const encodedMessage = encodeURIComponent(message);
   const whatsappURL = `https://api.whatsapp.com/send?phone=${numericPhone}&text=${encodedMessage}`;
-  window.location.href = whatsappURL;
+  //window.location.href = whatsappURL;
+
+  //provisório
+  const btnRedirect = document.querySelector('#btnRedirect');
+    if (btnRedirect) {
+      btnRedirect.click();
+    } else {
+      console.warn('Botão com id #btnRedirect não encontrado');
+    }
 }
 
 function validateContact() {
@@ -248,14 +257,9 @@ async function criar_contato(fullName, whatsapp, federalId) {
         event: 'cadastro_bolsa_familia'
       });
       
-      //redirectToWhatsApp();
+      redirectToWhatsApp();
 
-      const btnRedirect = document.querySelector('#btnRedirect');
-        if (btnRedirect) {
-        btnRedirect.click();
-      } else {
-        console.warn('Botão com id #btnRedirect não encontrado');
-      }
+      
 
     
     })
