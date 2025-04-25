@@ -137,6 +137,43 @@ function validatePhone(phone) {
   return true;
 }
 
+function validarEnrollment(numeroBeneficio) {
+  var regexBeneficio = /^[0-9]{10}$/;
+  if (regexBeneficio.test(numeroBeneficio)) {
+    var sequenciaRepetida = /(\d)\1{9}/;
+    if (sequenciaRepetida.test(numeroBeneficio)) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+function validateMod11Digit(code, numDig, limMult, x10) {
+  if (!numDig) numDig = 1;
+  let dado = code.substring(0, code.length - numDig);
+  let mult, soma, i, n, dig;
+  if (!x10) x10 = 1; // Correção aqui
+  for (n = 1; n <= numDig; n++) {
+    soma = 0;
+    mult = 2;
+    for (i = dado.length - 1; i >= 0; i--) {
+      soma += (mult * parseInt(dado.charAt(i)));
+      if (++mult > limMult) mult = 2;
+    }
+    if (x10) {
+      dig = ((soma * 10) % 11) % 10;
+    } else {
+      dig = soma % 11;
+      if (dig == 10) dig = "X";
+    }
+    dado += (dig);
+  }
+  return (dado === code);
+}
+
+
+
 /* scripts */
 function redirectToWhatsApp() {
 
@@ -150,11 +187,11 @@ function redirectToWhatsApp() {
 
   //provisório
   const btnRedirect = document.querySelector('#btnRedirect');
-    if (btnRedirect) {
-      btnRedirect.click();
-    } else {
-      console.warn('Botão com id #btnRedirect não encontrado');
-    }
+  if (btnRedirect) {
+    btnRedirect.click();
+  } else {
+    console.warn('Botão com id #btnRedirect não encontrado');
+  }
 }
 
 function validateContact() {
@@ -163,25 +200,37 @@ function validateContact() {
   ).value;
   const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
   const federalId = document.querySelector('[data-brz-label="CPF"]').value;
+  const enrollment = document.querySelector('[data-brz-label="Número do NIS"]').value;
 
-  if (fullName == "" || whatsapp == "" || federalId == "") {
+  if (fullName == "" || whatsapp == "" || federalId == "" || enrollment == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
-  }
-  if (!fullName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)) {
+  } else if (!fullName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)) {
     showToast("Por favor, digite seu nome completo");
     return false;
-  }
-  if (!validateCPF(federalId)) {
+  } else if (!validateCPF(federalId)) {
     showToast("O CPF não é válido!");
     return false;
-  }
-  if (!validatePhone(whatsapp)) {
+  } else if (!validatePhone(whatsapp)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
-  }
+  } else if (enrollment.length != 10) {
+    showToast("O número do benefício deve conter 10 caracteres.");
+    return false;
+  } else if (!validarEnrollment(enrollment)) {
+    showToast(
+      "O número do benefício informado é inválido! Revise a informação!"
+    );
+    return false;
+  } else if (!validateMod11Digit(enrollment, 1, 9, true)) {
+    showToast(
+      "O número do benefício informado é inválido!! Revise a informação!"
+    );
+    return false;
+  } else {
 
-  criar_contato(fullName, whatsapp, federalId);
+    criar_contato(fullName, whatsapp, federalId, enrollment);
+  }
 }
 
 async function verify_proxima_etapa(pipeline_slug, federalId) {
@@ -202,7 +251,7 @@ async function verify_proxima_etapa(pipeline_slug, federalId) {
       endpoint,
       payload,
       error?.message || "Erro desconhecido",
-      pipeline_slug  
+      pipeline_slug
     );
 
     return false;
@@ -210,7 +259,7 @@ async function verify_proxima_etapa(pipeline_slug, federalId) {
 }
 
 
-async function criar_contato(fullName, whatsapp, federalId) {
+async function criar_contato(fullName, whatsapp, federalId, enrollment) {
   // CONFIG
   const pipeline_slug = "crefisa";
 
@@ -241,6 +290,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
     naoQualificar: true,
+    matricula: enrollment
   };
 
   const endpoint = "/v2/criar-contato";
@@ -256,12 +306,12 @@ async function criar_contato(fullName, whatsapp, federalId) {
       dataLayer.push({
         event: 'cadastro_bolsa_familia'
       });
-      
+
       redirectToWhatsApp();
 
-      
 
-    
+
+
     })
     .catch(async (error) => {
       button.removeAttribute("disabled");
@@ -282,7 +332,7 @@ async function criar_contato(fullName, whatsapp, federalId) {
 async function logError(endpoint, payload, error_message, slug) {
   try {
     await axios.post(
-      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error", 
+      "https://n8n-01-webhook.kemosoft.com.br/webhook/log_error",
       {
         endpoint,
         payload,
