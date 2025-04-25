@@ -217,16 +217,6 @@ function validateContact() {
   } else if (enrollment.length != 11) {
     showToast("O número do benefício deve conter 11 caracteres.");
     return false;
-  } else if (!validarEnrollment(enrollment)) {
-    showToast(
-      "O número do benefício informado é inválido! Revise a informação!"
-    );
-    return false;
-  } else if (!validateMod11Digit(enrollment, 1, 9, true)) {
-    showToast(
-      "O número do benefício informado é inválido!! Revise a informação!"
-    );
-    return false;
   } else {
 
     criar_contato(fullName, whatsapp, federalId, enrollment);
