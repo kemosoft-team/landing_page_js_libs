@@ -214,8 +214,8 @@ function validateContact() {
   } else if (!validatePhone(whatsapp)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
-  } else if (enrollment.length != 10) {
-    showToast("O número do benefício deve conter 10 caracteres.");
+  } else if (enrollment.length != 11) {
+    showToast("O número do benefício deve conter 11 caracteres.");
     return false;
   } else if (!validarEnrollment(enrollment)) {
     showToast(
