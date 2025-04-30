@@ -265,12 +265,12 @@ async function criar_contato(fullName, whatsapp, federalId, enrollment) {
   spinner.classList.remove("brz-invisible");
   span.textContent = "";
 
-  const isNovoLead = await verify_proxima_etapa(pipeline_slug, federalId_replaced);
+  //const isNovoLead = await verify_proxima_etapa(pipeline_slug, federalId_replaced);
 
-  if (!isNovoLead) {
-    redirectToWhatsApp();
-    return;
-  }
+  //if (!isNovoLead) {
+  //redirectToWhatsApp();
+  //return;
+  //}
 
   const payload = {
     nome: name_replaced,
