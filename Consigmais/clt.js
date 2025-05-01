@@ -242,7 +242,7 @@ function validateContact() {
     } else if (!validatePhone(whatsapp)) {
         showToast("O número do Whatsapp informado não é válido!");
         return false;
-    } else if (!isDateValid(birth)) {
+    } else if (!validateBirth(birth)) {
         showToast("A data de nascimento informada não é válida!");
         return false;
     } else {
