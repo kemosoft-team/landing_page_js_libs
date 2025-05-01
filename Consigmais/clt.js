@@ -211,15 +211,15 @@ function redirectToWhatsApp() {
     const numericPhone = phone.replace(/\D/g, "");
     const encodedMessage = encodeURIComponent(message);
     const whatsappURL = `https://api.whatsapp.com/send?phone=${numericPhone}&text=${encodedMessage}`;
-    //window.location.href = whatsappURL;
+    window.location.href = whatsappURL;
 
     //provisório
-    const btnRedirect = document.querySelector('#btnRedirect');
+    /* const btnRedirect = document.querySelector('#btnRedirect');
     if (btnRedirect) {
         btnRedirect.click();
     } else {
         console.warn('Botão com id #btnRedirect não encontrado');
-    }
+    } */
 }
 
 function validateContact() {
