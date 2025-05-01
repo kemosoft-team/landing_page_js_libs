@@ -285,7 +285,7 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
     const federalId_replaced = federalId.replace(/[^\d]/g, "");
     const name_replaced = fullName.replace(/\s+/g, " ");
 
-    const button = document.querySelector(".submit-gov-ce");
+    const button = document.querySelector(".submit-form");
     const spinner = button.querySelector(".brz-form-spinner");
     const span = button.querySelector(".brz-span.brz-text__editor");
 
