@@ -206,7 +206,7 @@ function validateMod11Digit(code, numDig, limMult, x10) {
 function redirectToWhatsApp() {
 
     const phone = "+558440420474";
-    const message = "Olá! Gostaria de fazer uma simulação!";
+    const message = "Olá! Quero continuar minha simulação do consignado privado!";
 
     const numericPhone = phone.replace(/\D/g, "");
     const encodedMessage = encodeURIComponent(message);
