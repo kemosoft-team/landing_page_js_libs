@@ -379,7 +379,7 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
       },
     })
     .then((response) => {
-      localStorage.setItem("leadId", response.data.leadId);
+      localStorage.setItem("leadId", response.data.id);
       redirectToWhatsApp();
     })
     .catch(async (error) => {
