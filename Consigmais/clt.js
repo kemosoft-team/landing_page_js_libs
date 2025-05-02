@@ -280,6 +280,10 @@ function showContainerAuthorize() {
   containerAuthorize.style.display = "block";
   var containerVerify = document.querySelector("#containerVerify");
   containerVerify.style.display = "none";
+  var containerNoOpportunity = document.querySelector(
+    "#containerNoOpportunity"
+  );
+  containerNoOpportunity.style.display = "none";
 }
 
 function showContainerVerify() {
@@ -287,6 +291,21 @@ function showContainerVerify() {
   containerAuthorize.style.display = "none";
   var containerVerify = document.querySelector("#containerVerify");
   containerVerify.style.display = "block";
+  var containerNoOpportunity = document.querySelector(
+    "#containerNoOpportunity"
+  );
+  containerNoOpportunity.style.display = "none";
+}
+
+function showContainerNoOpportunity() {
+  var containerAuthorize = document.querySelector("#containerAuthorize");
+  containerAuthorize.style.display = "none";
+  var containerVerify = document.querySelector("#containerVerify");
+  containerVerify.style.display = "none";
+  var containerNoOpportunity = document.querySelector(
+    "#containerNoOpportunity"
+  );
+  containerNoOpportunity.style.display = "block";
 }
 
 async function verify_proxima_etapa(leadId) {
@@ -304,21 +323,20 @@ async function verify_proxima_etapa(leadId) {
 
     switch (contexto) {
       case "aguardando-qualificacao":
-        // Permanecer aguardando qualificação
-        // showContainerAuthorize();
+        showContainerAuthorize();
+        startCountdown(30);
         console.log("Contexto:", contexto);
         return true;
 
       case "sem-oportunidade":
       case "nao-qualificado":
-        // Enviar para tela de descarte
+        showContainerNoOpportunity();
         console.log("Contexto:", contexto);
         return true;
 
       case "resolver-situacao":
         switch (situacao) {
           case "escolher-simulacao":
-            // Enviar para o WhatsApp
             redirectToWhatsApp();
             return true;
           default:
