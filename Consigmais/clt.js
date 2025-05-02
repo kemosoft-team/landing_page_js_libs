@@ -1,6 +1,7 @@
 // URL da API
 let API_URL = "https://ms-crm-az.kemosoft.com.br";
 let API_KEY = "381e75ed-12ce-4673-930a-e0815c0545dc";
+let aguardandoQualificacaoCount = 0;
 
 function showToast(text) {
   var x = document.getElementById("snackbar");
@@ -323,15 +324,19 @@ async function verify_proxima_etapa(leadId) {
 
     switch (contexto) {
       case "aguardando-qualificacao":
-        showContainerAuthorize();
-        startCountdown(30);
-        console.log("Contexto:", contexto);
+        aguardandoQualificacaoCount++;
+
+        if (aguardandoQualificacaoCount > 2) {
+          showContainerNoOpportunity();
+        } else {
+          showContainerAuthorize();
+          startCountdown(30);
+        }
         return true;
 
       case "sem-oportunidade":
       case "nao-qualificado":
         showContainerNoOpportunity();
-        console.log("Contexto:", contexto);
         return true;
 
       case "resolver-situacao":
