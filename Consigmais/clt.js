@@ -326,7 +326,7 @@ async function verify_proxima_etapa(leadId) {
       case "aguardando-qualificacao":
         aguardandoQualificacaoCount++;
 
-        if (aguardandoQualificacaoCount > 2) {
+        if (aguardandoQualificacaoCount > 1) {
           showContainerNoOpportunity();
         } else {
           showContainerAuthorize();
