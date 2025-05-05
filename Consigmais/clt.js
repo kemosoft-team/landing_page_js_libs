@@ -203,7 +203,7 @@ function validateMod11Digit(code, numDig, limMult, x10) {
 /* scripts */
 function redirectToWhatsApp() {
   const phone = "+558440420474";
-  const message = "Olá! Quero continuar minha simulação do consignado privado!";
+  const message = "Olá! Quero continuar minha simulação do consignado privado!";
 
   const numericPhone = phone.replace(/\D/g, "");
   const encodedMessage = encodeURIComponent(message);
@@ -403,7 +403,11 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
     })
     .then((response) => {
       localStorage.setItem("leadId", response.data.id);
-      redirectToWhatsApp();
+
+      document.querySelector("#btnAuthorize").click();
+      startCountdown(30);
+
+      //redirectToWhatsApp();
     })
     .catch(async (error) => {
       button.removeAttribute("disabled");
