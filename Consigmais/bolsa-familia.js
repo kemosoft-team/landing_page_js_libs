@@ -177,21 +177,21 @@ function validateMod11Digit(code, numDig, limMult, x10) {
 /* scripts */
 function redirectToWhatsApp() {
 
-  const phone = "+558440429528";
+  const phone = "+558440421006";
   const message = "Olá! Gostaria de fazer uma simulação!";
 
   const numericPhone = phone.replace(/\D/g, "");
   const encodedMessage = encodeURIComponent(message);
   const whatsappURL = `https://api.whatsapp.com/send?phone=${numericPhone}&text=${encodedMessage}`;
-  //window.location.href = whatsappURL;
+  window.location.href = whatsappURL;
 
   //provisório
-  const btnRedirect = document.querySelector('#btnRedirect');
-  if (btnRedirect) {
-    btnRedirect.click();
-  } else {
-    console.warn('Botão com id #btnRedirect não encontrado');
-  }
+  //const btnRedirect = document.querySelector('#btnRedirect');
+  //if (btnRedirect) {
+    //btnRedirect.click();
+  //} else {
+    //console.warn('Botão com id #btnRedirect não encontrado');
+  //}
 }
 
 function validateContact() {
