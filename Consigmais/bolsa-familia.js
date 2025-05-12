@@ -175,10 +175,10 @@ function validateMod11Digit(code, numDig, limMult, x10) {
 
 
 /* scripts */
-function redirectToWhatsApp() {
+function redirectToWhatsApp(federalId) {
 
   const phone = "+558440421006";
-  const message = "Olá! Gostaria de fazer uma simulação!";
+  const message = `Olá! Gostaria de fazer uma simulação! Esse é o meu CPF: ${federalId}`;
 
   const numericPhone = phone.replace(/\D/g, "");
   const encodedMessage = encodeURIComponent(message);
@@ -297,7 +297,7 @@ async function criar_contato(fullName, whatsapp, federalId, enrollment) {
         event: 'cadastro_bolsa_familia'
       });
 
-      redirectToWhatsApp();
+      redirectToWhatsApp(federalId);
 
 
 
