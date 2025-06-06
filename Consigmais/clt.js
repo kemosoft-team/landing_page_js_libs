@@ -404,10 +404,10 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
     .then((response) => {
       localStorage.setItem("leadId", response.data.id);
 
-      document.querySelector("#btnAuthorize").click();
-      startCountdown(30);
+      /* document.querySelector("#btnAuthorize").click();
+      startCountdown(30); */
 
-      //redirectToWhatsApp();
+      redirectToWhatsApp();
     })
     .catch(async (error) => {
       button.removeAttribute("disabled");
