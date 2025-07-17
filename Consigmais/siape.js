@@ -320,10 +320,10 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
 
     const nextStep = await getNextStep(federalId_replaced);
 
-    let phone = "+558440429531";
+    let phone = "+558482001436";
     const message = "Olá! Gostaria de ver minha simulação!";
 
-    if (
+/*     if (
       nextStep &&
       nextStep.bancosSimulados &&
       nextStep.bancosSimulados.length === 1 &&
@@ -331,7 +331,7 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
     ) {
       phone = "551140404267";
     }
-
+ */
     redirectToWhatsApp(phone, message);
   } catch (error) {
     button.removeAttribute("disabled");
