@@ -202,7 +202,7 @@ function validateContact() {
   const federalId = document.querySelector('[data-brz-label="CPF"]').value;
   const enrollment = document.querySelector('[data-brz-label="Número do NIS"]').value;
 
-  if (fullName == "" || whatsapp == "" || federalId == "" || enrollment == "") {
+  if (fullName == "" || whatsapp == "" || federalId == "") {
     showToast("Por favor, preencha todos os campos.");
     return false;
   } else if (!fullName.trim() || !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)) {
@@ -214,7 +214,7 @@ function validateContact() {
   } else if (!validatePhone(whatsapp)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
-  } else if (enrollment.length != 11) {
+  } else if (enrollment != "" && enrollment.length != 11) {
     showToast("O número do benefício deve conter 11 caracteres.");
     return false;
   } else {
