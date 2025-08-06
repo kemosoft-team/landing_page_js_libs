@@ -269,20 +269,6 @@ async function validateContact() {
   } else if (!validatePhone(whatsapp)) {
     showToast("O número do Whatsapp informado não é válido!");
     return false;
-  }
-  if (enrollment && enrollment.length != 10) {
-    showToast("O número do benefício deve conter 10 caracteres.");
-    return false;
-  } else if (enrollment && !validarNumeroBeneficio(enrollment)) {
-    showToast(
-      "O número do benefício informado é inválido! Revise a informação!"
-    );
-    return false;
-  } else if (enrollment && !validateMod11Digit(enrollment, 1, 9, true)) {
-    showToast(
-      "O número do benefício informado é inválido!! Revise a informação!"
-    );
-    return false;
   } else {
     await criar_contato(fullName, whatsapp, federalId, enrollment, margin);
   }
