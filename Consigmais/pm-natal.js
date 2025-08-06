@@ -137,45 +137,6 @@ function validatePhone(phone) {
   return true;
 }
 
-function validateBirth(dateString) {
-  const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-  if (!datePattern.test(dateString)) {
-    return false;
-  }
-
-  const [, day, month, year] = dateString.match(datePattern);
-  const dayInt = parseInt(day, 10);
-  const monthInt = parseInt(month, 10);
-  const yearInt = parseInt(year, 10);
-
-  if (yearInt < 1900 || yearInt > 2099) {
-    return false;
-  }
-
-  const date = new Date(yearInt, monthInt - 1, dayInt);
-  const isValidDate =
-    date.getDate() === dayInt &&
-    date.getMonth() === monthInt - 1 &&
-    date.getFullYear() === yearInt;
-
-  if (!isValidDate) {
-    return false;
-  }
-
-  // Verifica idade
-  const today = new Date();
-  let age = today.getFullYear() - yearInt;
-  const monthDiff = today.getMonth() - (monthInt - 1);
-  const dayDiff = today.getDate() - dayInt;
-
-  // Ajusta se ainda não fez aniversário este ano
-  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    age--;
-  }
-
-  return age >= 21 && age <= 74;
-}
-
 async function getClientIPHeader() {
   const res = await fetch("https://api.ipify.org?format=json");
   const { ip } = await res.json();
@@ -210,6 +171,41 @@ async function requalifyMode(leadId) {
   }
 }
 
+function validarNumeroBeneficio(numeroBeneficio) {
+  var regexBeneficio = /^[0-9]{10}$/;
+  if (regexBeneficio.test(numeroBeneficio)) {
+    var sequenciaRepetida = /(\d)\1{9}/;
+    if (sequenciaRepetida.test(numeroBeneficio)) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+function validateMod11Digit(code, numDig, limMult, x10) {
+  if (!numDig) numDig = 1;
+  let dado = code.substring(0, code.length - numDig);
+  let mult, soma, i, n, dig;
+  if (!x10) x10 = 1; // Correção aqui
+  for (n = 1; n <= numDig; n++) {
+    soma = 0;
+    mult = 2;
+    for (i = dado.length - 1; i >= 0; i--) {
+      soma += mult * parseInt(dado.charAt(i));
+      if (++mult > limMult) mult = 2;
+    }
+    if (x10) {
+      dig = ((soma * 10) % 11) % 10;
+    } else {
+      dig = soma % 11;
+      if (dig == 10) dig = "X";
+    }
+    dado += dig;
+  }
+  return dado === code;
+}
+
 /* scripts */
 function redirectToWhatsApp(phone, message) {
   const numericPhone = phone.replace(/\D/g, "");
@@ -218,38 +214,6 @@ function redirectToWhatsApp(phone, message) {
   window.location.href = whatsappURL;
 }
 
-async function validateContact() {
-  const fullName = document.querySelector(
-    '[data-brz-label="Nome completo"]'
-  ).value;
-  const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
-  const federalId = document.querySelector('[data-brz-label="CPF"]').value;
-  const birth = document.querySelector(
-    '[data-brz-label="Data de Nascimento"]'
-  ).value;
-
-  if (fullName == "" || whatsapp == "" || federalId == "" || birth == "") {
-    showToast("Por favor, preencha todos os campos.");
-    return false;
-  } else if (
-    !fullName.trim() ||
-    !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)
-  ) {
-    showToast("Por favor, digite seu nome completo");
-    return false;
-  } else if (!validateCPF(federalId)) {
-    showToast("O CPF não é válido!");
-    return false;
-  } else if (!validatePhone(whatsapp)) {
-    showToast("O número do Whatsapp informado não é válido!");
-    return false;
-  } else if (!validateBirth(birth)) {
-    showToast("A data de nascimento informada não é válida!");
-    return false;
-  } else {
-    await criar_contato(fullName, whatsapp, federalId, birth);
-  }
-}
 async function getNextStep(cpf) {
   const endpoint = `/v1/proxima-etapa/prefeitura-de-natal/${cpf}`;
 
@@ -277,7 +241,60 @@ async function getNextStep(cpf) {
   }
 }
 
-async function criar_contato(fullName, whatsapp, federalId, birth) {
+async function validateContact() {
+  const fullName = document.querySelector(
+    '[data-brz-label="Nome completo"]'
+  ).value;
+  const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
+  const federalId = document.querySelector('[data-brz-label="CPF"]').value;
+  const enrollment = document.querySelector(
+    '[data-brz-label="Benefício/Matricula (opcional)"]'
+  ).value;
+  const margin = document.querySelector(
+    '[data-brz-label="Margem (opcional)"]'
+  ).value;
+
+  if (fullName == "" || whatsapp == "" || federalId == "") {
+    showToast("Por favor, preencha todos os campos.");
+    return false;
+  } else if (
+    !fullName.trim() ||
+    !/[a-zA-ZÀ-ÿ]+\s+[a-zA-ZÀ-ÿ]+/.test(fullName)
+  ) {
+    showToast("Por favor, digite seu nome completo");
+    return false;
+  } else if (!validateCPF(federalId)) {
+    showToast("O CPF não é válido!");
+    return false;
+  } else if (!validatePhone(whatsapp)) {
+    showToast("O número do Whatsapp informado não é válido!");
+    return false;
+  }
+  if (enrollment && enrollment.length != 10) {
+    showToast("O número do benefício deve conter 10 caracteres.");
+    return false;
+  } else if (enrollment && !validarNumeroBeneficio(enrollment)) {
+    showToast(
+      "O número do benefício informado é inválido! Revise a informação!"
+    );
+    return false;
+  } else if (enrollment && !validateMod11Digit(enrollment, 1, 9, true)) {
+    showToast(
+      "O número do benefício informado é inválido!! Revise a informação!"
+    );
+    return false;
+  } else {
+    await criar_contato(fullName, whatsapp, federalId, enrollment, margin);
+  }
+}
+
+async function criar_contato(
+  fullName,
+  whatsapp,
+  federalId,
+  enrollment,
+  margin
+) {
   // CONFIG
   const pipeline_slug = "prefeitura-de-natal";
 
@@ -299,8 +316,8 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
   const payload = {
     nome: name_replaced,
     telefone: whatsapp,
-    dataNascimento: birth,
     cpf: federalId_replaced,
+    matricula: enrollment || null,
     funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
@@ -316,12 +333,16 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
       },
     });
 
-    //await requalifyMode(response.data.id);
+    let phone = "+558482001436";
+    let message = "";
 
-    const nextStep = await getNextStep(federalId_replaced);
-
-    let phone = "+558440421006";
-    const message = "Olá! Gostaria de ver minha simulação do Cartão Beneficio!";
+    if (margin) {
+      message =
+        "Olá! Gostaria de ver minha simulação! Essa é a minha margem: " +
+        margin;
+    } else {
+      message = "Olá! Gostaria de ver minha simulação!";
+    }
 
     redirectToWhatsApp(phone, message);
   } catch (error) {
