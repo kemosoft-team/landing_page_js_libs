@@ -269,7 +269,7 @@ async function criar_contato(
     telefone: whatsapp,
     cpf: federalId_replaced,
     matricula: enrollment || null,
-    margemDisponivelRcc: margin || null,
+    margemDisponivelRcc: margin ? Number(String(margin).replace(/[R$\s.]/g, "").replace(",", ".")): null,
     funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
