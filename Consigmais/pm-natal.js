@@ -171,41 +171,6 @@ async function requalifyMode(leadId) {
   }
 }
 
-function validarNumeroBeneficio(numeroBeneficio) {
-  var regexBeneficio = /^[0-9]{10}$/;
-  if (regexBeneficio.test(numeroBeneficio)) {
-    var sequenciaRepetida = /(\d)\1{9}/;
-    if (sequenciaRepetida.test(numeroBeneficio)) {
-      return false;
-    }
-    return true;
-  }
-  return false;
-}
-
-function validateMod11Digit(code, numDig, limMult, x10) {
-  if (!numDig) numDig = 1;
-  let dado = code.substring(0, code.length - numDig);
-  let mult, soma, i, n, dig;
-  if (!x10) x10 = 1; // Correção aqui
-  for (n = 1; n <= numDig; n++) {
-    soma = 0;
-    mult = 2;
-    for (i = dado.length - 1; i >= 0; i--) {
-      soma += mult * parseInt(dado.charAt(i));
-      if (++mult > limMult) mult = 2;
-    }
-    if (x10) {
-      dig = ((soma * 10) % 11) % 10;
-    } else {
-      dig = soma % 11;
-      if (dig == 10) dig = "X";
-    }
-    dado += dig;
-  }
-  return dado === code;
-}
-
 /* scripts */
 function redirectToWhatsApp(phone, message) {
   const numericPhone = phone.replace(/\D/g, "");
@@ -248,7 +213,7 @@ async function validateContact() {
   const whatsapp = document.querySelector('[data-brz-label="WhatsApp"]').value;
   const federalId = document.querySelector('[data-brz-label="CPF"]').value;
   const enrollment = document.querySelector(
-    '[data-brz-label="Benefício/Matricula (opcional)"]'
+    '[data-brz-label="Matricula (opcional)"]'
   ).value;
   const margin = document.querySelector(
     '[data-brz-label="Margem (opcional)"]'
@@ -304,6 +269,7 @@ async function criar_contato(
     telefone: whatsapp,
     cpf: federalId_replaced,
     matricula: enrollment || null,
+    margemDisponivelRcc: margin || null,
     funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
@@ -320,16 +286,7 @@ async function criar_contato(
     });
 
     let phone = "+558482001436";
-    let message = "";
-
-    if (margin) {
-      message =
-        "Olá! Gostaria de ver minha simulação! Essa é a minha margem: " +
-        margin;
-    } else {
-      message = "Olá! Gostaria de ver minha simulação!";
-    }
-
+    let message = "Olá! Gostaria de ver minha simulação!";
     redirectToWhatsApp(phone, message);
   } catch (error) {
     button.removeAttribute("disabled");
