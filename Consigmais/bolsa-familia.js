@@ -279,7 +279,7 @@ async function criar_contato(fullName, whatsapp, federalId, enrollment) {
     funil: pipeline_slug,
     urlOrigem: window.location.href,
     urlReferencia: document.referrer,
-    naoQualificar: true,
+    naoQualificar: false,
     matricula: enrollment
   };
 
