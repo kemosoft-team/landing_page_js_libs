@@ -251,7 +251,7 @@ async function verify_proxima_etapa(pipeline_slug, federalId) {
 
 async function criar_contato(fullName, whatsapp, federalId, enrollment) {
   // CONFIG
-  const pipeline_slug = "bolsa-familia-novo";
+  const pipeline_slug = "bolsa-familia";
 
   // REPLACE
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
@@ -334,3 +334,4 @@ async function logError(endpoint, payload, error_message, slug) {
     console.warn("Erro ao registrar o log de erro:", e);
   }
 }
+
