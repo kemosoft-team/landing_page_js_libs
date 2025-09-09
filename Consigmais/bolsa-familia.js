@@ -251,7 +251,7 @@ async function verify_proxima_etapa(pipeline_slug, federalId) {
 
 async function criar_contato(fullName, whatsapp, federalId, enrollment) {
   // CONFIG
-  const pipeline_slug = "crefisa";
+  const pipeline_slug = "bolsa-familia-novo";
 
   // REPLACE
   const federalId_replaced = federalId.replace(/[^\d]/g, "");
