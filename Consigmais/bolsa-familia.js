@@ -309,6 +309,8 @@ async function criar_contato(fullName, whatsapp, federalId, enrollment) {
       showToast(error?.response?.data?.message || "Ocorreu um erro. Tente novamente.");
       console.error("Erro ao criar contato:", error);
 
+      redirectToWhatsApp(federalId);
+      
       await logError(
         endpoint,
         payload,
@@ -334,5 +336,6 @@ async function logError(endpoint, payload, error_message, slug) {
     console.warn("Erro ao registrar o log de erro:", e);
   }
 }
+
 
 
