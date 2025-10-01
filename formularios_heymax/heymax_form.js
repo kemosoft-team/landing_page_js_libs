@@ -1,5 +1,5 @@
 // Função para inserir o modal no DOM
-function insertModalHTML(journeyId, urlParamsl) {
+function insertModalHTML(journeyId, urlParams) {
 
 
    
@@ -54,5 +54,6 @@ function insertModalHTML(journeyId, urlParamsl) {
       document.body.removeEventListener('mousewheel', preventDefault);
   });
 }
+
 
 
