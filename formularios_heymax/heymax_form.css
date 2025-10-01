@@ -1,3 +1,4 @@
+<style>
 /* Botão de fechar o modal */
 .btnClose {
   position: fixed;
@@ -46,3 +47,6 @@
 .modal-open {
   overflow: hidden;
 }
+
+
+</style>
