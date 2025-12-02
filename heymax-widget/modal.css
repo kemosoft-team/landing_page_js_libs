@@ -3,7 +3,8 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
   background: rgba(0, 0, 0, 0.85);
   z-index: 9999999;
   align-items: center;
@@ -17,7 +18,8 @@
 .heymax-modal-content {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
+  min-height: -webkit-fill-available;
 }
 
 #heymax-iframe {
@@ -48,4 +50,3 @@
 .heymax-btn-close:hover {
   background: rgba(0, 0, 0, 0.8);
 }
-  
