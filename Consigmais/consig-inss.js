@@ -21,7 +21,9 @@ let pipelineSlug;
 let menorIdade = false;
 
 function redirectWhatsapp() {
-  window.location.href = "https://api.whatsapp.com/send?phone=558482001436";
+  const cpf = federalId.replace(/\D/g, "");
+  const message = `Olá, gostaria de concluir minha solicitação! Meu CPF é ${cpf}.`;
+  window.location.href = `https://wa.me/5584996664298?text=${encodeURIComponent(message)}`;
 }
 
 function callback(urlCallBack) {
@@ -146,15 +148,7 @@ function criar_contato_inss() {
       const customId = federalId_replaced;
       window.clarity("identify", customId);
 
-      if (menorIdade === true) {
-        // ABRIR FORMULÁRIO REPRESENTANTE
-        const formRepresentative = document.getElementById("form_representative");
-        formRepresentative.click();
-      } else {
-        // ABRIR QUESTÕES REPRESENTANTE
-        const representativeQuestions = document.getElementById("question_representative");
-        representativeQuestions.click();
-      }
+      redirectWhatsapp();
     })
     .catch(async function (error) {
       button.removeAttribute("disabled");
