@@ -320,8 +320,8 @@ async function criar_contato(fullName, whatsapp, federalId, birth) {
 
     const nextStep = await getNextStep(federalId_replaced);
 
-    let phone = "+558482001436";
-    const message = "Olá! Gostaria de ver minha simulação!";
+    let phone = "5584996664298";
+    const message = `Olá, vim do site do SIAPE e gostaria de ver minha simulação! Meu CPF é ${federalId_replaced}.`;
 
 /*     if (
       nextStep &&

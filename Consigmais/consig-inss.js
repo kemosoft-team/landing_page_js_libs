@@ -22,7 +22,7 @@ let menorIdade = false;
 
 function redirectWhatsapp() {
   const cpf = federalId.replace(/\D/g, "");
-  const message = `Olá, gostaria de concluir minha solicitação! Meu CPF é ${cpf}.`;
+  const message = `Olá, vim do site do INSS e gostaria de concluir minha solicitação! Meu CPF é ${cpf}.`;
   window.location.href = `https://wa.me/5584996664298?text=${encodeURIComponent(message)}`;
 }
 
